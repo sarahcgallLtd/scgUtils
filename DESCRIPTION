@@ -1,0 +1,27 @@
+Package: scgUtils
+Title: Utility Functions for Sarah C Gall Ltd
+Version: 0.0.0.9000
+Authors@R: 
+    person("Sarah", "Gall", , "contact@sarahcgall.co.uk", role = c("aut", "cre"))
+Description: This package contains the utility functions for Sarah C Gall Ltd.
+License: MIT + file LICENSE
+URL: https://sarahcgall.r-lib.org/, https://github.com/r-lib/sarahcgall
+BugReports: https://github.com/r-lib/sarahcgall/issues
+Imports:
+    dplyr,
+    stats,
+    tidyr,
+    janitor,
+    magrittr,
+    ggplot2,
+    grDevices,
+    stringr,
+    rlang,
+    networkD3,
+    htmlwidgets
+Encoding: UTF-8
+Language: en-GB
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Depends:
+    R (>= 2.10)
