@@ -6,9 +6,16 @@
 #' @param data A data frame containing flow data and percentages. This parameter is required.
 #' @param source From variable. This parameter is required.
 #' @param target To variable. This parameter is required.
-#' @param value Percentage flowing between source and target. This parameter is required.
+#' @param value Percentage/Value flowing between source and target. This parameter is required.
 #' @param colours List of colours in d3.js format (requires single quotation marks around internal hex codes in
 #' double quotation marks. This variable is required.
+#' @param fontSize Default = 24
+#' @param fontFamily Default = "Calabri"
+#' @param nodeWidth Default = 20
+#' @param nodePadding Default = 10
+#' @param margin Default = list("left"=0, "right"=400)
+#' @param width Default = 1200
+#' @param height Default = 800
 #'
 #' @return sankey plot
 #'
@@ -39,7 +46,14 @@ plot_sankey <- function(data,
                         source,
                         target,
                         value,
-                        colours
+                        colours,
+                        fontSize=24,
+                        fontFamily="Calibri",
+                        nodeWidth=20,
+                        nodePadding=10,
+                        margin=list("left"=0, "right"=400),
+                        width=1200,
+                        height=800
 ) {
   links <- data[,c(source,target,value)]
   links <- stats::setNames(links, c("source","target","value"))
@@ -68,13 +82,13 @@ plot_sankey <- function(data,
                                      NodeGroup = "group",
                                      sinksRight=FALSE,
                                      colourScale=colourScale,
-                                     fontSize=24,
-                                     fontFamily = "Calibri",
-                                     nodeWidth=20,
-                                     nodePadding=10,
-                                     margin = list("left"=0, "right"=400),
-                                     width = 1200,
-                                     height = 800)
+                                     fontSize=fontSize,
+                                     fontFamily=fontFamily,
+                                     nodeWidth=nodeWidth,
+                                     nodePadding=nodePadding,
+                                     margin=margin,
+                                     width=width,
+                                     height=height)
 
   htmlwidgets::onRender(
     sankey,

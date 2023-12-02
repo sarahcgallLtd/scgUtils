@@ -4,7 +4,20 @@
 \alias{plot_sankey}
 \title{Sankey Plot}
 \usage{
-plot_sankey(data, source, target, value, colours)
+plot_sankey(
+  data,
+  source,
+  target,
+  value,
+  colours,
+  fontSize = 24,
+  fontFamily = "Calibri",
+  nodeWidth = 20,
+  nodePadding = 10,
+  margin = list(left = 0, right = 400),
+  width = 1200,
+  height = 800
+)
 }
 \arguments{
 \item{data}{A data frame containing flow data and percentages. This parameter is required.}
@@ -13,10 +26,24 @@ plot_sankey(data, source, target, value, colours)
 
 \item{target}{To variable. This parameter is required.}
 
-\item{value}{Percentage flowing between source and target. This parameter is required.}
+\item{value}{Percentage/Value flowing between source and target. This parameter is required.}
 
 \item{colours}{List of colours in d3.js format (requires single quotation marks around internal hex codes in
 double quotation marks. This variable is required.}
+
+\item{fontSize}{Default = 24}
+
+\item{fontFamily}{Default = "Calabri"}
+
+\item{nodeWidth}{Default = 20}
+
+\item{nodePadding}{Default = 10}
+
+\item{margin}{Default = list("left"=0, "right"=400)}
+
+\item{width}{Default = 1200}
+
+\item{height}{Default = 800}
 }
 \value{
 sankey plot

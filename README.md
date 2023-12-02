@@ -151,7 +151,7 @@ df <- crosstab(dataset,
 # 10    Don’t Know   Male   46.30  1.86
 ```
 <div align="left">
-  <img src="man/figures/crosstab_plot.png" width="60%" />
+  <img src="man/figures/crosstab_plot.png" width="100%" />
 </div>
 
 ``` r
@@ -248,7 +248,7 @@ plot_popn(dataset,
           age_int = "age")
 ```
 <div align="left">
-  <img src="man/figures/popn_plot1.png" width="60%" />
+  <img src="man/figures/popn_plot1.png" width="100%" />
 </div>
 
 A group comparator option will be added in the future to provide a way to visually compare groups against the
@@ -282,7 +282,7 @@ plot_bigfive(dataset,
              big_five = c("Neuroticism", "Extroversion", "Openness", "Agreeableness", "Conscientiousness"))
 ```
 <div align="left">
-  <img src="man/figures/bigfive_plot1.png" width="60%" />
+  <img src="man/figures/bigfive_plot1.png" width="100%" />
 </div>
 
 ``` r 
@@ -293,7 +293,7 @@ plot_bigfive(dataset,
              weight = "wgtvar")
 ```
 <div align="left">
-  <img src="man/figures/bigfive_plot2.png" width="60%" />
+  <img src="man/figures/bigfive_plot2.png" width="100%" />
 </div>
 
 **Binary Plot**
@@ -325,26 +325,62 @@ The `plot_sankey` function returns a [d3.js](https://d3js.org/)
 sankey chart to help visualise the flow of data.
 
 ``` r
-# Prepare survey data
-split <- grp_freq(data = df,
-                  group = c("Q1a","Q1c"),
-                  weight = "wgtvar",
-                  set_names = c("Party_Vote","Candidate_Vote","Votes")) %>%
-         mutate(Votes = Votes/sum(Votes))
-#           Party_Vote    Candidate_Vote        Votes
-# 1       Labour Party      Labour Party 0.1036125880
-# 2     National Party      Labour Party 0.1040036893
-# 3        Green Party      Labour Party 0.0320547032
+# Libraries
+library(tidyverse)
+
+# =====================================#
+# Upload split voting data
+df <- scgElectionsNZ::get_data("split_total")
+
+# Prepare Sankey Data
+df <- df %>%
+  filter(Year==2023) %>% # get 2023 election data only
+  # combine unsuccessful minor parties into "Other" category
+  mutate(List_Party = ifelse(
+    List_Party %in% c("Labour Party","ACT Party","Maori Party","Green Party","National Party","NZ First","Informal"),
+    List_Party, "Other"
+  )) %>%
+  mutate(Electorate_Party = ifelse(
+    Electorate_Party %in%
+      c("Labour Party","ACT Party","Maori Party","Green Party","National Party","NZ First","Informal"),
+    Electorate_Party, "Other"
+  )) %>%
+  group_by(List_Party, Electorate_Party) %>%
+  summarise(Vote = sum(Votes)) %>%
+  ungroup()
+
+# A tibble: 64 x 3
+#   List_Party  Electorate_Party    Vote
+#   <chr>       <chr>              <dbl>
+# 1 ACT Party   ACT Party         68692.
+# 2 ACT Party   Green Party        2095.
+# ...
+  
+# =====================================#
+# Look up colours
+colour_pal("polNZ")
+# $`ACT Party`
+# [1] "#ffd006"
+# $`Green Party`
+# [1] "#45ba52"
 # ...
 
-# Create sankey
-plot_sankey(data = split,
-            source = "Party_Vote",
-            target = "Candidate_Vote",
-            value = "Votes",
-            colours = '"#d62f24","#378cc5","#4fbe57","#fee043","#9b0d0c",
-                       "#3e3e3f","#e69138ff","#b7b7b7ff","#cdcdd1","#cdcdd1"')
+# Create Sankey
+plot_sankey(
+  data = df,
+  source = "Electorate_Party", # left side of sankey
+  target = "List_Party", # right side of sankey
+  value = "Vote",
+  colours = '"#ffd006","#45ba52","#d5cdb9","#D82A20","#B2001A","#000000","#00529F","#cdcdd1"',
+  fontSize = 20, # reduce font size from default
+  width = 1600 # increase width form default
+) %>%
+  # save from viewer to html
+  htmlwidgets::saveWidget(file="sankey_2023.html", selfcontained = TRUE)
 ```
+<div align="left">
+  <img src="man/figures/sankey_plot.png" width="100%" />
+</div>
 
 
 ## Guidelines & Styles
