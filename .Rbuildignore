@@ -2,3 +2,4 @@
 ^LICENSE\.md$        # Full text of the license
 ^data-raw$           # Code used to create data included in the package
 ^cran-comments\.md$
+^README\.md$

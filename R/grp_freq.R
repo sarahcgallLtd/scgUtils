@@ -59,15 +59,15 @@ grp_freq <- function(data, group, weight, set_names) {
    }
 
   if (missing(weight)) {
-    df <- stats::aggregate(grp[[1]], by=grp, FUN=length)
+    df <- stats::aggregate(grp[[1]], by=unlist(grp,recursive=FALSE), FUN=length)
   } else {
-    df <- stats::aggregate(data[,weight], by=grp, FUN=sum)
+    df <- stats::aggregate(data[,weight], by=unlist(grp,recursive=FALSE), FUN=sum)
   }
 
   if (!missing(set_names)) {
     df <- stats::setNames(df, set_names)
   } else {
-    names(df)[names(df) == "x"] <- "Freq"
+    df <- stats::setNames(df, c(group,"Freq"))
   }
 
   return(df)

@@ -31,7 +31,7 @@ plot_bigfive <- function(data,
       if (!missing(weight)) {
         df1 <- data.frame(Mean = stats::weighted.mean(data[,i], data[,weight]))
       } else {
-        df1 <- data.frame(Mean = mean(data[,i]))
+        df1 <- data.frame(Mean = sum(data[,i])/nrow(data[,i]))
       }
       df1$Metric <- i
       df <- rbind(df, df1)

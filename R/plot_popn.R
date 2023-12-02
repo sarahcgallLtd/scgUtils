@@ -6,6 +6,8 @@
 #' @param data A data frame containing survey data. This parameter is required.
 #' @param age_groups Age group variable. This parameter is required.
 #' @param gender Gender variable. This parameter is required.
+#' @param XX Name of female variable. Default = "Female".
+#' @param XY Name of male varirable. Default = "Male".
 #' @param group A variable overlay to compare between groups. This parameter is optional.
 #' @param weight Variable containing weight factors. This variable is optional.
 #' @param age_int Actual age vraiable (numeric) to view average age.
@@ -27,6 +29,8 @@ plot_popn <- function(data,
                       age_groups,
                       gender,
                       group,
+                      XX = "Female",
+                      XY = "Male",
                       weight,
                       age_int
                       # format=c("survey","aggregated")
@@ -34,8 +38,8 @@ plot_popn <- function(data,
   # ====== 1. CHECK DATA & ARGUMENTS ======== #
   # format <- match.arg(format)
 
-  if (!"Male" %in% data[,gender] && !"Female" %in% data[,gender])
-    stop("Gender column must include 'Male' and 'Female' levels only.")
+  # if (!"Male" %in% data[,gender] && !"Female" %in% data[,gender])
+  #   stop("Gender column must include 'Male' and 'Female' levels only.")
 
   # =========== 2. GET VARIABLES ============ #
   agg <- match.call(expand.dots = FALSE)
@@ -56,8 +60,11 @@ plot_popn <- function(data,
     sta[["var"]] <- age_int
     sta[["group"]] <- gender
     stats <- eval(sta, parent.frame())
-    f_label <- paste0("Female\n", "Average Age = ", round(stats[stats[,"gender"] == "Female","Mean"],1))
-    m_label <- paste0("Male\n", "Average Age = ", round(stats[stats[,"gender"] == "Male","Mean"],1))
+    f_label <- paste0("Female\n", "Average Age = ", round(stats[stats[,"gender"] == XX,"Mean"],1), "\n")
+    m_label <- paste0("Male\n", "Average Age = ", round(stats[stats[,"gender"] == XY,"Mean"],1), "\n")
+  } else {
+    f_label <- "Female"
+    m_label <- "Male"
   }
 
   if (!missing(group)) {
@@ -80,28 +87,25 @@ plot_popn <- function(data,
   }
 
   # X AXIS
+  axis.mar <- 0
   if (x.max <= 5) {
-    axis.mar <- 0.25
     x.lim <- c(-5 - axis.mar, 5 + axis.mar)
     x.br <- c(c(-5, -4, -3, -2, -1, 0) - axis.mar, c(0, 1, 2, 3, 4, 5) + axis.mar)
-    x.lbl <- c("5%", "4%", "3%", "2%", "1%", "0%", "0%", "1%", "2%", "3%", "4%", "5%")
+    x.lbl <- c("5%", "4%", "3%", "2%", "1%", "", "0%", "1%", "2%", "3%", "4%", "5%")
     x.max <- 5
   } else if (x.max > 5 && x.max <= 10) {
-    axis.mar <- 1
     x.lim <- c(-10 - axis.mar,10 + axis.mar)
     x.br <- c(c(-10, -7.5, -5, -2.5, 0) - axis.mar, c(0, 2.5, 5, 7.5, 10) + axis.mar)
-    x.lbl <- c("10%", "7.5%", "5%", "2.5%", "0%", "0%", "2.5%", "5%", "7.5%", "10%")
+    x.lbl <- c("10%", "7.5%", "5%", "2.5%", "0%", "", "2.5%", "5%", "7.5%", "10%")
     x.max <- 10
   } else if (x.max > 10 && x.max <= 15) {
-    axis.mar <- 0.25
     x.lim <- c(-15 - axis.mar,15 + axis.mar)
     x.br <- c(c(-15, -12.5, -10, -7.5, -5, -2.5, 0) - axis.mar, c(0, 2.5, 5, 7.5, 10, 12.5, 15) + axis.mar)
-    x.lbl <- c("15%", "12.5%", "10%", "7.5%", "5%", "2.5%", "0%", "0%", "2.5%", "5%", "7.5%", "10%", "12.5%", "15%")
+    x.lbl <- c("15%", "12.5%", "10%", "7.5%", "5%", "2.5%", "", "0%", "2.5%", "5%", "7.5%", "10%", "12.5%", "15%")
     x.max <- 15
   } else if (x.max > 15) {
-    axis.mar <- 1
     x.br <- c(c(-30, -25, -20, -15, -10, -5, 0) - axis.mar, c(0, 5, 10, 15, 20, 25, 30) + axis.mar)
-    x.lbl <- c("30%", "25%", "20%", "15%", "10%", "5%", "0%", "0%", "5%", "10%", "15%", "20%", "25%", "30%")
+    x.lbl <- c("30%", "25%", "20%", "15%", "10%", "5%", "", "0%", "5%", "10%", "15%", "20%", "25%", "30%")
     if (x.max <= 20) {
       x.lim <- c(-20 - axis.mar,20 + axis.mar)
       x.max <- 20
@@ -194,17 +198,17 @@ plot_popn <- function(data,
                                length = unit(7.5,'pt'),
                                ends = "first")) +
     # LABELS
-    geom_label(aes(x = 0,
+    geom_text(aes(x = 0,
                    y = !! rlang::ensym(age_groups),
                    label = !! rlang::ensym(age_groups)),
                inherit.aes = FALSE,
                size = 3.5,
-               label.padding = unit(0.0, "lines"),
-               label.size = 0,
-               label.r = unit(0.0, "lines"),
-               fill = "white",
+               # label.padding = unit(0.0, "lines"),
+               # label.size = 0,
+               # label.r = unit(0.0, "lines"),
+               # fill = "white",
                alpha = 0.9,
-               colour = text.col) +
+               colour = "white") +
     labs(title="Population Structure", x="", y="") +
     scale_colour_manual(values=colours) +
     scale_x_continuous(expand = c(0,0),
@@ -223,17 +227,19 @@ plot_popn <- function(data,
       axis.text.y = element_blank(),
     )
 
-  if (!missing(age_int) && missing(group)) {
+  if (missing(group)) {
     p <- p + annotate("text",
-                      x=x.max-1,
-                      y=y.max,
+                      x=1,
+                      y=y.max+.5,
                       label=f_label,
+                      hjust = 0,
                       fontface = "bold",
                       colour = colour_pal("Lilac")) +
       annotate("text",
-               x=-x.max+1,
-               y=y.max,
+               x=-1,
+               y=y.max+.5,
                label=m_label,
+               hjust = 1,
                fontface = "bold",
                colour = colour_pal("Steel Blue"))
   }

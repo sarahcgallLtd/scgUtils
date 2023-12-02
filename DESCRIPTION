@@ -1,6 +1,6 @@
 Package: scgUtils
 Title: Utility Functions for Sarah C Gall Ltd
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: 
     person("Sarah", "Gall", , "contact@sarahcgall.co.uk", role = c("aut", "cre"))
 Description: This package contains the utility functions for Sarah C Gall Ltd.

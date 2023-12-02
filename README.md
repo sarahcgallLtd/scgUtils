@@ -107,8 +107,7 @@ vars <- list(Q1a = "Art",
 grid_vars(dataset,
             vars = vars,
             group = "gender",
-            weight = "wgtvar",
-            return_var = "Yes")
+            weight = "wgtvar")
 #      Question Response gender     Freq Perc
 #           Art      Yes   Male 275.3617   46
 #   Automobiles      Yes   Male 320.1372   53
@@ -116,6 +115,9 @@ grid_vars(dataset,
 #           Art      Yes Female 204.7525   48
 #   Automobiles      Yes Female 212.0209   49
 #  Birdwatching      Yes Female 203.9380   47
+# ...
+
+# NB. To see as a plot, see "Binary Plot" below.
 ```
 
 <br>
@@ -135,20 +137,24 @@ df <- crosstab(dataset,
                totals = FALSE, # turn off totals (DEFAULT = TRUE)
                round_decimal=2) # set number of decimal points for values
 
-#  [1] Q1 x Gender: Chisq = 21.382 | DF = 4 | Cramer's V = 0.073 | p-value = 0.000
-#                   Q1 Gender   Freq  Perc
-# 1        Very likely   Male 322.10 67.15
-# 2    Somewhat likely   Male  73.33 15.29
-# 3    Not very likely   Male  18.42  3.84
-# 4  Not at all likely   Male  36.63  7.64
-# 5             Unsure   Male  29.18  6.08
-# 6        Very likely Female 293.38 57.37
-# 7    Somewhat likely Female 110.64 21.64
-# 8    Not very likely Female  36.56  7.15
-# 9  Not at all likely Female  23.14  4.53
-# 10            Unsure Female  47.63  9.32
+# [1] Q1 x Gender: Chisq = 30.45 | DF = 4 | Cramer's V = 0.039 | p-value = 0
+#               Q1 Gender    Freq  Perc
+# 1    Very Likely Female 1971.54 75.52
+# 2         Likely Female  446.31 17.10
+# 3       Unlikely Female   47.22  1.81
+# 4  Very Unlikely Female   51.72  1.98
+# 5     Don’t Know Female   93.88  3.60
+# 6    Very Likely   Male 1793.60 72.23
+# 7         Likely   Male  540.24 21.75
+# 8       Unlikely   Male   48.21  1.94
+# 9  Very Unlikely   Male   54.98  2.21
+# 10    Don’t Know   Male   46.30  1.86
+```
+<div align="left">
+  <img src="man/figures/crosstab_plot.png" width="60%" />
+</div>
 
-
+``` r
 # Wide format crosstab without weight variable and retained frequency data.
 df <- crosstab(dataset,
                row_var = "Q1",
@@ -160,14 +166,13 @@ df <- crosstab(dataset,
                convert_to = "frequency") # (DEFAULT = "percent")
 
 # A tibble: 5 x 4
-#   Q1                Total  Male Female
-#   <fct>             <dbl> <dbl>  <dbl>
-# 1 Very likely         628   316    312
-# 2 Somewhat likely     185    69    116
-# 3 Not very likely      57    18     39
-# 4 Not at all likely    53    24     29
-# 5 Unsure               68    19     49
-
+#   Q1            Total Female  Male
+#   <fct>         <dbl>  <dbl> <dbl>
+# 1 Very Likely    4009   2319  1690
+# 2 Likely          854    436   418
+# 3 Unlikely         75     37    38
+# 4 Very Unlikely    68     35    33
+# 5 Don’t Know       88     70    18
 ```
 
 The `compile` function iterates through all the available variable and grouping options that you want
@@ -242,8 +247,23 @@ plot_popn(dataset,
           weight = "wgtvar",
           age_int = "age")
 ```
+<div align="left">
+  <img src="man/figures/popn_plot1.png" width="60%" />
+</div>
+
 A group comparator option will be added in the future to provide a way to visually compare groups against the
 average.
+
+``` r
+plot_popn(dataset,
+          age_group = "age_categories",
+          gender = "gender",
+          weight = "wgtvar",
+          group = "housing_categories")
+```
+<div align="left">
+  <img src="man/figures/popn_plot2.png" width="100%" />
+</div>
 
 **Personality Plot**
 
@@ -260,13 +280,21 @@ survey.
 # Create single plot using unweighted data
 plot_bigfive(dataset,
              big_five = c("Neuroticism", "Extroversion", "Openness", "Agreeableness", "Conscientiousness"))
-             
+```
+<div align="left">
+  <img src="man/figures/bigfive_plot1.png" width="60%" />
+</div>
+
+``` r 
 # Create faceted plot using age groups and weighted data
 plot_bigfive(dataset,
              big_five = c("Neuroticism", "Extroversion", "Openness", "Agreeableness", "Conscientiousness"),
-             group = "age_categories",
+             group = "Gender",
              weight = "wgtvar")
 ```
+<div align="left">
+  <img src="man/figures/bigfive_plot2.png" width="60%" />
+</div>
 
 **Binary Plot**
 
@@ -278,7 +306,8 @@ information.
 # Create list
 vars <- list(Q1a = "Art",
              Q1b = "Automobiles",
-             Q1c = "Birdwatching")
+             Q1c = "Birdwatching"
+             ...)
 # Create plot             
 plot_binary(dataset,
             vars = vars,
@@ -286,6 +315,9 @@ plot_binary(dataset,
             weight = "wgtvar",
             return_var = "Yes")
 ```
+<div align="left">
+  <img src="man/figures/binary_plot.png" width="100%" />
+</div>
 
 **Sankey Plot**
 
@@ -385,17 +417,37 @@ colours to your own levels.
 # VISUALISE AVAILABLE COLOURS
 # View all individual colours
 colour_display(palette = "All")
+```
+<div align="left">
+  <img src="man/figures/colour_display_all.png" width="60%" />
+</div>
 
+``` r
 # View individual colour
 colour_display(palette = "Jaffa")
+```
+<div align="left">
+  <img src="man/figures/colour_display_jaffa.png" width="60%" />
+</div>
 
+``` r
 # View full pallette
 colour_display(palette = "polUK")
+```
+<div align="left">
+  <img src="man/figures/colour_display_polUK.png" width="60%" />
+</div>
 
+``` r
 # View sequential colour palette with 7 levels
 colour_display(palette = "seqGreen", 
                n = 7)
+```
+<div align="left">
+  <img src="man/figures/colour_display_seqGreen.png" width="60%" />
+</div>
 
+``` r
 # View diverging colour palette with 5 levels with assigned values
 colour_display(palette = "divBlueGreen", 
                n = 5, 
@@ -405,6 +457,9 @@ colour_display(palette = "divBlueGreen",
                           "Unlikely",
                           "Very Unlikely"))
 ```
+<div align="left">
+  <img src="man/figures/colour_display_divBlueGreen.png" width="60%" />
+</div>
 
 The `colour_pal` function returns a single hex code, a vector of colours (discrete or
 continuous) or a list of colours to assign levels within your dataset. This can be utilised
@@ -413,10 +468,32 @@ within ggplot2.
 # RETURN COLOURS
 Return individual colour
 colour_pal(pal_name = "Jaffa")
+# [1] "#e78e47"
 
 # Return full palette vector
 colour_pal(pal_name = "catExtended")
+# [1] "#478c5b" "#374e8e" "#df7c18" "#ac004f" "#4fbbae" "#ce4631" "#006d64" "#1b87aa" "#e3b13e" "#ae49a2" "#383751" "#704600" "#93a345" "#7e7e8f"
+#[15] "#d5cdb9" "#a07bde" "#8aabfd" "#a08962"
+
+# Return political colour palette
 colour_pal(pal_name = "polAus") # returns assigned list
+# $`Labor Party`
+# [1] "#de2b33"
+
+# $Coalition
+# [1] "#1c4f9c"
+
+# $Greens
+# [1] "#039d3a"
+
+# $`One Nation`
+# [1] "#ff6c00"
+
+# $`United Australia Party`
+# [1] "#feed01"
+
+# $Other
+# [1] "#cdcdd1"
 
 # Return palette with 5 colours and assigned levels for each colour
 colour_pal(pal_name = "divBlueGreen", 
@@ -426,6 +503,20 @@ colour_pal(pal_name = "divBlueGreen",
                       "Neutral",
                       "Unlikely",
                       "Very Unlikely"))
+# $`Very Likely`
+# [1] "#1b87aa"
+
+# $Likely
+# [1] "#70a9c1"
+
+# $Neutral
+# [1] "#c7c7c7"
+
+# $Unlikely
+# [1] "#acb58a"
+
+# $`Very Unlikely`
+# [1] "#93a345"
 
 # USING IN ggplot2
 ggplot(data=df, 
@@ -434,7 +525,6 @@ ggplot(data=df,
    scale_fill_manual(values = colour_pal("catSimplified")) +
    theme_minimal() +
    theme(axis.line = element_line(colour=colour_pal("French Grey"))
-
 ```
 
 

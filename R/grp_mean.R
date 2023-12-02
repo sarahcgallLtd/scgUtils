@@ -27,15 +27,15 @@
 #' }
 #' @export
 grp_mean <- function(data, var, group, weight, set_names) {
-  grp <- list(data[,group])
+  grp <- list(group=data[,group])
 
   if (missing(weight)) {
     df <- stats::aggregate(data[,var],
-                    by=grp,
+                    by=grp$group,
                     FUN=mean)
   } else {
     df <- by(data[c(var, weight)],
-             grp,
+             grp$group,
              FUN = function(x) stats::weighted.mean(x[,1], x[,2]))
     df <- data.frame(Col1 = rep(names(df), lengths(df)),
                      Col2 = c(unlist(df[[1]]),unlist(df[[2]])))
