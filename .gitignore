@@ -1,5 +1,6 @@
 .Rproj.user
 .Rhistory
+.idea
 .RData
 .*.Rnb.cached
 docs
