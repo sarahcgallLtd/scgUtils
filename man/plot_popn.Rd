@@ -4,7 +4,16 @@
 \alias{plot_popn}
 \title{Population Profile Plot}
 \usage{
-plot_popn(data, age_groups, gender, group, weight, age_int)
+plot_popn(
+  data,
+  age_groups,
+  gender,
+  group,
+  XX = "Female",
+  XY = "Male",
+  weight,
+  age_int
+)
 }
 \arguments{
 \item{data}{A data frame containing survey data. This parameter is required.}
@@ -14,6 +23,10 @@ plot_popn(data, age_groups, gender, group, weight, age_int)
 \item{gender}{Gender variable. This parameter is required.}
 
 \item{group}{A variable overlay to compare between groups. This parameter is optional.}
+
+\item{XX}{Name of female variable. Default = "Female".}
+
+\item{XY}{Name of male varirable. Default = "Male".}
 
 \item{weight}{Variable containing weight factors. This variable is optional.}
 
