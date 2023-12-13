@@ -577,6 +577,6 @@ tools to test if the palette is colour blind friendly.
 This package serves as a central hub for Sarah C Gall Ltd. Several additional 
 packages are now available which either complement or assist in project work. 
 Additional packages include:
-* `scgElectionsNZ`: a package which provides datasets of NZ general elections
+* [`scgElectionsNZ`](https://github.com/sarahcgall/scgElectionsNZ): a package which provides datasets of NZ general elections
 * `scgElectionsAUS`: TBC
 * `scgElectionsUK`: TBC
