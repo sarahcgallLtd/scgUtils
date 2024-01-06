@@ -1,0 +1,149 @@
+---
+title: "Guidelines & Styles"
+---
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+```{r setup, eval=TRUE, include = FALSE}
+library(scgUtils)
+```
+The colours and layouts are guides only and are not rigid rules. They aim to provide consistency across all dataviz design and aid in the decision-making process.
+
+### Chart layout
+The layout for charts aims to place the emphasis on the data by making reducing any excess clutter. This includes choosing lighter shades of grey for axes, grid lines, and texts, and removing any borders.
+
+The `theme_scg` function is a [ggplot2](https://ggplot2.tidyverse.org/reference/theme.html) theme to assist with achieving this goal. Individual charts can easily be customised by adding `+ theme()` at the end to amend. The base size of the font and font family can also be amended.
+
+```{r theme_scg}
+# USING THE SCG PLOT THEME
+ggplot(data=df, aes(x = x, y= y, fill=reorder(group, y))) +
+   geom_bar(stat="identity",
+            width=0.8,
+            position = position_dodge(width=0.9)) +
+   scale_fill_manual(values=colour_pal("catExtended")) +
+   labs(title = "Title",
+        x= "x",
+        y= "",
+        fill = "y") +
+   theme_scg()
+
+# Make customisations to the theme:
+ggplot(data=df, aes(x = x, y= y, fill=reorder(group, y))) +
+   geom_bar(stat="identity") +
+   scale_fill_manual(values=colour_pal("catSimplified")) +
+   labs(title = "Title",
+        x= "x",
+        y= "",
+        fill = "y") +
+   theme_scg(base_size = 12, base_font = "Roboto") +
+   theme(panel.grid.major.x = element_blank()) # turn off x axis grid lines
+```
+<br>
+
+### Colours
+
+Colours will be amended in the future. In the meantime, colours and colour palettes
+are divided into the following categories:
+
+* *Individual:* individual colour hex codes
+  * see `colour_display("All")` for all available colours
+* *Political:* colours that correspond to official party colours
+  * `polAus`
+  * `polUK`
+  * `polNZ`
+* *Categorical:* colours for representing nominal or categorical
+  * `catSimplified`
+  * `catExtended`
+* *Sequential:* scale of colours for ordered data that progresses from low to high (single hue)
+  * `seqGreen`
+  * `seqBlue`
+  * `seqRed`
+* *Diverging:* scale of colours for representing two extremes at the low and high end of the data (multi-hue)
+  * `divRedBlue`
+  * `divBlueGreen`
+
+
+The `colour_display` function provides a way of visualising and testing colours before using them in graphs. All of the above options can be tested, including the ability to test assigning colours to your own levels.
+
+**View all individual colours**
+```{r colour_display_all, eval=TRUE}
+colour_display(palette = "All")
+```
+
+**View individual colour**
+```{r colour_display_jaffa, eval=TRUE}
+colour_display(palette = "Jaffa")
+```
+
+**View full palette**
+```{r colour_display_polUK, eval=TRUE}
+colour_display(palette = "polUK")
+```
+
+**View sequential colour palette with 7 levels**
+```{r colour_display_seqGreen, eval=TRUE}
+colour_display(palette = "seqGreen",
+               n = 7)
+```
+
+**View diverging colour palette with 5 levels with assigned values**
+```{r colour_display_divBlueGreen, eval=TRUE}
+colour_display(palette = "divBlueGreen",
+               n = 5,
+               assign = c("Very Likely",
+                          "Likely",
+                          "Neutral",
+                          "Unlikely",
+                          "Very Unlikely"))
+```
+
+The `colour_pal` function returns a single hex code, a vector of colours (discrete or continuous) or a list of colours to assign levels within your dataset. This can be utilised within ggplot2.
+
+**Return individual colour**
+```{r colour_pal_jaffa, eval=TRUE}
+colour_pal(pal_name = "Jaffa")
+```
+
+**Return full palette vector**
+```{r colour_pal_catExtended, eval=TRUE}
+colour_pal(pal_name = "catExtended")
+```
+
+**Return political colour palette**
+```{r colour_pal_polAus, eval=TRUE}
+colour_pal(pal_name = "polAus") # returns assigned list
+```
+
+**Return palette with 5 colours and assigned levels for each colour**
+```{r colour_pal_divBlueGreen, eval=TRUE}
+colour_pal(pal_name = "divBlueGreen",
+           n = 5,
+           assign = c("Very Likely",
+                      "Likely",
+                      "Neutral",
+                      "Unlikely",
+                      "Very Unlikely"))
+```
+
+**Using in ggplot2**
+```{r colour_pal_ggplot}
+ggplot(data=df,
+       aes(x=x, y=y, fill=group)) +
+   geom_bar(stat="identity") +
+   scale_fill_manual(values = colour_pal("catSimplified")) +
+   theme_minimal() +
+   theme(axis.line = element_line(colour=colour_pal("French Grey")))
+```
+<br>
+
+### Other resources
+The following contains a number of useful links to:
+
+* [Data Wrapper Colours for Data Viz Style Guide](https://blog.datawrapper.de/colors-for-data-vis-style-guides/): view other style guides and colours uses from companies such as the Economist, the FT, the NYT, EuroStat, etc.
+* [Adobe Colour Wheel](https://color.adobe.com/create/color-wheel) or [Viz Palette](https://projects.susielu.com/viz-palette): utilise accessibility
+tools to test if the palette is colour blind friendly.
+* [Chroma.js Color Palette Helper](https://www.vis4.net/palettes/): develop sequential or diverging colour scales

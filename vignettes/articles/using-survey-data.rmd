@@ -1,0 +1,145 @@
+---
+title: "Using Survey Data"
+---
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = TRUE
+)
+```
+
+This article aims to guide you through the process of uploading, processing, and exploring survey data.
+
+```{r setup, include = FALSE}
+library(scgUtils)
+```
+<br>
+
+### Step 1: Upload
+If you are using the sample dataset within this package, use the following:
+```{r upload_data}
+df <- scgElectionsNZ::get_data("survey")
+```
+
+<br>
+Alternatively, if you are uploading your own data, you can use the `haven` package to read an SPSS file in R.
+
+```{r upload_data_alternative, eval = FALSE}
+df <- haven::read_sav("your_survey_data.sav")
+```
+
+*Troubleshooting `read_sav()`:*
+NB if an error occurs which relates to encoding, try adding `encoding="latin1"`. Once you have uploaded the data, view which string is causing the error. This may have been caused by `NAs` which will require you to convert them from a string to `NA`.
+```{r upload_data_troubleshooting, eval = FALSE}
+df <- haven::read_sav("your_survey_data.sav", encoding="latin1")
+
+# Additional step to amend error across entire dataset (all columns)
+df[df == "__NA__"] <- NA
+```
+<br>
+
+### Step 2: View
+View the first 6 rows of the data file and the details of each column
+```{r view_data2, eval = FALSE}
+# NB first 3 variables shown only
+head(df[,1:3])
+# A tibble: 6 x 3
+#      id    wt turnoutUKGeneral
+#   <dbl> <dbl> <dbl+lbl>
+# 1     7 0.376 5 [Very likely that I would vote]
+# 2    14 0.553 5 [Very likely that I would vote]
+# 3    15 0.712 5 [Very likely that I would vote]
+# 4    18 0.440 4 [Fairly likely]
+# 5    19 0.361 5 [Very likely that I would vote]
+# 6    24 1.69  5 [Very likely that I would vote]
+
+str(df)
+# tibble [5,000 x 65] (S3: tbl_df/tbl/data.frame)
+#  $ id                  : num [1:5000] 7 14 15 18 19 24 30 39 44 46 ...
+#   ..- attr(*, "label")= chr "ID"
+#   ..- attr(*, "format.spss")= chr "F8.0"
+#  $ wt                  : num [1:5000] 0.376 0.553 0.712 0.44 0.361 ...
+#   ..- attr(*, "label")= chr "New Weight Wave 25"
+#   ..- attr(*, "format.spss")= chr "F12.2"
+#  $ turnoutUKGeneral    : dbl+lbl [1:5000]    5,    5,    5,    4,    5,    5,
+#  5,    5,    5,...
+#    ..@ label      : chr "Likelihood to vote in general election"
+#    ..@ format.spss: chr "F31.0"
+#    ..@ labels     : Named num [1:6] 1 2 3 4 5 ...
+#    .. ..- attr(*, "names")= chr [1:6] "Very unlikely that I would vote"
+#    "Fairly unlikely" "Neither likely nor unlikely" "Fairly likely" ...
+# ...
+```
+<br>
+
+You can also view the original questionnaire and values easily by using the `sjPlot` package.
+```{r view_data1, eval = FALSE}
+# NB first 10 variables shown only
+sjPlot::view_df(df[,1:10])
+```
+````{=html}
+<iframe width="100%" height="850"
+  src="img/questionnaire.html"
+  frameborder="0"
+  allowfullscreen></iframe>
+````
+<br>
+
+### Step 3: Clean
+To add the labels to the variables, use the `labelled` package.
+```{r clean_data1}
+df <- labelled::unlabelled(df)
+```
+
+The variables have now been labelled and converted into factors:
+```{r clean_data2, eval = FALSE}
+# NB first 3 variables shown only
+head(df[,1:3])
+# A tibble: 6 x 3
+#      id    wt turnoutUKGeneral
+#   <dbl> <dbl> <fct>
+# 1     7 0.376 Very likely that I would vote
+# 2    14 0.553 Very likely that I would vote
+# 3    15 0.712 Very likely that I would vote
+# 4    18 0.440 Fairly likely
+# 5    19 0.361 Very likely that I would vote
+# 6    24 1.69  Very likely that I would vote
+
+# Check the class of each variable
+lapply(df,class)
+# $id
+# [1] "numeric"
+#
+# $wt
+# [1] "numeric"
+#
+# $turnoutUKGeneral
+# [1] "factor"
+# ...
+
+# OR
+str(df)
+# tibble [5,000 x 65] (S3: tbl_df/tbl/data.frame)
+#  $ id                  : num [1:5000] 7 14 15 18 19 24 30 39 44 46 ...
+#   ..- attr(*, "label")= chr "ID"
+#   ..- attr(*, "format.spss")= chr "F8.0"
+#  $ wt                  : num [1:5000] 0.376 0.553 0.712 0.44 0.361 ...
+#   ..- attr(*, "label")= chr "New Weight Wave 25"
+#   ..- attr(*, "format.spss")= chr "F12.2"
+#  $ turnoutUKGeneral    : Factor w/ 6 levels "Very unlikely that I would vote",..: 5 5 5 4 5 5 5 5 5 5 ...
+#   ..- attr(*, "label")= chr "Likelihood to vote in general election"
+# ...
+```
+<br>
+
+### Step 4: Explore
+To view the population profile of the respondents,
+```{r popn_plot}
+plot_popn(data=df,
+          age_groups="ageGroup",
+          gender="gender",
+          weight="wt",
+          age_int="age"
+)
+```

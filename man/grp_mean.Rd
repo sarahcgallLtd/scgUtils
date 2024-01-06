@@ -26,7 +26,7 @@ Calculates the mean of a variable by a group in survey data.
 \examples{
 \dontrun{
 # Return a averages of a variable by group (weighted or unweighted)
-df <- grp_mean(dataset,
+tmp <- grp_mean(dataset,
                var = "age",
                group = "gender",
                weight = "wgtvar")

@@ -4,10 +4,12 @@
 #' @description Visualise the flow of data with a sankey.
 #'
 #' @param data A data frame containing flow data and percentages. This parameter is required.
-#' @param source From variable. This parameter is required.
-#' @param target To variable. This parameter is required.
+#' @param source From variable (left side of sankey). This parameter is required.
+#' @param target To variable (right side of sankey). This parameter is required.
 #' @param value Percentage/Value flowing between source and target. This parameter is required.
-#' @param colours List of colours in d3.js format (requires single quotation marks around internal hex codes in
+#' @param units Unit of value to display in tooltip (requires single quotation marks around double
+#'   quotations). Default = '""'
+#' @param colours List of colours in d3.js format (requires single quotation marks around internal hex codes)
 #' double quotation marks. This variable is required.
 #' @param fontSize Default = 24
 #' @param fontFamily Default = "Calabri"
@@ -16,6 +18,8 @@
 #' @param margin Default = list("left"=0, "right"=400)
 #' @param width Default = 1200
 #' @param height Default = 800
+#' @param shiftLabel the default will automatically place labels to outside of the sankey, however if there
+#'   are unequal numbers of labels, enter in a numeric value to control which labels shift from inside to out.
 #'
 #' @return sankey plot
 #'
@@ -46,14 +50,16 @@ plot_sankey <- function(data,
                         source,
                         target,
                         value,
+                        units="",
                         colours,
-                        fontSize=24,
+                        fontSize=20,
                         fontFamily="Calibri",
                         nodeWidth=20,
                         nodePadding=10,
-                        margin=list("left"=0, "right"=400),
+                        margin=list("left"=0, "right"=0),
                         width=1200,
-                        height=800
+                        height=800,
+                        shiftLabel=NA
 ) {
   links <- data[,c(source,target,value)]
   links <- stats::setNames(links, c("source","target","value"))
@@ -69,9 +75,31 @@ plot_sankey <- function(data,
   nodes$group <- as.factor(nodes$name)
   links <- as.data.frame(links)
 
-  colourScale <- paste0('d3.scaleOrdinal() .range([',colours, '])')
-  left <- as.character(nrow(nodes)/2)
+  # ==============================================================#
+  # d3 Preparations
 
+  # Get colour scale
+  colourScale <- paste0('d3.scaleOrdinal() .range([',colours, '])')
+
+  # Get number of nodes to shift labels to the outside of the sankey
+  if(is.na(shiftLabel)==TRUE){
+    left <- as.character(nrow(nodes)/2)
+  } else{
+    # check parameter:
+    if(!class(shiftLabel) %in% c("integer", "numeric")){
+      stop("shiftLabel must be a numeric value only")
+    }
+    left <- shiftLabel
+  }
+
+  # Get total number of values column
+  total <- sum(links$value)
+
+  # Get units
+ #test <-
+
+  # ============================================================== #
+  # Create Sankey
   sankey <- networkD3::sankeyNetwork(Links = links,
                                      Nodes = nodes,
                                      Source = "IDsource",
@@ -96,7 +124,8 @@ plot_sankey <- function(data,
       function(el,x){
 
       // move source node text (Previous Action) to the left
-      d3.select(el)
+      d3
+      .select(el)
       .selectAll(".node text")
       .filter(function(d,i) { return i < ',left,'; })
       .attr("x", x.options.nodeWidth - 30)
@@ -123,7 +152,32 @@ plot_sankey <- function(data,
       d3
       .selectAll(".node text")
       .style("fill", function(d) { return(d) });
-      }
-      ')
+
+      // change node tooltip
+      let total = d3.sum([',total,'])
+      var percent = d3.format(".2%")
+      var units = [',units,']
+
+      d3
+      .selectAll(".node")
+      .select("title foreignObject body pre")
+      .text(function(d) { return d.name + ": " + "\\n" +
+       d3.format(",.0f")(d.value) + units + " (" +
+       percent(d.value/total) +
+       ")"; });
+
+       // change links tooltip
+      d3
+      .selectAll(".link")
+      .select("title foreignObject body pre")
+      .text(function(d) { return d.source.name + " \u2192 " + d.target.name + "\\n" +
+      d3.format(",.0f")(d.value) + units; });
+
+      // have control over link colour
+
+
+
+
+      }')
     )
 }

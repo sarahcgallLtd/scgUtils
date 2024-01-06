@@ -14,7 +14,7 @@
 #' @examples
 #' \dontrun{
 #' # Return a averages of a variable by group (weighted or unweighted)
-#' df <- grp_mean(dataset,
+#' tmp <- grp_mean(dataset,
 #'                var = "age",
 #'                group = "gender",
 #'                weight = "wgtvar")
@@ -26,26 +26,38 @@
 #' # NB for non-grouped averages, use mean(var) or weighted.mean(var, weight)
 #' }
 #' @export
-grp_mean <- function(data, var, group, weight, set_names) {
-  grp <- list(group=data[,group])
+grp_mean <- function(data,
+                     var,
+                     group,
+                     weight,
+                     set_names
+) {
+  # ==============================================================#
+  # PREPARE DATA
+  grp <- list(group = data[, group])
 
+  # ==============================================================#
+  # CALCULATE MEAN
   if (missing(weight)) {
-    df <- stats::aggregate(data[,var],
-                    by=grp$group,
-                    FUN=mean)
+    tmp <- stats::aggregate(data[, var],
+                           by = grp$group,
+                           FUN = mean)
   } else {
-    df <- by(data[c(var, weight)],
+    tmp <- by(data[c(var, weight)],
              grp$group,
-             FUN = function(x) stats::weighted.mean(x[,1], x[,2]))
-    df <- data.frame(Col1 = rep(names(df), lengths(df)),
-                     Col2 = c(unlist(df[[1]]),unlist(df[[2]])))
+             FUN = function(x) stats::weighted.mean(x[, 1], x[, 2]))
+    tmp <- data.frame(Col1 = rep(names(tmp), lengths(tmp)),
+                     Col2 = c(unlist(tmp[[1]]), unlist(tmp[[2]])))
   }
 
+  # ==============================================================#
+  # SET COLUMN NAMES
   if (!missing(set_names)) {
-    df <- stats::setNames(df, set_names)
+    tmp <- stats::setNames(tmp, set_names)
   } else {
-    df <- stats::setNames(df, c(group, "Mean"))
+    tmp <- stats::setNames(tmp, c(group, "Mean"))
   }
 
-  return(df)
+  # ==============================================================#
+  return(tmp)
 }

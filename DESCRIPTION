@@ -1,12 +1,15 @@
 Package: scgUtils
-Title: Utility Functions for Sarah C Gall Ltd
+Title: Utility functions for Sarah C Gall Ltd and associated packages
 Version: 0.0.1
 Authors@R: 
     person("Sarah", "Gall", , "contact@sarahcgall.co.uk", role = c("aut", "cre"))
-Description: This package contains the utility functions for Sarah C Gall Ltd.
+Description: scgUtils contains the utility functions for Sarah C Gall Ltd
+    and the associated packages. It is primarily used for analysing polling
+    results and making it easy to quickly review surveys with cross-tabs and
+    data visualisations.
 License: MIT + file LICENSE
 URL: https://sarahcgall.r-lib.org/, https://github.com/r-lib/sarahcgall
-BugReports: https://github.com/r-lib/sarahcgall/issues
+BugReports: https://github.com/sarahcgall/scgUtils/issues
 Imports:
     dplyr,
     stats,
@@ -25,3 +28,11 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends:
     R (>= 2.10)
+Suggests: 
+    knitr,
+    rmarkdown,
+    labelled,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+LazyData: true

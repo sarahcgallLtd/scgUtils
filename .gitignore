@@ -4,3 +4,4 @@
 .RData
 .*.Rnb.cached
 docs
+inst/doc

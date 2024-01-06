@@ -9,9 +9,9 @@ grid_vars(data, vars, group, weight)
 \arguments{
 \item{data}{A data frame containing survey data. This parameter is required.}
 
-\item{vars}{A list of column names and the renamed variable. This parameter is required.}
+\item{vars}{A list of column names and the renamed variable. This parameter is required and permits multiple variables.}
 
-\item{group}{A variable overlay to compare between groups. This parameter is optional.}
+\item{group}{A variable overlay to compare between groups. This parameter is optional and only permits one group.}
 
 \item{weight}{Variable containing weight factors. This variable is optional.}
 }

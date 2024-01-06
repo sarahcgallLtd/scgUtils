@@ -9,26 +9,31 @@ plot_sankey(
   source,
   target,
   value,
+  units = "",
   colours,
-  fontSize = 24,
+  fontSize = 20,
   fontFamily = "Calibri",
   nodeWidth = 20,
   nodePadding = 10,
-  margin = list(left = 0, right = 400),
+  margin = list(left = 0, right = 0),
   width = 1200,
-  height = 800
+  height = 800,
+  shiftLabel = NA
 )
 }
 \arguments{
 \item{data}{A data frame containing flow data and percentages. This parameter is required.}
 
-\item{source}{From variable. This parameter is required.}
+\item{source}{From variable (left side of sankey). This parameter is required.}
 
-\item{target}{To variable. This parameter is required.}
+\item{target}{To variable (right side of sankey). This parameter is required.}
 
 \item{value}{Percentage/Value flowing between source and target. This parameter is required.}
 
-\item{colours}{List of colours in d3.js format (requires single quotation marks around internal hex codes in
+\item{units}{Unit of value to display in tooltip (requires single quotation marks around double
+quotations). Default = '""'}
+
+\item{colours}{List of colours in d3.js format (requires single quotation marks around internal hex codes)
 double quotation marks. This variable is required.}
 
 \item{fontSize}{Default = 24}
@@ -44,6 +49,9 @@ double quotation marks. This variable is required.}
 \item{width}{Default = 1200}
 
 \item{height}{Default = 800}
+
+\item{shiftLabel}{the default will automatically place labels to outside of the sankey, however if there
+are unequal numbers of labels, enter in a numeric value to control which labels shift from inside to out.}
 }
 \value{
 sankey plot

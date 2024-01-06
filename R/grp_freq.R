@@ -4,9 +4,12 @@
 #' @description Calculates the frequency of a variable by groups in survey data.
 #'
 #' @param data A data frame containing survey data. This parameter is required.
-#' @param group Vector of variables being grouped. This parameter is required.
+#' @param groups Vector of variables being grouped. This parameter is required and permits one or many variables.
 #' @param weight Variable containing weight factors. This variable is optional.
 #' @param set_names Vector of column names. This paramenter is optional.
+#' @param addPercent Get percent of frequency (Options: "no" or "yes"). This parameter is optional, defaulted to "No", and permits one or many variables.
+#' @param groupsPercent Vector of variables for percent of frequency. This parameter is optional and permits one or many variables.
+#' @param round_decimals Numeric value to round numeric data by x number of decimals places. Defaults does not round.
 #'
 #' @return A data frame containing frequencies by group
 #'
@@ -51,24 +54,62 @@
 #' # 12      65+ Female  30.90000
 #' }
 #' @export
-grp_freq <- function(data, group, weight, set_names) {
-   grp <- list()
-   for (x in group) {
-      y <- data[,x]
-      grp[[x]] <- y
-   }
+grp_freq <- function(data,
+                     groups,
+                     weight,
+                     set_names,
+                     addPercent=c("no", "yes"),
+                     groupsPercent,
+                     round_decimals=NULL
+) {
+  # ==============================================================#
+  # CHECK PARAMS
+  check_params(data=data,
+               groups=groups,
+               weight=weight,
+               set_names=set_names,
+               groupsPercent=groupsPercent)
 
+  # Take first option
+  addPercent <- match.arg(addPercent)
+
+  # ==============================================================#
+  # PREPARE DATA
+  # Ensure data is a data frame
+  data <- as.data.frame(data)
+
+  # make "group_by" a list
+  grp <- list_group(data, groups)
+
+  # ==============================================================#
+  # GET FREQUENCY
   if (missing(weight)) {
-    df <- stats::aggregate(grp[[1]], by=unlist(grp,recursive=FALSE), FUN=length)
+    tmp <- stats::aggregate(grp[[1]], by = grp, FUN = length)
   } else {
-    df <- stats::aggregate(data[,weight], by=unlist(grp,recursive=FALSE), FUN=sum)
+    tmp <- stats::aggregate(data[, weight], by = grp, FUN = sum)
   }
 
+  # ==============================================================#
+  # SET COLUMN NAMES
   if (!missing(set_names)) {
-    df <- stats::setNames(df, set_names)
+    tmp <- stats::setNames(tmp, set_names)
   } else {
-    df <- stats::setNames(df, c(group,"Freq"))
+    tmp <- stats::setNames(tmp, c(groups, "Freq"))
   }
 
-  return(df)
+  # ==============================================================#
+  # OPTIONAL: ADD PERCENT
+  if (addPercent == "yes" || !missing(groupsPercent)) {
+    # if groupdPercent is missing, take the first variable from group
+    if (missing(groupsPercent)) {
+      groupsPercent <- groups[1]
+    }
+    tmp <- transform(tmp, Perc = stats::ave(Freq, tmp[, groupsPercent],
+                                            FUN = function(x) x/sum(x)*100))
+    if (is.numeric(round_decimals)==TRUE)
+      tmp <- round_vars(tmp, round_decimals)
+  }
+
+  # ==============================================================#
+  return(tmp)
 }

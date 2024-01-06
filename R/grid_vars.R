@@ -4,8 +4,8 @@
 #' @description Pivot binary grid survey questions longer.
 #'
 #' @param data A data frame containing survey data. This parameter is required.
-#' @param vars A list of column names and the renamed variable. This parameter is required.
-#' @param group A variable overlay to compare between groups. This parameter is optional.
+#' @param vars A list of column names and the renamed variable. This parameter is required and permits multiple variables.
+#' @param group A variable overlay to compare between groups. This parameter is optional and only permits one group.
 #' @param weight Variable containing weight factors. This variable is optional.
 #'
 #' @return a data frame of variables from a grid survey question.
@@ -32,48 +32,67 @@
 #'}
 #' @export
 grid_vars <- function(data,
-                        vars,
-                        group,
-                        weight
+                      vars,
+                      group,
+                      weight
 ) {
-  # vars
-  x <- dput(names(vars))
+  # ==============================================================#
+  # CHECK PARAMETERS
+  check_params(data=data,
+               vars=vars,
+               group=group,
+               weight=weight)
 
-  if (!missing(weight) && !missing(group)) {
-    y <- c(c(group, weight),x)
-  } else if (!missing(weight) && missing(group)) {
-    y <- c(c(weight),x)
-  } else if (missing(weight) && !missing(group)) {
-    y <- c(c(group),x)
-  } else if (missing(weight) && missing(group)) {
-    y <- c(x)
-  }
+  # ==============================================================#
+  # PREPARE VARIABLES
+  # X
+  x <- dput(names(vars), file = nullfile()) # suppress output to console
+  # Y
+  y <- c(append_if_exists(as.list(match.call()[-1])[-c(1, 2)]), x)
 
-  df <- data[,y]
-  df <- tidyr::pivot_longer(df, cols = x, names_to = "Question", values_to = "Response")
-  df <- dplyr::mutate(df, Question = dplyr::coalesce(unlist(vars)[Question], Response))
-  df$Question <- factor(df$Question)
+  # ==============================================================#
+  # TRANSFORM DATA
+  # Subset data
+  tmp <- data[, y]
 
-  # group by Question, Response, Group (Frequency)
+  # Ensure all character classes are converted to factors
+  tmp[sapply(tmp, is.character)] <- lapply(tmp[sapply(tmp, is.character)], as.factor)
+
+  # Make data frame longer
+  tmp <- tidyr::pivot_longer(tmp, cols = x, names_to = "Question", values_to = "Response")
+
+  # Change names of vars to from column names to new names
+  tmp <- dplyr::mutate(tmp, Question = dplyr::coalesce(unlist(vars)[Question], Response))
+
+  # Make Question variable factor
+  tmp$Question <- factor(tmp$Question)
+
+  # ==============================================================#
+  # GET GROUPED FREQUENCY & PERCENTAGE
+  # Return funciton arguments
   grp <- match.call(expand.dots = FALSE)
-  grp_n <- match(c("weight"), names(grp), 0L)
-  grp <- grp[c(1L, grp_n)]
+
+  # Substitute `grid_vars` for `grp_freq`
   grp[[1L]] <- quote(grp_freq)
-  grp[["data"]] <- as.data.frame(df)
-  if (!missing(group))
-    grp[["group"]] <- c("Question","Response",group)
-  else
-    grp[["group"]] <- c("Question","Response")
 
-  df <- eval(grp, parent.frame())
+  # Substitute `data` for `tmp`
+  grp[["data"]] <- tmp
 
-  # Group by Group, Question (Percent)
-  if (!missing(group))
-    df <- transform(df, Perc = stats::ave(Freq, Question, df[,group],
-                                      FUN = function(x) round(x/sum(x)*100, 2)))
-  else
-    df <- transform(df, Perc = stats::ave(Freq, Question,
-                                      FUN = function(x) round(x/sum(x)*100, 2)))
+  # Substitute `groups` for vector
+  grp[["groups"]] <- c("Question", "Response",
+                      append_if_exists(as.list(grp[match("group", names(grp), 0)])))
 
-  return(df)
+  # Percent by subgroup
+  grp[["subgroups"]] <- c("Question",
+                         append_if_exists(as.list(grp[match("group", names(grp), 0)])))
+
+  # Remove `vars` and `group` from arguments
+  grp[["vars"]] <- NULL
+  grp[["group"]] <- NULL
+
+  # Evaluate
+  tmp <- eval(grp, parent.frame())
+
+  # ==============================================================#
+  return(tmp)
 }

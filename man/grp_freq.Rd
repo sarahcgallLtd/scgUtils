@@ -4,16 +4,30 @@
 \alias{grp_freq}
 \title{Grouped Frequencies}
 \usage{
-grp_freq(data, group, weight, set_names)
+grp_freq(
+  data,
+  groups,
+  weight,
+  set_names,
+  addPercent = c("no", "yes"),
+  groupsPercent,
+  round_decimals = NULL
+)
 }
 \arguments{
 \item{data}{A data frame containing survey data. This parameter is required.}
 
-\item{group}{Vector of variables being grouped. This parameter is required.}
+\item{groups}{Vector of variables being grouped. This parameter is required and permits one or many variables.}
 
 \item{weight}{Variable containing weight factors. This variable is optional.}
 
 \item{set_names}{Vector of column names. This paramenter is optional.}
+
+\item{addPercent}{Get percent of frequency (Options: "no" or "yes"). This parameter is optional, defaulted to "No", and permits one or many variables.}
+
+\item{groupsPercent}{Vector of variables for percent of frequency. This parameter is optional and permits one or many variables.}
+
+\item{round_decimals}{Numeric value to round numeric data by x number of decimals places. Defaults does not round.}
 }
 \value{
 A data frame containing frequencies by group
