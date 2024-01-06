@@ -1,9 +1,9 @@
 scgUtils <a href="https://sarahcgall.github.io/scgUtils/"><img src="man/figures/logo.png" align="right" height="138" alt="" /></a>
 ================
 <!-- badges: start -->
-[![Release](https://img.shields.io/badge/Release-development%20version%200&#46;0&#46;1-1c75bc)](https://github.com/sarahcgall/scgElectionsNZ/blob/master/NEWS.md)
-[![R-CMD-check](https://github.com/sarahcgall/scgElectionsNZ/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sarahcgall/scgElectionsNZ/actions/workflows/R-CMD-check.yaml)
+[![Release](https://img.shields.io/badge/Release-development%20version%200&#46;0&#46;1-1c75bc)](https://github.com/sarahcgall/scgUtils)
 [![R-CMD-check](https://github.com/sarahcgall/scgUtils/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sarahcgall/scgUtils/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/sarahcgall/scgElectionsNZ/graph/badge.svg?token=KRX0FWHUAO)](https://codecov.io/gh/sarahcgall/scgUtils)
 <!-- badges: end -->
 
 ## About

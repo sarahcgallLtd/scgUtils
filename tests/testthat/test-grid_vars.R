@@ -25,7 +25,7 @@ test_that("parameters return correct error", {
 # ==============================================================#
 # TEST: PREPARE VARIABLES
 test_that("list of variables becomes a vector", {
-  x <- dput(names(vars), file = nullfile())
+  x <- dput(names(vars), file = nullfile())  # suppress output to console
 
   expect_equal(x, c("likeSunak", "likeStarmer"))
 
@@ -59,6 +59,16 @@ test_that("list of variables becomes a vector", {
 
 # ==============================================================#
 # TEST: RESULT
-# test_that("function returns data frame with original groups and frequency and percent", {
-#
-# })
+test_that("function returns data frame with original groups and frequency and percent", {
+  # WITHOUT WEIGHTS
+  x <- grid_vars(df, vars, group = "gender")
+  expect_length(x, 5)
+  expect_equal(x[1,4], 600)
+  expect_equal(x[1,5], 23.04)
+
+  # WITH WEIGHTS
+  x <- grid_vars(df, vars, group = "gender", weight="wt")
+  expect_length(x, 5)
+  expect_equal(x[1,4], 511.98)
+  expect_equal(x[1,5], 23.79)
+})

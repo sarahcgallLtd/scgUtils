@@ -60,8 +60,12 @@ test_that("function adds a list of column names from a group", {
 test_that("function sets names", {
   tmp <- data.frame("Gender.Gender" = c("Male", "Male", "Female", "Female"),
                     "n" = c(37, 20, 27, 40))
-  tmp <- stats::setNames(tmp, c("Gender", "Freq"))
 
+  tmp <- stats::setNames(tmp, c("Gender", "Freq"))
+  expect_equal(names(tmp), c("Gender","Freq"))
+
+  set_names <- c("Gender", "Freq")
+  tmp <- stats::setNames(tmp, set_names)
   expect_equal(names(tmp), c("Gender","Freq"))
 })
 
@@ -71,19 +75,22 @@ test_that("percent of subgroup is added to frequency", {
   tmp <- data.frame("Party" = c("Conservative", "Labour", "Conservative", "Labour"),
                      "Gender" = c("Male", "Male", "Female", "Female"),
                      "Freq" = c(37, 20, 27, 40))
+  groups <- c("Party", "Gender")
+  groupsPercent <- groups[1]
 
-  fn <- function(data, groupsPercent) {
+  fn <- function(data, groupsPercent, round_decimals) {
     data <- transform(data,
                       Perc = stats::ave(Freq, data[, groupsPercent],
-                                        FUN = function(x) round(x / sum(x) * 100,
-                                                                2)))
+                                        FUN = function(x) x/sum(x)*100))
+    if (is.numeric(round_decimals)==TRUE)
+      data <- round_vars(data, round_decimals)
     return(data)
   }
 
-  x <- fn(tmp, "Party")
+  x <- fn(tmp, "Party", round_decimals = 2)
   expect_equal(x[1, 4], 57.81)
 
-  y <- fn(tmp, c("Party", "Gender"))
+  y <- fn(tmp, c("Party", "Gender"), round_decimals = 2)
   expect_equal(y[1, 4], 100)
 })
 

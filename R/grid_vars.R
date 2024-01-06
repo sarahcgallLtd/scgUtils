@@ -82,9 +82,12 @@ grid_vars <- function(data,
   grp[["groups"]] <- c("Question", "Response",
                       append_if_exists(as.list(grp[match("group", names(grp), 0)])))
 
-  # Percent by subgroup
-  grp[["subgroups"]] <- c("Question",
+  # Percent by groupsPercent
+  grp[["groupsPercent"]] <- c("Question",
                          append_if_exists(as.list(grp[match("group", names(grp), 0)])))
+
+  # Limit decimal places
+  grp[["round_decimals"]] <- 2
 
   # Remove `vars` and `group` from arguments
   grp[["vars"]] <- NULL
