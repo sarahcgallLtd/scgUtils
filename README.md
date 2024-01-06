@@ -3,7 +3,7 @@ scgUtils <a href="https://sarahcgall.github.io/scgUtils/"><img src="man/figures/
 <!-- badges: start -->
 [![Release](https://img.shields.io/badge/Release-development%20version%200&#46;0&#46;1-1c75bc)](https://github.com/sarahcgall/scgUtils)
 [![R-CMD-check](https://github.com/sarahcgall/scgUtils/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sarahcgall/scgUtils/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/sarahcgall/scgElectionsNZ/graph/badge.svg?token=KRX0FWHUAO)](https://codecov.io/gh/sarahcgall/scgUtils)
+[![codecov](https://codecov.io/gh/sarahcgall/scgUtils/graph/badge.svg?token=SG99DJ56I4)](https://codecov.io/gh/sarahcgall/scgUtils)
 <!-- badges: end -->
 
 ## About
