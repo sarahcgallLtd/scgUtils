@@ -67,7 +67,6 @@ grp_freq <- function(data,
   check_params(data=data,
                groups=groups,
                weight=weight,
-               set_names=set_names,
                groupsPercent=groupsPercent)
 
   # Take first option

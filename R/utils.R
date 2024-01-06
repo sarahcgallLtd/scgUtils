@@ -59,7 +59,7 @@ list_group <- function(data, group) {
 }
 
 # ========== #
-check_params <- function(data, vars, group, groups, weight, set_names, groupsPercent) {
+check_params <- function(data, vars, group, groups, weight, groupsPercent) {
   # `data`: Ensure data is a data frame
   if (!missing(data)) {
     stopifnot("A data frame is required to be parsed through this function." = is.data.frame(data))
@@ -86,11 +86,6 @@ check_params <- function(data, vars, group, groups, weight, set_names, groupsPer
   if (!missing(weight)) {
     stopifnot("`weight` variable must be a column in `data`." = weight %in% names(data))
     stopifnot("`weight` must be numeric." = is.numeric(data[[weight]]))
-  }
-
-  # `set_names`: Ensure subgroups variable is in data frame
-  if (!missing(set_names)) {
-    stopifnot("The number of `set_names` must equal the number of groups." = length(set_names) == length(groups))
   }
 
   # `subgroups`: Ensure subgroups variable is in data frame

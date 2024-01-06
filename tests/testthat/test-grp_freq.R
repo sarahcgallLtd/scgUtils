@@ -16,9 +16,6 @@ test_that("parameters return correct error", {
   # Unsure why this fails:
   # expect_error(grp_freq(df, groups="gender", weight = "gender"), "`weight` must be numeric.")
 
-  expect_error(grp_freq(df, groups = "gender", set_names = c("gender", "column2")),
-               "The number of `set_names` must equal the number of groups.")
-
   expect_error(grp_freq(df, groups = "gender", groupsPercent = "column1"),
                "`groupsPercent` variable must be columns in `data`.")
   expect_error(grp_freq(df, groups = "gender", groupsPercent = "turnoutUKGeneral"),
@@ -143,7 +140,7 @@ test_that("function returns data frame with original groups and frequency and pe
 
   # Frequency:
   # Grouped Frequency function
-  x <- grp_freq(tmp, groups="Gender", weight="Weight")
+  x <- grp_freq(tmp, groups="Gender", weight="Weight", set_names = c("Gender","Freq"))
 
   # Compared with dplyr version
   y <- tmp %>%
@@ -156,8 +153,8 @@ test_that("function returns data frame with original groups and frequency and pe
 
   # Percentage:
   # Grouped Frequency function
-  x <- grp_freq(tmp, groups=c("Party","Gender"), weight="Weight",
-                groupsPercent="Gender", round_decimals = 2)
+  x <- grp_freq(tmp, groups=c("Gender","Party"), weight="Weight",
+                addPercent="yes", round_decimals = 2)
 
   # Compared with dplyr version
   y <- tmp %>%
