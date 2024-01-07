@@ -27,7 +27,7 @@ grp_freq(
 
 \item{groupsPercent}{Vector of variables for percent of frequency. This parameter is optional and permits one or many variables.}
 
-\item{round_decimals}{Numeric value to round numeric data by x number of decimals places. Defaults does not round.}
+\item{round_decimals}{Numeric value to round numeric data by x number of decimals places. Default does not round.}
 }
 \value{
 A data frame containing frequencies by group

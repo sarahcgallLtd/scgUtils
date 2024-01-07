@@ -59,10 +59,15 @@ list_group <- function(data, group) {
 }
 
 # ========== #
-check_params <- function(data, vars, group, groups, weight, groupsPercent) {
+check_params <- function(data, var, vars, group, groups, weight, groupsPercent) {
   # `data`: Ensure data is a data frame
   if (!missing(data)) {
     stopifnot("A data frame is required to be parsed through this function." = is.data.frame(data))
+  }
+
+  # `var`: Ensure group variable is in data frame
+  if (!missing(var)) {
+    stopifnot("`var` variable must be a column in `data`." = var %in% names(data))
   }
 
   # `vars`: Ensure vars is a list and that the list objects are in the data frame

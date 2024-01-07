@@ -4,7 +4,7 @@
 \alias{grp_mean}
 \title{Grouped Mean}
 \usage{
-grp_mean(data, var, group, weight, set_names)
+grp_mean(data, var, group, weight, set_names, round_decimals = NULL)
 }
 \arguments{
 \item{data}{A data frame containing survey data. This parameter is required.}
@@ -16,6 +16,8 @@ grp_mean(data, var, group, weight, set_names)
 \item{weight}{Variable containing weight factors. This variable is optional.}
 
 \item{set_names}{Vector of column names. This paramenter is optional.}
+
+\item{round_decimals}{Numeric value to round numeric data by x number of decimals places. Default does not round.}
 }
 \value{
 A data frame containing averages by group

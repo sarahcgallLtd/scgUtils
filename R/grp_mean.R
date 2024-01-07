@@ -8,6 +8,7 @@
 #' @param group Variable being grouped. This parameter is required.
 #' @param weight Variable containing weight factors. This variable is optional.
 #' @param set_names Vector of column names. This paramenter is optional.
+#' @param round_decimals Numeric value to round numeric data by x number of decimals places. Default does not round.
 #'
 #' @return A data frame containing averages by group
 #'
@@ -30,25 +31,45 @@ grp_mean <- function(data,
                      var,
                      group,
                      weight,
-                     set_names
+                     set_names,
+                     round_decimals = NULL
 ) {
   # ==============================================================#
+  # CHECK PARAMS
+  check_params(data = data,
+               var = var,
+               group = group,
+               weight = weight)
+
+  stopifnot("`var` must be numeric." = is.numeric(data[[var]]))
+
+  # ==============================================================#
   # PREPARE DATA
-  grp <- list(group = data[, group])
+  # Ensure data is a data frame
+  data <- as.data.frame(data)
+
+  # make "group_by" a list
+  grp <- list_group(data, group)
+#  grp <- list(group = data[, group])
 
   # ==============================================================#
   # CALCULATE MEAN
   if (missing(weight)) {
     tmp <- stats::aggregate(data[, var],
-                           by = grp$group,
-                           FUN = mean)
+                            by = grp,
+                            FUN = mean)
   } else {
     tmp <- by(data[c(var, weight)],
-             grp$group,
-             FUN = function(x) stats::weighted.mean(x[, 1], x[, 2]))
+              grp,
+              FUN = function(x) stats::weighted.mean(x[, 1], x[, 2]))
     tmp <- data.frame(Col1 = rep(names(tmp), lengths(tmp)),
-                     Col2 = c(unlist(tmp[[1]]), unlist(tmp[[2]])))
+                      Col2 = c(unlist(tmp[[1]]), unlist(tmp[[2]])))
   }
+
+  # ==============================================================#
+  # OPTIONAL: ROUND NUMERIC VALUES
+  if (is.numeric(round_decimals) == TRUE)
+    tmp <- round_vars(tmp, round_decimals)
 
   # ==============================================================#
   # SET COLUMN NAMES
