@@ -51,8 +51,36 @@ test_that("list of variables becomes a vector", {
 
 # ==============================================================#
 # TEST: TRANSFORM DATA
+test_that("vars list in Question column are renamed to new names", {
 
+  # base r
+  fn1 <- function(data, vars, group, weight) {
+    x <- dput(names(vars), file = nullfile())
+    y <- c(append_if_exists(as.list(match.call()[-1])[-c(1, 2)]), x)
+    tmp <- data[, y]
+    tmp[sapply(tmp, is.character)] <- lapply(tmp[sapply(tmp, is.character)], as.factor)
+    tmp <- tidyr::pivot_longer(tmp, cols = names(tmp[,x]), names_to = "Question", values_to = "Response")
+    tmp$Question <-  unlist(vars)[tmp$Question]
+    return(tmp)
+  }
 
+  # dplyr
+  fn2 <- function(data, vars, group, weight) {
+    x <- dput(names(vars), file = nullfile())
+    y <- c(append_if_exists(as.list(match.call()[-1])[-c(1, 2)]), x)
+    tmp <- data[, y]
+    tmp[sapply(tmp, is.character)] <- lapply(tmp[sapply(tmp, is.character)], as.factor)
+    tmp <- tidyr::pivot_longer(tmp, cols = names(tmp[,x]), names_to = "Question", values_to = "Response")
+    tmp <- dplyr::mutate(tmp, Question = dplyr::coalesce(unlist(vars)[Question], Response))
+    return(tmp)
+  }
+
+  x <- fn1(df, vars, group = "gender")
+  y <- fn2(df, vars, group = "gender")
+
+  expect_equal(y, y)
+
+})
 # ==============================================================#
 # GET GROUPED FREQUENCY & PERCENTAGE
 
@@ -63,12 +91,12 @@ test_that("function returns data frame with original groups and frequency and pe
   # WITHOUT WEIGHTS
   x <- grid_vars(df, vars, group = "gender")
   expect_length(x, 5)
-  expect_equal(x[1,4], 600)
-  expect_equal(x[1,5], 23.04)
+  expect_equal(x[1, 4], 600)
+  expect_equal(x[1, 5], 23.04)
 
   # WITH WEIGHTS
-  x <- grid_vars(df, vars, group = "gender", weight="wt")
+  x <- grid_vars(df, vars, group = "gender", weight = "wt")
   expect_length(x, 5)
-  expect_equal(x[1,4], 511.98)
-  expect_equal(x[1,5], 23.79)
+  expect_equal(x[1, 4], 511.98)
+  expect_equal(x[1, 5], 23.79)
 })

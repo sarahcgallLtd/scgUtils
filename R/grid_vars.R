@@ -59,10 +59,10 @@ grid_vars <- function(data,
   tmp[sapply(tmp, is.character)] <- lapply(tmp[sapply(tmp, is.character)], as.factor)
 
   # Make data frame longer
-  tmp <- tidyr::pivot_longer(tmp, cols = x, names_to = "Question", values_to = "Response")
+  tmp <- tidyr::pivot_longer(tmp, cols = names(tmp[,x]), names_to = "Question", values_to = "Response")
 
   # Change names of vars to from column names to new names
-  tmp <- dplyr::mutate(tmp, Question = dplyr::coalesce(unlist(vars)[Question], Response))
+  tmp$Question <-  unlist(vars)[tmp$Question]
 
   # Make Question variable factor
   tmp$Question <- factor(tmp$Question)
