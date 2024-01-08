@@ -7,6 +7,7 @@
 # 1) GENERAL
 # Includs:
 # test_deparse()
+# get_question()
 # round_vars()
 # append_if_exists()
 # list_group()
@@ -20,6 +21,13 @@ test_deparse <- function(x) {
     x.try
   else
     deparse(substitute(x))
+}
+
+# ========== #
+# Function to return the original question
+get_question <- function(data, var) {
+  q <- attr(data[[var]], "label")
+  return(q)
 }
 
 # ========== #
@@ -59,7 +67,9 @@ list_group <- function(data, group) {
 }
 
 # ========== #
-check_params <- function(data, var, vars, group, groups, weight, groupsPercent) {
+# Future updates to simplfiy this:
+check_params <- function(data, var, vars, group, groups, weight, groupsPercent,
+                         xVar, yVar, meanVar) {
   # `data`: Ensure data is a data frame
   if (!missing(data)) {
     stopifnot("A data frame is required to be parsed through this function." = is.data.frame(data))
@@ -93,10 +103,26 @@ check_params <- function(data, var, vars, group, groups, weight, groupsPercent) 
     stopifnot("`weight` must be numeric." = is.numeric(data[[weight]]))
   }
 
-  # `subgroups`: Ensure subgroups variable is in data frame
+  # `groupsPercent`: Ensure groupsPercent variable is in data frame
   if (!missing(groupsPercent)) {
     stopifnot("`groupsPercent` variable must be columns in `data`." = groupsPercent %in% names(data))
     stopifnot("`groupsPercent` variable must be in `groups`." = groupsPercent %in% groups)
+  }
+
+  # `age_groups`: Ensure age_groups variable is in data frame
+  if (!missing(xVar)) {
+    stopifnot("`xVar` variable must be a column in `data`. E.g., 'ageGroups'" = xVar %in% names(data))
+  }
+
+  # `gender`: Ensure gender variable is in data frame
+  if (!missing(yVar)) {
+    stopifnot("`yVar` variable must be a column in `data`. E.g., 'gender'" = yVar %in% names(data))
+  }
+
+  # `age_int`: Ensure age_int variable is numeric and in data frame
+  if (!missing(meanVar)) {
+    stopifnot("`meanVar` variable must be a column in `data`. E.g., 'age'" = meanVar %in% names(data))
+    stopifnot("`meanVar` must be numeric." = is.numeric(data[[meanVar]]))
   }
 }
 
@@ -202,7 +228,6 @@ xtabs_convert <- function(data, convert_to, format) {
 # 3) PLOTS
 # Includs:
 # contrast_test()
-# get_lims()
 # coord_radar()
 
 # ========== #
@@ -219,23 +244,6 @@ contrast_test <- function(colour_list) {
 }
 
 # ========== #
-# Function to return minimum or maximum value based on numeric or factor
-get_lims <- function(data, var, type = c("min", "max")) {
-  if (class(data[, var]) == "numeric") {
-    if (type == "min")
-      x <- min(data[, var])
-    else if (type == "max")
-      x <- max(data[, var])
-  } else if (class(data[, var]) == "factor") {
-    if (type == "min")
-      x <- which.min(data[, var])
-    else if (type == "max")
-      x <- which.max(data[, var])
-  }
-  return(x)
-}
-
-# ========== #
 # Function to create radar charts
 coord_radar <- function(theta = "x", start = 0, direction = 1) {
   theta <- match.arg(theta, c("x", "y"))
@@ -247,3 +255,30 @@ coord_radar <- function(theta = "x", start = 0, direction = 1) {
           is_linear = function(coord) TRUE,
           clip = "off")
 }
+
+# ========== #
+# Function to make one group negative on plot
+convert_neg <- function(data, xVar, value, column) {
+  data[data[xVar] == value, column] <- data[data[xVar] == value, column] * -1
+  return(data)
+}
+
+# ========== #
+# Function to amend text labels in geom_text layers()
+add_text <- function(plot, data, column, thresholdLab, nudgeLab, sizeLab, faceLab, colour) {
+  p <- plot +
+    geom_text(
+      aes(hjust = ifelse(abs(!!rlang::ensym(column)) >= thresholdLab, "inward", "outward")),
+      size = sizeLab, fontface = faceLab, na.rm = TRUE,
+      colour = ifelse(abs(data[, column]) >= thresholdLab, "white", colour),
+      nudge_x = dplyr::case_when(
+        abs(data[, column]) >= thresholdLab & data[, column] < 0.00 ~ nudgeLab,
+        abs(data[, column]) < thresholdLab & data[, column] >= 0.00 ~ nudgeLab,
+        .default = -nudgeLab
+      ),
+      check_overlap = TRUE
+    )
+  return(p)
+}
+
+# TODO: Known issue = when add_text() is used in a facet, the hjust position does not work for smaller negative values

@@ -25,7 +25,7 @@ grp_freq(
 
 \item{addPercent}{Get percent of frequency (Options: "no" or "yes"). This parameter is optional, defaulted to "No", and permits one or many variables.}
 
-\item{groupsPercent}{Vector of variables for percent of frequency. This parameter is optional and permits one or many variables.}
+\item{groupsPercent}{Vector of variables for percent of frequency. This parameter is optional and permits none (for total), one or many variables.}
 
 \item{round_decimals}{Numeric value to round numeric data by x number of decimals places. Default does not round.}
 }

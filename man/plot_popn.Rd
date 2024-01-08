@@ -6,31 +6,55 @@
 \usage{
 plot_popn(
   data,
-  age_groups,
-  gender,
+  xVar,
+  yVar,
   group,
-  XX = "Female",
-  XY = "Male",
   weight,
-  age_int
+  meanVar,
+  colours,
+  title = "Population Structure",
+  subtitle,
+  xLab = "Population (\%)",
+  yLab = "Age",
+  addLabels = c("no", "yes"),
+  thresholdLab = 3,
+  nudgeLab = 0.2,
+  sizeLab = 3,
+  faceLab = c("plain", "bold", "italic", "bold.italic")
 )
 }
 \arguments{
 \item{data}{A data frame containing survey data. This parameter is required.}
 
-\item{age_groups}{Age group variable. This parameter is required.}
+\item{xVar}{Gender variable. This parameter is required.}
 
-\item{gender}{Gender variable. This parameter is required.}
+\item{yVar}{Age group variable. This parameter is required.}
 
 \item{group}{A variable overlay to compare between groups. This parameter is optional.}
 
-\item{XX}{Name of female variable. Default = "Female".}
-
-\item{XY}{Name of male varirable. Default = "Male".}
-
 \item{weight}{Variable containing weight factors. This variable is optional.}
 
-\item{age_int}{Actual age vraiable (numeric) to view average age.}
+\item{meanVar}{Actual age vraiable (numeric) to view average age. This variable is optional.}
+
+\item{colours}{A vector of three colours for Male, Female, and Total}
+
+\item{title}{Plot title. Default = "Population Structure".}
+
+\item{subtitle}{Plot subtitle in grouped/faceted plot. Default = question of group variable.}
+
+\item{xLab}{X axis title. Default = "Population (\%)".}
+
+\item{yLab}{Y axis title. Default = "Age".}
+
+\item{addLabels}{Option to add \% labels to graph. Default = "no".}
+
+\item{thresholdLab}{Numeric value to determine threshold of which labels go inside or outside of bars. Default = 3.}
+
+\item{nudgeLab}{Numeric value to nudge labels left or right. Default = 0.2.}
+
+\item{sizeLab}{Numeric value to determine size of label text. Default = 3.}
+
+\item{faceLab}{Option to make labels "plain", "bold", "italic", or "bold.italic". Default = "plain".}
 }
 \value{
 ggplot2 plot of the population structure
@@ -42,7 +66,7 @@ Visualise the population profile of survey data using age categories and gender.
 \dontrun{
 # Create plot using age groups and age intervals included to return average age
 plot_popn(dataset,
-          age_group = "age_categories",
+          age_groups = "age_categories",
           gender = "gender",
           weight = "wgtvar",
           age_int = "age")

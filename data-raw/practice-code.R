@@ -37,10 +37,13 @@ df <- get_data("survey")
 df <- labelled::unlabelled(df)
 
 plot_popn(data=df,
-          age_groups="ageGroup",
-          gender="gender",
+          xVar="gender",
+          yVar="ageGroup",
           weight="wt",
-          age_int="age"
+          #meanVar="age",
+          #group="partyId",
+          #addLabels = "yes",
+          #thresholdLab = 5
 )
 # check removed
 

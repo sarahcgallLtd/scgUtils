@@ -4,13 +4,21 @@
 #' @description Visualise the population profile of survey data using age categories and gender.
 #'
 #' @param data A data frame containing survey data. This parameter is required.
-#' @param age_groups Age group variable. This parameter is required.
-#' @param gender Gender variable. This parameter is required.
-#' @param XX Name of female variable. Default = "Female".
-#' @param XY Name of male varirable. Default = "Male".
+#' @param xVar Gender variable. This parameter is required.
+#' @param yVar Age group variable. This parameter is required.
 #' @param group A variable overlay to compare between groups. This parameter is optional.
 #' @param weight Variable containing weight factors. This variable is optional.
-#' @param age_int Actual age vraiable (numeric) to view average age.
+#' @param meanVar Actual age vraiable (numeric) to view average age. This variable is optional.
+#' @param colours A vector of three colours for Male, Female, and Total
+#' @param title Plot title. Default = "Population Structure".
+#' @param subtitle Plot subtitle in grouped/faceted plot. Default = question of group variable.
+#' @param xLab X axis title. Default = "Population (%)".
+#' @param yLab Y axis title. Default = "Age".
+#' @param addLabels Option to add % labels to graph. Default = "no".
+#' @param thresholdLab Numeric value to determine threshold of which labels go inside or outside of bars. Default = 3.
+#' @param nudgeLab Numeric value to nudge labels left or right. Default = 0.2.
+#' @param sizeLab Numeric value to determine size of label text. Default = 3.
+#' @param faceLab Option to make labels "plain", "bold", "italic", or "bold.italic". Default = "plain".
 #'
 #' @return ggplot2 plot of the population structure
 #'
@@ -18,7 +26,7 @@
 #' \dontrun{
 #' # Create plot using age groups and age intervals included to return average age
 #' plot_popn(dataset,
-#'           age_group = "age_categories",
+#'           age_groups = "age_categories",
 #'           gender = "gender",
 #'           weight = "wgtvar",
 #'           age_int = "age")
@@ -26,222 +34,283 @@
 #' @importFrom magrittr %>%
 #' @export
 plot_popn <- function(data,
-                      age_groups,
-                      gender,
+                      xVar,
+                      yVar,
                       group,
-                      XX = "Female",
-                      XY = "Male",
                       weight,
-                      age_int
-                      # format=c("survey","aggregated")
+                      meanVar,
+                      colours,
+                      title = "Population Structure",
+                      subtitle,
+                      xLab = "Population (%)",
+                      yLab = "Age",
+                      addLabels = c("no", "yes"),
+                      thresholdLab = 3,
+                      nudgeLab = 0.2,
+                      sizeLab = 3,
+                      faceLab = c("plain", "bold", "italic", "bold.italic")
 ) {
-  # ====== 1. CHECK DATA & ARGUMENTS ======== #
-  # format <- match.arg(format)
+  # ==============================================================#
+  # CHECK PARAMS
+  check_params(data = data,
+               xVar = xVar,
+               yVar = yVar,
+               group = group,
+               weight = weight,
+               meanVar = meanVar)
 
-  # if (!"Male" %in% data[,gender] && !"Female" %in% data[,gender])
-  #   stop("Gender column must include 'Male' and 'Female' levels only.")
+  # Take first option
+  addLabels <- match.arg(addLabels)
+  faceLab <- match.arg(faceLab)
 
-  # =========== 2. GET VARIABLES ============ #
+  # ==============================================================#
+  # PREPARE VARIABLES
+  # Ensure all character classes are converted to factors
+  data[sapply(data, is.character)] <- lapply(data[sapply(data, is.character)], as.factor)
+
+  # Get `x_var` levels
+  xLevels <- levels(data[[xVar]])
+
+  # Get levels
+  leftLevel <- xLevels[[1]]
+  rightLevel <- xLevels[[2]]
+
+  # Get number of factors
+  yLevels <- length(unique(data[[yVar]]))
+
+  # ==============================================================#
+  # GET GROUPED FREQUENCY & PERCENTAGE BY TOTAL
+  # Return funciton arguments
   agg <- match.call(expand.dots = FALSE)
-  agg_n <- match(c("data","weight"), names(agg), 0L)
+
+  # Match relevant arguments
+  agg_n <- match(c("data", "weight"), names(agg), 0L)
   agg <- agg[c(1L, agg_n)]
+
+  # Substitute `plot_popn` for `grp_freq`
   agg[[1L]] <- quote(grp_freq)
-  agg[["group"]] <- c(age_groups,gender)
 
-  df_total <- eval(agg, parent.frame())
-  df_total <- dplyr::mutate(df_total, Perc = round(Freq/sum(Freq) * 100, 2))
-  df_total$id <- "Total"
+  #  Substitute `groups`
+  agg[["groups"]] <- c(yVar, xVar)
 
-  if (!missing(age_int)) {
+  # Percent by total
+  agg[["addPercent"]] <- "yes"
+
+  # Limit decimal places
+  agg[["round_decimals"]] <- 2
+
+  # Evaluate
+  total <- eval(agg, parent.frame())
+
+  # Add id column
+  total$id <- "Total"
+
+  # ==============================================================#
+  # GET AGE MEAN
+  if (!missing(meanVar) && missing(group)) {
+    # Return funciton arguments
     sta <- match.call(expand.dots = FALSE)
-    sta_n <- match(c("data","weight"), names(sta), 0L)
+
+    # Match relevant arguments
+    sta_n <- match(c("data", "weight"), names(sta), 0L)
     sta <- sta[c(1L, sta_n)]
+
+    # Substitute `plot_popn` for `grp_mean`
     sta[[1L]] <- quote(grp_mean)
-    sta[["var"]] <- age_int
-    sta[["group"]] <- gender
+
+    # Substitute `var`
+    sta[["var"]] <- meanVar
+
+    # Substitute `group`
+    sta[["group"]] <- xVar
+
+    # Evaluate
     stats <- eval(sta, parent.frame())
-    f_label <- paste0("Female\n", "Average Age = ", round(stats[stats[,"gender"] == XX,"Mean"],1), "\n")
-    m_label <- paste0("Male\n", "Average Age = ", round(stats[stats[,"gender"] == XY,"Mean"],1), "\n")
+
+    # Get Labels for plot
+    leftLabel <- paste0(leftLevel, "\n",
+                        "Average Age = ", round(stats[stats[, xVar] == leftLevel, "Mean"], 1),
+                        "\n")
+    rightLabel <- paste0(rightLevel, "\n",
+                         "Average Age = ", round(stats[stats[, xVar] == rightLevel, "Mean"], 1),
+                         "\n")
+    title <- paste0(title, "\n")
   } else {
-    f_label <- "Female"
-    m_label <- "Male"
+    leftLabel <- leftLevel
+    rightLabel <- rightLevel
   }
 
+  # ==============================================================#
+  # GET GROUPED FREQUENCY & PERCENTAGE BY GROUP
   if (!missing(group)) {
+    # Return funciton arguments
     grp <- match.call(expand.dots = FALSE)
-    grp_n <- match(c("data","weight"), names(grp), 0L)
+
+    # Match relevant arguments
+    grp_n <- match(c("data", "weight"), names(grp), 0L)
     grp <- grp[c(1L, grp_n)]
+
+    # Substitute `plot_popn` for `grp_freq`
     grp[[1L]] <- quote(grp_freq)
-    grp[["group"]] <- c(group,age_groups,gender)
-    df_grp <- eval(grp, parent.frame())
 
-    df_grp <- transform(df_grp, Perc = stats::ave(Freq, df_grp[,group],
-                                                  FUN = function(x) round(x/sum(x)*100, 2)))
-  }
+    #  Substitute `groups`
+    grp[["groups"]] <- c(group, yVar, xVar)
 
-  # ============ 4. ATTRIBUTES ============= #
-  if (!missing(group)) {
-    x.max <- pmax(max(df_total$Perc),max(df_grp$Perc))
+    # Percent by group
+    grp[["groupsPercent"]] <- group
+
+    # Limit decimal places
+    grp[["round_decimals"]] <- 2
+
+    # Evaluate
+    grouped <- eval(grp, parent.frame())
+
+    # Get linewidth
+    lineWidth <- (100 / yLevels) / 2
+
+    grouped <- convert_neg(grouped, xVar, leftLevel, "Perc")
+
   } else {
-    x.max <- max(df_total$Perc)
+    lineWidth <- 100 / yLevels
   }
 
-  # X AXIS
-  axis.mar <- 0
-  if (x.max <= 5) {
-    x.lim <- c(-5 - axis.mar, 5 + axis.mar)
-    x.br <- c(c(-5, -4, -3, -2, -1, 0) - axis.mar, c(0, 1, 2, 3, 4, 5) + axis.mar)
-    x.lbl <- c("5%", "4%", "3%", "2%", "1%", "", "0%", "1%", "2%", "3%", "4%", "5%")
-    x.max <- 5
-  } else if (x.max > 5 && x.max <= 10) {
-    x.lim <- c(-10 - axis.mar,10 + axis.mar)
-    x.br <- c(c(-10, -7.5, -5, -2.5, 0) - axis.mar, c(0, 2.5, 5, 7.5, 10) + axis.mar)
-    x.lbl <- c("10%", "7.5%", "5%", "2.5%", "0%", "", "2.5%", "5%", "7.5%", "10%")
-    x.max <- 10
-  } else if (x.max > 10 && x.max <= 15) {
-    x.lim <- c(-15 - axis.mar,15 + axis.mar)
-    x.br <- c(c(-15, -12.5, -10, -7.5, -5, -2.5, 0) - axis.mar, c(0, 2.5, 5, 7.5, 10, 12.5, 15) + axis.mar)
-    x.lbl <- c("15%", "12.5%", "10%", "7.5%", "5%", "2.5%", "", "0%", "2.5%", "5%", "7.5%", "10%", "12.5%", "15%")
-    x.max <- 15
-  } else if (x.max > 15) {
-    x.br <- c(c(-30, -25, -20, -15, -10, -5, 0) - axis.mar, c(0, 5, 10, 15, 20, 25, 30) + axis.mar)
-    x.lbl <- c("30%", "25%", "20%", "15%", "10%", "5%", "", "0%", "5%", "10%", "15%", "20%", "25%", "30%")
-    if (x.max <= 20) {
-      x.lim <- c(-20 - axis.mar,20 + axis.mar)
-      x.max <- 20
-    } else if (x.max >20 && x.max <= 25) {
-      x.lim <- c(-25 - axis.mar,25 + axis.mar)
-      x.max <- 25
-    } else {
-      x.lim <- c(-30 - axis.mar,30 + axis.mar)
-      x.max <- 30
+  # ==============================================================#
+  # PREPARE ATTRIBUTES
+
+  # Colours
+  line.col <- colour_pal("French Grey")
+  text.col <- colour_pal("Black80")
+
+  if (missing(colours)) {
+    colour <- list(colour_pal("Steel Blue"),
+                   colour_pal("Lilac"),
+                   colour_pal("French Grey")
+    )
+  } else {
+    colour <- list(colours[[1]],
+                   colours[[2]],
+                   colours[[3]]
+    )
+  }
+
+  names(colour) <- c(leftLevel, rightLevel, "Total")
+
+  # Make left side data negative
+  total <- convert_neg(total, xVar, leftLevel, "Perc")
+
+  # Subtitle
+  if (!missing(group) && missing(subtitle))
+    subtitle = get_question(data, group)
+
+  # ==============================================================#
+  # PLOT
+  if (missing(group)) {
+    # TOTAL PLOT
+    p <- ggplot(data = total,
+                aes(x = Perc, y = !!rlang::ensym(yVar),
+                    label = paste0(abs(Perc), "%"),
+                    fill = !!rlang::ensym(xVar))) +
+
+      # Add total layer
+      geom_bar(stat = "identity") +
+
+      # Add scg theme
+      theme_scg() +
+
+      # Remove legend
+      theme(legend.position = "none")
+
+    # Add labels
+    if (addLabels == "yes") {
+      p <- add_text(p, total, "Perc", thresholdLab,
+                    nudgeLab, sizeLab, faceLab, colour = text.col)
+    }
+
+  } else {
+    # GROUP PLOT
+    p <- ggplot(data = grouped,
+                aes(x = Perc, y = !!rlang::ensym(yVar),
+                    label = paste0(round(abs(Perc), 0), "%"),
+                    fill = !!rlang::ensym(xVar)
+                )) +
+
+      # Add total layer
+      geom_bar(data = total, aes(group = id),
+               alpha = 0.8, fill = line.col, stat = "identity") +
+
+      # Add grouped layer
+      geom_bar(stat = "identity") +
+
+      # Facet by group
+      facet_wrap(vars(!!rlang::ensym(group))) +
+
+      # Add title, remove legend title, and add survey question as subtitle
+      labs(title = title, fill = "",
+           subtitle = subtitle) +
+
+      # Add scg theme
+      theme_scg() +
+
+      # Include legend at bottom
+      theme(legend.position = "bottom")
+
+    # Add labels
+    if (addLabels == "yes") {
+      p <- add_text(p, grouped, "Perc", thresholdLab,
+                    nudgeLab, sizeLab, faceLab, colour = text.col)
     }
   }
 
-  # Y AXIS
-  y.min <- get_lims(df_total, age_groups, "min")
-  y.max <- get_lims(df_total, age_groups, "max")
-  y.range <- y.max - y.min
-  y.mar <- 0.75
-
-  # COLOURS
-  line.col <- colour_pal("French Grey")
-  text.col <- colour_pal("Regent Grey")
-  colours <- list("Female" = colour_pal("Lilac"),
-                  "Male" = colour_pal("Steel Blue"),
-                  "Total" = colour_pal("French Grey"))
-
-  # =============== 5. GRAPH =============== #
-  if (missing(group)) {
-    p <- ggplot(data=df_total,
-                aes(y = !! rlang::ensym(age_groups),
-                    colour = !! rlang::ensym(gender))) +
-      # FEMALE
-      geom_linerange(data=df_total[df_total[2] == "Female", ],
-                    aes(xmin = axis.mar,
-                        xmax = axis.mar+Perc),
-                    linewidth=100/y.range) +
-      # MALE
-      geom_linerange(data=df_total[df_total[2] == "Male", ],
-                    aes(xmin = -axis.mar,
-                        xmax = -axis.mar+(-Perc)),
-                    linewidth=100/y.range)
-  } else {
-    fact <- length(unique(df_grp[,1]))/2
-    p <- ggplot(data=df_grp,
-                aes(y = !! rlang::ensym(age_groups),
-                    group=!! rlang::ensym(group),
-                    colour = !! rlang::ensym(gender))) +
-      # FEMALE
-      geom_linerange(data=df_total[df_total[2] == "Female", ],
-                    aes(xmin = axis.mar,
-                        xmax = axis.mar+Perc,
-                        group=id),
-                     colour = line.col,
-                     linewidth=(100/y.range)/fact) +
-      geom_linerange(data=df_grp[df_grp[3] == "Female", ],
-                     aes(xmin = axis.mar,
-                         xmax = axis.mar+Perc),
-                     linewidth=(100/y.range)/fact) +
-      # MALE
-      geom_linerange(data=df_total[df_total[2] == "Male", ],
-                    aes(xmin = -axis.mar,
-                        xmax = -axis.mar+(-Perc),
-                        group=id),
-                      colour = line.col,
-                      linewidth=(100/y.range)/fact) +
-      geom_linerange(data=df_grp[df_grp[3] == "Male", ],
-                    aes(xmin = -axis.mar,
-                        xmax = -axis.mar+(-Perc),
-                        ),
-                     linewidth=(100/y.range)/fact) +
-      facet_wrap(vars(!! rlang::ensym(group)))
-  }
-
   p <- p +
-    geom_segment(aes(x = axis.mar+x.max,
-                     xend = axis.mar,
-                     y = y.min-y.mar,
-                     yend = y.min-y.mar),
-                 colour = line.col,
-                 linewidth=0.25,
-                 arrow = arrow(type='open',
-                               length = unit(7.5,'pt'),
-                               ends = "first")) +
-    geom_segment(aes(x = -axis.mar-x.max,
-                     xend = -axis.mar,
-                     y = y.min-y.mar,
-                     yend = y.min-y.mar),
-                 colour = line.col,
-                 linewidth=0.25,
-                 arrow = arrow(type='open',
-                               length = unit(7.5,'pt'),
-                               ends = "first")) +
-    # LABELS
-    geom_text(aes(x = 0,
-                   y = !! rlang::ensym(age_groups),
-                   label = !! rlang::ensym(age_groups)),
-               inherit.aes = FALSE,
-               size = 3.5,
-               # label.padding = unit(0.0, "lines"),
-               # label.size = 0,
-               # label.r = unit(0.0, "lines"),
-               # fill = "white",
-               alpha = 0.9,
-               colour = "white") +
-    labs(title="Population Structure", x="", y="") +
-    scale_colour_manual(values=colours) +
-    scale_x_continuous(expand = c(0,0),
-                       limits = x.lim,
-                       breaks = x.br,
-                       labels = x.lbl)+
-    scale_y_discrete(expand = c(0, 0)) +
-    coord_cartesian(ylim = c(y.min-y.mar, y.max+y.mar), xlim = x.lim, expand=FALSE, clip = 'off') +
-    theme_scg() +
+    # Add axes titles
+    xlab(xLab) +
+    ylab(yLab) +
+
+    # Add colours to
+    scale_fill_manual(values = unname(unlist(colour)),
+                      breaks = names(colour)) +
+
+    # Make x axis left of butterfly plot negative
+    scale_x_continuous(labels = abs) +
+
+    # Remove horizontal gridlines and axes ticks and lines
     theme(
-      legend.position = "none",
       panel.grid.minor = element_blank(),
       panel.grid.major.y = element_blank(),
       axis.ticks = element_blank(),
-      axis.line = element_blank(),
-      axis.text.y = element_blank(),
+      axis.line.y = element_blank(),
+      axis.line.x = element_line(arrow = grid::arrow(length = unit(0.25, "cm"),
+                                                     ends = "both"),
+                                 colour = line.col
+      )
     )
 
   if (missing(group)) {
-    p <- p + annotate("text",
-                      x=1,
-                      y=y.max+.5,
-                      label=f_label,
-                      hjust = 0,
-                      fontface = "bold",
-                      colour = colour_pal("Lilac")) +
+    p <- p +
+      # Allow labels to go off plot areas
+      coord_cartesian(clip = 'off') +
+
+      # Add right-side label at top
       annotate("text",
-               x=-1,
-               y=y.max+.5,
-               label=m_label,
+               x = 1,
+               y = yLevels + 0.75,
+               label = rightLabel,
+               hjust = 0,
+               fontface = "bold",
+               colour = colour[[rightLevel]]) +
+
+      # Add left-side label at top
+      annotate("text",
+               x = -1,
+               y = yLevels + 0.75,
+               label = leftLabel,
                hjust = 1,
                fontface = "bold",
-               colour = colour_pal("Steel Blue"))
+               colour = colour[[leftLevel]]) +
+
+      # Add title
+      labs(title = title)
   }
+  # ==============================================================#
   return(p)
 }

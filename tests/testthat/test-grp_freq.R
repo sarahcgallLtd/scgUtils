@@ -76,19 +76,21 @@ test_that("percent of subgroup is added to frequency", {
   groupsPercent <- groups[1]
 
   fn <- function(data, groupsPercent, round_decimals) {
-    data <- transform(data,
-                      Perc = stats::ave(Freq, data[, groupsPercent],
-                                        FUN = function(x) x/sum(x)*100))
+    if (missing(groupsPercent))
+      data <- transform(data, Perc = stats::ave(Freq, FUN = function(x) x / sum(x) * 100))
+    else
+      data <- transform(data, Perc = stats::ave(Freq, data[, groupsPercent],
+                                            FUN = function(x) x / sum(x) * 100))
     if (is.numeric(round_decimals)==TRUE)
       data <- round_vars(data, round_decimals)
     return(data)
   }
 
-  x <- fn(tmp, "Party", round_decimals = 2)
+  x <- fn(tmp, groupsPercent, round_decimals = 2)
   expect_equal(x[1, 4], 57.81)
 
-  y <- fn(tmp, c("Party", "Gender"), round_decimals = 2)
-  expect_equal(y[1, 4], 100)
+  y <- fn(tmp, round_decimals = 2)
+  expect_equal(y[1, 4], 29.84)
 })
 
 # ==============================================================#
@@ -161,9 +163,7 @@ test_that("function returns data frame with original groups and frequency and pe
     group_by(Party, Gender) %>%
     summarise(Freq = sum(Weight)) %>%
     ungroup() %>%
-    group_by(Gender) %>%
     mutate(Perc = round(Freq/sum(Freq)*100,2)) %>%
-    ungroup() %>%
     as.data.frame()
 
   expect_identical(x[1,4], y[1,4])

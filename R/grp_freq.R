@@ -8,7 +8,7 @@
 #' @param weight Variable containing weight factors. This variable is optional.
 #' @param set_names Vector of column names. This paramenter is optional.
 #' @param addPercent Get percent of frequency (Options: "no" or "yes"). This parameter is optional, defaulted to "No", and permits one or many variables.
-#' @param groupsPercent Vector of variables for percent of frequency. This parameter is optional and permits one or many variables.
+#' @param groupsPercent Vector of variables for percent of frequency. This parameter is optional and permits none (for total), one or many variables.
 #' @param round_decimals Numeric value to round numeric data by x number of decimals places. Default does not round.
 #'
 #' @return A data frame containing frequencies by group
@@ -99,12 +99,12 @@ grp_freq <- function(data,
   # ==============================================================#
   # OPTIONAL: ADD PERCENT
   if (addPercent == "yes" || !missing(groupsPercent)) {
-    # if groupdPercent is missing, take the first variable from group
-    if (missing(groupsPercent)) {
-      groupsPercent <- groups[1]
-    }
-    tmp <- transform(tmp, Perc = stats::ave(Freq, tmp[, groupsPercent],
+    if (missing(groupsPercent))
+      tmp <- transform(tmp, Perc = stats::ave(Freq, FUN = function(x) x / sum(x) * 100))
+    else
+      tmp <- transform(tmp, Perc = stats::ave(Freq, tmp[, groupsPercent],
                                             FUN = function(x) x / sum(x) * 100))
+
     if (is.numeric(round_decimals) == TRUE)
       tmp <- round_vars(tmp, round_decimals)
   }
