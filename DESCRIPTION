@@ -32,7 +32,8 @@ Suggests:
     knitr,
     rmarkdown,
     labelled,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    proto
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 LazyData: true

@@ -39,7 +39,7 @@ test_that("correct levels are returned", {
 })
 
 test_that("question is returned", {
-  x <- get_question(df,"turnoutUKGeneral")
+  x <- get_question(df, "turnoutUKGeneral")
   expect_equal(x, "Likelihood to vote in general election")
 })
 
@@ -59,26 +59,40 @@ test_that("colours are returned in a list", {
                      colours[[3]]
       )
     }
-    names(colour) <- c(leftLevel,rightLevel,"Total")
+    names(colour) <- c(leftLevel, rightLevel, "Total")
     return(colour)
   }
 
-  x <- fn("Male","Female")
+  x <- fn("Male", "Female")
   expect_equal(x$Male, "#4682B4")
 
-  x <- fn("Male","Female", colours=c("#000000","#ffffff","#eeeeee"))
+  x <- fn("Male", "Female", colours = c("#000000", "#ffffff", "#eeeeee"))
   expect_equal(x$Male, "#000000")
 
 })
 
 test_that("data frame values converted to negative", {
-  tmp <- data.frame(gender = c("Male","Female"),
-                    Perc = c(1.1,2.2))
+  tmp <- data.frame(gender = c("Male", "Female"),
+                    Perc = c(1.1, 2.2))
 
   x <- convert_neg(tmp, "gender", "Male", "Perc")
-  expect_equal(x[1,2], -1.1) # Male
-  expect_equal(x[2,2], 2.2) # Female
+  expect_equal(x[1, 2], -1.1) # Male
+  expect_equal(x[2, 2], 2.2) # Female
 })
 
 # ==============================================================#
 # TEST: RESULT
+test_that("function produces correct graph", {
+  library(proto)
+  # Basix
+  p <- plot_popn(data = df,
+                 xVar = "gender",
+                 yVar = "ageGroup",
+                 title = "Population Structure",
+                 xLab = "Population (%)",
+                 yLab = "Age")
+
+  expect_identical(p$labels$title, "Population Structure")
+  expect_identical(p$labels$x, "Population (%)")
+  expect_identical(p$labels$y, "Age")
+})
