@@ -83,7 +83,6 @@ test_that("data frame values converted to negative", {
 # ==============================================================#
 # TEST: RESULT
 test_that("function produces correct graph", {
-  library(proto)
   # Basix
   p <- plot_popn(data = df,
                  xVar = "gender",
