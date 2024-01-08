@@ -83,7 +83,7 @@ test_that("data frame values converted to negative", {
 # ==============================================================#
 # TEST: RESULT
 test_that("function produces correct graph", {
-  # Basix
+  # Basic
   p <- plot_popn(data = df,
                  xVar = "gender",
                  yVar = "ageGroup",
@@ -94,4 +94,27 @@ test_that("function produces correct graph", {
   expect_identical(p$labels$title, "Population Structure")
   expect_identical(p$labels$x, "Population (%)")
   expect_identical(p$labels$y, "Age")
+
+  # total with mean
+  p <- plot_popn(data = df,
+                 xVar = "gender",
+                 yVar = "ageGroup",
+                 weight = "wt",
+                 meanVar = "age",
+                 addLabels = "yes",
+                 faceLab = "bold")
+
+  expect_identical(p$coordinates$clip, "off")
+
+
+  # Weighted with group
+  p <- plot_popn(data = df,
+                 xVar = "gender",
+                 yVar = "ageGroup",
+                 group = "partyId",
+                 weight = "wt",
+                 colour = c("#4682B4","#Bf8AB6","#cdcdd1"))
+
+  expect_identical(p$labels$subtitle, "Party identification")
+  expect_identical(p$facet$params$as.table, TRUE)
 })
