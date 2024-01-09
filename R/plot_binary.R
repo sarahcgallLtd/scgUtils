@@ -31,7 +31,7 @@ plot_binary <- function(data,
                         weight
 ) {
   # ==============================================================#
-  # CHECK PARAMETERS
+  # CHECK PARAMS
   check_params(data = data,
                vars = vars,
                group = group,
