@@ -116,5 +116,14 @@ test_that("function produces correct graph", {
                  colour = c("#4682B4","#Bf8AB6","#cdcdd1"))
 
   expect_identical(p$labels$subtitle, "Party identification")
+
+  plot_popn(data=df,
+          xVar="gender",
+          yVar="ageGroup",
+          weight="wt",
+          group="partyId",
+          addLabels = "yes",
+          thresholdLab = 5
+  )
   expect_identical(p$facet$params$as.table, TRUE)
 })
