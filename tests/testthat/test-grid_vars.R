@@ -99,4 +99,16 @@ test_that("function returns data frame with original groups and frequency and pe
   expect_length(x, 5)
   expect_equal(x[1, 4], 511.98)
   expect_equal(x[1, 5], 23.79)
+
+  # WITHOUT GROUP
+  x <- grid_vars(df, vars)
+  expect_length(x, 4)
+  expect_equal(x[1, 3], 1055)
+  expect_equal(x[1, 4], 21.1)
+
+  # WITHOUT GROUP
+  x <- grid_vars(df, vars, weight = "wt")
+  expect_length(x, 4)
+  expect_equal(x[1, 3], 850.59)
+  expect_equal(x[1, 4], 21.31)
 })

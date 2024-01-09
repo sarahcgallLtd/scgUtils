@@ -91,7 +91,9 @@ grid_vars <- function(data,
 
   # Remove `vars` and `group` from arguments
   grp[["vars"]] <- NULL
-  grp[["group"]] <- NULL
+
+  if (!missing(group))
+    grp[["group"]] <- NULL
 
   # Evaluate
   tmp <- eval(grp, parent.frame())
