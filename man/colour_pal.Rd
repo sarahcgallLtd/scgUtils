@@ -18,10 +18,10 @@ colour_pal(
 
 \item{assign}{Vector of corresponding levels/cetgories}
 
-\item{type}{Either "continuous", "discrete", or "discrete_as". Default = "discrete".}
+\item{type}{Either "continuous", "discrete" (unnamed), or "discrete_as" (named/assigned). Default = "discrete".}
 }
 \value{
-A vector of colours.
+A vector of colours (discrete) or list of colours with names (discrete_as)
 }
 \description{
 Generate colours palettes for graphs.

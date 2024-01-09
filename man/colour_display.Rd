@@ -4,10 +4,10 @@
 \alias{colour_display}
 \title{Diplay Colour Options}
 \usage{
-colour_display(palette, n, assign)
+colour_display(pal_name, n, assign)
 }
 \arguments{
-\item{palette}{Name of palette to visualise}
+\item{pal_name}{Name of pal_name to visualise}
 
 \item{n}{Number of desired colours.}
 
@@ -29,10 +29,10 @@ colour_display("Jaffa")
 # View all individual colours
 colour_display("All")
 
-# View sequential colour palette with 7 levels
+# View sequential colour pal_name with 7 levels
 colour_display("seqGreen", 7)
 
-# View diverging colour palette with 5 levels with assigned values
+# View diverging colour pal_name with 5 levels with assigned values
 colour_display("divBlueGreen", 5, c("Very Likely","Likely","Neutral","Unlikely","Very Unlikely"))
 
 }
