@@ -4,18 +4,18 @@
 \alias{plot_binary}
 \title{Plot Binary Survey Data}
 \usage{
-plot_binary(data, vars, group, weight, return_var)
+plot_binary(data, vars, value, group, weight)
 }
 \arguments{
 \item{data}{A data frame containing survey data. This parameter is required.}
 
 \item{vars}{A list of column names and the renamed variable. This parameter is required.}
 
+\item{value}{One of two variable names to return (e.g., "Yes"). This variable is required.}
+
 \item{group}{A variable overlay to compare between groups. This parameter is optional.}
 
 \item{weight}{Variable containing weight factors. This variable is optional.}
-
-\item{return_var}{One of two variable names to return (e.g., "Yes"). This variable is required.}
 }
 \value{
 a ggplot2 graph.
@@ -33,6 +33,6 @@ plot_binary(dataset,
             vars = vars,
             group = "gender",
             weight = "wgtvar",
-            return_var = "Yes")
+            value = "Yes")
 }
 }

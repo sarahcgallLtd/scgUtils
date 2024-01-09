@@ -42,7 +42,7 @@ plot_binary <- function(data,
 
   # Check that values are binary and occur in vars
   for (i in names(vars)) {
-    x <- as.data.frame(unique(na.omit(data[, i])))
+    x <- as.data.frame(unique(stats::na.omit(data[, i])))
     stopifnot("`value` must be in `vars`." = value %in% x[, 1])
     stopifnot("`vars` variables must contain binary values only (e.g., 'Yes' and 'No')." = nrow(x) == 2)
   }
