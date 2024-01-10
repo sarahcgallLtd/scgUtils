@@ -59,6 +59,9 @@ plot_popn <- function(data,
                weight = weight,
                meanVar = meanVar)
 
+  if (missing(xVar) && missing(yVar))
+    stop("`xVar` and `yVar` are required to be parsed through this function.")
+
   # Take first option
   addLabels <- match.arg(addLabels)
   faceLab <- match.arg(faceLab)
@@ -112,17 +115,14 @@ plot_popn <- function(data,
     sta <- match.call(expand.dots = FALSE)
 
     # Match relevant arguments
-    sta_n <- match(c("data", "weight"), names(sta), 0L)
+    sta_n <- match(c("data", "meanVar", "weight"), names(sta), 0L)
     sta <- sta[c(1L, sta_n)]
 
     # Substitute `plot_popn` for `grp_mean`
     sta[[1L]] <- quote(grp_mean)
 
-    # Substitute `var`
-    sta[["var"]] <- meanVar
-
     # Substitute `group`
-    sta[["group"]] <- xVar
+    sta[["groups"]] <- xVar
 
     # Evaluate
     stats <- eval(sta, parent.frame())

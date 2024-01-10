@@ -27,9 +27,9 @@ plot_bigfive <- function(data,
 ) {
   # ==============================================================#
   # CHECK PARAMS
-  check_params(data=data,
-               group=group,
-               weight=weight)
+  check_params(data = data,
+               group = group,
+               weight = weight)
 
   # Check that big_five are in df
   stopifnot("`big_five` variable must be a column in `data`." = big_five %in% names(data))
@@ -44,16 +44,16 @@ plot_bigfive <- function(data,
   for (i in big_five) {
     if (!missing(weight)) {
       # Weighted average
-     total1 <- data.frame(Mean = stats::weighted.mean(data[, i], data[, weight]))
+      tmp <- data.frame(Mean = stats::weighted.mean(data[, i], data[, weight]))
     } else {
       # unweighted average
-      total1 <- data.frame(Mean = sum(data[, i]) / nrow(data))
-   }
+      tmp <- data.frame(Mean = sum(data[, i]) / nrow(data))
+    }
     # Add big five name to column
-    total1$Metric <- i
+    tmp$Metric <- i
 
     # Add combine data
-    total <- rbind(total, total1)
+    total <- rbind(total, tmp)
   }
 
   # Add group id
@@ -74,10 +74,10 @@ plot_bigfive <- function(data,
     # Evaluate each metric
     grouped <- data.frame()
     for (i in big_five) {
-      grp[["var"]] <- i
-      total1 <- eval(grp, parent.frame())
-      total1$Metric <- i
-      grouped <- rbind(grouped, total1)
+      grp[["meanVar"]] <- i
+      tmp <- eval(grp, parent.frame())
+      tmp$Metric <- i
+      grouped <- rbind(grouped, tmp)
     }
 
     # Rename group to "Group2"
@@ -97,56 +97,22 @@ plot_bigfive <- function(data,
   total$Metric <- factor(total$Metric, levels = big_five)
 
   # ==============================================================#
-  # CREATE GRID
-  grid <- data.frame()
-  for (i in seq(from = 0, to = 100, by = 10)) {
-    temp <- data.frame(x = big_five)
-    temp <- cbind(temp, data.frame(y = rep(i, nrow(temp))))
-    grid <- rbind(grid, temp)
-  }
-  grid1 <- rbind(grid, grid[grid[, "x"] == big_five[1],])
-  grid$x <- factor(grid$x, levels = big_five)
-  grid1$x <- factor(grid1$x, levels = big_five)
-  grid2 <- data.frame(x = c(0.5, 0.5, 0.5, 0.5),
-                      y = c(81, 60.75, 40.75, 20.25),
-                      label = c("100", "75", "50", "25"))
-
-  # ==============================================================#
-  # PREPARE ATTRIBUTES
-
+  # PREPARE ATTRIBUTES & GRID
   # Colours
-  line.col <- colour_pal("French Grey")
   text.col <- colour_pal("Regent Grey")
 
-  # Create grid
-  p <- ggplot(data = grid1,
-              aes(x = x, y = y, group = y)) +
-    geom_path(colour = line.col,
-              linewidth = 0.15,
-              alpha = 0.5) +
-    geom_path(data = grid1[grid1$y %in% c(50, 100),],
-              aes(x = x, y = y, group = y),
-              linewidth = 0.25) +
-    geom_path(data = grid,
-              aes(x = x, y = y, group = x),
-              colour = line.col,
-              linewidth = 0.25,
-              linetype = "dashed") +
-    geom_label(data = grid2,
-               aes(x = x, y = y, label = label),
-               size = 4,
-               label.padding = unit(0.0, "lines"),
-               label.size = 0,
-               label.r = unit(0.0, "lines"),
-               fill = "white",
-               colour = text.col)
+  # Grid
+  p <- create_grid(big_five)
 
   # ==============================================================#
   # PLOT DATA
   p <- p +
+    # Add total points for each metric
     geom_point(data = total[total$Group == "Total",],
                aes(x = Metric, y = Mean, group = Group),
                colour = text.col) +
+
+    # Add total polygon, joining points
     geom_polygon(data = total[total$Group == "Total",],
                  aes(x = Metric, y = Mean, group = Group),
                  alpha = 0.3,
@@ -155,27 +121,27 @@ plot_bigfive <- function(data,
 
   if (!missing(group)) {
     p <- p +
+      # Add grouped points for each metric
       geom_point(data = grouped[grouped$Group2 != "Total",],
-                 aes(x = Metric, y = Mean, colour = Group2, fill = Group2, group = Group2)) +
+                 aes(x = Metric, y = Mean, colour = Group2,
+                     fill = Group2, group = Group2)) +
+
+      # Add grouped polygons, joining points
       geom_polygon(data = grouped[grouped$Group2 != "Total",],
-                   aes(x = Metric, y = Mean, colour = Group2, fill = Group2, group = Group2),
+                   aes(x = Metric, y = Mean, colour = Group2,
+                       fill = Group2, group = Group2),
                    alpha = 0.3) +
+
+      # Facet wrap groups
       facet_wrap(~Group2)
   }
   p <- p +
+    # Set colour for fill and colour aesthetics
     scale_fill_manual(values = colour_pal("catExtended"),
                       aesthetics = c("colour", "fill")) +
-    scale_y_continuous(limits = c(0, 100), expand = c(0, 0)) +
-    coord_radar() +
-    theme_scg() +
-    theme(
-      axis.line = element_blank(),
-      axis.text.y = element_blank(),
-      axis.ticks = element_blank(),
-      axis.title.y = element_blank(),
-      axis.title.x = element_blank(),
-      panel.grid.major = element_blank(),
-      legend.position = "none")
+
+    # Set y axis limits
+    scale_y_continuous(limits = c(0, 100), expand = c(0, 0))
 
   return(p)
 }

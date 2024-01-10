@@ -8,18 +8,33 @@ vars <- list(likeSunak = "Sunak",
 # ==============================================================#
 # TEST: CHECK PARAMS
 test_that("parameters return correct error", {
-  expect_error(grid_vars("data"), "A data frame is required to be parsed through this function.")
+  # data =======================================================#
+  expect_error(grid_vars("data"),
+               "A data frame is required to be parsed through this function.")
+  expect_error(grid_vars(),
+               "A data frame is required to be parsed through this function.")
 
-  expect_error(grid_vars(df, "vars"), "`vars` must be a list.")
+  # vars =======================================================#
+  expect_error(grid_vars(df, "vars"),
+               "`vars` must be a list.")
   var <- list("column1")
-  expect_error(grid_vars(df, var), "`vars` list must contain column names.")
+  expect_error(grid_vars(df, var),
+               "`vars` list must contain column names.")
   var <- list(column = "column1")
-  expect_error(grid_vars(df, var), "`vars` list must contain columns from `data`.")
+  expect_error(grid_vars(df, var),
+               "`vars` list must contain columns from `data`.")
+  expect_error(grid_vars(df),
+               "`vars` is required to be parsed through this function.")
 
-  expect_error(grid_vars(df, vars, group = "column1"), "`group` variable must be a column in `data`.")
+  # group ======================================================#
+  expect_error(grid_vars(df, vars, group = "column1"),
+               "`group` variable must be a column in `data`.")
 
-  expect_error(grid_vars(df, vars, weight = "column1"), "`weight` variable must be a column in `data`.")
-  expect_error(grid_vars(df, vars, weight = "gender"), "`weight` must be numeric.")
+  # weight =====================================================#
+  expect_error(grid_vars(df, vars, weight = "column1"),
+               "`weight` variable must be a column in `data`.")
+  expect_error(grid_vars(df, vars, weight = "gender"),
+               "`weight` must be numeric.")
 })
 
 # ==============================================================#

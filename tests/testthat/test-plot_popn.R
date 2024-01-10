@@ -5,19 +5,35 @@ df <- labelled::unlabelled(df)
 # ==============================================================#
 # TEST: CHECK PARAMS
 test_that("parameters return correct error", {
-  expect_error(plot_popn("data"), "A data frame is required to be parsed through this function.")
+  # data =======================================================#
+  expect_error(plot_popn("data"),
+               "A data frame is required to be parsed through this function.")
+  expect_error(plot_popn(),
+               "A data frame is required to be parsed through this function.")
 
-  expect_error(plot_popn(df, xVar = "column1"), "`xVar` variable must be a column in `data`.")
+  # xVar and yVar ==============================================#
+  expect_error(plot_popn(df, xVar = "column1"),
+               "`xVar` variable must be a column in `data`.")
+  expect_error(plot_popn(df, yVar = "column1"),
+               "`yVar` variable must be a column in `data`.")
+  expect_error(plot_popn(df),
+               "`xVar` and `yVar` are required to be parsed through this function.")
 
-  expect_error(plot_popn(df, yVar = "column1"), "`yVar` variable must be a column in `data`.")
+  # group ======================================================#
+  expect_error(plot_popn(df, group = "column1"),
+               "`group` variable must be a column in `data`.")
 
-  expect_error(plot_popn(df, group = "column1"), "`group` variable must be a column in `data`.")
+  # weight =====================================================#
+  expect_error(plot_popn(df, weight = "column1"),
+               "`weight` variable must be a column in `data`.")
+  expect_error(plot_popn(df, weight = "gender"),
+               "`weight` must be numeric.")
 
-  expect_error(plot_popn(df, weight = "column1"), "`weight` variable must be a column in `data`.")
-  expect_error(plot_popn(df, weight = "gender"), "`weight` must be numeric.")
-
-  expect_error(plot_popn(df, meanVar = "column1"), "`meanVar` variable must be a column in `data`.")
-  expect_error(plot_popn(df, meanVar = "gender"), "`meanVar` must be numeric.")
+  # meanVar ====================================================#
+  expect_error(plot_popn(df, meanVar = "column1"),
+               "`meanVar` variable must be a column in `data`.")
+  expect_error(plot_popn(df, meanVar = "gender"),
+               "`meanVar` must be numeric.")
 })
 
 # ==============================================================#

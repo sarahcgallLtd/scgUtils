@@ -73,6 +73,8 @@ check_params <- function(data, var, vars, group, groups, weight, groupsPercent,
   # `data`: Ensure data is a data frame
   if (!missing(data)) {
     stopifnot("A data frame is required to be parsed through this function." = is.data.frame(data))
+  } else {
+    stop("A data frame is required to be parsed through this function.")
   }
 
   # `var`: Ensure group variable is in data frame
@@ -282,3 +284,69 @@ add_text <- function(plot, data, column, thresholdLab, nudgeLab, sizeLab, faceLa
 }
 
 # TODO: Known issue = when add_text() is used in a facet, the hjust position does not work for smaller negative values
+
+# ========== #
+# Function to create circular grid
+create_grid <- function(outerLabs,
+                        line.col = colour_pal("French Grey"),
+                        text.col = colour_pal("Regent Grey")) {
+  grid <- data.frame()
+  for (i in seq(from = 0, to = 100, by = 10)) {
+    tmp <- data.frame(x = outerLabs)
+    tmp <- cbind(tmp, data.frame(y = rep(i, nrow(tmp))))
+    grid <- rbind(grid, tmp)
+  }
+  # To ensure grid is fully enclosed when coord_radar is added,
+  # duplicate the first outerLabs
+  grid <- rbind(grid, grid[grid[, "x"] == outerLabs[1],])
+  # Make xVar/outerLabs factor
+  grid$x <- factor(grid$x, levels = outerLabs)
+  # Add position of
+  labels <- data.frame(x = c(0.5, 0.5, 0.5, 0.5),
+                       y = c(81, 60.75, 40.75, 20.25),
+                       label = c("100", "75", "50", "25"))
+
+  p <- ggplot(data = grid,
+              aes(x = x, y = y, group = y)) +
+    # Add solid horizonal lines at 10% intervals
+    geom_path(colour = line.col,
+              linewidth = 0.15,
+              alpha = 0.5) +
+    # Add distinct solid horizonal lines at 50 and 100 %
+    geom_path(data = grid[grid$y %in% c(50, 100),],
+              aes(x = x, y = y, group = y),
+              linewidth = 0.25) +
+    # Add vertical dashed lines
+    geom_path(data = unique(grid),
+              aes(x = x, y = y, group = x),
+              colour = line.col,
+              linewidth = 0.25,
+              linetype = "dashed") +
+    # Add labels
+    geom_label(data = labels,
+               aes(x = x, y = y, label = label),
+               size = 4,
+               label.padding = unit(0.0, "lines"),
+               label.size = 0,
+               label.r = unit(0.0, "lines"),
+               fill = "white",
+               colour = text.col) +
+
+    # create radar chart
+    coord_radar() +
+
+    # Add scg theme
+    theme_scg() +
+
+    # Remove all gridlines, titles, axes, and legends
+    theme(
+      axis.line = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks = element_blank(),
+      axis.title.y = element_blank(),
+      axis.title.x = element_blank(),
+      panel.grid.major = element_blank(),
+      legend.position = "none")
+
+  return(p)
+}

@@ -37,6 +37,12 @@ plot_binary <- function(data,
                group = group,
                weight = weight)
 
+  if (missing(vars))
+    stop("`vars` is required to be parsed through this function.")
+
+  if (missing(value))
+    stop("`value` is required to be parsed through this function.")
+
   stopifnot("`value` must be a character string." = is.character(value))
   stopifnot("`value` must be a single character string only (e.g., 'Yes')." = length(value) == 1)
 
@@ -50,17 +56,17 @@ plot_binary <- function(data,
   # ==============================================================#
   # PREPARE DATA
   # Match arguments
-  bin <- match.call(expand.dots = FALSE)
+  agg <- match.call(expand.dots = FALSE)
 
   # Limit to data, vars, and weight
-  bin_n <- match(c("data", "vars", "weight"), names(bin), 0L)
-  bin <- bin[c(1L, bin_n)]
+  agg_n <- match(c("data", "vars", "weight"), names(agg), 0L)
+  agg <- agg[c(1L, agg_n)]
 
   # Substitute 'plot_binary' for 'grid_vars'
-  bin[[1L]] <- quote(grid_vars)
+  agg[[1L]] <- quote(grid_vars)
 
   # Evaluate
-  total <- eval(bin, parent.frame())
+  total <- eval(agg, parent.frame())
 
   # Add total id
   total$id <- "Total"
@@ -70,10 +76,10 @@ plot_binary <- function(data,
 
   if (!missing(group)) {
     # Add group variable if not missing
-    bin[["group"]] <- group
+    agg[["group"]] <- group
 
     # Evaluate
-    grouped <- eval(bin, parent.frame())
+    grouped <- eval(agg, parent.frame())
 
     # Filter by value
     grouped <- grouped[grouped[, "Response"] == value, -which(names(grouped) == "Response")]

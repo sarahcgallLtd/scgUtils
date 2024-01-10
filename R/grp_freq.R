@@ -9,7 +9,7 @@
 #' @param set_names Vector of column names. This paramenter is optional.
 #' @param addPercent Get percent of frequency (Options: "no" or "yes"). This parameter is optional, defaulted to "No", and permits one or many variables.
 #' @param groupsPercent Vector of variables for percent of frequency. This parameter is optional and permits none (for total), one or many variables.
-#' @param round_decimals Numeric value to round numeric data by x number of decimals places. Default does not round.
+#' @param round_decimals Numeric value to round numeric data by x number of decimals places. Default does not round. This parameter is optional.
 #'
 #' @return A data frame containing frequencies by group
 #'
@@ -68,6 +68,9 @@ grp_freq <- function(data,
                groups = groups,
                weight = weight,
                groupsPercent = groupsPercent)
+
+  if (missing(groups))
+    stop("`groups` is required to be parsed through this function.")
 
   # Take first option
   addPercent <- match.arg(addPercent)

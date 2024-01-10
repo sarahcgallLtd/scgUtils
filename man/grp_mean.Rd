@@ -4,14 +4,14 @@
 \alias{grp_mean}
 \title{Grouped Mean}
 \usage{
-grp_mean(data, var, group, weight, set_names, round_decimals = NULL)
+grp_mean(data, meanVar, groups, weight, set_names, round_decimals = NULL)
 }
 \arguments{
 \item{data}{A data frame containing survey data. This parameter is required.}
 
-\item{var}{Variable to be averaged. var must be numeric. This parameter is required.}
+\item{meanVar}{Variable to be averaged. var must be numeric. This parameter is required.}
 
-\item{group}{Variable being grouped. This parameter is required.}
+\item{groups}{Variable being grouped. This parameter is required and permits one or many variables.}
 
 \item{weight}{Variable containing weight factors. This variable is optional.}
 
@@ -30,7 +30,7 @@ Calculates the mean of a variable by a group in survey data.
 # Return a averages of a variable by group (weighted or unweighted)
 tmp <- grp_mean(dataset,
                var = "age",
-               group = "gender",
+               groups = "gender",
                weight = "wgtvar")
 
 #   gender     Mean

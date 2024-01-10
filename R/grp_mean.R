@@ -4,8 +4,8 @@
 #' @description Calculates the mean of a variable by a group in survey data.
 #'
 #' @param data A data frame containing survey data. This parameter is required.
-#' @param var Variable to be averaged. var must be numeric. This parameter is required.
-#' @param group Variable being grouped. This parameter is required.
+#' @param meanVar Variable to be averaged. var must be numeric. This parameter is required.
+#' @param groups Variable being grouped. This parameter is required and permits one or many variables.
 #' @param weight Variable containing weight factors. This variable is optional.
 #' @param set_names Vector of column names. This paramenter is optional.
 #' @param round_decimals Numeric value to round numeric data by x number of decimals places. Default does not round.
@@ -17,7 +17,7 @@
 #' # Return a averages of a variable by group (weighted or unweighted)
 #' tmp <- grp_mean(dataset,
 #'                var = "age",
-#'                group = "gender",
+#'                groups = "gender",
 #'                weight = "wgtvar")
 #'
 #' #   gender     Mean
@@ -28,8 +28,8 @@
 #' }
 #' @export
 grp_mean <- function(data,
-                     var,
-                     group,
+                     meanVar,
+                     groups,
                      weight,
                      set_names,
                      round_decimals = NULL
@@ -37,11 +37,15 @@ grp_mean <- function(data,
   # ==============================================================#
   # CHECK PARAMS
   check_params(data = data,
-               var = var,
-               group = group,
+               meanVar = meanVar,
+               groups = groups,
                weight = weight)
 
-  stopifnot("`var` must be numeric." = is.numeric(data[[var]]))
+  if (missing(meanVar))
+    stop("`meanVar` is required to be parsed through this function.")
+
+  if (missing(groups))
+    stop("`groups` is required to be parsed through this function.")
 
   # ==============================================================#
   # PREPARE DATA
@@ -49,17 +53,16 @@ grp_mean <- function(data,
   data <- as.data.frame(data)
 
   # make "group_by" a list
-  grp <- list_group(data, group)
-#  grp <- list(group = data[, group])
+  grp <- list_group(data, groups)
 
   # ==============================================================#
   # CALCULATE MEAN
   if (missing(weight)) {
-    tmp <- stats::aggregate(data[, var],
+    tmp <- stats::aggregate(data[, meanVar],
                             by = grp,
                             FUN = mean)
   } else {
-    tmp <- by(data[c(var, weight)],
+    tmp <- by(data[c(meanVar, weight)],
               grp,
               FUN = function(x) stats::weighted.mean(x[, 1], x[, 2]))
     tmp <- data.frame(Col1 = rep(names(tmp), lengths(tmp)),
@@ -76,7 +79,7 @@ grp_mean <- function(data,
   if (!missing(set_names)) {
     tmp <- stats::setNames(tmp, set_names)
   } else {
-    tmp <- stats::setNames(tmp, c(group, "Mean"))
+    tmp <- stats::setNames(tmp, c(groups, "Mean"))
   }
 
   # ==============================================================#
