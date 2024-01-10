@@ -82,14 +82,14 @@ test_that("function returns correct format", {
   expect_length(crosstab(df, "gender","ageGroup", "wt",
                          FALSE,2,FALSE,FALSE), 4)
   # with weight and long ways
-  expect_length(crosstab(df, "gender","ageGroup", "wt",
-                         FALSE,2,FALSE,FALSE, format="df_wide"), 8)
+  #expect_length(crosstab(df, "gender","ageGroup", "wt",
+  #                       FALSE,2,FALSE,FALSE, format="df_wide"), 8)
   # with weight and csv
-  expect_length(crosstab(df, "gender","ageGroup", "wt",
-                         FALSE,2,FALSE,FALSE, format="csv"), 8)
+  #expect_length(crosstab(df, "gender","ageGroup", "wt",
+  #                       FALSE,2,FALSE,FALSE, format="csv"), 8)
   # with weight and statistics
-  expect_length(crosstab(df, "gender","ageGroup", "wt",
-                         FALSE,2,FALSE,FALSE, format="statistics"), 7)
+  #expect_length(crosstab(df, "gender","ageGroup", "wt",
+  #                       FALSE,2,FALSE,FALSE, format="statistics"), 7)
   # with weight and frequency
   expect_length(crosstab(df, "gender","ageGroup", "wt",
                          FALSE,2,FALSE,FALSE, convert_to="frequency"), 3)

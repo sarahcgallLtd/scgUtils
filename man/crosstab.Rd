@@ -6,23 +6,24 @@
 \usage{
 crosstab(
   data,
-  row_var,
-  col_var,
+  rowVar,
+  colVar,
   weight,
   totals = TRUE,
   round_decimals = NULL,
   statistics = TRUE,
   plot = TRUE,
   format = c("df_long", "df_wide", "csv", "statistics"),
-  convert_to = c("percent", "frequency")
+  convert_to = c("percent", "frequency"),
+  yLab = "Population (\%)"
 )
 }
 \arguments{
 \item{data}{A data frame containing survey data. This parameter is required.}
 
-\item{row_var}{Independent variable represented in rows (on the side). This parameter is required.}
+\item{rowVar}{Independent variable represented in rows (on the side). This parameter is required.}
 
-\item{col_var}{Dependent variable represented in columns (at the top). This parameter is required.}
+\item{colVar}{Dependent variable represented in columns (at the top). This parameter is required.}
 
 \item{weight}{Variable containing weight factors. This variable is optional.}
 
@@ -37,6 +38,8 @@ crosstab(
 \item{format}{Formatting options to return either a long or wide data frame (default = \code{"df_long"}).}
 
 \item{convert_to}{Conversion options to return either a percentages or frequencies (default = \code{"percent"}).}
+
+\item{yLab}{Y axis title. Default = "Population (\%)".}
 }
 \value{
 Crosstabs held in a data frame containing row-wise percentages (\%) and col-wise totals (n)
@@ -48,8 +51,8 @@ Produce crosstabs/contingency tables to view individually and perform further an
 \dontrun{
 # Create crosstabs with long df output using weighted data.
 df <- crosstab(dataset,
-              row_var = "Q1",
-              col_var = "Gender",
+              rowVar = "Q1",
+              colVar = "Gender",
               weight = "wgtvar",
               totals = FALSE,
               round_decimal=2)

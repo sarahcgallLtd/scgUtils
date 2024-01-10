@@ -13,6 +13,7 @@
 #' @param plot Logical, if plot is \code{TRUE}, a chart is available to be viewed (default = \code{TRUE}).
 #' @param format Formatting options to return either a long or wide data frame (default = \code{"df_long"}).
 #' @param convert_to Conversion options to return either a percentages or frequencies (default = \code{"percent"}).
+#' @param yLab Y axis title. Default = "Population (%)".
 #'
 #' @return Crosstabs held in a data frame containing row-wise percentages (%) and col-wise totals (n)
 #'
@@ -166,7 +167,7 @@ crosstab <- function(data,
       }
 
       # Omit NaNs from graph
-      p_df <- na.omit(p_df)
+      p_df <- stats::na.omit(p_df)
 
       # Colours
       line.col <- colour_pal("French Grey")
