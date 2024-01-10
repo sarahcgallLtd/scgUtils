@@ -15,13 +15,13 @@
 
 # ========== #
 # Function to test quoted or unquoted argument
-test_deparse <- function(x) {
-  x.try <- try(x, silent = TRUE)
-  if (!inherits(x.try, "try-error") && is.character(x.try))
-    x.try
-  else
-    deparse(substitute(x))
-}
+# test_deparse <- function(x) {
+#   x.try <- try(x, silent = TRUE)
+#   if (!inherits(x.try, "try-error") && is.character(x.try))
+#     x.try
+#   else
+#     deparse(substitute(x))
+# }
 
 # ========== #
 # Function to return the original question
@@ -68,18 +68,13 @@ list_group <- function(data, group) {
 
 # ========== #
 # Future updates to simplfiy this:
-check_params <- function(data, var, vars, group, groups, weight, groupsPercent,
-                         xVar, yVar, meanVar) {
+check_params <- function(data, vars, group, groups, weight, groupsPercent,
+                         xVar, yVar, meanVar, rowVar, colVar) {
   # `data`: Ensure data is a data frame
   if (!missing(data)) {
     stopifnot("A data frame is required to be parsed through this function." = is.data.frame(data))
   } else {
     stop("A data frame is required to be parsed through this function.")
-  }
-
-  # `var`: Ensure group variable is in data frame
-  if (!missing(var)) {
-    stopifnot("`var` variable must be a column in `data`." = var %in% names(data))
   }
 
   # `vars`: Ensure vars is a list and that the list objects are in the data frame
@@ -126,6 +121,16 @@ check_params <- function(data, var, vars, group, groups, weight, groupsPercent,
     stopifnot("`meanVar` variable must be a column in `data`. E.g., 'age'" = meanVar %in% names(data))
     stopifnot("`meanVar` must be numeric." = is.numeric(data[[meanVar]]))
   }
+
+  # `rowVar`: Ensure rowVar variable is in data frame
+  if (!missing(rowVar)) {
+    stopifnot("`rowVar` variable must be a column in `data`." = rowVar %in% names(data))
+  }
+
+  # `colVar`: Ensure colVar variable is in data frame
+  if (!missing(colVar)) {
+    stopifnot("`colVar` variable must be a column in `data`." = colVar %in% names(data))
+  }
 }
 
 # ============================================================== #
@@ -137,14 +142,14 @@ check_params <- function(data, var, vars, group, groups, weight, groupsPercent,
 
 # ========== #
 # Function to create crosstab and retrive statistics
-xtab_calc <- function(data, formula, weight, statistics, type = "xtabs_df") {
-  df <- stats::xtabs(
-    stats::reformulate(
-      formula,
-      response = weight
-    ), data = data
-  )
-  x <- summary(df)
+xtab_calc <- function(data, formula, weight = NULL, statistics = FALSE, type = "xtabs_df") {
+  # Create frequency matrix
+  df <- stats::xtabs( stats::reformulate(formula, response = weight), data = data)
+
+  # Remove columns with all 0s (i.e., factors with no responses)
+  x <- summary(df[, colSums(df != 0) > 0])
+
+  # Get statistics from call
   k <- min(length(df), nrow(df))
   n <- x[[2]]
   chisq <- x[[3]]
@@ -152,6 +157,7 @@ xtab_calc <- function(data, formula, weight, statistics, type = "xtabs_df") {
 
   p <- round(x[[6]], 3)
 
+  # Combine stats
   stat <- paste0(formula[1], " x ", formula[2], ": ",
                  "Chisq = ", round(chisq, 3), " | ",
                  "DF = ", x[[4]], " | ",
@@ -160,12 +166,16 @@ xtab_calc <- function(data, formula, weight, statistics, type = "xtabs_df") {
   )
 
   if (type == "xtabs_df") {
+    # Convert matrix to data frame
     df <- as.data.frame(df)
+
     if (statistics == TRUE)
       print(noquote(stat))
+
   } else if (type == "statistics") {
     df <- data.frame(stat)
     names(df)[names(df) == "stat"] <- formula[1]
+
   } else if (type == "statistics_df") {
     df <- data.frame(Row_Var = formula[1],
                      Col_Var = formula[2],
@@ -181,14 +191,14 @@ xtab_calc <- function(data, formula, weight, statistics, type = "xtabs_df") {
 
 # ========== #
 # Function to add totals and sample size to df
-xtab_totals <- function(data, row_var, col_var, name) {
+xtab_totals <- function(data, rowVar, colVar, name) {
   if (missing(name)) {
     # Create column-wise totals
     total <- stats::aggregate(data$Freq, by = list(y = data[, 1]), FUN = sum)
     total$z <- "Total"
     names(total)[names(total) == "x"] <- "Freq"
-    names(total)[names(total) == "y"] <- { { row_var } }
-    names(total)[names(total) == "z"] <- { { col_var } }
+    names(total)[names(total) == "y"] <- rowVar
+    names(total)[names(total) == "z"] <- colVar
     df <- dplyr::bind_rows(data, total)
   } else {
     # Create row-wise totals

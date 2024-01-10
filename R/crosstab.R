@@ -4,8 +4,8 @@
 #' @description Produce crosstabs/contingency tables to view individually and perform further analysis on.
 #'
 #' @param data A data frame containing survey data. This parameter is required.
-#' @param row_var Independent variable represented in rows (on the side). This parameter is required.
-#' @param col_var Dependent variable represented in columns (at the top). This parameter is required.
+#' @param rowVar Independent variable represented in rows (on the side). This parameter is required.
+#' @param colVar Dependent variable represented in columns (at the top). This parameter is required.
 #' @param weight Variable containing weight factors. This variable is optional.
 #' @param totals Logical, if totals is \code{TRUE}, df with totals column is included (default = \code{TRUE}).
 #' @param round_decimals Set the number of decimal points for the data (default = \code{NULL}).
@@ -20,8 +20,8 @@
 #' \dontrun{
 #' # Create crosstabs with long df output using weighted data.
 #' df <- crosstab(dataset,
-#'               row_var = "Q1",
-#'               col_var = "Gender",
+#'               rowVar = "Q1",
+#'               colVar = "Gender",
 #'               weight = "wgtvar",
 #'               totals = FALSE,
 #'               round_decimal=2)
@@ -29,136 +29,200 @@
 #' @importFrom magrittr %>%
 #' @export
 crosstab <- function(data,
-                     row_var,
-                     col_var,
+                     rowVar,
+                     colVar,
                      weight,
-                     totals=TRUE,
-                     round_decimals=NULL,
-                     statistics=TRUE,
-                     plot=TRUE,
-                     format=c("df_long","df_wide","csv","statistics"),
-                     convert_to=c("percent","frequency")
+                     totals = TRUE,
+                     round_decimals = NULL,
+                     statistics = TRUE,
+                     plot = TRUE,
+                     format = c("df_long", "df_wide", "csv", "statistics"),
+                     convert_to = c("percent", "frequency"),
+                     yLab = "Population (%)"
 ) {
-  # =========== 1. CHECK DATA & ARGUMENTS ============ #
-  # Check if data frame
-  if (missing(data))
-    stop("A data frame is required to be parsed through this function.")
+  # ==============================================================#
+  # CHECK PARAMS
+  check_params(data = data,
+               rowVar = rowVar,
+               colVar = colVar,
+               weight = weight)
 
   # Check if required variables are missing
-  if (missing(row_var))
-    stop("A row variable is required.")
-
-  if (missing(col_var))
-    stop("A column variable is required.")
+  if (missing(rowVar) && missing(colVar))
+    stop("`rowVar` and `colVar` are required to be parsed through this function.")
 
   # statistics <- match.arg(statistics)
   format <- match.arg(format)
   convert_to <- match.arg(convert_to)
 
-  # =========== 2. GET VARIABLES ============ #
-  # Required variables [formula = ~ row_var + col_var]
-  y <- test_deparse(row_var)
-  x <- test_deparse(col_var)
-  vars <- c(y, x)
+  # ==============================================================#
+  # PREPARE VARIABLES
+  # Return funciton arguments
+  tmp <- match.call(expand.dots = FALSE)
 
-  # check if weight is included [formula = weight ~ row_var + col_var]
-  if (!missing(weight)){
-    w <- test_deparse(weight)
+  # Match relevant arguments
+  tmp_n <- match(c("data", "weight", "statistics"), names(tmp), 0L)
+  tmp <- tmp[c(1L, tmp_n)]
+
+  # Substitute `crosstab` for `xtab_calc`
+  tmp[[1L]] <- quote(xtab_calc)
+
+  #  Substitute `formula`
+  tmp[["formula"]] <- c(rowVar, colVar)
+
+  # check if weight is included [formula = weight ~ rowVar + colVar]
+  if (!missing(weight)) {
+    tmp[["weight"]] <- weight
     name <- "Weighted sample size"
-  } else {
-    w <- NULL
+  } else
     name <- "Unweighted sample size"
-  }
 
-  # =========== 3. CALCULATE ============ #
-  if (format=="statistics"){
-    df <- xtab_calc(data, vars, w, type="statistics_df")
+  # ==============================================================#
+  # CALCULATE XTABS
+  if (format == "statistics") { # Statistics only
+    #  Substitute `type`
+    tmp[["type"]] <- "statistics_df"
 
-  } else {
-    # Crosstab
-    df <- xtab_calc(data, vars, w, statistics)
-    df$Freq <- as.numeric(df$Freq) # ensure numeric (not integer)
+    # Evaluate: xtab_calc(data, c(rowVar, colVar), weight, type = "statistics_df")
+    df <- eval(tmp, parent.frame())
 
-    # Statistics
-    stat <- xtab_calc(data, vars, w, type="statistics")
+  } else { # Crosstab
+    #  Substitute `statistics`
+    tmp[["statistics"]] <- statistics
 
-    # =========== 4. FORMATTING OPTIONS ============ #
-    if (totals==TRUE)
-      df <- xtab_totals(df, y, x) # add totals
+    # Evaluate: xtab_calc(data, c(rowVar, colVar), weight, statistics)
+    df <- eval(tmp, parent.frame())
+
+    # Ensure numeric (not integer)
+    df$Freq <- as.numeric(df$Freq)
+
+    #  Substitute `type`
+    tmp[["type"]] <- "statistics"
+
+    #  Substitute `statistics` (turn off)
+    tmp[["statistics"]] <- FALSE
+
+    # Evaluate Statistics: xtab_calc(data, c(rowVar, colVar), weight, type = "statistics")
+    stat <- eval(tmp, parent.frame())
+
+    # ==============================================================#
+    # FORMATTING OPTIONS
+    if (totals == TRUE)
+      # Add totals
+      df <- xtab_totals(df, rowVar, colVar)
 
     # SHAPE: Change for csv and df_wide options otherwise = df_wide or plot
-    if (format %in% c("csv","df_wide")){
+    if (format %in% c("csv", "df_wide")) {
       # Convert to table
       df <- tidyr::pivot_wider(
         df,
-        names_from = x,
+        names_from = colVar,
         values_from = Freq
       )
 
-    if (totals==TRUE)
-      df <- df[,c(1, ncol(df), 2:(ncol(df)-1))] # Change order
+      if (totals == TRUE)
+        df <- df[, c(1, ncol(df), 2:(ncol(df) - 1))] # Change order
     }
 
     # ADDITIONS:
-    if (format=="csv")
-      df <- xtab_totals(df, y, x, name) # Add sample sizes
+    if (format == "csv")
+      # Add sample sizes
+      df <- xtab_totals(df, rowVar, colVar, name)
 
     # Convert variables
     if (convert_to != "frequency")
-      if (format=="csv") {
+      if (format == "csv") {
         df[-nrow(df),] <- xtabs_convert(df[-nrow(df),], convert_to, format)
       } else
-        df <- xtabs_convert(df, convert_to, format) # convert to percent
+        # convert to percent
+        df <- xtabs_convert(df, convert_to, format)
 
-    if (is.numeric(round_decimals)==TRUE)
-      df <- round_vars(df, round_decimals) # round decimals
+    if (is.numeric(round_decimals) == TRUE)
+      # round decimals
+      df <- round_vars(df, round_decimals)
 
     # Add statistics row
-    if (format=="csv")
+    if (format == "csv")
       df <- dplyr::bind_rows(df, stat)
 
-    if (statistics==FALSE)
-      stat=NULL
+    if (statistics == FALSE)
+      stat = NULL
 
     # Add plot
-    if (plot==TRUE) {
-      if (format!="df_long" || convert_to == "frequency") {
-        p_df <- xtab_calc(data, vars, w, FALSE)
-        if (totals==TRUE)
-          p_df <- xtab_totals(p_df, y, x)
+    if (plot == TRUE) {
+      if (format != "df_long" || convert_to == "frequency") {
+        p_df <- eval(tmp, parent.frame())
+
+        if (totals == TRUE)
+          p_df <- xtab_totals(p_df, rowVar, colVar)
+
         p_df <- xtabs_convert(p_df, "percent", "df_long")
-        if (is.numeric(round_decimals)==TRUE)
+
+        if (is.numeric(round_decimals) == TRUE)
           p_df <- round_vars(p_df, round_decimals)
+
       } else {
         p_df <- df
       }
 
-      p <- ggplot(data=p_df[p_df[2] != "Total", ],
-                  aes(x= !! rlang::ensym(row_var), y=Perc,
-                      fill=stats::reorder(!! rlang::ensym(col_var), Freq)))
-      if (totals==TRUE) {
-        p <- p + geom_bar(data=p_df[p_df[2] == "Total", ],
-                          aes(x=!! rlang::ensym(row_var), y=Perc, colour=!! rlang::ensym(col_var)),
-                          stat="identity",  alpha=0.4, fill="#cdcdd1") +
+      # Omit NaNs from graph
+      p_df <- na.omit(p_df)
+
+      # Colours
+      line.col <- colour_pal("French Grey")
+
+      # ==============================================================#
+      # PLOT
+      p <- ggplot(data = p_df[p_df[2] != "Total",],
+                  aes(x = !!rlang::ensym(rowVar), y = Perc,
+                      fill = stats::reorder(!!rlang::ensym(colVar), Freq)))
+
+      if (totals == TRUE) {
+        p <- p +
+          # Add total bars
+          geom_bar(data = p_df[p_df[2] == "Total",],
+                   aes(x = !!rlang::ensym(rowVar), y = Perc, colour = !!rlang::ensym(colVar)),
+                   stat = "identity", alpha = 0.4, fill = line.col) +
+
+          # Set colour of total bar
           scale_colour_manual(name = NULL,
                               values = "transparent",
-                              guide = guide_legend(order = 2, override.aes = list(fill = "#cdcdd1")))
+                              guide = guide_legend(order = 2,
+                                                   override.aes = list(fill = line.col)))
       }
-      p <- p + geom_bar(stat="identity", width=0.8, position = position_dodge(width=0.9), alpha=1) +
+      p <- p +
+        # Add grouped bars
+        geom_bar(stat = "identity", width = 0.8,
+                 position = position_dodge(width = 0.9), alpha = 1) +
+
+        # Set order of legend
         guides(fill = guide_legend(order = 1)) +
-        scale_fill_manual(values=colour_pal("catExtended")) +
-        scale_y_continuous(limits=c(0,100), expand=c(0,0), breaks=c(0,25,50,75,100),
-                           labels=c("0%","25%","50%","75%","100%")) +
-        labs(title = paste0("% of ", row_var, " by ", col_var), caption = stat,
-             fill = col_var, x=row_var, y="") +
+
+        # Add colours to bars
+        scale_fill_manual(values = colour_pal("catExtended")) +
+
+        # Limit y axis from 0 to 100
+        scale_y_continuous(limits = c(0, 100), expand = c(0, 0),
+                           breaks = c(0, 25, 50, 75, 100)) +
+
+        # Add labels
+        labs(title = paste0("% of ", rowVar, " by ", colVar),
+             caption = stat,
+             fill = colVar,
+             x = rowVar,
+             y = yLab) +
+
+        # Add scg theme
         theme_scg() +
+
+        # Remove horizontal grid lines and reduce size of legend keys
         theme(
-          plot.margin = margin(0.5,0.5,0.5,0.1, "cm"),
           panel.grid.major.x = element_blank(),
           legend.key.size = unit(0.35, 'cm')
         )
-    print(p)
+      print(p)
     }
   }
+  # ==============================================================#
   return(df)
 }
