@@ -44,7 +44,7 @@ round_vars <- function(data, decimals) {
 # Function to pivot wider (equivalent to tidyr::pivot_wider()
 pivot_wide <- function(data, vars) {
   formula <- stats::reformulate(vars, response = "Freq")
-  tmp <- as.data.frame.matrix(xtabs(formula, data), stringsAsFactors = TRUE)
+  tmp <- as.data.frame.matrix(stats::xtabs(formula, data), stringsAsFactors = TRUE)
   # Make rownames first column
   tmp <- cbind(rownames(tmp), tmp)
   # Remove index/row names
@@ -234,11 +234,10 @@ xtabs_convert <- function(data, convert_to, format) {
       data <- transform(data, `Perc` = stats::ave(Freq, data[, 2], FUN = prop.table))
       data$Perc <- as.numeric(data$Perc * 100)
     } else {
-      numeric <- vapply(data, is.numeric, FUN.VALUE = logical(1))
       if (format == "csv")
-        data[, numeric] <- data[, numeric] / sum(data[, numeric])
+        data [sapply(data , is.numeric)] <- lapply(data [sapply(data , is.numeric)], function(x) x / sum(x))
       else
-        data[, numeric] <- data[, numeric] / sum(data[, numeric]) * 100
+        data [sapply(data , is.numeric)] <- lapply(data [sapply(data , is.numeric)], function(x) x / sum(x) * 100)
     }
   }
   return(data)

@@ -149,14 +149,20 @@ crosstab <- function(data,
     # Add plot
     if (plot == TRUE) {
       if (format != "df_long" || convert_to == "frequency") {
+        # Substitute type
+        tmp[["type"]] <- "xtabs_df"
+
+        # Evaluate: xtab_calc(data = df, weight = weight, statistics = FALSE,  formula = vars, type = "xtabs_df")
         p_df <- eval(tmp, parent.frame())
 
         if (totals == TRUE)
           p_df <- xtab_totals(p_df, rowVar, colVar)
 
+        # Convert to percentage
         p_df <- xtabs_convert(p_df, "percent", "df_long")
 
         if (is.numeric(round_decimals) == TRUE)
+          # Round to x decimal places
           p_df <- round_vars(p_df, round_decimals)
 
       } else {

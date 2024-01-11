@@ -36,49 +36,54 @@ test_that("parameters return correct error", {
 # ==============================================================#
 # TEST: CALCULATE XTAB
 test_that("returns xtab_calc correctly", {
-  vars <- c("gender","ageGroup")
+  vars <- c("gender", "ageGroup")
 
   # unweighted
-  expect_equal(xtab_calc(df, vars)[14,3], 1215)
+  expect_equal(xtab_calc(df, vars)[14, 3], 1215)
 
   # weighted
-  expect_equal(xtab_calc(df, vars, "wt")[14,3], 767.50818)
+  expect_equal(xtab_calc(df, vars, "wt")[14, 3], 767.50818)
 
   # include statistics
-  expect_equal(as.character(xtab_calc(df, vars, type="statistics")),
+  expect_equal(as.character(xtab_calc(df, vars, type = "statistics")),
                "gender x ageGroup: Chisq = 28.441 | DF = 5 | Cramer's V = 0.075 | p-value = 0")
 
   # include statistics_df
-  expect_equal(xtab_calc(df, vars, type="statistics_df")$Chisq,28.441)
+  expect_equal(xtab_calc(df, vars, type = "statistics_df")$Chisq, 28.441)
 
 })
 
 # TEST: CALCULATE XTAB TOTAL
 test_that("returns xtab_total correctly", {
-  vars <- c("gender","ageGroup")
+  vars <- c("gender", "ageGroup")
   data <- xtab_calc(df, vars, weight = "wt")
 
-  expect_length(xtab_totals(data, "gender","ageGroup"), 3)
-  expect_length(xtab_totals(data, "gender","ageGroup", "name"), 3)
+  expect_length(xtab_totals(data, "gender", "ageGroup"), 3)
+  expect_length(xtab_totals(data, "gender", "ageGroup", "name"), 3)
 
 })
 
 # TEST: CALCULATE XTAB TOTAL
-test_that("returns xtab_convert correctly", {
-  vars <- c("gender","ageGroup")
+test_that("returns xtab_totals correctly", {
+  vars <- c("gender", "ageGroup")
   data <- xtab_calc(df, vars, weight = "wt")
 
-  expect_length(xtab_totals(data, "gender","ageGroup"), 3)
-  expect_length(xtab_totals(data, "gender","ageGroup", "name"), 3)
+  x <- xtabs_convert(data, "percent", "df_long")
+  expect_equal(x[14, 4], 48.55974)
+
+  y <- pivot_wide(data, vars)
+  y <- xtabs_convert(y, "percent", "df_wide")
+  expect_equal(xtabs_convert(y, "percent", "df_wide")[2, 8], x[14, 4])
 
 })
 
+
 # TEST PIVOT
 test_that("returns pivot_wide", {
-  vars <- c("gender","ageGroup")
+  vars <- c("gender", "ageGroup")
   data <- xtab_calc(df, vars, weight = "wt")
 
-  x <- pivot_wide(data,vars)
+  x <- pivot_wide(data, vars)
   y <- as.data.frame(tidyr::pivot_wider(data, names_from = "ageGroup", values_from = Freq))
 
   expect_equal(x, y)
@@ -89,21 +94,24 @@ test_that("returns pivot_wide", {
 # TEST: FORMATTING OPTIONS
 test_that("function returns correct format", {
   # basic defaults
-  expect_length(crosstab(df, "gender","ageGroup"), 4)
+  expect_length(crosstab(df, "gender", "ageGroup"), 4)
   # with everything turned off
-  expect_length(crosstab(df, "gender","ageGroup", "wt",
-                         FALSE,2,FALSE,FALSE), 4)
+  expect_length(crosstab(df, "gender", "ageGroup", "wt",
+                         FALSE, 2, FALSE, FALSE), 4)
   # with weight and long ways
-  expect_length(crosstab(df, "gender","ageGroup", "wt",
-                        FALSE,2,FALSE,FALSE, format="df_wide"), 8)
+  expect_length(crosstab(df, "gender", "ageGroup", "wt",
+                         FALSE, 2, FALSE, FALSE, format = "df_wide"), 8)
   # with weight and csv
-  expect_length(crosstab(df, "gender","ageGroup", "wt",
-                        FALSE,2,FALSE,FALSE, format="csv"), 8)
+  expect_length(crosstab(df, "gender", "ageGroup", "wt",
+                         FALSE, 2, FALSE, FALSE, format = "csv"), 8)
   # with weight and statistics
-  expect_length(crosstab(df, "gender","ageGroup", "wt",
-                        FALSE,2,FALSE,FALSE, format="statistics"), 7)
+  expect_length(crosstab(df, "gender", "ageGroup", "wt",
+                         FALSE, 2, FALSE, FALSE, format = "statistics"), 7)
   # with weight and frequency
-  expect_length(crosstab(df, "gender","ageGroup", "wt",
-                         FALSE,2,FALSE,FALSE, convert_to="frequency"), 3)
+  expect_length(crosstab(df, "gender", "ageGroup", "wt",
+                         FALSE, 2, FALSE, FALSE, convert_to = "frequency"), 3)
+  # wide with plot
+  expect_length(crosstab(df, "gender", "ageGroup", "wt",
+                         FALSE, 2, FALSE, TRUE, format = "df_wide"), 8)
 
 })
