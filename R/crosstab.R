@@ -115,14 +115,11 @@ crosstab <- function(data,
     # SHAPE: Change for csv and df_wide options otherwise = df_wide or plot
     if (format %in% c("csv", "df_wide")) {
       # Convert to table
-      df <- tidyr::pivot_wider(
-        df,
-        names_from = colVar,
-        values_from = Freq
-      )
+      df <- pivot_wide(df, c(rowVar, colVar))
 
       if (totals == TRUE)
-        df <- df[, c(1, ncol(df), 2:(ncol(df) - 1))] # Change order
+        # Change order
+        df <- df[, c(1, ncol(df), 2:(ncol(df) - 1))]
     }
 
     # ADDITIONS:

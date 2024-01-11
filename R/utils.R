@@ -33,13 +33,28 @@ get_question <- function(data, var) {
 # ========== #
 # Function to round to x decimal places
 round_vars <- function(data, decimals) {
-  df <- data %>%
-    dplyr::mutate(
-      dplyr::across(
-        .cols = dplyr::where(is.numeric),
-        .fns = ~round(., decimals)
-      )
-    )
+  numeric <- vapply(data, is.numeric, FUN.VALUE = logical(1))
+
+  data[, numeric] <- round(data[, numeric], digits = decimals)
+
+  return(data)
+}
+
+# ========== #
+# Function to pivot wider (equivalent to tidyr::pivot_wider()
+pivot_wide <- function(data, vars) {
+  formula <- stats::reformulate(vars, response = "Freq")
+  tmp <- as.data.frame.matrix(xtabs(formula, data), stringsAsFactors = TRUE)
+  # Make rownames first column
+  tmp <- cbind(rownames(tmp), tmp)
+  # Remove index/row names
+  rownames(tmp) <- NULL
+  # Rename
+  names(tmp)[names(tmp) == "rownames(tmp)"] <- vars[1]
+  # Return original factor levels
+  tmp[,vars[1]] <- factor(tmp[,vars[1]], levels(data[,vars[1]]))
+
+  return(tmp)
 }
 
 # ========== #
@@ -144,7 +159,7 @@ check_params <- function(data, vars, group, groups, weight, groupsPercent,
 # Function to create crosstab and retrive statistics
 xtab_calc <- function(data, formula, weight = NULL, statistics = FALSE, type = "xtabs_df") {
   # Create frequency matrix
-  df <- stats::xtabs( stats::reformulate(formula, response = weight), data = data)
+  df <- stats::xtabs(stats::reformulate(formula, response = weight), data = data)
 
   # Remove columns with all 0s (i.e., factors with no responses)
   x <- summary(df[, colSums(df != 0) > 0])
@@ -215,25 +230,18 @@ xtab_totals <- function(data, rowVar, colVar, name) {
 # Function to convert frequencies to percent (more options to be added in future)
 xtabs_convert <- function(data, convert_to, format) {
   if (convert_to == "percent") {
-    if (format == "csv") {
-      formula <- stats::as.formula(~. / sum(.))
-    } else
-      formula <- stats::as.formula(~. / sum(.) * 100)
-
     if (format == ("df_long")) {
-      df <- transform(data, `Perc` = stats::ave(Freq, data[, 2], FUN = prop.table))
-      df <- df %>%
-        dplyr::mutate(Perc = as.numeric(df$Perc * 100))
-    } else
-      df <- data %>%
-        dplyr::mutate(
-          dplyr::across(
-            .cols = dplyr::where(is.numeric),
-            .fns = formula
-          )
-        )
+      data <- transform(data, `Perc` = stats::ave(Freq, data[, 2], FUN = prop.table))
+      data$Perc <- as.numeric(data$Perc * 100)
+    } else {
+      numeric <- vapply(data, is.numeric, FUN.VALUE = logical(1))
+      if (format == "csv")
+        data[, numeric] <- data[, numeric] / sum(data[, numeric])
+      else
+        data[, numeric] <- data[, numeric] / sum(data[, numeric]) * 100
+    }
   }
-  return(df)
+  return(data)
 }
 
 # ============================================================== #
