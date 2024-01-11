@@ -113,5 +113,8 @@ test_that("function returns correct format", {
   # wide with plot
   expect_length(crosstab(df, "gender", "ageGroup", "wt",
                          FALSE, 2, FALSE, TRUE, format = "df_wide"), 8)
+  # wide with plot and totals
+  expect_length(crosstab(df, "gender", "ageGroup", "wt",
+                         TRUE, 2, FALSE, TRUE, format = "csv"), 9)
 
 })
