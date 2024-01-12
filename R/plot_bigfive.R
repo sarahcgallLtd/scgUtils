@@ -1,18 +1,18 @@
 #' @title Big Five Personality Radar Plots
 #' @name plot_bigfive
 #'
-#' @description Visualizes the average scores of the Big Five personality traits on a radar graph.
+#' @description Visualises the average scores of the Big Five personality traits on a radar graph.
 #'
 #' @param data A data frame containing survey data. This parameter is required.
-#' @param bigfive A vector with the columns containing the Big Five scores. This parameter is required.
+#' @param bigfive A vector with the column names representing the Big Five personality trait scores. This parameter is required.
 #' @param group A variable overlay to compare between groups. This parameter is optional.
 #' @param weight Variable containing weight factors. This variable is optional.
 #'
-#' @return ggplot2 plot of the Big Five scores.
+#' @return A radar plot created using ggplot2, displaying the average scores of the Big Five personality traits.
 #'
 #' @examples
 #' \dontrun{
-#' # Create plot using age groups
+#' # Create a radar plot using age groups
 #' plot_bigfive(dataset,
 #'              bigfive = c("Neuroticism", "Extroversion", "Openness",
 #'                           "Agreeableness", "Conscientiousness"),
