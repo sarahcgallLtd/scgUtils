@@ -4,7 +4,7 @@
 \alias{plot_binary}
 \title{Plot Binary Survey Data}
 \usage{
-plot_binary(data, vars, value, group, weight)
+plot_binary(data, vars, value, group = NULL, weight = NULL)
 }
 \arguments{
 \item{data}{A data frame containing survey data. This parameter is required.}
@@ -21,7 +21,7 @@ plot_binary(data, vars, value, group, weight)
 a ggplot2 graph.
 }
 \description{
-Utilises the function \code{binary_vars} to visualise visualise binary survey results.
+Visualizes binary survey results using the \code{grid_vars} function.
 }
 \examples{
 \dontrun{

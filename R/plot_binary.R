@@ -1,7 +1,7 @@
 #' @title Plot Binary Survey Data
 #' @name plot_binary
 #'
-#' @description Utilises the function \code{binary_vars} to visualise visualise binary survey results.
+#' @description Visualizes binary survey results using the \code{grid_vars} function.
 #'
 #' @param data A data frame containing survey data. This parameter is required.
 #' @param vars A list of column names and the renamed variable. This parameter is required.
@@ -27,8 +27,8 @@
 plot_binary <- function(data,
                         vars,
                         value,
-                        group,
-                        weight
+                        group = NULL,
+                        weight = NULL
 ) {
   # ==============================================================#
   # CHECK PARAMS
@@ -74,7 +74,7 @@ plot_binary <- function(data,
   # Filter (Reponse = Yes)
   total <- total[total[, "Response"] == value, -which(names(total) == "Response")]
 
-  if (!missing(group)) {
+  if (!is.null(group)) {
     # Add group variable if not missing
     agg[["group"]] <- group
 
@@ -93,7 +93,7 @@ plot_binary <- function(data,
   # ==============================================================#
   # PLOT
   # Graph
-  if (!missing(group)) {
+  if (!is.null(group)) {
     # GROUPED PLOT
     p <- ggplot(data = grouped,
                 aes(x = Perc, y = stats::reorder(Question, Perc),
