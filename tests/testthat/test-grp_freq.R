@@ -17,7 +17,7 @@ test_that("parameters return correct error", {
   # weight =====================================================#
   expect_error(grp_freq(df, groups = "gender", weight = "column1"),
                "`weight` variable must be a column in `data`.")
-  # Unsure why this fails (correct error is thrown but test fails):
+  #Unsure why this fails (correct error is thrown but test fails):
   # expect_error(grp_freq(df, groups="gender", weight = "gender"), "`weight` must be numeric.")
 
   # groupsPercent ==============================================#
@@ -152,7 +152,7 @@ test_that("function returns data frame with original groups and frequency and pe
   # Compared with dplyr version
   y <- tmp %>%
     group_by(Gender) %>%
-    summarise(Freq = sum(Weight)) %>%
+    summarise(Freq = sum(Weight), .groups='drop') %>%
     ungroup() %>%
     as.data.frame()
 
@@ -165,8 +165,8 @@ test_that("function returns data frame with original groups and frequency and pe
 
   # Compared with dplyr version
   y <- tmp %>%
-    group_by(Party, Gender) %>%
-    summarise(Freq = sum(Weight)) %>%
+    group_by(Gender,Party) %>%
+    summarise(Freq = sum(Weight), .groups = 'drop') %>%
     ungroup() %>%
     mutate(Perc = round(Freq/sum(Freq)*100,2)) %>%
     as.data.frame()

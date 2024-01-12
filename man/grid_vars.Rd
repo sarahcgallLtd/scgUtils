@@ -4,7 +4,7 @@
 \alias{grid_vars}
 \title{Binary Survey Data}
 \usage{
-grid_vars(data, vars, group, weight)
+grid_vars(data, vars, group = NULL, weight = NULL)
 }
 \arguments{
 \item{data}{A data frame containing survey data. This parameter is required.}

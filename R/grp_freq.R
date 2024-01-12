@@ -56,10 +56,10 @@
 #' @export
 grp_freq <- function(data,
                      groups,
-                     weight,
-                     set_names,
+                     weight = NULL,
+                     set_names = NULL,
                      addPercent = c("no", "yes"),
-                     groupsPercent,
+                     groupsPercent = NULL,
                      round_decimals = NULL
 ) {
   # ==============================================================#
@@ -69,6 +69,7 @@ grp_freq <- function(data,
                weight = weight,
                groupsPercent = groupsPercent)
 
+  # `groups` is required
   if (missing(groups))
     stop("`groups` is required to be parsed through this function.")
 
@@ -85,15 +86,15 @@ grp_freq <- function(data,
 
   # ==============================================================#
   # GET FREQUENCY
-  if (missing(weight)) {
-    tmp <- stats::aggregate(grp[[1]], by = grp, FUN = length)
+  tmp <- if (is.null(weight)) {
+    stats::aggregate(grp[[1]], by = grp, FUN = length)
   } else {
-    tmp <- stats::aggregate(data[, weight], by = grp, FUN = sum)
+    stats::aggregate(data[, weight], by = grp, FUN = sum)
   }
 
   # ==============================================================#
   # SET COLUMN NAMES
-  if (!missing(set_names)) {
+  if (!is.null(set_names)) {
     tmp <- stats::setNames(tmp, set_names)
   } else {
     tmp <- stats::setNames(tmp, c(groups, "Freq"))
@@ -101,7 +102,7 @@ grp_freq <- function(data,
 
   # ==============================================================#
   # OPTIONAL: ADD PERCENT
-  if (addPercent == "yes" || !missing(groupsPercent)) {
+  if (addPercent == "yes" || !is.null(groupsPercent)) {
     if (missing(groupsPercent))
       tmp <- transform(tmp, Perc = stats::ave(Freq, FUN = function(x) x / sum(x) * 100))
     else

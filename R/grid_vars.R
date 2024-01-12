@@ -33,25 +33,27 @@
 #' @export
 grid_vars <- function(data,
                       vars,
-                      group,
-                      weight
+                      group = NULL,
+                      weight = NULL
 ) {
   # ==============================================================#
   # CHECK PARAMETERS
-  check_params(data=data,
-               vars=vars,
-               group=group,
-               weight=weight)
+  check_params(data = data,
+               vars = vars,
+               group = group,
+               weight = weight)
 
   if (missing(vars))
     stop("`vars` is required to be parsed through this function.")
 
   # ==============================================================#
   # PREPARE VARIABLES
-  # X
+  # Return funciton arguments for use
+  grp <- match.call(expand.dots = FALSE)
+
+  # Prepare variables
   x <- dput(names(vars), file = nullfile()) # suppress output to console
-  # Y
-  y <- c(append_if_exists(as.list(match.call()[-1])[-c(1, 2)]), x)
+  y <- append_if_exists(grp[["group"]], grp[["weight"]], x)
 
   # ==============================================================#
   # TRANSFORM DATA
@@ -62,19 +64,16 @@ grid_vars <- function(data,
   tmp[sapply(tmp, is.character)] <- lapply(tmp[sapply(tmp, is.character)], as.factor)
 
   # Make data frame longer
-  tmp <- tidyr::pivot_longer(tmp, cols = names(tmp[,x]), names_to = "Question", values_to = "Response")
+  tmp <- tidyr::pivot_longer(tmp, cols = names(tmp[, x]), names_to = "Question", values_to = "Response")
 
   # Change names of vars to from column names to new names
-  tmp$Question <-  unlist(vars)[tmp$Question]
+  tmp$Question <- unlist(vars)[tmp$Question]
 
   # Make Question variable factor
   tmp$Question <- factor(tmp$Question)
 
   # ==============================================================#
   # GET GROUPED FREQUENCY & PERCENTAGE
-  # Return funciton arguments
-  grp <- match.call(expand.dots = FALSE)
-
   # Substitute `grid_vars` for `grp_freq`
   grp[[1L]] <- quote(grp_freq)
 
@@ -82,12 +81,10 @@ grid_vars <- function(data,
   grp[["data"]] <- tmp
 
   # Substitute `groups` for vector
-  grp[["groups"]] <- c("Question", "Response",
-                      append_if_exists(as.list(grp[match("group", names(grp), 0)])))
+  grp[["groups"]] <- append_if_exists("Question", "Response", grp[["group"]])
 
   # Percent by groupsPercent
-  grp[["groupsPercent"]] <- c("Question",
-                         append_if_exists(as.list(grp[match("group", names(grp), 0)])))
+  grp[["groupsPercent"]] <- append_if_exists("Question", grp[["group"]])
 
   # Limit decimal places
   grp[["round_decimals"]] <- 2
@@ -95,7 +92,7 @@ grid_vars <- function(data,
   # Remove `vars` and `group` from arguments
   grp[["vars"]] <- NULL
 
-  if (!missing(group))
+  if (!is.null(group))
     grp[["group"]] <- NULL
 
   # Evaluate

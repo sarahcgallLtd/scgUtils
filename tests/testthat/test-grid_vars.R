@@ -44,24 +44,15 @@ test_that("list of variables becomes a vector", {
 
   expect_equal(x, c("likeSunak", "likeStarmer"))
 
-  fn <- function(data, vars, group, weight) {
-    y <- append_if_exists(as.list(match.call()[-1])[-c(1, 2)])
+  fn <- function(group=NULL, weight=NULL) {
+    y <- append_if_exists(group, weight)
+    return(y)
   }
 
-  expect_equal(fn(df, vars, "gender", "wt"), c("gender", "wt"))
-  expect_equal(fn(df, vars, "gender"), "gender")
-  expect_equal(fn(df, vars, weight = "wt"), "wt")
-  expect_equal(fn(df, vars), NULL)
-
-  fn <- function(data, vars, group, weight) {
-    grp <- match.call(expand.dots = FALSE)
-    y <- append_if_exists(as.list(grp[match("group", names(grp), 0)]))
-  }
-
-  expect_equal(fn(df, vars, "gender", "wt"), "gender")
-  expect_equal(fn(df, vars, "gender"), "gender")
-  expect_equal(fn(df, vars, weight = "wt"), NULL)
-  expect_equal(fn(df, vars), NULL)
+  expect_equal(fn("gender", "wt"), c("gender", "wt"))
+  expect_equal(fn("gender"), "gender")
+  expect_equal(fn(weight = "wt"), "wt")
+  expect_equal(fn(), NULL)
 })
 
 # ==============================================================#
@@ -71,7 +62,7 @@ test_that("vars list in Question column are renamed to new names", {
   # base r
   fn1 <- function(data, vars, group, weight) {
     x <- dput(names(vars), file = nullfile())
-    y <- c(append_if_exists(as.list(match.call()[-1])[-c(1, 2)]), x)
+    y <- c(append_if_exists(group), x)
     tmp <- data[, y]
     tmp[sapply(tmp, is.character)] <- lapply(tmp[sapply(tmp, is.character)], as.factor)
     tmp <- tidyr::pivot_longer(tmp, cols = names(tmp[,x]), names_to = "Question", values_to = "Response")
@@ -82,7 +73,7 @@ test_that("vars list in Question column are renamed to new names", {
   # dplyr
   fn2 <- function(data, vars, group, weight) {
     x <- dput(names(vars), file = nullfile())
-    y <- c(append_if_exists(as.list(match.call()[-1])[-c(1, 2)]), x)
+    y <- c(append_if_exists(group), x)
     tmp <- data[, y]
     tmp[sapply(tmp, is.character)] <- lapply(tmp[sapply(tmp, is.character)], as.factor)
     tmp <- tidyr::pivot_longer(tmp, cols = names(tmp[,x]), names_to = "Question", values_to = "Response")

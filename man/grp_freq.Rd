@@ -7,10 +7,10 @@
 grp_freq(
   data,
   groups,
-  weight,
-  set_names,
+  weight = NULL,
+  set_names = NULL,
   addPercent = c("no", "yes"),
-  groupsPercent,
+  groupsPercent = NULL,
   round_decimals = NULL
 )
 }

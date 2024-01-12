@@ -87,15 +87,13 @@ pivot_wide <- function(data, vars) {
 
 # ========== #
 # Function to add arguments to a vector
-append_if_exists <- function(arguments) {
-  a <- unlist(arguments)
-  v <- c()
-  if (!missing(a)) {
-    for (i in c(a)) {
-      v <- append(v, i)
-    }
+append_if_exists <- function(...) {
+  elements <- c(...)
+  if (length(elements) > 0) {
+    return(unlist(elements))
+  } else {
+    return(NULL)
   }
-  return(v)
 }
 
 # ========== #
@@ -111,6 +109,7 @@ list_group <- function(data, group) {
 
 # ========== #
 # Future updates to simplfiy this:
+# Check parameters:
 check_params <- function(data, vars, group, groups, weight, groupsPercent,
                          xVar, yVar, meanVar, rowVar, colVar) {
   # `data`: Ensure data is a data frame
@@ -128,7 +127,7 @@ check_params <- function(data, vars, group, groups, weight, groupsPercent,
   }
 
   # `group`: Ensure group variable is in data frame
-  if (!missing(group)) {
+  if (!missing(group) && !is.null(group)) {
     stopifnot("`group` variable must be a column in `data`." = group %in% names(data))
   }
 
@@ -138,13 +137,13 @@ check_params <- function(data, vars, group, groups, weight, groupsPercent,
   }
 
   # `weight`: Ensure weight variable is numeric and in data frame
-  if (!missing(weight)) {
+  if (!missing(weight) && !is.null(weight)) {
     stopifnot("`weight` variable must be a column in `data`." = weight %in% names(data))
     stopifnot("`weight` must be numeric." = is.numeric(data[[weight]]))
   }
 
   # `groupsPercent`: Ensure groupsPercent variable is in data frame
-  if (!missing(groupsPercent)) {
+  if (!missing(groupsPercent) && !is.null(groupsPercent)) {
     stopifnot("`groupsPercent` variable must be columns in `data`." = groupsPercent %in% names(data))
     stopifnot("`groupsPercent` variable must be in `groups`." = groupsPercent %in% groups)
   }
@@ -175,6 +174,8 @@ check_params <- function(data, vars, group, groups, weight, groupsPercent,
     stopifnot("`colVar` variable must be a column in `data`." = colVar %in% names(data))
   }
 }
+
+
 
 # ============================================================== #
 # 2) XTABS
