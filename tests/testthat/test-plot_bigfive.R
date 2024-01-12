@@ -8,9 +8,9 @@ test_that("parameters return correct error", {
   expect_error(plot_bigfive(data="data"),
                "A data frame is required to be parsed through this function.")
   # big_five ===================================================#
-  expect_error(plot_bigfive(df, big_five = c("column1", "column2")),
-               "`big_five` variable must be a column in `data`.")
-  #expect_error(plot_bigfive(df, big_five = c("gender","partyId")), "`big_five` must be numeric (0-100).")
+  expect_error(plot_bigfive(df, bigfive = c("column1", "column2")),
+               "`bigfive` variable must be a column in `data`.")
+  # expect_error(plot_bigfive(df, bigfive = c("gender","partyId")), "`bigfive` must be numeric (0-100).")
 
   # group ======================================================#
   expect_error(plot_bigfive(df, group = "column1"),

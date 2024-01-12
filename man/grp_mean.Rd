@@ -4,7 +4,14 @@
 \alias{grp_mean}
 \title{Grouped Mean}
 \usage{
-grp_mean(data, meanVar, groups, weight, set_names, round_decimals = NULL)
+grp_mean(
+  data,
+  meanVar,
+  groups,
+  weight = NULL,
+  set_names = NULL,
+  round_decimals = NULL
+)
 }
 \arguments{
 \item{data}{A data frame containing survey data. This parameter is required.}

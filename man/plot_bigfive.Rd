@@ -4,28 +4,28 @@
 \alias{plot_bigfive}
 \title{Big Five Personality Radar Plots}
 \usage{
-plot_bigfive(data, big_five, group, weight)
+plot_bigfive(data, bigfive, group = NULL, weight = NULL)
 }
 \arguments{
 \item{data}{A data frame containing survey data. This parameter is required.}
 
-\item{big_five}{A vector with the columns containing the big five scores. This parameter is required.}
+\item{bigfive}{A vector with the columns containing the Big Five scores. This parameter is required.}
 
 \item{group}{A variable overlay to compare between groups. This parameter is optional.}
 
 \item{weight}{Variable containing weight factors. This variable is optional.}
 }
 \value{
-ggplot2 plot of the big five scores
+ggplot2 plot of the Big Five scores.
 }
 \description{
-Visualise the personality trait scores on a radar graph.
+Visualizes the average scores of the Big Five personality traits on a radar graph.
 }
 \examples{
 \dontrun{
 # Create plot using age groups
 plot_bigfive(dataset,
-             big_five = c("Neuroticism", "Extroversion", "Openness",
+             bigfive = c("Neuroticism", "Extroversion", "Openness",
                           "Agreeableness", "Conscientiousness"),
              group = "age_categories",
              weight = "wgtvar")

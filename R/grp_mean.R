@@ -30,8 +30,8 @@
 grp_mean <- function(data,
                      meanVar,
                      groups,
-                     weight,
-                     set_names,
+                     weight = NULL,
+                     set_names = NULL,
                      round_decimals = NULL
 ) {
   # ==============================================================#
@@ -57,7 +57,7 @@ grp_mean <- function(data,
 
   # ==============================================================#
   # CALCULATE MEAN
-  if (missing(weight)) {
+  if (is.null(weight)) {
     tmp <- stats::aggregate(data[, meanVar],
                             by = grp,
                             FUN = mean)

@@ -175,6 +175,66 @@ check_params <- function(data, vars, group, groups, weight, groupsPercent,
   }
 }
 
+# ========== #
+# Helper function to get bigfive average
+get_bigfive_average <- function(data,
+                                bigfive,
+                                weight = NULL) {
+  result <- data.frame()
+  for (trait in bigfive) {
+    if (!is.null(weight)) {
+      # Weighted average
+      tmp <- data.frame(Mean = stats::weighted.mean(data[[trait]], data[[weight]]))
+    } else {
+      # Unweighted average
+      tmp <- data.frame(Mean = sum(data[[trait]]) / nrow(data))
+    }
+    # Add big five name to column
+    tmp$Metric <- trait
+
+    # Add combine data
+    result <- rbind(result, tmp)
+  }
+
+  # Add group id
+  result$Group <- "Total"
+
+  # Add grouped to total
+  result <- rbind(result, result[result[, "Metric"] == bigfive[1],])
+
+  # Make metrics factors
+  result$Metric <- factor(result$Metric, levels = bigfive)
+
+  return(result)
+
+}
+
+# ========== #
+# Helper function to get bigfive average by group
+get_bigfive_grouped <- function(data,
+                                bigfive,
+                                group,
+                                weight = NULL
+) {
+  # Evaluate each metric
+  result <- data.frame()
+  for (trait in bigfive) {
+    tmp <- grp_mean(data, trait, group, weight)
+    tmp$Metric <- trait
+    result <- rbind(result, tmp)
+  }
+
+  # Rename group to "Group2"
+  names(result)[names(result) == group] <- "Group2"
+
+  # Bind rows
+  result<- rbind(result, result[result[, "Metric"] == bigfive[1],])
+
+  # Make metrics factors
+  result$Metric <- factor(result$Metric, levels = bigfive)
+
+  return(result)
+}
 
 
 # ============================================================== #

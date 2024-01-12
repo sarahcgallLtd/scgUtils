@@ -32,7 +32,7 @@
 crosstab <- function(data,
                      rowVar,
                      colVar,
-                     weight,
+                     weight = NULL,
                      totals = TRUE,
                      round_decimals = NULL,
                      statistics = TRUE,
@@ -78,7 +78,7 @@ crosstab <- function(data,
   tmp[["formula"]] <- c(rowVar, colVar)
 
   # check if weight is included [formula = weight ~ rowVar + colVar]
-  if (!missing(weight)) {
+  if (!is.null(weight)) {
     tmp[["weight"]] <- weight
     name <- "Weighted sample size"
   } else

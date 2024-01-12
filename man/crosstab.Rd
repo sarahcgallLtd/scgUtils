@@ -8,7 +8,7 @@ crosstab(
   data,
   rowVar,
   colVar,
-  weight,
+  weight = NULL,
   totals = TRUE,
   round_decimals = NULL,
   statistics = TRUE,
