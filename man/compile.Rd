@@ -6,8 +6,8 @@
 \usage{
 compile(
   data,
-  row_vars,
-  col_vars,
+  rowVars,
+  colVars,
   weight,
   format = c("csv", "statistics"),
   save = TRUE,
@@ -17,9 +17,9 @@ compile(
 \arguments{
 \item{data}{A data frame containing survey data. This parameter is required.}
 
-\item{row_vars}{Independent variable represented in rows (on the side). This parameter is required.}
+\item{rowVars}{Independent variable represented in rows (on the side). This parameter is required.}
 
-\item{col_vars}{Dependent variable represented in columns (at the top). This parameter is required.}
+\item{colVars}{Dependent variable represented in columns (at the top). This parameter is required.}
 
 \item{weight}{Variable containing weight factors. This variable is optional.}
 
@@ -39,8 +39,8 @@ Produce a csv containing a full set of crosstabs or statistics for each 2x2 vari
 \dontrun{
 # Create crosstabs with csv output using weighted data.
 compile(dataset,
-       row_vars = c("Q1", "Q2"),
-       col_vars = c("Gender", "VI"),
+       rowVars = c("Q1", "Q2"),
+       colVars = c("Gender", "VI"),
        weight = "wgtvar",
        name = "crosstabs")
 }

@@ -52,7 +52,13 @@ crosstab <- function(data,
   if (missing(rowVar) && missing(colVar))
     stop("`rowVar` and `colVar` are required to be parsed through this function.")
 
-  # statistics <- match.arg(statistics)
+  # Check if required variables are missing
+  if (rowVar == colVar)
+    stop("`rowVar` and `colVar` must be two different variables.")
+
+  # TODO: future update to permit rowVar == colVar without error (for compile purposes)
+
+  # take first argument if multiple
   format <- match.arg(format)
   convert_to <- match.arg(convert_to)
 

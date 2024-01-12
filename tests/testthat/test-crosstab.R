@@ -18,6 +18,8 @@ test_that("parameters return correct error", {
                "`colVar` variable must be a column in `data`.")
   expect_error(crosstab(df),
                "`rowVar` and `colVar` are required to be parsed through this function.")
+  expect_error(crosstab(df, rowVar = "gender", colVar = "gender"),
+               "`rowVar` and `colVar` must be two different variables.")
 
   # weight =====================================================#
   expect_error(crosstab(df, weight = "column1"),
@@ -25,13 +27,6 @@ test_that("parameters return correct error", {
   expect_error(crosstab(df, weight = "gender"),
                "`weight` must be numeric.")
 })
-
-# ==============================================================#
-# TEST: DEPARSE
-# test_that("returns quoted argument only", {
-#   expect_equal(test_deparse("gender"), "gender")
-#   expect_equal(test_deparse(gender), "gender")
-# })
 
 # ==============================================================#
 # TEST: CALCULATE XTAB

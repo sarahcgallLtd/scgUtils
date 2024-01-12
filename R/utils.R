@@ -6,7 +6,6 @@
 # ============================================================== #
 # 1) GENERAL
 # Includs:
-# test_deparse()
 # get_question()
 # round_vars()
 # append_if_exists()
@@ -14,28 +13,53 @@
 # check_params()
 
 # ========== #
-# Function to test quoted or unquoted argument
-# test_deparse <- function(x) {
-#   x.try <- try(x, silent = TRUE)
-#   if (!inherits(x.try, "try-error") && is.character(x.try))
-#     x.try
-#   else
-#     deparse(substitute(x))
-# }
+# Function to retrieve "label" attribute for each factor column in a data frame
+get_factor_labels <- function(data) {
+  # Identify factor columns using sapply and is.factor
+  factor_cols <- sapply(data, is.factor)
+
+  # Subset the data to include only factor columns
+  factor_data <- data[, factor_cols, drop = FALSE]
+
+  # Use lapply to iterate through each factor column and retrieve its "label" attribute
+  factor_labels <- lapply(factor_data, function(x) attr(x, "label"))
+
+  # Set names for the resulting list using the names of factor columns in the original data frame
+  names(factor_labels) <- names(data)[factor_cols]
+
+  # Return a named list of "label" attributes for each factor column
+  return(factor_labels)
+}
+
+
+# ========== #
+# Function to get all factor labels
+add_attributes <- function(data, attribute_labels) {
+  # Iterate through attribute labels
+  for (label in names(attribute_labels)) {
+    # Check if the label exists in the data frame
+    if (label %in% names(data)) {
+      # Set the attribute in the new data frame
+      attr(data[[label]], "label") <- attribute_labels[[label]]
+    }
+  }
+  # Return data frame
+  return(data)
+}
 
 # ========== #
 # Function to return the original question
 get_question <- function(data, var) {
-  q <- attr(data[[var]], "label")
-  return(q)
+  question <- if (!is.null(attr(data[[var]], "label"))) attr(data[[var]], "label") else var
+  return(question)
 }
 
 # ========== #
 # Function to round to x decimal places
 round_vars <- function(data, decimals) {
-  numeric <- vapply(data, is.numeric, FUN.VALUE = logical(1))
+  numeric_cols <- sapply(data, is.numeric)
 
-  data[, numeric] <- round(data[, numeric], digits = decimals)
+  data[, numeric_cols] <- round(data[, numeric_cols], digits = decimals)
 
   return(data)
 }
@@ -45,14 +69,18 @@ round_vars <- function(data, decimals) {
 pivot_wide <- function(data, vars) {
   formula <- stats::reformulate(vars, response = "Freq")
   tmp <- as.data.frame.matrix(stats::xtabs(formula, data), stringsAsFactors = TRUE)
+
   # Make rownames first column
   tmp <- cbind(rownames(tmp), tmp)
+
   # Remove index/row names
   rownames(tmp) <- NULL
+
   # Rename
   names(tmp)[names(tmp) == "rownames(tmp)"] <- vars[1]
+
   # Return original factor levels
-  tmp[,vars[1]] <- factor(tmp[,vars[1]], levels(data[,vars[1]]))
+  tmp[, vars[1]] <- factor(tmp[, vars[1]], levels(data[, vars[1]]))
 
   return(tmp)
 }
@@ -235,9 +263,9 @@ xtabs_convert <- function(data, convert_to, format) {
       data$Perc <- as.numeric(data$Perc * 100)
     } else {
       if (format == "csv")
-        data [sapply(data , is.numeric)] <- lapply(data [sapply(data , is.numeric)], function(x) x / sum(x))
+        data[sapply(data, is.numeric)] <- lapply(data[sapply(data, is.numeric)], function(x) x / sum(x))
       else
-        data [sapply(data , is.numeric)] <- lapply(data [sapply(data , is.numeric)], function(x) x / sum(x) * 100)
+        data[sapply(data, is.numeric)] <- lapply(data[sapply(data, is.numeric)], function(x) x / sum(x) * 100)
     }
   }
   return(data)
