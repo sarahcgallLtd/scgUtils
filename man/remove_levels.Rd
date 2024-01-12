@@ -10,11 +10,11 @@ remove_levels(data)
 \item{data}{A data frame containing survey data. This parameter is required.}
 }
 \value{
-data frame
+A modified data frame with unused levels removed from factor variables.
 }
 \description{
-Remove unused levels from factors across a complete data frame. NB non-factor columns will be moved
-to the beginning of the data frame.
+Removes unused levels from factor variables in a data frame while preserving non-factor columns.
+Non-factor columns are retained at the beginning of the data frame.
 }
 \examples{
 \dontrun{
