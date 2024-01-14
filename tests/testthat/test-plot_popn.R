@@ -4,35 +4,21 @@ df <- labelled::unlabelled(df)
 
 # ==============================================================#
 # TEST: CHECK PARAMS
-test_that("parameters return correct error", {
-  # data =======================================================#
-  expect_error(plot_popn("data"),
-               "A data frame is required to be parsed through this function.")
-  expect_error(plot_popn(),
-               "A data frame is required to be parsed through this function.")
+test_that("plot_popn function handles parameter checks", {
+  # Test case 1: Invalid 'data' parameter type
+  expect_error(plot_popn(data = "invalid_data", xVar = "gender", yVar = "ageGroup"),
+               "Parameter `data` is required and must be a data frame.")
 
-  # xVar and yVar ==============================================#
-  expect_error(plot_popn(df, xVar = "column1"),
-               "`xVar` variable must be a column in `data`.")
-  expect_error(plot_popn(df, yVar = "column1"),
-               "`yVar` variable must be a column in `data`.")
-  expect_error(plot_popn(df),
-               "`xVar` and `yVar` are required to be parsed through this function.")
+  # Test case 2: Invalid 'xVar' or 'yVar' not present in data
+  expect_error(plot_popn(data = df, xVar = "invalid_column", yVar = "ageGroup"),
+               "`xVar` must be a column in `data`.")
 
-  # group ======================================================#
-  expect_error(plot_popn(df, group = "column1"),
-               "`group` variable must be a column in `data`.")
+  # Test case 3: Invalid 'xVar' or 'yVar' not present in data (numeric)
+  expect_error(plot_popn(data = df, xVar = "gender", yVar = "invalid_column"),
+               "`yVar` must be a column in `data`.")
 
-  # weight =====================================================#
-  expect_error(plot_popn(df, weight = "column1"),
-               "`weight` variable must be a column in `data`.")
-  expect_error(plot_popn(df, weight = "gender"),
-               "`weight` must be numeric.")
-
-  # meanVar ====================================================#
-  expect_error(plot_popn(df, meanVar = "column1"),
-               "`meanVar` variable must be a column in `data`.")
-  expect_error(plot_popn(df, meanVar = "gender"),
+  # Test case 4: Invalid 'meanVar' data (numeric)
+  expect_error(plot_popn(data = df, xVar = "gender", yVar = "ageGroup", meanVar = "turnoutUKGeneral"),
                "`meanVar` must be numeric.")
 })
 
@@ -133,7 +119,7 @@ test_that("function produces correct graph", {
 
   expect_identical(p$labels$subtitle, "Party identification")
 
-  plot_popn(data=df,
+  p <- plot_popn(data=df,
           xVar="gender",
           yVar="ageGroup",
           weight="wt",

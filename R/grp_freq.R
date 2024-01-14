@@ -69,10 +69,6 @@ grp_freq <- function(data,
                weight = weight,
                groupsPercent = groupsPercent)
 
-  # `groups` is required
-  if (missing(groups))
-    stop("`groups` is required to be parsed through this function.")
-
   # Take first option
   addPercent <- match.arg(addPercent)
 

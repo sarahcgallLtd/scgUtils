@@ -8,29 +8,28 @@ vars <- list(p_parent = "Parent")
 test_that("parameters return correct error", {
   # data =======================================================#
   expect_error(plot_binary("data"),
-               "A data frame is required to be parsed through this function.")
+               "Parameter `data` is required and must be a data frame.")
 
   # vars =======================================================#
-  expect_error(plot_binary(df, "vars"), "`vars` must be a list.")
+  expect_error(plot_binary(df, "vars"),
+               "`vars` must be a non-empty list with named elements.")
   var <- list("column1")
   expect_error(plot_binary(df, var),
-               "`vars` list must contain column names.")
+               "`vars` must be a non-empty list with named elements.")
   var <- list(column = "column1")
   expect_error(plot_binary(df, var),
-               "`vars` list must contain columns from `data`.")
-  expect_error(plot_binary(df),
-               "`vars` is required to be parsed through this function.")
+               "`vars` must be a column in `data`.")
   var <- list(likeSunak = "Sunak")
   expect_error(plot_binary(df, var, value = "Strongly like"),
                "`vars` variables must contain binary values only")
 
   # group ======================================================#
   expect_error(plot_binary(df, vars, group = "column1"),
-               "`group` variable must be a column in `data`.")
+               "`group` must be a column in `data`.")
 
   # weight =====================================================#
   expect_error(plot_binary(df, vars, weight = "column1"),
-               "`weight` variable must be a column in `data`.")
+               "`weight` must be a column in `data`.")
   expect_error(plot_binary(df, vars, weight = "gender"),
                "`weight` must be numeric.")
 

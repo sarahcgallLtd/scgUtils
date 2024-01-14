@@ -37,9 +37,6 @@ plot_binary <- function(data,
                group = group,
                weight = weight)
 
-  if (missing(vars))
-    stop("`vars` is required to be parsed through this function.")
-
   if (missing(value))
     stop("`value` is required to be parsed through this function.")
 

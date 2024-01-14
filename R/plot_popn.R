@@ -8,7 +8,7 @@
 #' @param yVar Age group variable. This parameter is required.
 #' @param group A variable overlay to compare between groups. This parameter is optional.
 #' @param weight Variable containing weight factors. This variable is optional.
-#' @param meanVar Actual age vraiable (numeric) to view average age. This variable is optional.
+#' @param meanVar Actual age variable (numeric) to view average age. This variable is optional.
 #' @param colours A vector of three colours for Male, Female, and Total
 #' @param title Plot title. Default = "Population Structure".
 #' @param subtitle Plot subtitle in grouped/faceted plot. Default = question of group variable.
@@ -36,12 +36,12 @@
 plot_popn <- function(data,
                       xVar,
                       yVar,
-                      group,
-                      weight,
-                      meanVar,
-                      colours,
+                      group = NULL,
+                      weight = NULL,
+                      meanVar = NULL,
+                      colours = NULL,
                       title = "Population Structure",
-                      subtitle,
+                      subtitle = NULL,
                       xLab = "Population (%)",
                       yLab = "Age",
                       addLabels = c("no", "yes"),
@@ -58,9 +58,6 @@ plot_popn <- function(data,
                group = group,
                weight = weight,
                meanVar = meanVar)
-
-  if (missing(xVar) && missing(yVar))
-    stop("`xVar` and `yVar` are required to be parsed through this function.")
 
   # Take first option
   addLabels <- match.arg(addLabels)
@@ -81,36 +78,58 @@ plot_popn <- function(data,
   # Get number of factors
   yLevels <- length(unique(data[[yVar]]))
 
-  # ==============================================================#
-  # GET GROUPED FREQUENCY & PERCENTAGE BY TOTAL
   # Return funciton arguments
-  agg <- match.call(expand.dots = FALSE)
+  args <- match.call(expand.dots = FALSE)
 
   # Match relevant arguments
-  agg_n <- match(c("data", "weight"), names(agg), 0L)
-  agg <- agg[c(1L, agg_n)]
+  args_n <- match(c("data", "weight"), names(args), 0L)
+  args <- args[c(1L, args_n)]
 
   # Substitute `plot_popn` for `grp_freq`
-  agg[[1L]] <- quote(grp_freq)
-
-  #  Substitute `groups`
-  agg[["groups"]] <- c(yVar, xVar)
-
-  # Percent by total
-  agg[["addPercent"]] <- "yes"
+  args[[1L]] <- quote(grp_freq)
 
   # Limit decimal places
-  agg[["round_decimals"]] <- 2
+  args[["round_decimals"]] <- 2
+
+  # ==============================================================#
+  # GET GROUPED FREQUENCY & PERCENTAGE BY TOTAL
+  #  Substitute `groups`
+  args[["groups"]] <- c(yVar, xVar)
+
+  # Percent by total
+  args[["addPercent"]] <- "yes"
 
   # Evaluate
-  total <- eval(agg, parent.frame())
+  total <- eval(args, parent.frame())
 
   # Add id column
   total$id <- "Total"
 
   # ==============================================================#
+  # GET GROUPED FREQUENCY & PERCENTAGE BY GROUP
+  if (!is.null(group)) {
+    #  Substitute `groups`
+    args[["groups"]] <- c(group, yVar, xVar)
+
+    # Percent by group
+    args[["groupsPercent"]] <- group
+
+    # Evaluate
+    grouped <- eval(args, parent.frame())
+
+    # Get linewidth
+    lineWidth <- (100 / yLevels) / 2
+
+    # Convert left side as negative
+    grouped <- convert_neg(grouped, xVar, leftLevel, "Perc")
+
+  } else {
+    lineWidth <- 100 / yLevels
+  }
+
+  # ==============================================================#
   # GET AGE MEAN
-  if (!missing(meanVar) && missing(group)) {
+  if (!is.null(meanVar) && is.null(group)) {
     # Return funciton arguments
     sta <- match.call(expand.dots = FALSE)
 
@@ -141,42 +160,7 @@ plot_popn <- function(data,
   }
 
   # ==============================================================#
-  # GET GROUPED FREQUENCY & PERCENTAGE BY GROUP
-  if (!missing(group)) {
-    # Return funciton arguments
-    grp <- match.call(expand.dots = FALSE)
-
-    # Match relevant arguments
-    grp_n <- match(c("data", "weight"), names(grp), 0L)
-    grp <- grp[c(1L, grp_n)]
-
-    # Substitute `plot_popn` for `grp_freq`
-    grp[[1L]] <- quote(grp_freq)
-
-    #  Substitute `groups`
-    grp[["groups"]] <- c(group, yVar, xVar)
-
-    # Percent by group
-    grp[["groupsPercent"]] <- group
-
-    # Limit decimal places
-    grp[["round_decimals"]] <- 2
-
-    # Evaluate
-    grouped <- eval(grp, parent.frame())
-
-    # Get linewidth
-    lineWidth <- (100 / yLevels) / 2
-
-    grouped <- convert_neg(grouped, xVar, leftLevel, "Perc")
-
-  } else {
-    lineWidth <- 100 / yLevels
-  }
-
-  # ==============================================================#
   # PREPARE ATTRIBUTES
-
   # Colours
   line.col <- colour_pal("French Grey")
   text.col <- colour_pal("Black80")
@@ -199,16 +183,16 @@ plot_popn <- function(data,
   total <- convert_neg(total, xVar, leftLevel, "Perc")
 
   # Subtitle
-  if (!missing(group) && missing(subtitle))
+  if (!is.null(group) && is.null(subtitle))
     subtitle = get_question(data, group)
 
   # ==============================================================#
   # PLOT
-  if (missing(group)) {
+  if (is.null(group)) {
     # TOTAL PLOT
     p <- ggplot(data = total,
                 aes(x = Perc, y = !!rlang::ensym(yVar),
-                    label = paste0(abs(Perc), "%"),
+                    label = sprintf("%.2f%%", abs(Perc)),
                     fill = !!rlang::ensym(xVar))) +
 
       # Add total layer
@@ -230,7 +214,7 @@ plot_popn <- function(data,
     # GROUP PLOT
     p <- ggplot(data = grouped,
                 aes(x = Perc, y = !!rlang::ensym(yVar),
-                    label = paste0(round(abs(Perc), 0), "%"),
+                    label = sprintf("%.0f%%", abs(Perc)),
                     fill = !!rlang::ensym(xVar)
                 )) +
 
@@ -285,7 +269,7 @@ plot_popn <- function(data,
       )
     )
 
-  if (missing(group)) {
+  if (is.null(group)) {
     p <- p +
       # Allow labels to go off plot areas
       coord_cartesian(clip = 'off') +

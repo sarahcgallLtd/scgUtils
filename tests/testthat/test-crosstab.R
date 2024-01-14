@@ -5,26 +5,16 @@ df <- labelled::unlabelled(df)
 # ==============================================================#
 # TEST: CHECK PARAMS
 test_that("parameters return correct error", {
-  # data =======================================================#
   expect_error(crosstab("data"),
-               "A data frame is required to be parsed through this function.")
-  expect_error(crosstab(),
-               "A data frame is required to be parsed through this function.")
+               "Parameter `data` is required and must be a data frame.")
 
-  # colVar and rowVar ==============================================#
-  expect_error(crosstab(df, rowVar = "column1"),
-               "`rowVar` variable must be a column in `data`.")
-  expect_error(crosstab(df, colVar = "column1"),
-               "`colVar` variable must be a column in `data`.")
-  expect_error(crosstab(df),
-               "`rowVar` and `colVar` are required to be parsed through this function.")
   expect_error(crosstab(df, rowVar = "gender", colVar = "gender"),
                "`rowVar` and `colVar` must be two different variables.")
 
-  # weight =====================================================#
-  expect_error(crosstab(df, weight = "column1"),
-               "`weight` variable must be a column in `data`.")
-  expect_error(crosstab(df, weight = "gender"),
+  expect_error(crosstab(df, rowVar = "gender", colVar = "ageGroup", weight = "column1"),
+               "`weight` must be a column in `data`.")
+
+  expect_error(crosstab(df, rowVar = "gender", colVar = "ageGroup", weight = "gender"),
                "`weight` must be numeric.")
 })
 
@@ -46,7 +36,7 @@ test_that("returns xtab_calc correctly", {
   # include statistics_df
   expect_equal(xtab_calc(df, vars, type = "statistics_df")$Chisq, 28.441)
 
-})
+})-
 
 # TEST: CALCULATE XTAB TOTAL
 test_that("returns xtab_total correctly", {

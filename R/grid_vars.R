@@ -43,9 +43,6 @@ grid_vars <- function(data,
                group = group,
                weight = weight)
 
-  if (missing(vars))
-    stop("`vars` is required to be parsed through this function.")
-
   # ==============================================================#
   # PREPARE VARIABLES
   # Return funciton arguments for use

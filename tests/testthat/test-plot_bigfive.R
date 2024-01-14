@@ -6,7 +6,7 @@ df <- labelled::unlabelled(df)
 test_that("parameters return correct error", {
   # data =======================================================#
   expect_error(plot_bigfive(data="data"),
-               "A data frame is required to be parsed through this function.")
+               "Parameter `data` is required and must be a data frame.")
   # big_five ===================================================#
   expect_error(plot_bigfive(df, bigfive = c("column1", "column2")),
                "`bigfive` variable must be a column in `data`.")
@@ -14,11 +14,11 @@ test_that("parameters return correct error", {
 
   # group ======================================================#
   expect_error(plot_bigfive(df, group = "column1"),
-               "`group` variable must be a column in `data`.")
+               "`group` must be a column in `data`.")
 
   # weight =====================================================#
   expect_error(plot_bigfive(df, weight = "column1"),
-               "`weight` variable must be a column in `data`.")
+               "`weight` must be a column in `data`.")
   expect_error(plot_bigfive(df, weight = "gender"),
                "`weight` must be numeric.")
 })

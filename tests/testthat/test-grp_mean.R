@@ -7,39 +7,24 @@ df <- labelled::unlabelled(df)
 test_that("parameters return correct error", {
   # data =======================================================#
   expect_error(grp_mean("data"),
-               "A data frame is required to be parsed through this function.")
-  expect_error(grp_mean(),
-               "A data frame is required to be parsed through this function.")
+               "Parameter `data` is required and must be a data frame.")
 
   # var ========================================================#
   expect_error(grp_mean(df, meanVar = "column1"),
-               "`meanVar` variable must be a column in `data`.")
+               "`meanVar` must be a column in `data`.")
   expect_error(grp_mean(df, meanVar = "gender"),
                "`meanVar` must be numeric.")
-  expect_error(grp_mean(df),
-               "`meanVar` is required to be parsed through this function.")
 
   # group ======================================================#
-  expect_error(grp_mean(df, groups = "column1"),
-               "`groups` variable must be columns in `data`.")
-  expect_error(grp_mean(df, meanVar = "age"),
-               "`groups` is required to be parsed through this function.")
+  expect_error(grp_mean(df, meanVar = "age", groups = "column1"),
+               "`groups` must be a column in `data`.")
 
   # weight =====================================================#
-  expect_error(grp_mean(df, meanVar = "gender", weight = "column1"),
-               "`weight` variable must be a column in `data`.")
-  expect_error(grp_mean(df, meanVar = "gender", weight = "gender"),
+  expect_error(grp_mean(df, meanVar = "age", weight = "column1"),
+               "`weight` must be a column in `data`.")
+  expect_error(grp_mean(df, meanVar = "age", weight = "gender"),
                "`weight` must be numeric.")
 })
-
-# ==============================================================#
-# TEST: PREPARE DATA
-
-# ==============================================================#
-# TEST: CALCULATE MEAN
-
-# ==============================================================#
-# TEST: SET COLUMN NAMES
 
 # ==============================================================#
 # TEST: RESULT

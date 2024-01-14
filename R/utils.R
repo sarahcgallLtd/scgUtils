@@ -107,71 +107,53 @@ list_group <- function(data, group) {
   return(grp)
 }
 
+#params[c("data","vars","groups","groupsPercent")] <- NULL # Remove data from list
 # ========== #
 # Future updates to simplfiy this:
 # Check parameters:
-check_params <- function(data, vars, group, groups, weight, groupsPercent,
-                         xVar, yVar, meanVar, rowVar, colVar) {
-  # `data`: Ensure data is a data frame
-  if (!missing(data)) {
-    stopifnot("A data frame is required to be parsed through this function." = is.data.frame(data))
-  } else {
-    stop("A data frame is required to be parsed through this function.")
+check_params <- function(data, ..., vars = NULL, groups = NULL, groupsPercent = NULL) {
+  # Check for common mandatory parameters
+  if (!is.data.frame(data)) {
+    stop("Parameter `data` is required and must be a data frame.")
   }
 
-  # `vars`: Ensure vars is a list and that the list objects are in the data frame
-  if (!missing(vars)) {
-    stopifnot("`vars` must be a list." = is.list(vars))
-    stopifnot("`vars` list must contain column names." = !is.null(names(vars)))
-    stopifnot("`vars` list must contain columns from `data`." = names(vars) %in% names(data))
+  # Function to check if a variable is in the data frame
+  check_in_data <- function(name, value, data) {
+    if (!all(value %in% names(data))) {
+      stop(paste0("`", name, "` must be a column in `data`."))
+    }
   }
 
-  # `group`: Ensure group variable is in data frame
-  if (!missing(group) && !is.null(group)) {
-    stopifnot("`group` variable must be a column in `data`." = group %in% names(data))
+  # Check optional and less common mandatory parameters
+  params <- list(...)
+  for (name in names(params)) {
+    value <- params[[name]]
+
+    if (!is.null(value)) {
+      check_in_data(name, value, data)
+      if (name %in% c("weight", "meanVar") && !is.numeric(data[[value]])) {
+        stop(paste0("`", name, "` must be numeric."))
+      }
+    }
   }
 
-  # `groups`: Ensure groups variable is in data frame
-  if (!missing(groups)) {
-    stopifnot("`groups` variable must be columns in `data`." = groups %in% names(data))
+  # Special check for vars (list) and groups (vector)
+  if (!missing(vars) && !is.null(vars)) {
+    if (!is.list(vars) || is.null(names(vars))) {
+      stop("`vars` must be a non-empty list with named elements.")
+    }
+    check_in_data("vars", names(vars), data)
   }
 
-  # `weight`: Ensure weight variable is numeric and in data frame
-  if (!missing(weight) && !is.null(weight)) {
-    stopifnot("`weight` variable must be a column in `data`." = weight %in% names(data))
-    stopifnot("`weight` must be numeric." = is.numeric(data[[weight]]))
+  if (!missing(groups) && !is.null(groups)) {
+    check_in_data("groups", groups, data)
   }
 
-  # `groupsPercent`: Ensure groupsPercent variable is in data frame
   if (!missing(groupsPercent) && !is.null(groupsPercent)) {
-    stopifnot("`groupsPercent` variable must be columns in `data`." = groupsPercent %in% names(data))
-    stopifnot("`groupsPercent` variable must be in `groups`." = groupsPercent %in% groups)
-  }
-
-  # `age_groups`: Ensure age_groups variable is in data frame
-  if (!missing(xVar)) {
-    stopifnot("`xVar` variable must be a column in `data`. E.g., 'ageGroups'" = xVar %in% names(data))
-  }
-
-  # `gender`: Ensure gender variable is in data frame
-  if (!missing(yVar)) {
-    stopifnot("`yVar` variable must be a column in `data`. E.g., 'gender'" = yVar %in% names(data))
-  }
-
-  # `age_int`: Ensure age_int variable is numeric and in data frame
-  if (!missing(meanVar)) {
-    stopifnot("`meanVar` variable must be a column in `data`. E.g., 'age'" = meanVar %in% names(data))
-    stopifnot("`meanVar` must be numeric." = is.numeric(data[[meanVar]]))
-  }
-
-  # `rowVar`: Ensure rowVar variable is in data frame
-  if (!missing(rowVar)) {
-    stopifnot("`rowVar` variable must be a column in `data`." = rowVar %in% names(data))
-  }
-
-  # `colVar`: Ensure colVar variable is in data frame
-  if (!missing(colVar)) {
-    stopifnot("`colVar` variable must be a column in `data`." = colVar %in% names(data))
+    check_in_data("groupsPercent", groupsPercent, data)
+    if (!all(groupsPercent %in% groups)) {
+      stop("`groupsPercent` variable must be in `groups`.")
+    }
   }
 }
 
@@ -228,7 +210,7 @@ get_bigfive_grouped <- function(data,
   names(result)[names(result) == group] <- "Group2"
 
   # Bind rows
-  result<- rbind(result, result[result[, "Metric"] == bigfive[1],])
+  result <- rbind(result, result[result[, "Metric"] == bigfive[1],])
 
   # Make metrics factors
   result$Metric <- factor(result$Metric, levels = bigfive)
@@ -376,7 +358,6 @@ convert_neg <- function(data, xVar, value, column) {
 add_text <- function(plot, data, column, thresholdLab, nudgeLab, sizeLab, faceLab, colour) {
   p <- plot +
     geom_text(
-      aes(hjust = ifelse(abs(!!rlang::ensym(column)) >= thresholdLab, "inward", "outward")),
       size = sizeLab, fontface = faceLab, na.rm = TRUE,
       colour = ifelse(abs(data[, column]) >= thresholdLab, "white", colour),
       nudge_x = dplyr::case_when(
@@ -384,6 +365,7 @@ add_text <- function(plot, data, column, thresholdLab, nudgeLab, sizeLab, faceLa
         abs(data[, column]) < thresholdLab & data[, column] >= 0.00 ~ nudgeLab,
         .default = -nudgeLab
       ),
+      hjust = ifelse(abs(data[, column]) >= thresholdLab, "inward", "outward"),
       check_overlap = TRUE
     )
   return(p)

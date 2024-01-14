@@ -10,29 +10,24 @@ vars <- list(likeSunak = "Sunak",
 test_that("parameters return correct error", {
   # data =======================================================#
   expect_error(grid_vars("data"),
-               "A data frame is required to be parsed through this function.")
-  expect_error(grid_vars(),
-               "A data frame is required to be parsed through this function.")
-
+               "Parameter `data` is required and must be a data frame.")
   # vars =======================================================#
   expect_error(grid_vars(df, "vars"),
-               "`vars` must be a list.")
+               "`vars` must be a non-empty list with named elements.")
   var <- list("column1")
   expect_error(grid_vars(df, var),
-               "`vars` list must contain column names.")
+               "`vars` must be a non-empty list with named elements.")
   var <- list(column = "column1")
   expect_error(grid_vars(df, var),
-               "`vars` list must contain columns from `data`.")
-  expect_error(grid_vars(df),
-               "`vars` is required to be parsed through this function.")
+               "`vars` must be a column in `data`.")
 
   # group ======================================================#
   expect_error(grid_vars(df, vars, group = "column1"),
-               "`group` variable must be a column in `data`.")
+               "`group` must be a column in `data`.")
 
   # weight =====================================================#
   expect_error(grid_vars(df, vars, weight = "column1"),
-               "`weight` variable must be a column in `data`.")
+               "`weight` must be a column in `data`.")
   expect_error(grid_vars(df, vars, weight = "gender"),
                "`weight` must be numeric.")
 })

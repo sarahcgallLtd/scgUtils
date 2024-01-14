@@ -4,25 +4,23 @@ test_that("parameters return correct error", {
   # data =======================================================#
   df <- get_data("survey")
   expect_error(grp_freq("data"),
-               "A data frame is required to be parsed through this function.")
+               "Parameter `data` is required and must be a data frame.")
 
   # groups =====================================================#
   expect_error(grp_freq(df, groups = "column1"),
-               "`groups` variable must be columns in `data`.")
+               "`groups` must be a column in `data`")
   expect_error(grp_freq(df, groups = c("gender", "column2")),
-               "`groups` variable must be columns in `data`.")
-  expect_error(grp_freq(df),
-               "`groups` is required to be parsed through this function.")
+               "`groups` must be a column in `data`")
 
   # weight =====================================================#
   expect_error(grp_freq(df, groups = "gender", weight = "column1"),
-               "`weight` variable must be a column in `data`.")
+               "`weight` must be a column in `data`.")
   #Unsure why this fails (correct error is thrown but test fails):
   # expect_error(grp_freq(df, groups="gender", weight = "gender"), "`weight` must be numeric.")
 
   # groupsPercent ==============================================#
   expect_error(grp_freq(df, groups = "gender", groupsPercent = "column1"),
-               "`groupsPercent` variable must be columns in `data`.")
+               "`groupsPercent` must be a column in `data`.")
   expect_error(grp_freq(df, groups = "gender", groupsPercent = "turnoutUKGeneral"),
                "`groupsPercent` variable must be in `groups`.")
 })

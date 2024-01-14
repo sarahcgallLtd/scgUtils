@@ -8,12 +8,12 @@ plot_popn(
   data,
   xVar,
   yVar,
-  group,
-  weight,
-  meanVar,
-  colours,
+  group = NULL,
+  weight = NULL,
+  meanVar = NULL,
+  colours = NULL,
   title = "Population Structure",
-  subtitle,
+  subtitle = NULL,
   xLab = "Population (\%)",
   yLab = "Age",
   addLabels = c("no", "yes"),
@@ -34,7 +34,7 @@ plot_popn(
 
 \item{weight}{Variable containing weight factors. This variable is optional.}
 
-\item{meanVar}{Actual age vraiable (numeric) to view average age. This variable is optional.}
+\item{meanVar}{Actual age variable (numeric) to view average age. This variable is optional.}
 
 \item{colours}{A vector of three colours for Male, Female, and Total}
 
