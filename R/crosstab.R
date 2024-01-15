@@ -9,8 +9,8 @@
 #' @param weight Variable containing weight factors. This variable is optional.
 #' @param totals Logical, if totals is \code{TRUE}, df with totals column is included (default = \code{TRUE}).
 #' @param round_decimals Set the number of decimal points for the data (default = \code{NULL}).
-#' @param statistics Logical, if statistics is \code{TRUE}, Chi-Square, DF, Cramer's V, and p-value are printed (default = \code{TRUE}).
-#' @param plot Logical, if plot is \code{TRUE}, a chart is available to be viewed (default = \code{TRUE}).
+#' @param statistics Logical, if statistics is \code{TRUE}, Chi-Square, DF, Cramer's V, and p-value are printed (default = \code{FALSE}).
+#' @param plot Logical, if plot is \code{TRUE}, a chart is available to be viewed (default = \code{FALSE}).
 #' @param format Formatting options to return either a long or wide data frame (default = \code{"df_long"}).
 #' @param convert_to Conversion options to return either a percentages or frequencies (default = \code{"percent"}).
 #' @param yLab Y axis title. Default = "Population (%)".

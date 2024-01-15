@@ -32,9 +32,9 @@ crosstab(
 
 \item{round_decimals}{Set the number of decimal points for the data (default = \code{NULL}).}
 
-\item{statistics}{Logical, if statistics is \code{TRUE}, Chi-Square, DF, Cramer's V, and p-value are printed (default = \code{TRUE}).}
+\item{statistics}{Logical, if statistics is \code{TRUE}, Chi-Square, DF, Cramer's V, and p-value are printed (default = \code{FALSE}).}
 
-\item{plot}{Logical, if plot is \code{TRUE}, a chart is available to be viewed (default = \code{TRUE}).}
+\item{plot}{Logical, if plot is \code{TRUE}, a chart is available to be viewed (default = \code{FALSE}).}
 
 \item{format}{Formatting options to return either a long or wide data frame (default = \code{"df_long"}).}
 
