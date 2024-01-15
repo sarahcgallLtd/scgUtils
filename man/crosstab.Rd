@@ -11,11 +11,12 @@ crosstab(
   weight = NULL,
   totals = TRUE,
   round_decimals = NULL,
-  statistics = TRUE,
-  plot = TRUE,
+  statistics = FALSE,
+  plot = FALSE,
   format = c("df_long", "df_wide", "csv", "statistics"),
   convert_to = c("percent", "frequency"),
-  yLab = "Population (\%)"
+  yLab = "Population (\%)",
+  adjustX = c("no", "yes")
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ crosstab(
 \item{convert_to}{Conversion options to return either a percentages or frequencies (default = \code{"percent"}).}
 
 \item{yLab}{Y axis title. Default = "Population (\%)".}
+
+\item{adjustX}{If "yes", the values on the x-axis will turn 45 degress. The default is "no" which keeps values horiztonal.}
 }
 \value{
 Crosstabs held in a data frame containing row-wise percentages (\%) and col-wise totals (n)

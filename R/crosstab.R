@@ -14,6 +14,7 @@
 #' @param format Formatting options to return either a long or wide data frame (default = \code{"df_long"}).
 #' @param convert_to Conversion options to return either a percentages or frequencies (default = \code{"percent"}).
 #' @param yLab Y axis title. Default = "Population (%)".
+#' @param adjustX If "yes", the values on the x-axis will turn 45 degress. The default is "no" which keeps values horiztonal.
 #'
 #' @return Crosstabs held in a data frame containing row-wise percentages (%) and col-wise totals (n)
 #'
@@ -35,11 +36,12 @@ crosstab <- function(data,
                      weight = NULL,
                      totals = TRUE,
                      round_decimals = NULL,
-                     statistics = TRUE,
-                     plot = TRUE,
+                     statistics = FALSE,
+                     plot = FALSE,
                      format = c("df_long", "df_wide", "csv", "statistics"),
                      convert_to = c("percent", "frequency"),
-                     yLab = "Population (%)"
+                     yLab = "Population (%)",
+                     adjustX = c("no","yes")
 ) {
   # ==============================================================#
   # CHECK PARAMS
@@ -57,6 +59,7 @@ crosstab <- function(data,
   # take first argument if multiple
   format <- match.arg(format)
   convert_to <- match.arg(convert_to)
+  adjustX <- match.arg(adjustX)
 
   # ==============================================================#
   # PREPARE VARIABLES
@@ -214,8 +217,8 @@ crosstab <- function(data,
         # Add labels
         labs(title = paste0("% of ", rowVar, " by ", colVar),
              caption = stat,
-             fill = colVar,
-             x = rowVar,
+             fill = get_question(data, colVar),
+             x = get_question(data, rowVar),
              y = yLab) +
 
         # Add scg theme
@@ -226,6 +229,12 @@ crosstab <- function(data,
           panel.grid.major.x = element_blank(),
           legend.key.size = unit(0.35, 'cm')
         )
+
+      # Asjust x values
+      if (adjustX == "yes") {
+        p <- p +
+          theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+      }
       print(p)
     }
   }

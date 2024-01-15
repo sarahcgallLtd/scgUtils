@@ -52,15 +52,32 @@ grp_mean <- function(data,
   # ==============================================================#
   # CALCULATE MEAN
   if (is.null(weight)) {
+    # Unweighted Mean
     tmp <- stats::aggregate(data[, meanVar],
                             by = grp,
-                            FUN = mean)
+                            FUN = mean,
+                            na.rm = TRUE
+    )
   } else {
+    # Weighted Mean
+    # Create interaction group and add to data frame
+    data$interaction_group <- interaction(data[groups])
+
+    # Get weighted mean by interaction group
     tmp <- by(data[c(meanVar, weight)],
-              grp,
-              FUN = function(x) stats::weighted.mean(x[, 1], x[, 2]))
+              data$interaction_group,
+              FUN = function(x) stats::weighted.mean(x[[1]], x[[2]]))
+
+    # Convert matrix into data frame
     tmp <- data.frame(Col1 = rep(names(tmp), lengths(tmp)),
                       Col2 = c(unlist(tmp[[1]]), unlist(tmp[[2]])))
+
+    # Split interaction group back into it's original group columns (NB this is done by searching for a full stop.
+    # If the values have a full stop in them, this will cause a problem.
+    tmp <- cbind(do.call("rbind", strsplit(tmp$Col1, split = "\\.")), tmp)
+
+    # Remove interaction group column
+    tmp[["Col1"]] <- NULL
   }
 
   # ==============================================================#
