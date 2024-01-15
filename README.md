@@ -13,9 +13,6 @@ Welcome to `scgUtils`, an R package to help:
 * Maintain brand [**guidelines and styles**](#guidelines--styles) by supplying colours and other 
 dataviz standards.
 
-*CAUTION: This package is still under construction and most functions need further testing to
-ensure easy debugging for users.*
-
 ### Installation
 
 The code below relies on the development version of `scgUtils`.

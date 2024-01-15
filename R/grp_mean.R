@@ -41,12 +41,6 @@ grp_mean <- function(data,
                groups = groups,
                weight = weight)
 
-  if (missing(meanVar))
-    stop("`meanVar` is required to be parsed through this function.")
-
-  if (missing(groups))
-    stop("`groups` is required to be parsed through this function.")
-
   # ==============================================================#
   # PREPARE DATA
   # Ensure data is a data frame

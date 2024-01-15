@@ -5,4 +5,4 @@
 .*.Rnb.cached
 docs
 inst/doc
-testthat/table.csv
+tests/testthat/table.csv

@@ -11,6 +11,12 @@ test_that("plot_sankey stops with incorrect inputs", {
                "value columns must be present in the data")
   expect_error(plot_sankey(test_data, source = "source", target = "target", value = "value", colours = "not_a_colour_vector"),
                "Invalid colour name: not_a_colour_vector")
+  colours <- data.frame(names = c("A", "B", "C", "X", "Y", "Z"),
+                        colours = c("#4ae2da","#e78e47","#20435b","#8c9aa4","#cdcdd1","#4682B4"))
+  expect_error(plot_sankey(test_data, source = "source", target = "target", value = "value", colours = colours),
+               "Colours must be a list or a vector.")
+  expect_error(plot_sankey(test_data, "source", "target", "value", shiftLabel = "x"),
+               "shiftLabel must be a numeric value only")
 })
 
 # Test with sample data
@@ -20,6 +26,11 @@ test_that("plot_sankey works with sample data", {
 
 # Test for output
 test_that("sankey is correctly produced", {
+  result <- plot_sankey(test_data, "source", "target", "value", shiftLabel = 4,
+                        colours = c("yellow","blue","pink","green","black","purple","red","white"))
+   expect_equal(result$x$options$colourScale,
+                "d3.scaleOrdinal().range([\"#FFFF00\",\"#0000FF\",\"#FFC0CB\",\"#00FF00\",\"#000000\",\"#A020F0\",\"#FF0000\",\"#FFFFFF\"])")
+
   # Data
   df <- get_data("survey")
   df <- labelled::unlabelled(df)
@@ -30,4 +41,6 @@ test_that("sankey is correctly produced", {
               colours = colour_prep(df, c("generalElectionVote", "p_past_vote_2019"), pal_name = "polUK"),
               margin = list("left" = 0, "right" = 200))
   expect_type(result, "list")
+  expect_equal(result$x$options$fontSize, 20)
+  expect_equal(result$width, 1200)
 })

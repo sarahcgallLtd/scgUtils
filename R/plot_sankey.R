@@ -97,7 +97,7 @@ plot_sankey <- function(data,
   # ==============================================================#
   # PREPARE ATTRIBUTES
   # Prepare colours based on node/link names or order
-  if (is.list(colours) || is.vector(colours)) {
+  if (is.list(colours) && !is.data.frame(colours) || is.vector(colours) ) {
     # Convert color names to hex if necessary
     colours_hex <- sapply(colours, function(col) {
       if (!startsWith(col, "#")) {
