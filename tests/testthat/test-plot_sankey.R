@@ -28,8 +28,8 @@ test_that("plot_sankey works with sample data", {
 test_that("sankey is correctly produced", {
   result <- plot_sankey(test_data, "source", "target", "value", shiftLabel = 4,
                         colours = c("yellow", "blue", "pink", "green", "black", "purple", "red", "white"))
-  expect_type(result$x$options$colourScale,
-               "character")
+  # Can't test colourScale properly due to actual vs expected being different on github vs locally
+  expect_type(result$x$options$colourScale, "character")
 
   # Data
   df <- get_data("survey")
