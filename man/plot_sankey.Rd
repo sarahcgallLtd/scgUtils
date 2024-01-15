@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_sankey.R
 \name{plot_sankey}
 \alias{plot_sankey}
-\title{Sankey Plot}
+\title{Sankey Diagram Visualisation}
 \usage{
 plot_sankey(
   data,
@@ -10,7 +10,7 @@ plot_sankey(
   target,
   value,
   units = "",
-  colours,
+  colours = colour_pal("catExtended"),
   fontSize = 20,
   fontFamily = "Calibri",
   nodeWidth = 20,
@@ -22,42 +22,51 @@ plot_sankey(
 )
 }
 \arguments{
-\item{data}{A data frame containing flow data and percentages. This parameter is required.}
+\item{data}{A data frame containing the flow data, where each row represents a unique flow from a source to a target.}
 
-\item{source}{From variable (left side of sankey). This parameter is required.}
+\item{source}{The column in the data frame representing the source node of the flow.}
 
-\item{target}{To variable (right side of sankey). This parameter is required.}
+\item{target}{The column in the data frame representing the target node of the flow.}
 
-\item{value}{Percentage/Value flowing between source and target. This parameter is required.}
+\item{value}{The column in the data frame representing the magnitude or volume of the flow between the source and target.}
 
-\item{units}{Unit of value to display in tooltip (requires single quotation marks around double
-quotations). Default = '""'}
+\item{units}{A string indicating the units of the 'value'. This is displayed in the tooltip of the diagram.
+The default is an empty string, indicating that no units are specified.}
 
-\item{colours}{List of colours in d3.js format (requires single quotation marks around internal hex codes)
-double quotation marks. This variable is required.}
+\item{colours}{A list or vector of colours (in hexadecimal format or colour names) to be used for the nodes and links
+in the diagram. If a named list is provided, the names should correspond to the node names for specific
+colour mapping.}
 
-\item{fontSize}{Default = 24}
+\item{fontSize}{The font size for text in the diagram. Default is set to 20.}
 
-\item{fontFamily}{Default = "Calabri"}
+\item{fontFamily}{The font family for text in the diagram. Default is "Calibri".}
 
-\item{nodeWidth}{Default = 20}
+\item{nodeWidth}{The width of the nodes (entities) in the diagram. Default is 20.}
 
-\item{nodePadding}{Default = 10}
+\item{nodePadding}{The padding between nodes in the diagram. Default is 10.}
 
-\item{margin}{Default = list("left"=0, "right"=400)}
+\item{margin}{A list specifying the margins around the diagram. Default is \code{list("left" = 0, "right" = 0)}.
+Increase the margin if the node names are long and go off the page.}
 
-\item{width}{Default = 1200}
+\item{width}{The width of the plot in pixels. Default is 1200.}
 
-\item{height}{Default = 800}
+\item{height}{The height of the plot in pixels. Default is 800.}
 
-\item{shiftLabel}{the default will automatically place labels to outside of the sankey, however if there
-are unequal numbers of labels, enter in a numeric value to control which labels shift from inside to out.}
+\item{shiftLabel}{A numeric value controlling the positioning of labels on the nodes. When set to \code{NA},
+labels are automatically placed outside the nodes. If the automatic placement results in uneven label
+distribution, this parameter can be adjusted to achieve the desired layout.}
 }
 \value{
-sankey plot
+A Sankey diagram visualising the flow of data as specified by the parameters. The diagram is interactive,
+allowing for the exploration of individual flows and nodes.
 }
 \description{
-Visualise the flow of data with a sankey.
+\code{plot_sankey} enhances
+\href{https://www.rdocumentation.org/packages/networkD3/versions/0.4/topics/sankeyNetwork}{\code{networkD3::sankeyNetwork}}
+and \href{https://www.htmlwidgets.org/}{\code{htmlwidgets}} to create a Sankey diagram, a specific type of flow diagram
+that visually represents the movement or flow of data between different entities (referred to as "nodes").
+It is particularly useful for illustrating the distribution of votes flowing between parties across elections
+or in preferential voting systems.
 }
 \examples{
 \dontrun{
@@ -78,7 +87,6 @@ plot_sankey(data = split,
             source = "Party_Vote",
             target = "Candidate_Vote",
             value = "Votes",
-            colours = '"#d62f24","#378cc5","#4fbe57","#fee043","#9b0d0c",
-                       "#3e3e3f","#e69138ff","#b7b7b7ff","#cdcdd1","#cdcdd1"')
+            colours = colour_prep(df, c("Q1a", "Q1c"), pal_name = "polNZ"))
 }
 }

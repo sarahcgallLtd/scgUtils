@@ -107,6 +107,28 @@ list_group <- function(data, group) {
   return(grp)
 }
 
+# ========== #
+# Function to make duplicate strings unique factors
+make_unique <- function(strings, n) {
+    result <- character(n)
+    count <- rep(1, length(strings))
+    names(count) <- strings
+
+    idx <- 1
+    while (idx <= n) {
+        for (str in strings) {
+            suffix <- if (count[str] > 1) paste0("_", count[str]) else ""
+            result[idx] <- paste0(str, suffix)
+            count[str] <- count[str] + 1
+            idx <- idx + 1
+            if (idx > n) {
+                break
+            }
+        }
+    }
+    return(result)
+}
+
 #params[c("data","vars","groups","groupsPercent")] <- NULL # Remove data from list
 # ========== #
 # Future updates to simplfiy this:

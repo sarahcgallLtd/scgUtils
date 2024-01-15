@@ -7,6 +7,6 @@
 #' ## usethis namespace: end
 NULL
 
-globalVariables(c("palette", "name", "colour", "value", "number",
+globalVariables(c("palette", "name", "colour", "value", "number", "colours",
                   "Freq", "Group", "Group2", "Mean", "Metric", "Perc",
                   "Question", "Response", "id", "label", "x", "y", "Total"))

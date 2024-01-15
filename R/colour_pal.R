@@ -27,78 +27,106 @@ colour_pal <- function(pal_name,
 ) {
   # ==============================================================#
   # GET DATA
-  # Check internal data (sysdata)
+  # Get internal data file "colours" and take first argument of type if none specified
   colours <- get0("colours", envir = asNamespace("scgUtils"))
-
-  # Take first argument if none specified
   type <- match.arg(type)
 
   # ==============================================================#
   # INDIVIDUAL COLOUR
-  # First search `name` column:
   if (pal_name %in% colours$name) {
-    # Filter colour
-    pal <- colours[colours$name == pal_name,]
+    # Filter and select colour by name
+    pal <- colours[colours$name == pal_name, "colour"]
+    return(pal) # Individual colour returned as character string
 
-    # Select colour
-    pal <- pal[["colour"]]
-
-    # If individual colour, return colour as string
-    return(pal)
-
-    # Then, search `palette` column:
   } else if (pal_name %in% colours$palette) {
+    # Filter palette by name
     pal <- colours[colours$palette == pal_name,]
 
-    # If not in `name` or `palette`, then stop:
+    # Determine palette category
+    is_sequential_or_diverging <- grepl("^(seq|div)", pal_name)
+    is_categorical <- grepl("^cat", pal_name)
+    is_political <- grepl("^pol", pal_name)
+
   } else
+    # Trigger error if neither colour nor palette can be found
     stop("Palette not found.")
 
   # ==============================================================#
   # PALETTE COLOURS
+  if (is_political || !missing(assign))
+    type <- "discrete_as"
+
   # For all colour types except for political:
-  if (grepl("^pol", pal_name) == FALSE) {
-    if (grepl("^seq", pal_name) == TRUE || grepl("^div", pal_name) == TRUE) {
+  if (!is_political) {
+    if (is_sequential_or_diverging) {
       # Check length of palette requested and if missing, provide maximum value
-      if (missing(n)) {
-        n <- max(pal$number)
-      }
-
+      n <- if (missing(n)) max(pal$number) else n
       # If sequential or diverging colours, filter by n.
-      pal <- pal[pal$number == n,]
-    }
-    # Otherwise, if categorical colours, don't.
+      pal <- pal[pal$number == n, c("value", "colour")]
 
-    # Select value and colour columns
-    pal <- pal[, c("value", "colour")]
+    } else if (is_categorical) {
+      n <- if (missing(n)) max(pal$value) else n
+      pal <- pal[pal$value <= n, c("value", "colour")]
+    }
     # Rename to  value column to "name"
     names(pal)[names(pal) == "value"] <- "name"
 
     # For political colour types:
   } else {
-    # Select name and colour columns
-    pal <- pal[, c("name", "colour")]
+    if (is_political) {
+      # Select the political palette
+      pal <- pal[, c("name", "colour")]
+      n <- if (missing(n)) nrow(pal) else n
 
-    # Overwrite type to assigned discrete
-    type <- "discrete_as"
+      if (!missing(assign) && length(assign) > 0) {
+        assign_colours_list <- stats::setNames(vector("list", length(assign)), assign)
+
+        for (i in seq_along(assign)) {
+          # Find the best approximate match using Levenshtein distance
+          best_matches <- agrep(assign[i], pal$name, max.distance = 0.1, value = TRUE, ignore.case = TRUE)
+
+          if (length(best_matches) > 0) {
+            # If matches are found, use the first one
+            best_match_name <- best_matches[1]
+            best_match_colour <- pal$colour[which(pal$name == best_match_name)]
+            assign_colours_list[[i]] <- best_match_colour
+          } else {
+            # Try reversed partial match
+            reversed_regex_matches <- Filter(function(x) grepl(x, assign[i], ignore.case = TRUE), pal$name)
+
+            if (length(reversed_regex_matches) > 0) {
+              # Use the first match from reversed regex match
+              reversed_regex_match_name <- reversed_regex_matches[1]
+              reversed_regex_match_colour <- pal$colour[which(pal$name == reversed_regex_match_name)]
+              assign_colours_list[[i]] <- reversed_regex_match_colour
+            } else {
+              # Fallback for no matches
+              assign_colours_list[[i]] <- "#cccccc"  # Default colour
+            }
+          }
+        }
+        return(assign_colours_list)
+      }
+    }
   }
 
   # Error if palette returns NULL
-  if (nrow(pal) == 0) {
+  if (nrow(pal) == 0)
     stop("Number of requested colours is greater than what this palette can offer.")
-  }
 
   # ==============================================================#
-  # Assign values but prevent assigning names to continuous scale
-  if (!missing(assign)) {
-    # Make vector, data frame
-    values <- data.frame(name = assign)
-
-    # Add column to palette
-    pal <- cbind(values, colour = pal$colour)
-
-    # Overwrite type to assigned discrete
-    type <- "discrete_as"
+  # Assign values and prevent continuous type being assigned
+  if (!missing(assign) && type != "continuous") {
+    # Resize 'assign' to match 'n'
+    if (length(assign) < n) {
+      warning("Length of 'assign' is less than 'n'. Assignments will be repeated.")
+      assign <- make_unique(assign, n)
+    } else if (length(assign) > n) {
+      warning("Length of 'assign' is greater than 'n'. Excess names will be ignored.")
+      assign <- assign[seq_len(n)]
+    }
+    # Add expanded 'assign' and colours
+    pal <- data.frame(name = assign, colour = pal$colour[seq_len(n)], stringsAsFactors = FALSE)
   }
 
   # Convert to list

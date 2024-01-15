@@ -49,10 +49,6 @@ crosstab <- function(data,
                weight = weight)
 
   # Check if required variables are missing
-  if (missing(rowVar) && missing(colVar))
-    stop("`rowVar` and `colVar` are required to be parsed through this function.")
-
-  # Check if required variables are missing
   if (rowVar == colVar)
     stop("`rowVar` and `colVar` must be two different variables.")
 

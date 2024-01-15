@@ -1,6 +1,6 @@
 test_that("function returns correctly", {
   p <- colour_display("polUK")
-  expect_equal(p$labels$title, "polUK (n= 8)")
+  expect_equal(p$labels$title, "polUK (n= 12)")
 
   p <- colour_display("Jaffa")
   expect_equal(p$labels$title, "Jaffa (n= 1)")

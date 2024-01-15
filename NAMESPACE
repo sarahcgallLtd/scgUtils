@@ -2,6 +2,7 @@
 
 export(colour_display)
 export(colour_pal)
+export(colour_prep)
 export(compile)
 export(crosstab)
 export(get_data)
