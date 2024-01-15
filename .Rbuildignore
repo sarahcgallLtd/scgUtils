@@ -4,3 +4,6 @@
 ^README\.md$
 ^vignettes/articles$
 ^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
