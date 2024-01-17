@@ -38,6 +38,7 @@ coloured bars. Useful for previewing colour palettes, including individual colou
 custom selections.
 }
 \examples{
+\dontrun{
 # View full pallette
 colour_display("polUK")
 
@@ -52,7 +53,7 @@ colour_display("seqGreen", 7, type="continuous")
 
 # View diverging colour pal_name with 5 levels with assigned values
 colour_display("divBlueGreen", 5, c("Very Likely","Likely","Neutral","Unlikely","Very Unlikely"))
-
+}
 }
 \seealso{
 \code{colour_pal()}

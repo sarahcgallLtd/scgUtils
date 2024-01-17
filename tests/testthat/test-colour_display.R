@@ -23,4 +23,7 @@ test_that("function returns correctly", {
 
   p <- colour_display("catSimplified")
   expect_equal(p$labels$title, "catSimplified (n= 7)")
+
+  p <- colour_display("divRedBlue", type="continuous")
+  expect_equal(p$guides$fill$name, "colorbar")
 })
