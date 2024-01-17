@@ -8,6 +8,7 @@ scgUtils <a href="https://sarahcgall.github.io/scgUtils/"><img src="man/figures/
 
 ## About
 Welcome to `scgUtils`, an R package to help:
+
 * Increase productivity by incorporating and formalising frequently used 
 [**functions and charts**](#functions--charts) to run cleaner and more succinct code.
 * Maintain brand [**guidelines and styles**](#guidelines--styles) by supplying colours and other 
@@ -35,6 +36,7 @@ the decision-making process.
 This package serves as a central hub for Sarah C Gall Ltd. Several additional 
 packages are now available which either complement or assist in project work. 
 Additional packages include:
+
 * [`scgElectionsNZ`](https://sarahcgall.github.io/scgElectionsNZ): a package which provides datasets of NZ general elections
 * `scgElectionsAUS`: TBC
 * `scgElectionsUK`: TBC

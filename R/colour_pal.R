@@ -1,13 +1,44 @@
+#' @include utils.R
+NULL
 #' @title Get Colour Palettes
 #' @name colour_pal
 #'
-#' @description Generate colours palettes for graphs.
+#' @description
+#' Generates colour palettes for graphs. This function provides a versatile way to retrieve colour
+#' schemes from a predefined set of palettes, allowing for either individual colours or ranges of colours
+#' based on the specified palette. It supports sequential, diverging, categorical, and political palettes.
 #'
-#' @param pal_name Name of desired palette or individual colour.
-#' @param n Number of desired colours.
-#' @param assign Vector of corresponding levels/cetgories
-#' @param type Either "continuous", "discrete" (unnamed), or "discrete_as" (named/assigned). Default = "discrete".
-#' @return A vector of colours (discrete) or list of colours with names (discrete_as)
+#' @param pal_name A character string specifying the name of the desired palette or individual colour.
+#'                 Options include:
+#'                 - Names of specific colours (e.g., "Jaffa"). Call `colour_display("All") for all colour names.
+#'                 - Named political palettes: "polAus", "polNZ", "polUK".
+#'                 - Named categorical palettes: "catSimplified" (max n=7), "catExtended" (max n=18).
+#'                 - Named sequential palettes (max n=7): "seqGreen", "seqBlue", "seqRed".
+#'                 - Named divergent palettes (max n=14): "divRedBlue", "divBlueGreen".
+#'                 The function will check the input against the available predefined palettes and colour names.
+#'                 If an invalid name is provided, it will return an error.
+#'
+#' @param n An integer specifying the number of desired colours from the palette.
+#'          This is particularly relevant for sequential and diverging palettes.
+#'          If not specified, the function defaults to the full length of the specified palette.
+#'          A warning is issued if 'n' exceeds the number of available colours in the palette.
+#'
+#' @param assign An optional character vector representing levels or categories to be associated
+#'               with the colours. This is useful for creating named colour vectors where each colour
+#'               is assigned a specific label or category. The length of 'assign' should match 'n'.
+#'               If not, warnings will be issued for length mismatches.
+#'
+#' @param type A character string specifying the type of colour palette to return.
+#'             Options are "discrete", "discrete_as", or "continuous".
+#'             - "discrete": Returns an unnamed vector of colours.
+#'             - "discrete_as": Returns a named list of colours based on the 'assign' parameter.
+#'             - "continuous": Returns a function for generating colour gradients, applicable
+#'               only for sequential or divergent palettes. The default is "discrete".
+#'
+#' @return Depending on the 'type' parameter, this function returns:
+#'         - A vector of colour values ("discrete").
+#'         - A named list of colour values ("discrete_as").
+#'         - A function to create a gradient of colours ("continuous").
 #'
 #' @examples
 #' # Return full palette
@@ -17,12 +48,14 @@
 #' colour_pal("Jaffa")
 #'
 #' # Return palette with 5 colours and assigned levels for each colour
-#' colour_pal("divBlueGreen", 5, c("Very Likely","Likely","Neutral","Unlikely","Very Unlikely"))
-#' @export
+#' colour_pal("divBlueGreen", 5,
+#'            c("Very Likely", "Likely", "Neutral", "Unlikely", "Very Unlikely"))
 #'
+#' @export
+#' @seealso `colour_display()`
 colour_pal <- function(pal_name,
-                       n,
-                       assign,
+                       n = NULL,
+                       assign = NULL,
                        type = c("discrete", "discrete_as", "continuous")
 ) {
   # ==============================================================#
@@ -53,19 +86,19 @@ colour_pal <- function(pal_name,
 
   # ==============================================================#
   # PALETTE COLOURS
-  if (is_political || !missing(assign))
+  if (is_political || !is.null(assign))
     type <- "discrete_as"
 
   # For all colour types except for political:
   if (!is_political) {
     if (is_sequential_or_diverging) {
-      # Check length of palette requested and if missing, provide maximum value
-      n <- if (missing(n)) max(pal$number) else n
+      # Check length of palette requested and if NULL, provide maximum value
+      n <- if (is.null(n)) max(pal$number) else n
       # If sequential or diverging colours, filter by n.
       pal <- pal[pal$number == n, c("value", "colour")]
 
     } else if (is_categorical) {
-      n <- if (missing(n)) max(pal$value) else n
+      n <- if (is.null(n)) max(pal$value) else n
       pal <- pal[pal$value <= n, c("value", "colour")]
     }
     # Rename to  value column to "name"
@@ -76,9 +109,9 @@ colour_pal <- function(pal_name,
     if (is_political) {
       # Select the political palette
       pal <- pal[, c("name", "colour")]
-      n <- if (missing(n)) nrow(pal) else n
+      n <- if (is.null(n)) nrow(pal) else n
 
-      if (!missing(assign) && length(assign) > 0) {
+      if (!is.null(assign) && length(assign) > 0) {
         assign_colours_list <- stats::setNames(vector("list", length(assign)), assign)
 
         for (i in seq_along(assign)) {
@@ -116,7 +149,7 @@ colour_pal <- function(pal_name,
 
   # ==============================================================#
   # Assign values and prevent continuous type being assigned
-  if (!missing(assign) && type != "continuous") {
+  if (!is.null(assign) && type != "continuous") {
     # Resize 'assign' to match 'n'
     if (length(assign) < n) {
       warning("Length of 'assign' is less than 'n'. Assignments will be repeated.")

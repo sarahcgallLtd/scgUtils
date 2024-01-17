@@ -2,7 +2,7 @@
 % Please edit documentation in R/colour_prep.R
 \name{colour_prep}
 \alias{colour_prep}
-\title{Prepare a Colour Palette for Data Columns}
+\title{Prepare a Named Colour Palette for Data Columns}
 \usage{
 colour_prep(data, columns, pal_name = "catExtended")
 }
@@ -12,41 +12,49 @@ colour_prep(data, columns, pal_name = "catExtended")
 \item{columns}{A character vector specifying the names of the columns in \code{data} for which
 unique values are to be extracted and assigned colours.}
 
-\item{pal_name}{The name of the colour palette to use. The default value is \code{"catExtended"},
-which refers to an extended categorical colour palette. Other palettes from \code{colour_pal} can be specified as needed.}
+\item{pal_name}{The name of the colour palette to use, defaulting to \code{"catExtended"}.
+This refers to an extended categorical colour palette. Other palettes from
+\code{colour_pal} can also be specified.}
 }
 \value{
-A named list of colours, where each name corresponds to a unique value found in the
-specified \code{columns} of the \code{data} frame, and each colour is a hexadecimal colour code from the specified
-colour palette. This list can be directly used for colour mapping in data visualisations.
+A named list of hexadecimal colour codes, where each name corresponds to a unique value
+found in the specified \code{columns} of the \code{data} frame. This list can be directly used for
+colour mapping in data visualisations.
 }
 \description{
-\code{colour_prep} works in tandem with \code{colours_pal}. It is a helper function that prepares a colour
-palette for visualising data, by assigning colours to unique values across specified columns in a data frame. It
-is particularly useful for creating consistent colour mappings in visualisations like plots and diagrams
-where colours are associated with specific data values.
+\code{colour_prep} is a helper function designed to work in tandem with \code{colour_pal}. It prepares a colour
+palette for visualising data by assigning colours to unique values across specified columns in a data frame.
+This function is particularly useful for creating consistent colour mappings in visualisations such as
+plots and diagrams, where colours are associated with specific data values.
 
-When a political colour palette is requested from \code{colour_pal} (prefix "pol"), the function will attempt to assign
-the political party names from your data frame and match it with the political party colour from the palette. E.g.,
-if your data column contains "Scottish National Party (SNP)", the function will attempt to match the name within
-the colour palette, "SNP", and therefore assign it with the hexidecimal colour, #FFF95D (light yellow).
+For political colour palettes (identified by the "pol" prefix in \code{pal_name}), \code{colour_prep} attempts to
+match political party names from the data frame with corresponding colours from the palette. For example,
+if a data column contains "Scottish National Party (SNP)", the function will try to match it with the "SNP"
+entry in the colour palette and assign the appropriate hexadecimal colour, e.g., "#FFF95D" (light yellow).
 
-Values that fail to achieve a full or partial match are assigned the default "#cccccc" (grey). For these, you can
-save the output and amend list items manually using `your_saved_colour_palette$default_value <- "#34134a".
+Values that do not match are assigned a default grey colour ("#cccccc"). Users can manually amend these
+default assignments by modifying the returned list, e.g., \code{your_saved_colour_palette$default_value <- "#34134a"}.
 }
 \examples{
-\dontrun{
 # Example data frame
 df <- data.frame(
-  Category1 = c("A", "B", "C", "A"),
-  Category2 = c("X", "Y", "X", "Z")
+  Category1 = c("Scottish National Party (SNP)", "Labour", "Conservative", "Other"),
+  Category2 = c("An independent candidate", "Invalid_Party_Name", "Other", "Conservative")
 )
 
 # Prepare a colour palette for the unique values in Category1 and Category2
-colours <- colour_prep(df, c("Category1", "Category2"))
+colour_prep(df, c("Category1", "Category2"))
 
-# The result is a named list of colours for each unique value in the specified columns
+# See political party colours and compare with the full palette to see how the two names are matched
+actual <- colour_prep(df, c("Category1", "Category2"), pal_name = "polUK")
+actual <- stack(actual)
+expected <- colour_pal("polUK")
+expected <- stack(expected)
+colours <- dplyr::left_join(actual, expected, by="values")
+colours <- stats::setNames(colours, c("colours", "df_name", "palette_name"))
 print(colours)
-}
 
+}
+\seealso{
+\code{colour_pal()}
 }

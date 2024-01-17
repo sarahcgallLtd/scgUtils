@@ -6,25 +6,49 @@
 \usage{
 colour_pal(
   pal_name,
-  n,
-  assign,
+  n = NULL,
+  assign = NULL,
   type = c("discrete", "discrete_as", "continuous")
 )
 }
 \arguments{
-\item{pal_name}{Name of desired palette or individual colour.}
+\item{pal_name}{A character string specifying the name of the desired palette or individual colour.
+Options include:
+- Names of specific colours (e.g., "Jaffa"). Call `colour_display("All") for all colour names.
+- Named political palettes: "polAus", "polNZ", "polUK".
+- Named categorical palettes: "catSimplified" (max n=7), "catExtended" (max n=18).
+- Named sequential palettes (max n=7): "seqGreen", "seqBlue", "seqRed".
+- Named divergent palettes (max n=14): "divRedBlue", "divBlueGreen".
+The function will check the input against the available predefined palettes and colour names.
+If an invalid name is provided, it will return an error.}
 
-\item{n}{Number of desired colours.}
+\item{n}{An integer specifying the number of desired colours from the palette.
+This is particularly relevant for sequential and diverging palettes.
+If not specified, the function defaults to the full length of the specified palette.
+A warning is issued if 'n' exceeds the number of available colours in the palette.}
 
-\item{assign}{Vector of corresponding levels/cetgories}
+\item{assign}{An optional character vector representing levels or categories to be associated
+with the colours. This is useful for creating named colour vectors where each colour
+is assigned a specific label or category. The length of 'assign' should match 'n'.
+If not, warnings will be issued for length mismatches.}
 
-\item{type}{Either "continuous", "discrete" (unnamed), or "discrete_as" (named/assigned). Default = "discrete".}
+\item{type}{A character string specifying the type of colour palette to return.
+Options are "discrete", "discrete_as", or "continuous".
+- "discrete": Returns an unnamed vector of colours.
+- "discrete_as": Returns a named list of colours based on the 'assign' parameter.
+- "continuous": Returns a function for generating colour gradients, applicable
+only for sequential or divergent palettes. The default is "discrete".}
 }
 \value{
-A vector of colours (discrete) or list of colours with names (discrete_as)
+Depending on the 'type' parameter, this function returns:
+- A vector of colour values ("discrete").
+- A named list of colour values ("discrete_as").
+- A function to create a gradient of colours ("continuous").
 }
 \description{
-Generate colours palettes for graphs.
+Generates colour palettes for graphs. This function provides a versatile way to retrieve colour
+schemes from a predefined set of palettes, allowing for either individual colours or ranges of colours
+based on the specified palette. It supports sequential, diverging, categorical, and political palettes.
 }
 \examples{
 # Return full palette
@@ -34,5 +58,10 @@ colour_pal("catExtended")
 colour_pal("Jaffa")
 
 # Return palette with 5 colours and assigned levels for each colour
-colour_pal("divBlueGreen", 5, c("Very Likely","Likely","Neutral","Unlikely","Very Unlikely"))
+colour_pal("divBlueGreen", 5,
+           c("Very Likely", "Likely", "Neutral", "Unlikely", "Very Unlikely"))
+
+}
+\seealso{
+\code{colour_display()}
 }

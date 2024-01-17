@@ -1,3 +1,8 @@
+test_that("correct error message is returned", {
+  expect_error(colour_display("polUK",type="continuous"),
+               "continuous type can only used with sequential or divergent palettes")
+})
+
 test_that("function returns correctly", {
   p <- colour_display("polUK")
   expect_equal(p$labels$title, "polUK (n= 12)")
