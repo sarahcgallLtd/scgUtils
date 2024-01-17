@@ -28,6 +28,7 @@ NULL
 #'         is displayed.
 #'
 #' @examples
+#' \dontrun{
 #' # View full pallette
 #' colour_display("polUK")
 #'
@@ -42,7 +43,7 @@ NULL
 #'
 #' # View diverging colour pal_name with 5 levels with assigned values
 #' colour_display("divBlueGreen", 5, c("Very Likely","Likely","Neutral","Unlikely","Very Unlikely"))
-#'
+#'}
 #' @import ggplot2
 #' @export
 #' @seealso `colour_pal()`
