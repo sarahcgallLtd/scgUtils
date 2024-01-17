@@ -1,4 +1,65 @@
 url: https://sarahcgall.github.io/scgUtils/
+
 template:
+  package: tidytemplate
   bootstrap: 5
+
+development:
+  mode: auto
+
+authors:
+  Sarah Gall:
+    href: https://sarahcgall.co.uk/
+
+reference:
+- title: Data
+  desc: >
+    scgUtils comes with a number of functions for processing and exploring survey data easily. 
+    It also contains a sample dataset, "survey".
+  contents:
+    - survey
+
+- subtitle: Processing
+  desc: >
+    Functions for accessing and processing labelled data.
+  contents:
+  - get_data
+  - remove_levels
+
+- subtitle: Exploring
+  desc: >
+    Functions for exploring data, including the creation of crosstabs.
+  contents:
+  - compile
+  - crosstab
+  - grid_vars
+  - grp_freq
+  - grp_mean
+
+- title: Visualisation
+  desc: >
+    Functions to visualise data
+  contents:
+  - plot_bigfive
+  - plot_binary
+  - plot_parliament
+  - plot_popn
+  - plot_sankey
+
+- title: Styling
+  desc: >
+    scgUtils comes with a number of functions to assist in styling graphs.
+- subtitle: Colour
+  desc: >
+    Colour functions for graphs.
+  contents:
+  - colour_pal
+  - colour_display
+  - colour_prep
+
+- subtitle: Themes
+- desc: >
+    Themes for ggplot2 graphs.
+  contents:
+    - theme_scg
 
