@@ -1,8 +1,10 @@
 .Rproj.user
 .Rhistory
-.idea
-.RData
-.*.Rnb.cached
-docs
+.Rdata
+.httr-oauth
+.DS_Store
+.quarto
+.idea/
 inst/doc
+docs
 tests/testthat/table.csv
