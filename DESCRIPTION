@@ -26,7 +26,7 @@ Language: en-GB
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends:
-    R (>= 2.10)
+    R (>= 3.5.0)
 Suggests: 
     knitr,
     rmarkdown,
@@ -36,3 +36,23 @@ Config/testthat/edition: 3
 VignetteBuilder: knitr
 LazyData: true
 Config/Needs/website: tidyverse/tidytemplate
+Collate:
+    'utils.R'
+    'colour_display.R'
+    'colour_pal.R'
+    'colour_prep.R'
+    'compile.R'
+    'crosstab.R'
+    'data.R'
+    'get_data.R'
+    'grid_vars.R'
+    'grp_freq.R'
+    'grp_mean.R'
+    'plot_bigfive.R'
+    'plot_binary.R'
+    'plot_parliament.R'
+    'plot_popn.R'
+    'plot_sankey.R'
+    'remove_levels.R'
+    'scgUtils_package.R'
+    'theme_scg.R'
