@@ -54,10 +54,10 @@ colour_display <- function(pal_name,
 ) {
   # ==============================================================#
   # CHECK PARAMS
+  type <- match.arg(type)
+
   if (type == "continuous" && grepl("^(seq|div)", pal_name) == FALSE)
     stop("continuous type can only used with sequential or divergent palettes")
-
-  type <- match.arg(type)
 
   # ==============================================================#
   # RETURN COLOUR PALETTE
