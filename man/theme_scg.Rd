@@ -2,7 +2,7 @@
 % Please edit documentation in R/theme_scg.R
 \name{theme_scg}
 \alias{theme_scg}
-\title{Theme for SCG Plots}
+\title{Theme for scg Plots}
 \usage{
 theme_scg(base_size = 10, base_font = "")
 }
@@ -15,7 +15,7 @@ theme_scg(base_size = 10, base_font = "")
 A ggplot2 theme
 }
 \description{
-A theme for SCG plots.
+A theme for scg plots.
 }
 \examples{
 \dontrun{

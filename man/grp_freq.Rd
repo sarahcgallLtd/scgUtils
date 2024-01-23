@@ -40,39 +40,10 @@ Calculates the frequency of a variable by groups in survey data.
 # Sum unweighted data by group
 df <- grp_freq(dataset,
                group = c("age_categories","gender"))
-
-#    age_categories gender Freq
-# 1        18 to 24   Male   84
-# 2        25 to 34   Male  155
-# 3        35 to 44   Male  180
-# 4        45 to 54   Male  115
-# 5        55 to 54   Male   38
-# 6             65+   Male    6
-# 7        18 to 24 Female   83
-# 8        25 to 34 Female  153
-# 9        35 to 44 Female  129
-# 10       45 to 54 Female   57
-# 11       55 to 54 Female   24
-# 12            65+ Female    6
-
 # Sum weighted data by group and change the column names
 df <- grp_freq(dataset,
                group = c("age_categories","gender"),
                weight = "wgtvar",
                set_names = c("Age","Gender","n"))
-
-#         Age Gender         n
-# 1  18 to 24   Male  43.40468
-# 2  25 to 34   Male 115.36419
-# 3  35 to 44   Male 160.55258
-# 4  45 to 54   Male 187.29274
-# 5  55 to 54   Male  61.88803
-# 6       65+   Male  30.90000
-# 7  18 to 24 Female  42.88796
-# 8  25 to 34 Female 109.82791
-# 9  35 to 44 Female 115.06268
-# 10 45 to 54 Female  92.83205
-# 11 55 to 54 Female  39.08718
-# 12      65+ Female  30.90000
 }
 }

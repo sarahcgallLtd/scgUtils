@@ -5,6 +5,5 @@
 .DS_Store
 .quarto
 .idea/
-inst/doc
 docs
 tests/testthat/table.csv

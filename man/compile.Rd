@@ -2,7 +2,7 @@
 % Please edit documentation in R/compile.R
 \name{compile}
 \alias{compile}
-\title{Compile Multiple Data Frames in One}
+\title{Compile Multiple Data Frames into One}
 \usage{
 compile(
   data,
@@ -15,33 +15,39 @@ compile(
 )
 }
 \arguments{
-\item{data}{A data frame containing survey data. This parameter is required.}
+\item{data}{A data frame containing survey data.}
 
-\item{rowVars}{Independent variable represented in rows (on the side). This parameter is required.}
+\item{rowVars}{A vector of names of independent variables, each represented in rows.}
 
-\item{colVars}{Dependent variable represented in columns (at the top). This parameter is required.}
+\item{colVars}{A vector of names of dependent variables, each represented in columns.}
 
-\item{weight}{Variable containing weight factors. This variable is optional.}
+\item{weight}{Optional variable containing weight factors for the analysis.}
 
-\item{format}{Formatting options to return either a csv or statistics data frame (default = \code{"csv"}).}
+\item{format}{The desired output format: 'csv' for a formatted CSV file, or 'statistics'
+for a statistical summary (default is 'csv').}
 
-\item{save}{Logical, if \code{TRUE}, df will be saved to .csv file (default = \code{TRUE}).}
+\item{save}{Logical; if \code{TRUE}, the results are saved to a CSV file (default is \code{TRUE}).}
 
-\item{name}{Name of df to be saved to project directory (default = \code{"table"}).}
+\item{name}{The name of the output file (without extension) when \code{save} is \code{TRUE}
+(default is 'table').}
 }
 \value{
-.csv file
+If \code{save} is \code{FALSE}, returns a data frame containing the compiled results.
+If \code{save} is \code{TRUE}, the function saves the results to a CSV file and does not
+return a value.
 }
 \description{
-Produce a csv containing a full set of crosstabs or statistics for each 2x2 variables.
+The \code{compile} function generates a comprehensive CSV or statistics data frame
+from survey data, combining crosstabs and/or statistics for each pair of row and column variables.
 }
 \examples{
 \dontrun{
-# Create crosstabs with csv output using weighted data.
-compile(dataset,
-       rowVars = c("Q1", "Q2"),
-       colVars = c("Gender", "VI"),
-       weight = "wgtvar",
-       name = "crosstabs")
+  # Example: Compile crosstabs with CSV output using weighted data
+  compile(data = dataset,
+          rowVars = c("Q1", "Q2"),
+          colVars = c("Gender", "VI"),
+          weight = "wgtvar",
+          name = "crosstabs")
 }
+
 }

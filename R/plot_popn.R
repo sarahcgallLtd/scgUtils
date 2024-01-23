@@ -298,3 +298,46 @@ plot_popn <- function(data,
   # ==============================================================#
   return(p)
 }
+
+
+#' Amend Text Labels in Geom_text Layers of a Plot
+#'
+#' This is an internal helper function used by `plot_population` to add and
+#' customise text labels in `geom_text` layers of a `ggplot2` plot.
+#'
+#' @param plot The ggplot object to which text labels are to be added.
+#' @param data A data frame containing the data used in the plot.
+#' @param column The name of the column in `data` used for determining label characteristics.
+#' @param thresholdLab A numeric threshold for determining the color of the text labels.
+#' @param nudgeLab A numeric value specifying the amount of horizontal nudge for text labels.
+#' @param sizeLab Font size for the text labels.
+#' @param faceLab Font face for the text labels.
+#' @param colour Default colour for text labels below the threshold.
+#'
+#' @return Returns a ggplot object with amended text labels.
+#'
+#' @details
+#' The function modifies text labels based on the value in `column`. Labels are colored
+#' white if the absolute value of the data in `column` is greater than or equal to `thresholdLab`,
+#' otherwise the specified `colour` is used. The horizontal position (`nudge_x`) and
+#' horizontal justification (`hjust`) of labels are also adjusted based on the value in `column`.
+#'
+#' @note Known issue: When `add_text()` is used in a facet, the horizontal justification
+#' (`hjust`) does not work correctly for smaller negative values.
+#'
+#' @noRd
+add_text <- function(plot, data, column, thresholdLab, nudgeLab, sizeLab, faceLab, colour) {
+  p <- plot +
+    geom_text(
+      size = sizeLab, fontface = faceLab, na.rm = TRUE,
+      colour = ifelse(abs(data[, column]) >= thresholdLab, "white", colour),
+      nudge_x = dplyr::case_when(
+        abs(data[, column]) >= thresholdLab & data[, column] < 0.00 ~ nudgeLab,
+        abs(data[, column]) < thresholdLab & data[, column] >= 0.00 ~ nudgeLab,
+        .default = -nudgeLab
+      ),
+      hjust = ifelse(abs(data[, column]) >= thresholdLab, "inward", "outward"),
+      check_overlap = TRUE
+    )
+  return(p)
+}

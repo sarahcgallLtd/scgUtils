@@ -3,10 +3,21 @@
 # https://www.britishelectionstudy.com/data-object/wave-25-of-the-2014-2023-british-election-study-internet-panel/
 
 # read SPSS file and save it in a data frame called "df"
-survey <- haven::read_sav("other/BES2019_W25_v25.0.sav")
+survey <- haven::read_sav("data-raw/other/BES2019_W25_v25.0.sav")
 
 # Limit size to n=5000 and number of variables
-survey <- survey[1:5000,c(1,4:14,23:35,59:60,73:79,522:525,527,531:553,563,568:568,570)]
+survey <- survey[1:5000, c(1, 4:14, 23:35, 59:60, 73:79, 522:525, 527, 531:553, 563, 568:568, 570)]
 
 # save to .rds
 usethis::use_data(survey, overwrite = TRUE)
+
+# Unlabel for csv version
+survey <- labelled::unlabelled(survey)
+# save to .csv
+utils::write.table(survey,
+                   file = "inst/extdata/survey.csv",
+                   na = "",
+                   row.names = FALSE,
+                   col.names = TRUE,
+                   fileEncoding = "UTF-8",
+                   sep = ',')

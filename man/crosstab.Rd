@@ -2,7 +2,7 @@
 % Please edit documentation in R/crosstab.R
 \name{crosstab}
 \alias{crosstab}
-\title{Crosstab / Contingency Tables}
+\title{Produce Crosstabs / Contingency Tables for Analysis}
 \usage{
 crosstab(
   data,
@@ -16,48 +16,53 @@ crosstab(
   format = c("df_long", "df_wide", "csv", "statistics"),
   convert_to = c("percent", "frequency"),
   yLab = "Population (\%)",
-  adjustX = c("no", "yes")
+  adjustX = FALSE
 )
 }
 \arguments{
 \item{data}{A data frame containing survey data. This parameter is required.}
 
-\item{rowVar}{Independent variable represented in rows (on the side). This parameter is required.}
+\item{rowVar}{The independent variable represented in rows (side of the table).}
 
-\item{colVar}{Dependent variable represented in columns (at the top). This parameter is required.}
+\item{colVar}{The dependent variable represented in columns (top of the table).}
 
-\item{weight}{Variable containing weight factors. This variable is optional.}
+\item{weight}{An optional variable containing weight factors for the analysis.}
 
-\item{totals}{Logical, if totals is \code{TRUE}, df with totals column is included (default = \code{TRUE}).}
+\item{totals}{Logical; if \code{TRUE}, includes a totals column in the output (default is \code{TRUE}).}
 
-\item{round_decimals}{Set the number of decimal points for the data (default = \code{NULL}).}
+\item{round_decimals}{Optional; number of decimal points for rounding the data (default is \code{NULL}).}
 
-\item{statistics}{Logical, if statistics is \code{TRUE}, Chi-Square, DF, Cramer's V, and p-value are printed (default = \code{FALSE}).}
+\item{statistics}{Logical; if \code{TRUE}, calculates and prints Chi-Square, degrees of freedom (DF), Cramer's V,
+and p-value (default is \code{FALSE}).}
 
-\item{plot}{Logical, if plot is \code{TRUE}, a chart is available to be viewed (default = \code{FALSE}).}
+\item{plot}{Logical; if \code{TRUE}, generates a plot for visual representation of the crosstab data (default is \code{FALSE}).}
 
-\item{format}{Formatting options to return either a long or wide data frame (default = \code{"df_long"}).}
+\item{format}{Specifies the output format: 'df_long', 'df_wide', 'csv', or 'statistics' (default is 'df_long').}
 
-\item{convert_to}{Conversion options to return either a percentages or frequencies (default = \code{"percent"}).}
+\item{convert_to}{Determines conversion type: 'percent' or 'frequency' (default is 'percent').}
 
-\item{yLab}{Y axis title. Default = "Population (\%)".}
+\item{yLab}{Title for the Y-axis, default is "Population (\%)".}
 
-\item{adjustX}{If "yes", the values on the x-axis will turn 45 degress. The default is "no" which keeps values horiztonal.}
+\item{adjustX}{Logical; if \code{TRUE}, adjusts the X-axis labels to a 45-degree angle for better readability
+(default is \code{FALSE}).}
 }
 \value{
-Crosstabs held in a data frame containing row-wise percentages (\%) and col-wise totals (n)
+Depending on the chosen format, returns a data frame in either long or wide format,
+containing row-wise percentages and column-wise totals. If \code{plot} is \code{TRUE}, a plot object is also generated.
 }
 \description{
-Produce crosstabs/contingency tables to view individually and perform further analysis on.
+The \code{crosstab} function generates crosstabs (contingency tables) from survey data,
+allowing for a variety of formatting and analytical options. It can produce tables with
+statistical measures, create visual plots, and handle weighted data.
 }
 \examples{
 \dontrun{
-# Create crosstabs with long df output using weighted data.
-df <- crosstab(dataset,
-              rowVar = "Q1",
-              colVar = "Gender",
-              weight = "wgtvar",
-              totals = FALSE,
-              round_decimal=2)
+  # Example: Create crosstabs with a long data frame output using weighted data
+  crosstab_result <- crosstab(data = dataset,
+                              rowVar = "Q1",
+                              colVar = "Gender",
+                              weight = "wgtvar",
+                              totals = FALSE,
+                              round_decimals = 2)
 }
 }

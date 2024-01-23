@@ -19,7 +19,7 @@ test_that("function returns colour palettes in the correct format", {
   p <- colour_pal("divRedBlue", n = 4, assign = c("hi1", "hi2", "hi3", "hi4"))
   expect_equal(class(p), "list")
 
-  p <- colour_pal("polAus", assign = c("hi1", "hi2", "hi3", "hi4", "hi5", "hi6", "hi7"))
+  p <- colour_pal("polAus", assign = c("Coalition", "Labor", "Labour", "One Nation", "Other", "Greens", "Informal"))
   expect_equal(class(p), "list")
 
   p <- colour_pal("polAus")

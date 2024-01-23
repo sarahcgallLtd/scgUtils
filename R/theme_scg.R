@@ -1,7 +1,7 @@
-#' @title Theme for SCG Plots
+#' @title Theme for scg Plots
 #' @name theme_scg
 #'
-#' @description A theme for SCG plots.
+#' @description A theme for scg plots.
 #'
 #' @param base_size Size of font.
 #' @param base_font Font family. See \code{names(pdfFonts())} for options

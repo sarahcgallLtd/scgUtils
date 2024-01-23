@@ -3,7 +3,7 @@ test_that("function works correctly", {
   # Data
   df <- get_data("survey")
   df <- labelled::unlabelled(df)
-  df <- remove_levels(df)
+  df <- process_factors(df)
 
   rowVars <- c("turnoutUKGeneral", "generalElectionVote", "partyIdStrength")
   colVars <- c("gender", "ageGroup", "partyId", "p_socgrade")

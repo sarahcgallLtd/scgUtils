@@ -5,7 +5,7 @@ df <- labelled::unlabelled(df)
 # ==============================================================#
 test_that("all factor labels are retireved from the data frame", {
   x <- get_factor_labels(df)
-  expect_equal(x$turnoutUKGeneral, "Likelihood to vote in general election")
+  expect_equal(x[["turnoutUKGeneral"]], "Likelihood to vote in general election")
 })
 
 test_that("all factor labels are added to new data frame", {
@@ -20,7 +20,7 @@ test_that("all factor labels are added to new data frame", {
 })
 
 test_that("changes levels of factors", {
-  x <- remove_levels(df)
+  x <- process_factors(df)
   x <- levels(x$partyId)
   y <- levels(df$partyId)
 

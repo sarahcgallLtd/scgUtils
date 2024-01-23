@@ -63,17 +63,8 @@ colour_display <- function(pal_name,
   # RETURN COLOUR PALETTE
   # If palette is all (categorical - extended)
   if (pal_name != "All") {
-    # Match arguments
-    pal <- match.call(expand.dots = FALSE)
-
-    # Substitute colour_display() for colour_pal()
-    pal[[1L]] <- quote(colour_pal)
-
-    # Add type as "discrete_as" to ensure colour returns names
-    pal[["type"]] <- type
-
-    # Evaluate
-    pal_col <- eval(pal, parent.frame())
+    # Get colour palette
+    pal_col <- colour_pal(pal_name, n, assign, type)
 
   } else {
     #If palette is "All" (categorical - extended)
@@ -94,8 +85,38 @@ colour_display <- function(pal_name,
     pal_col <- split(pal_col$colour, pal_col$name)
   }
 
-  # ==============================================================#
-  # CREATE DATA FRAME
+  # Call the helper function to create and format the plot
+  p <- create_palette_plot(pal_col, pal_name, n, type)
+
+  return(p)
+}
+
+#' Create Palette Plot for Color Visualisation
+#'
+#' This internal helper function for `colour_display` creates plots to visualise
+#' color palettes, handling both discrete and continuous color schemes.
+#'
+#' @param pal_col A function, list, or vector of colours to be displayed in the plot.
+#' @param pal_name The name of the colour palette.
+#' @param n The number of colours to display. If `NULL`, it will be determined
+#'   based on `pal_col` or `pal_name`.
+#' @param type The type of colour palette to display, either 'discrete_as' or
+#'   a continuous palette type.
+#'
+#' @details
+#' The function creates a ggplot object displaying the specified colors. For
+#' discrete palettes ('discrete_as'), it displays each color as a separate bar.
+#' For continuous palettes, it displays a gradient plot. It includes contrast
+#' adjustments for text labels based on the brightness of the colors.
+#'
+#' @return A `ggplot` object visualizing the specified color palette.
+#'
+#' @noRd
+create_palette_plot <- function(pal_col,
+                                pal_name,
+                                n,
+                                type
+) {
   if (type == "discrete_as") {
     # Get n if NULL
     if (is.null(n)) n <- length(pal_col)
@@ -125,9 +146,7 @@ colour_display <- function(pal_name,
 
   } else {
     # Get n if NULL
-    pal[["type"]] <- "discrete_as"
-    pal_n <- eval(pal, parent.frame())
-    if (is.null(n)) n <- length(pal_n)
+    if (is.null(n)) n <- length(colour_pal(pal_name, n, type = "discrete_as"))
 
     # Create dummy data
     df <- expand.grid(x = 1:n, y = 1:n)
@@ -142,8 +161,7 @@ colour_display <- function(pal_name,
                                     ticks = FALSE))
   }
 
-  # ==============================================================#
-  # FORMAT PLOT
+  # Common formatting for the plot
   p <- p +
     labs(title = paste0(pal_name, " (n= ", n, ")")) +
     theme_minimal() +
@@ -154,9 +172,9 @@ colour_display <- function(pal_name,
           axis.text = element_blank(),
           axis.title = element_blank())
 
-  if (pal_name == "All")
+  if (pal_name == "All") {
     p <- p + facet_wrap(. ~ value, scales = "free")
+  }
 
-  # ==============================================================#
   return(p)
 }

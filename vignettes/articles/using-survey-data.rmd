@@ -63,7 +63,7 @@ head(df[, 1:3])
 ```
 <br>
 
-You can also view the original questionnaire and values easily by using the [`sjPlot`](https://strengejacke.github.io/sjPlot/) package.
+You can also view the original questionnaire and values easily by using the [`view_df`](http://www.strengejacke.de/sjPlot/reference/view_df.html) from the `sjPlot` package.
 ```{r view_data1, eval = FALSE}
 # NB first 10 variables shown only
 sjPlot::view_df(df[, 1:10])
@@ -107,7 +107,7 @@ levels(df$ageGroup)
 
 To remove all unused factor levels across the dataset, you can use the `remove_levels` function.
 ```{r clean_data4}
-df <- remove_levels(df)
+df <- process_factors(df)
 ```
 
 Using this function will ensure that the metadata is retained and can still be accessed.

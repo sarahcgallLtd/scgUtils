@@ -24,7 +24,8 @@ reference:
     Functions for accessing and processing labelled data.
   contents:
   - get_data
-  - remove_levels
+  - get_file
+  - process_factors
 
 - subtitle: Exploring
   desc: >

@@ -1,3 +1,5 @@
+#' @include utils.R
+NULL
 #' @title Binary Survey Data
 #' @name grid_vars
 #'
