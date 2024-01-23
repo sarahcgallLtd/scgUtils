@@ -20,7 +20,11 @@ Imports:
     grDevices,
     rlang,
     networkD3,
-    htmlwidgets
+    htmlwidgets,
+    haven,
+    googledrive,
+    Microsoft365R,
+    readr
 Encoding: UTF-8
 Language: en-GB
 Roxygen: list(markdown = TRUE)

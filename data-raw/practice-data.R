@@ -11,6 +11,9 @@ survey <- survey[1:5000, c(1, 4:14, 23:35, 59:60, 73:79, 522:525, 527, 531:553, 
 # save to .rds
 usethis::use_data(survey, overwrite = TRUE)
 
+# save to .sav
+haven::write_sav(survey, "inst/extdata/survey.sav")
+
 # Unlabel for csv version
 survey <- labelled::unlabelled(survey)
 # save to .csv
