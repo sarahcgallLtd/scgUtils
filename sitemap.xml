@@ -43,6 +43,9 @@
     <loc>https://sarahcgall.github.io/scgUtils/reference/get_data.html</loc>
   </url>
   <url>
+    <loc>https://sarahcgall.github.io/scgUtils/reference/get_file.html</loc>
+  </url>
+  <url>
     <loc>https://sarahcgall.github.io/scgUtils/reference/grid_vars.html</loc>
   </url>
   <url>
@@ -70,7 +73,7 @@
     <loc>https://sarahcgall.github.io/scgUtils/reference/plot_sankey.html</loc>
   </url>
   <url>
-    <loc>https://sarahcgall.github.io/scgUtils/reference/remove_levels.html</loc>
+    <loc>https://sarahcgall.github.io/scgUtils/reference/process_factors.html</loc>
   </url>
   <url>
     <loc>https://sarahcgall.github.io/scgUtils/reference/survey.html</loc>

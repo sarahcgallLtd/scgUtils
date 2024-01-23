@@ -149,8 +149,8 @@ column</p>
 <span><span class="co"># 6    24 1.69  5 [Very likely that I would vote]</span></span></code></pre></div>
 <p><br></p>
 <p>You can also view the original questionnaire and values easily by
-using the <a href="https://strengejacke.github.io/sjPlot/" class="external-link"><code>sjPlot</code></a>
-package.</p>
+using the <a href="http://www.strengejacke.de/sjPlot/reference/view_df.html" class="external-link"><code>view_df</code></a>
+from the <code>sjPlot</code> package.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># NB first 10 variables shown only</span></span>
 <span><span class="fu">sjPlot</span><span class="fu">::</span><span class="fu">view_df</span><span class="op">(</span><span class="va">df</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
@@ -197,7 +197,7 @@ certain respondents from participating).</p>
 <p>To remove all unused factor levels across the dataset, you can use
 the <code>remove_levels</code> function.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/remove_levels.html">remove_levels</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/process_factors.html">process_factors</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
 <p>Using this function will ensure that the metadata is retained and can
 still be accessed.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
