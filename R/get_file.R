@@ -2,11 +2,11 @@
 #'
 #' @description
 #' `get_file` handles the retrieval and initial processing of a file from different
-#' sources, including local storage, OneDrive, Google Drive, and directly from the web.
+#' sources, including local storage, OneDrive, and directly from the web.
 #' It also preprocesses the file based on its type.
 #'
 #' @param file_path The path, ID, or URL of the file to be retrieved.
-#' @param source The source of the file: 'local', 'onedrive', 'googledrive', or 'web'
+#' @param source The source of the file: 'local', 'onedrive', or 'web'
 #'   (default is 'local').
 #' @param row_no The number of rows to skip at the beginning of the file, applicable
 #'   for CSV files (default is 0).
@@ -36,7 +36,10 @@
 #'
 #' @export
 get_file <- function(file_path,
-                     source = c("local", "onedrive", "googledrive", "web"),
+                     source = c("local",
+                                "onedrive",
+                                #"googledrive",
+                                "web"),
                      row_no = 0
 ) {
   # Determine file type
@@ -95,13 +98,14 @@ authenticate_source <- function(file_path,
     file_path <- local_file_path
     # ==============================================================#
     # GOOGLE DRIVE:
-  } else if (source == "googledrive") {
-    # Authenticate with Google
-    googledrive::drive_auth()
-    # Get file
-    file <- googledrive::drive_get(file_path)
-    # Download file
-    file_path <- googledrive::drive_download(file, overwrite = TRUE)
+    # TODO: authentication unsupported by Google for "less secure apps". Need to work out solution.
+  # } else if (source == "googledrive") {
+    # # Authenticate with Google
+    # googledrive::drive_auth()
+    # # Get file
+    # file <- googledrive::drive_get(file_path)
+    # # Download file
+    # file_path <- googledrive::drive_download(file, overwrite = TRUE)
     # ==============================================================#
     # WEBSITE:
   } else if (source == "web") {
@@ -110,10 +114,7 @@ authenticate_source <- function(file_path,
     utils::download.file(file_path, destfile = temp_file, mode = "wb")
     file_path <- temp_file
     # ==============================================================#
-  } else {
-    stop("Unsupported file source")
   }
-  # ==============================================================#
   return(file_path)
 }
 
