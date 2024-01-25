@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_sankey.R
 \name{plot_sankey}
 \alias{plot_sankey}
-\title{Sankey Diagram Visualisation}
+\title{Visualise Data Flow with a Sankey Diagram}
 \usage{
 plot_sankey(
   data,
@@ -18,75 +18,60 @@ plot_sankey(
   margin = list(left = 0, right = 0),
   width = 1200,
   height = 800,
-  shiftLabel = NA
+  shiftLabel = NULL
 )
 }
 \arguments{
-\item{data}{A data frame containing the flow data, where each row represents a unique flow from a source to a target.}
+\item{data}{A data frame containing the flow data, where each row represents a unique flow
+from a source to a target node.}
 
-\item{source}{The column in the data frame representing the source node of the flow.}
+\item{source}{The column in \code{data} representing the source nodes.}
 
-\item{target}{The column in the data frame representing the target node of the flow.}
+\item{target}{The column in \code{data} representing the target nodes.}
 
-\item{value}{The column in the data frame representing the magnitude or volume of the flow between the source and target.}
+\item{value}{The column in \code{data} representing the flow's magnitude or volume.}
 
-\item{units}{A string indicating the units of the 'value'. This is displayed in the tooltip of the diagram.
-The default is an empty string, indicating that no units are specified.}
+\item{units}{A string indicating the units for \code{value}, displayed in the tooltip.
+Defaults to an empty string, implying no units.}
 
-\item{colours}{A list or vector of colours (in hexadecimal format or colour names) to be used for the nodes and links
-in the diagram. If a named list is provided, the names should correspond to the node names for specific
-colour mapping.}
+\item{colours}{A list or vector of colours for nodes and links in the diagram, either
+as hexadecimal codes or colour names. Can be a named list for specific node colour mapping.}
 
-\item{fontSize}{The font size for text in the diagram. Default is set to 20.}
+\item{fontSize}{Font size for text in the diagram.}
 
-\item{fontFamily}{The font family for text in the diagram. Default is "Calibri".}
+\item{fontFamily}{Font family for text in the diagram.}
 
-\item{nodeWidth}{The width of the nodes (entities) in the diagram. Default is 20.}
+\item{nodeWidth}{Width of nodes in the diagram.}
 
-\item{nodePadding}{The padding between nodes in the diagram. Default is 10.}
+\item{nodePadding}{Padding between nodes in the diagram.}
 
-\item{margin}{A list specifying the margins around the diagram. Default is \code{list("left" = 0, "right" = 0)}.
-Increase the margin if the node names are long and go off the page.}
+\item{margin}{Margins around the diagram, specified as a list.}
 
-\item{width}{The width of the plot in pixels. Default is 1200.}
+\item{width}{Width of the plot in pixels.}
 
-\item{height}{The height of the plot in pixels. Default is 800.}
+\item{height}{Height of the plot in pixels.}
 
-\item{shiftLabel}{A numeric value controlling the positioning of labels on the nodes. When set to \code{NA},
-labels are automatically placed outside the nodes. If the automatic placement results in uneven label
-distribution, this parameter can be adjusted to achieve the desired layout.}
+\item{shiftLabel}{Numeric value to adjust the position of labels; \code{NA} for auto-placement.}
 }
 \value{
-A Sankey diagram visualising the flow of data as specified by the parameters. The diagram is interactive,
-allowing for the exploration of individual flows and nodes.
+An interactive Sankey diagram as an HTML widget, which can be used in R Markdown documents,
+Shiny applications, or the R console.
 }
 \description{
-\code{plot_sankey} enhances
-\href{https://www.rdocumentation.org/packages/networkD3/versions/0.4/topics/sankeyNetwork}{\code{networkD3::sankeyNetwork}}
-utilising \href{https://www.htmlwidgets.org/}{\code{htmlwidgets}} to create a Sankey diagram, a specific type of flow diagram
-that visually represents the movement or flow of data between different entities (referred to as "nodes").
-It is particularly useful for illustrating the distribution of votes flowing between parties across elections
-or in preferential voting systems.
+\code{plot_sankey} enhances the \href{https://www.rdocumentation.org/packages/networkD3/versions/0.4/topics/sankeyNetwork}{\code{networkD3::sankeyNetwork}}
+function, utilising \href{https://www.htmlwidgets.org/}{\code{htmlwidgets}} to create an interactive Sankey diagram,
+which is a specific type of flow diagram. It's especially effective for illustrating
+data movement or transfer between different entities (nodes), such as the distribution
+of votes flowing between parties across elections or in preferential voting systems.
 }
 \examples{
 \dontrun{
-# Prepare data
-split <- grp_freq(df,
-                  c("Q1a","Q1c"),
-                  "wgtvar",
-                  c("Party_Vote","Candidate_Vote","Votes")) \%>\%
-         mutate(Votes = Votes/sum(Votes))
-#           Party_Vote    Candidate_Vote        Votes
-# 1       Labour Party      Labour Party 0.1036125880
-# 2     National Party      Labour Party 0.1040036893
-# 3        Green Party      Labour Party 0.0320547032
-# ...
-
-# Create sankey
-plot_sankey(data = split,
-            source = "Party_Vote",
-            target = "Candidate_Vote",
-            value = "Votes",
-            colours = colour_prep(df, c("Q1a", "Q1c"), pal_name = "polNZ"))
+  # Example: Visualizing the flow of votes between parties
+  plot_sankey(data = election_data,
+              source = "Party_Previous_Election",
+              target = "Party_Current_Election",
+              value = "Number_of_Votes",
+              colours = c("Labour" = "red", "Green" = "green", "National" = "blue"))
 }
+
 }

@@ -31,9 +31,22 @@ test_that("sankey is correctly produced", {
   # Can't test colourScale properly due to actual vs expected being different on github vs locally
   expect_type(result$x$options$colourScale, "character")
 
-  # Data
+  # Data (factors)
   df <- get_data("survey")
   df <- labelled::unlabelled(df)
+  df <- df[, c("wt", "generalElectionVote", "p_past_vote_2019")]
+  df <- grp_freq(df, c("generalElectionVote", "p_past_vote_2019"), "wt")
+
+  result <- plot_sankey(df, "p_past_vote_2019", "generalElectionVote", "Freq",
+                        colours = colour_prep(df, c("generalElectionVote", "p_past_vote_2019"), pal_name = "polUK"),
+                        margin = list("left" = 0, "right" = 200))
+  expect_type(result, "list")
+  expect_equal(result$x$options$fontSize, 20)
+  expect_equal(result$width, 1200)
+
+  # Data (characters)
+  file_path <- system.file("extdata", "survey.csv", package = "scgUtils")
+  df <- get_file(file_path)
   df <- df[, c("wt", "generalElectionVote", "p_past_vote_2019")]
   df <- grp_freq(df, c("generalElectionVote", "p_past_vote_2019"), "wt")
 

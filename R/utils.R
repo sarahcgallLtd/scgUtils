@@ -403,6 +403,7 @@ convert_neg <- function(data, xVar, value, column) {
   data[data[xVar] == value, column] <- data[data[xVar] == value, column] * -1
   return(data)
 }
+
 # convert_neg <- function(data, xVar, value, column) {
 #   indices <- which(data[[xVar]] == value)
 #   data[indices, column] <- -1 * data[indices, column]
@@ -443,4 +444,42 @@ contrast_test <- function(colour_list) {
   colnames(col.list)[1] <- "contrast"
 
   return(col.list)
+}
+
+#' Convert Colour Names to Hexadecimal Codes
+#'
+#' This utility function converts a list or vector of colour names to their corresponding hexadecimal codes.
+#' It handles both named colours and already specified hexadecimal codes.
+#'
+#' @param colours A list or vector of colour names or hexadecimal codes.
+#'
+#' @return A list or vector of hexadecimal colour codes corresponding to the input colours.
+#'
+#' @details
+#' The function iterates through each element in the `colours` input. If an element is a named colour
+#' (not starting with '#'), it converts the name to its hexadecimal code. If the colour is already
+#' in hexadecimal format, it is returned as is. The function validates the colour names and returns
+#' an error for any invalid names.
+#'
+#' @note This function is used by `plot_sankey`.
+#'
+#' @importFrom grDevices col2rgb
+#' @noRd
+convert_colours <- function(colours) {
+  if (is.list(colours) && !is.data.frame(colours) || is.vector(colours)) {
+    colours_hex <- sapply(colours, function(col) {
+      if (startsWith(col, "#")) {
+        return(col)  # Already in hex, return as is
+      } else {
+        if (!col %in% colours()) {
+          stop(paste("Invalid colour name:", col))
+        }
+        rgb_vals <- grDevices::col2rgb(col, alpha = FALSE) / 255
+        return(grDevices::rgb(rgb_vals[1], rgb_vals[2], rgb_vals[3], maxColorValue = 1))
+      }
+    }, USE.NAMES = TRUE)
+  } else {
+    stop("Colours must be a list or a vector.")
+  }
+  return(colours_hex)
 }
