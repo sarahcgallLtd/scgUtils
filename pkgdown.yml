@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   using-survey-data: using-survey-data.html
-last_built: 2024-01-24T08:49Z
+last_built: 2024-01-25T13:19Z
 urls:
   reference: https://sarahcgall.github.io/scgUtils/reference
   article: https://sarahcgall.github.io/scgUtils/articles
