@@ -1,31 +1,42 @@
-#' @title Grouped Mean
+#' @include utils.R
+NULL
+#' @title Calculate Grouped Mean in Survey Data
 #' @name grp_mean
 #'
-#' @description Calculates the mean of a variable by a group in survey data.
+#' @description
+#' `grp_mean` calculates the mean (either unweighted or weighted) of a specified variable,
+#' grouped by one or more variables in survey data.
 #'
-#' @param data A data frame containing survey data. This parameter is required.
-#' @param meanVar Variable to be averaged. var must be numeric. This parameter is required.
-#' @param groups Variable being grouped. This parameter is required and permits one or many variables.
-#' @param weight Variable containing weight factors. This variable is optional.
-#' @param set_names Vector of column names. This paramenter is optional.
-#' @param round_decimals Numeric value to round numeric data by x number of decimals places. Default does not round.
+#' @param data A data frame containing survey data.
+#' @param meanVar The variable for which the mean is to be calculated; must be numeric.
+#' @param groups Variables used for grouping; one or many variables can be specified.
+#' @param weight An optional variable containing weight factors for calculating the weighted mean.
+#' @param set_names An optional vector of custom column names for the output data frame.
+#' @param round_decimals An optional numeric value specifying the number of decimal
+#'   places for rounding the mean values.
 #'
-#' @return A data frame containing averages by group
+#' @return A data frame containing the calculated means for each group, with the option
+#'   to include weighted means and custom column names.
+#'
+#' @details
+#' The function can calculate either an unweighted mean if `weight` is `NULL`, or a
+#' weighted mean if `weight` is provided.
+#' If `weight` is provided, it calculates a weighted mean, accounting for the interaction
+#' between group variables. The function is designed to work with group interactions
+#' split by a full stop (.), which might affect the handling of group values containing periods.
+#' The results can be rounded to a specified
+#' number of decimal places, and custom column names can be set for the output data frame.
 #'
 #' @examples
 #' \dontrun{
-#' # Return a averages of a variable by group (weighted or unweighted)
-#' tmp <- grp_mean(dataset,
-#'                var = "age",
-#'                groups = "gender",
-#'                weight = "wgtvar")
+#'   # Calculate unweighted mean of 'age' grouped by 'gender'
+#'   df <- grp_mean(dataset, meanVar = "age", groups = "gender")
 #'
-#' #   gender     Mean
-#' # 1   Male 42.78670
-#' # 2 Female 41.06441
-#'
-#' # NB for non-grouped averages, use mean(var) or weighted.mean(var, weight)
+#'   # Calculate weighted mean of 'age' grouped by 'gender', with custom column names
+#'   df <- grp_mean(dataset, meanVar = "age", groups = "gender",
+#'                  weight = "wgtvar", set_names = c("Gender", "Average Age"))
 #' }
+#'
 #' @export
 grp_mean <- function(data,
                      meanVar,
@@ -42,15 +53,52 @@ grp_mean <- function(data,
                weight = weight)
 
   # ==============================================================#
-  # PREPARE DATA
   # Ensure data is a data frame
   data <- as.data.frame(data)
 
   # make "group_by" a list
   grp <- list_group(data, groups)
 
+  # Calculate mean
+  tmp <- calculate_mean(data, meanVar, groups, grp, weight)
+
+  # Option: Round decimals
+  tmp <- round_vars(tmp, round_decimals)
+
+  # Option: Set names
+  tmp <- set_column_names(tmp, groups, set_names, "Mean")
+
   # ==============================================================#
-  # CALCULATE MEAN
+  return(tmp)
+}
+
+#' Calculate Mean for Grouped Data
+#'
+#' This internal helper function for `grp_mean` calculates the mean (either unweighted or weighted)
+#' of a specified variable, grouped by given categories.
+#'
+#' @param data The data frame containing the variables.
+#' @param meanVar The name of the variable for which the mean is to be calculated.
+#' @param groups A vector of variable names used for grouping.
+#' @param grp A list specifying the groups for mean calculation.
+#' @param weight An optional weighting variable for calculating the weighted mean.
+#'
+#' @return A data frame with mean values calculated for each group. For weighted
+#'   means, it also handles the interaction of group variables.
+#'
+#' @details
+#' If `weight` is `NULL`, the function calculates an unweighted mean for each group.
+#' If `weight` is provided, it calculates a weighted mean, accounting for the interaction
+#' between group variables. The function is designed to work with group interactions
+#' split by a full stop (.), which might affect the handling of group values containing periods.
+#'
+#' @noRd
+calculate_mean <- function(data,
+                           meanVar,
+                           groups,
+                           grp,
+                           weight
+) {
   if (is.null(weight)) {
     # Unweighted Mean
     tmp <- stats::aggregate(data[, meanVar],
@@ -70,7 +118,7 @@ grp_mean <- function(data,
 
     # Convert matrix into data frame
     tmp <- data.frame(Col1 = names(tmp),
-                      Col2 =as.numeric(tmp))
+                      Col2 = as.numeric(tmp))
 
     # Split interaction group back into it's original group columns (NB this is done by searching for a full stop.
     # If the values have a full stop in them, this will cause a problem.
@@ -80,20 +128,6 @@ grp_mean <- function(data,
     # Remove interaction group column
     tmp[["Col1"]] <- NULL
   }
-
-  # ==============================================================#
-  # OPTIONAL: ROUND NUMERIC VALUES
-  if (is.numeric(round_decimals) == TRUE)
-    tmp <- round_vars(tmp, round_decimals)
-
-  # ==============================================================#
-  # SET COLUMN NAMES
-  if (!missing(set_names)) {
-    tmp <- stats::setNames(tmp, set_names)
-  } else {
-    tmp <- stats::setNames(tmp, c(groups, "Mean"))
-  }
-
-  # ==============================================================#
   return(tmp)
 }
+

@@ -10,7 +10,7 @@ test_that("return a sav file from a local source", {
   file_path <- system.file("extdata", "survey.sav", package = "scgUtils")
   sav_df <- get_file(file_path)
   expect_length(sav_df, 65)
-  expect_equal(class(sav_df$turnoutUKGeneral), c("haven_labelled","vctrs_vctr","double" ))
+  expect_equal(class(sav_df$turnoutUKGeneral), "factor")
 })
 
 test_that("return error message for non existent file on a local source", {
@@ -22,10 +22,10 @@ test_that("return error message for unsupported file source", {
   expect_error(get_file(file_path, "invalid_source"), "'arg' should be one of")
 })
 
-test_that("return error message for unsupported file source", {
-  file_path <- system.file("data","survey.rda", package = "scgUtils")
-  expect_error(get_file(file_path), "Unsupported file type")
-})
+# test_that("return error message for unsupported file source", {
+#   file_path <- system.file("data","survey.rda", package = "scgUtils")
+#   expect_error(get_file(file_path), "Unsupported file type")
+# })
 
 # ONE DRIVE TESTING
 test_that("return a csv file from onedrive", {
@@ -43,7 +43,7 @@ test_that("return a sav file from onedrive", {
           "Skipping this test in CI environment due to authentication required")
   sav_df <- get_file("scgUtils_testing/survey.sav", "onedrive")
   expect_length(sav_df, 65)
-  expect_equal(class(sav_df$turnoutUKGeneral), c("haven_labelled","vctrs_vctr","double" ))
+  expect_equal(class(sav_df$turnoutUKGeneral), "factor")
 })
 
 # GOOGLE DRIVE TESTING

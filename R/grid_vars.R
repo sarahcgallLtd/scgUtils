@@ -1,37 +1,37 @@
 #' @include utils.R
 NULL
-#' @title Binary Survey Data
+#' @title Pivot Binary Grid Survey Questions Longer
 #' @name grid_vars
 #'
-#' @description Pivot binary grid survey questions longer.
+#' @description
+#' The `grid_vars` function transforms binary grid survey questions into a longer format,
+#' enabling comparisons across different variables or groups. It supports optional grouping
+#' and weighting.
 #'
-#' @param data A data frame containing survey data. This parameter is required.
-#' @param vars A list of column names and the renamed variable. This parameter is required and permits multiple variables.
-#' @param group A variable overlay to compare between groups. This parameter is optional and only permits one group.
-#' @param weight Variable containing weight factors. This variable is optional.
+#' @param data A data frame containing survey data.
+#' @param vars A list mapping original column names to new variable names. This is
+#'   required and allows multiple variables. For example, `list(Q1a = "Art", Q1b = "Automobiles")`.
+#' @param group An optional variable for comparing across groups. Only one group can
+#'   be specified.
+#' @param weight An optional variable containing weight factors for the analysis.
 #'
-#' @return a data frame of variables from a grid survey question.
+#' @return A data frame in a long format, with each row representing a response to a
+#'   binary grid question. The data frame includes frequencies and optionally percentages
+#'   if groups and/or weights are specified.
+#'
+#' @details
+#' The function first converts specified binary grid questions into a long format using
+#' `tidyr::pivot_longer`. It then uses `grp_freq` to calculate frequencies and, if
+#' applicable, percentages for each question-response pair. This allows for an in-depth
+#' analysis of binary grid survey questions, especially when combined with group and weight parameters.
 #'
 #' @examples
 #' \dontrun{
-#' # Create list
-#' vars <- list(Q1a = "Art",
-#'              Q1b = "Automobiles",
-#'              Q1c = "Birdwatching")
-#' grid_vars(dataset,
-#'             vars = vars,
-#'             group = "gender",
-#'             weight = "wgtvar")
+#'   # Example: Convert grid questions to long format and analyze by gender
+#'   vars <- list(Q1a = "Art", Q1b = "Automobiles", Q1c = "Birdwatching")
+#'   df <- grid_vars(dataset, vars = vars, group = "gender", weight = "wgtvar")
+#' }
 #'
-#' #      Question Response gender     Freq Perc
-#' #           Art      Yes   Male 275.3617   46
-#' #   Automobiles      Yes   Male 320.1372   53
-#' #  Birdwatching      Yes   Male 310.4357   52
-#' #           Art      Yes Female 204.7525   48
-#' #   Automobiles      Yes Female 212.0209   49
-#' #  Birdwatching      Yes Female 203.9380   47
-#' # ...
-#'}
 #' @export
 grid_vars <- function(data,
                       vars,
@@ -46,15 +46,10 @@ grid_vars <- function(data,
                weight = weight)
 
   # ==============================================================#
-  # PREPARE VARIABLES
-  # Return funciton arguments for use
-  grp <- match.call(expand.dots = FALSE)
-
   # Prepare variables
-  x <- dput(names(vars), file = nullfile()) # suppress output to console
-  y <- append_if_exists(grp[["group"]], grp[["weight"]], x)
+  x <- names(vars)
+  y <- append_if_exists(group, weight, x)
 
-  # ==============================================================#
   # TRANSFORM DATA
   # Subset data
   tmp <- data[, y]
@@ -71,31 +66,13 @@ grid_vars <- function(data,
   # Make Question variable factor
   tmp$Question <- factor(tmp$Question)
 
-  # ==============================================================#
-  # GET GROUPED FREQUENCY & PERCENTAGE
-  # Substitute `grid_vars` for `grp_freq`
-  grp[[1L]] <- quote(grp_freq)
-
-  # Substitute `data` for `tmp`
-  grp[["data"]] <- tmp
-
-  # Substitute `groups` for vector
-  grp[["groups"]] <- append_if_exists("Question", "Response", grp[["group"]])
-
-  # Percent by groupsPercent
-  grp[["groupsPercent"]] <- append_if_exists("Question", grp[["group"]])
-
-  # Limit decimal places
-  grp[["round_decimals"]] <- 2
-
-  # Remove `vars` and `group` from arguments
-  grp[["vars"]] <- NULL
-
-  if (!is.null(group))
-    grp[["group"]] <- NULL
-
-  # Evaluate
-  tmp <- eval(grp, parent.frame())
+  # Get grouped frequency and percent
+  tmp <- grp_freq(data = tmp,
+                  groups = append_if_exists("Question", "Response", group),
+                  weight = weight,
+                  addPercent = TRUE,
+                  groupsPercent = append_if_exists("Question", group),
+                  round_decimals = 2)
 
   # ==============================================================#
   return(tmp)

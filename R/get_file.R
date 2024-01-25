@@ -127,12 +127,14 @@ authenticate_source <- function(file_path,
 #' @param file_type The type of the file: 'csv' or 'sav'.
 #' @param row_no The number of rows to skip for CSV files.
 #'
-#' @return A data frame with the contents of the processed file.
+#' @return A data frame with the contents of the processed file, with appropriate preprocessing
+#'   applied based on the file type.
 #'
 #' @details
 #' For CSV files, the function reads the file while skipping a specified number of rows
-#' and removes special characters. For SAV files, it attempts to read the file and
-#' falls back to a different encoding if necessary.
+#' and removes special characters. For SAV files, it first attempts to read the file and
+#' falls back to a different encoding if necessary. Additionally, it unlables the data
+#' and removes unused factor levels for SAV files, ensuring cleaner and more usable data output.
 #'
 #' @noRd
 preprocess_file_type <- function(file_path,
@@ -168,6 +170,10 @@ preprocess_file_type <- function(file_path,
         stop("Error reading the file with both default and 'latin1' encoding: ", e)
       })
     })
+    # Unlabel data
+    data <- labelled::unlabelled(data)
+    # Remove unused factor levels
+    data <- process_factors(data)
     # ==============================================================#
   } else {
     stop("Unsupported file type")

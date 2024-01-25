@@ -4,16 +4,12 @@
 \alias{get_file}
 \title{Retrieve and Process File from Various Sources}
 \usage{
-get_file(
-  file_path,
-  source = c("local", "onedrive", "googledrive", "web"),
-  row_no = 0
-)
+get_file(file_path, source = c("local", "onedrive", "web"), row_no = 0)
 }
 \arguments{
 \item{file_path}{The path, ID, or URL of the file to be retrieved.}
 
-\item{source}{The source of the file: 'local', 'onedrive', 'googledrive', or 'web'
+\item{source}{The source of the file: 'local', 'onedrive', or 'web'
 (default is 'local').}
 
 \item{row_no}{The number of rows to skip at the beginning of the file, applicable
@@ -24,7 +20,7 @@ A data frame containing the contents of the file.
 }
 \description{
 \code{get_file} handles the retrieval and initial processing of a file from different
-sources, including local storage, OneDrive, Google Drive, and directly from the web.
+sources, including local storage, OneDrive, and directly from the web.
 It also preprocesses the file based on its type.
 }
 \details{

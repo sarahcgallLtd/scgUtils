@@ -1,3 +1,5 @@
+#' @include utils.R
+NULL
 #' @title Produce Crosstabs / Contingency Tables for Analysis
 #' @name crosstab
 #'
@@ -276,7 +278,7 @@ format_crosstab_data <- function(df,
         df <- xtabs_convert(df, convert_to, format)
 
     # OPTION: ROUND_DECUIMALS != NULL & IS NUMERIC
-    if (is.numeric(round_decimals)) df <- round_vars(df, round_decimals)
+    df <- round_vars(df, round_decimals)
 
   }
   return(df)
@@ -340,10 +342,10 @@ xtabs_convert <- function(data,
       data <- transform(data, `Perc` = stats::ave(Freq, data[, 2], FUN = prop.table))
       data$Perc <- as.numeric(data$Perc * 100)
     } else {
-      if (format == "csv")
-        data[sapply(data, is.numeric)] <- lapply(data[sapply(data, is.numeric)], function(x) x / sum(x))
-      else
-        data[sapply(data, is.numeric)] <- lapply(data[sapply(data, is.numeric)], function(x) x / sum(x) * 100)
+      # Determine which function to use based on the 'format'
+      conversion_func <- if (format == "csv") proportion else percent
+      # Apply the selected function to all numeric columns
+      data[sapply(data, is.numeric)] <- lapply(data[sapply(data, is.numeric)], FUN = conversion_func)
     }
   }
   return(data)

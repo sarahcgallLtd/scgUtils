@@ -107,30 +107,33 @@ get_question <- function(data, var) {
 
 #' Round Numeric Variables in Data Frame
 #'
+#' @description
 #' This function rounds all numeric variables in a given data frame to a
-#' specified number of decimal places.
+#' specified number of decimal places, provided that the `decimals` parameter is numeric.
 #'
 #' @param data A data frame containing the numeric variables to be rounded.
 #' @param decimals An integer specifying the number of decimal places to which
 #'   the numeric variables should be rounded.
 #'
-#' @details
-#' The function identifies all numeric columns in the provided data frame and
-#' rounds these columns to the specified number of decimal places. This
-#' operation is applied to each numeric column in the data frame.
-#'
 #' @return Returns a data frame with all numeric variables rounded to the
-#'   specified number of decimal places. Non-numeric variables in the data frame
-#'   are not modified.
+#'   specified number of decimal places if `decimals` is numeric. Non-numeric variables
+#'   in the data frame are not modified.
 #'
-#' @note This function is used by `crosstab`, `grp_frq`, and `grp_mean`.
+#' @details
+#' The function checks if the `decimals` parameter is numeric. If so, it identifies
+#' all numeric columns in the provided data frame and rounds these columns to the
+#' specified number of decimal places. This operation is applied to each numeric column
+#' in the data frame. If `decimals` is not numeric, the function returns the data
+#' without modifications.
+#'
+#' @note This function is used by `crosstab`, `grp_freq`, and `grp_mean`.
 #'
 #' @noRd
 round_vars <- function(data, decimals) {
-  numeric_cols <- sapply(data, is.numeric)
-
-  data[, numeric_cols] <- round(data[, numeric_cols], digits = decimals)
-
+  if (is.numeric(decimals)) {
+    numeric_cols <- sapply(data, is.numeric)
+    data[, numeric_cols] <- round(data[, numeric_cols], digits = decimals)
+  }
   return(data)
 }
 
@@ -236,6 +239,100 @@ list_group <- function(data, group) {
   return(grp)
 }
 
+#' Calculate Percentages of Vector Elements
+#'
+#' @description
+#' The `percent` function computes the percentage representation of each element in a numeric vector
+#' relative to the total sum of all elements in the vector.
+#'
+#' @param x A numeric vector for which percentages are to be calculated.
+#'
+#' @return A numeric vector where each element represents the percentage of the corresponding
+#'   element in `x` relative to the total sum of `x`.
+#'
+#' @details
+#' The function divides each element of `x` by the total sum of `x` and then multiplies by 100 to
+#' convert the proportions into percentages. This is particularly useful for converting count data into
+#' percentage representations.
+#'
+#' @note This function is used by functions such as `compile` and `grp_freq` within the package.
+#'
+#' @noRd
+percent <- function(x) {
+  x / sum(x) * 100
+}
+
+#' Calculate Proportions of Vector Elements
+#'
+#' @description
+#' The `proportion` function computes the proportional representation of each element in a numeric vector
+#' relative to the total sum of all elements in the vector.
+#'
+#' @param x A numeric vector for which proportions are to be calculated.
+#'
+#' @return A numeric vector where each element represents the proportion of the corresponding
+#'   element in `x` relative to the total sum of `x`.
+#'
+#' @details
+#' The function divides each element of `x` by the total sum of `x`, providing a proportional
+#' representation of each element. This is useful for expressing count data as proportions of the total.
+#'
+#' @note This function is used by functions such as `compile` and `grp_freq` within the package.
+#'
+#' @noRd
+proportion <- function(x) {
+  x / sum(x)
+}
+
+#' Set Column Names for Data Frame
+#'
+#' This internal helper function sets the column names for a
+#' data frame based on specified groups or provided names. It also accounts for
+#' an optional 'Perc' column and allows for a default column name.
+#'
+#' @param data The data frame whose column names are to be set.
+#' @param groups The names of the groups used in the data frame.
+#' @param set_names Optional custom names for the columns.
+#' @param default_col_name The default name for the main frequency column if
+#'   `set_names` is not provided (default is "Freq").
+#'
+#' @return A data frame with updated column names.
+#'
+#' @details
+#' If `set_names` is provided, the data frame's column names are set to these values.
+#' Otherwise, the column names are set to the group names followed by the value of
+#' `default_col_name`. If the "Perc" column exists in `data`, it is included in
+#' the column names after `default_col_name`.
+#'
+#' This function is designed to be versatile and is used by various functions
+#' within the package, allowing for different default column names depending on
+#' the context.
+#'
+#' @note This function is used by functions such as `grp_mean` and `grp_freq` within the package.
+#'
+#' @noRd
+set_column_names <- function(data,
+                             groups,
+                             set_names,
+                             default_col_name = "Freq"
+) {
+  # If user provides set_names, use them
+  if (!is.null(set_names)) {
+    data <- stats::setNames(data, set_names)
+  } else {
+    # Construct default column names
+    default_names <- c(groups, default_col_name)
+
+    # Include 'Perc' if it exists in the data
+    if ("Perc" %in% names(data)) {
+      default_names <- c(default_names, "Perc")
+    }
+
+    data <- stats::setNames(data, default_names)
+  }
+  return(data)
+}
+
 #' Create Radar Chart Coordinates
 #'
 #' This function sets up the coordinate system for radar charts using ggplot2's
@@ -267,12 +364,12 @@ list_group <- function(data, group) {
 coord_radar <- function(theta = "x", start = 0, direction = 1) {
   theta <- match.arg(theta, c("x", "y"))
   ggplot2::ggproto("CoordRadar", ggplot2::CoordPolar,
-          theta = theta,
-          r = ifelse(theta == 'x', 'y', 'x'),
-          start = start,
-          direction = sign(direction),
-          is_linear = function(coord) TRUE,
-          clip = "off")
+                   theta = theta,
+                   r = ifelse(theta == 'x', 'y', 'x'),
+                   start = start,
+                   direction = sign(direction),
+                   is_linear = function(coord) TRUE,
+                   clip = "off")
 }
 
 #' Convert Selected Group Values to Negative in a Data Frame
@@ -306,6 +403,11 @@ convert_neg <- function(data, xVar, value, column) {
   data[data[xVar] == value, column] <- data[data[xVar] == value, column] * -1
   return(data)
 }
+# convert_neg <- function(data, xVar, value, column) {
+#   indices <- which(data[[xVar]] == value)
+#   data[indices, column] <- -1 * data[indices, column]
+#   return(data)
+# }
 
 #' Evaluate Contrast of Color List for Text Legibility
 #'

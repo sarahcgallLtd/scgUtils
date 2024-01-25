@@ -2,48 +2,57 @@
 % Please edit documentation in R/grp_freq.R
 \name{grp_freq}
 \alias{grp_freq}
-\title{Grouped Frequencies}
+\title{Grouped Frequencies in Survey Data}
 \usage{
 grp_freq(
   data,
   groups,
   weight = NULL,
   set_names = NULL,
-  addPercent = c("no", "yes"),
+  addPercent = FALSE,
   groupsPercent = NULL,
   round_decimals = NULL
 )
 }
 \arguments{
-\item{data}{A data frame containing survey data. This parameter is required.}
+\item{data}{A data frame containing survey data.}
 
-\item{groups}{Vector of variables being grouped. This parameter is required and permits one or many variables.}
+\item{groups}{A vector of variable names for grouping. This parameter is required
+and can include one or multiple variables.}
 
-\item{weight}{Variable containing weight factors. This variable is optional.}
+\item{weight}{An optional variable containing weight factors for the analysis.}
 
-\item{set_names}{Vector of column names. This paramenter is optional.}
+\item{set_names}{An optional vector of custom column names for the output data frame.}
 
-\item{addPercent}{Get percent of frequency (Options: "no" or "yes"). This parameter is optional, defaulted to "No", and permits one or many variables.}
+\item{addPercent}{Logical; if \code{TRUE}, adds a percentage column based on the frequency.
+The default is \code{FALSE}.}
 
-\item{groupsPercent}{Vector of variables for percent of frequency. This parameter is optional and permits none (for total), one or many variables.}
+\item{groupsPercent}{An optional vector of variables for calculating percentages.
+If \code{NULL}, percentages are calculated for the total.}
 
-\item{round_decimals}{Numeric value to round numeric data by x number of decimals places. Default does not round. This parameter is optional.}
+\item{round_decimals}{An optional numeric value specifying the number of decimal
+places to round numeric data. By default, no rounding is applied.}
 }
 \value{
-A data frame containing frequencies by group
+A data frame containing frequencies and, optionally, percentages by group.
 }
 \description{
-Calculates the frequency of a variable by groups in survey data.
+\code{grp_freq} calculates the frequency and optionally the percentage of a variable
+by groups in survey data, supporting weighted and unweighted data.
+}
+\details{
+The function groups data based on the specified variables and calculates frequencies.
+It can also calculate percentages, either overall or grouped by additional variables.
+The data can be optionally weighted, and the output can be customised with specific column names.
 }
 \examples{
 \dontrun{
-# Sum unweighted data by group
-df <- grp_freq(dataset,
-               group = c("age_categories","gender"))
-# Sum weighted data by group and change the column names
-df <- grp_freq(dataset,
-               group = c("age_categories","gender"),
-               weight = "wgtvar",
-               set_names = c("Age","Gender","n"))
+  # Calculate unweighted frequencies by group with percent added
+  df <- grp_freq(dataset, groups = c("age_categories", "gender"), addPercent = TRUE)
+
+  # Calculate weighted frequencies by group with custom column names
+  df <- grp_freq(dataset, groups = c("age_categories", "gender"),
+                 weight = "wgtvar", set_names = c("Age", "Gender", "n"))
 }
+
 }

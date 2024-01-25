@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_popn.R
 \name{plot_popn}
 \alias{plot_popn}
-\title{Population Profile Plot}
+\title{Visualise Population Profile of Survey Data}
 \usage{
 plot_popn(
   data,
@@ -16,7 +16,7 @@ plot_popn(
   subtitle = NULL,
   xLab = "Population (\%)",
   yLab = "Age",
-  addLabels = c("no", "yes"),
+  addLabels = FALSE,
   thresholdLab = 3,
   nudgeLab = 0.2,
   sizeLab = 3,
@@ -24,51 +24,55 @@ plot_popn(
 )
 }
 \arguments{
-\item{data}{A data frame containing survey data. This parameter is required.}
+\item{data}{A data frame containing survey data.}
 
-\item{xVar}{Gender variable. This parameter is required.}
+\item{xVar}{The gender variable (or a similar categorical variable) for the x-axis.}
 
-\item{yVar}{Age group variable. This parameter is required.}
+\item{yVar}{The age group variable for the y-axis.}
 
-\item{group}{A variable overlay to compare between groups. This parameter is optional.}
+\item{group}{An optional variable for additional grouping or comparison.}
 
-\item{weight}{Variable containing weight factors. This variable is optional.}
+\item{weight}{An optional weighting variable for the analysis.}
 
-\item{meanVar}{Actual age variable (numeric) to view average age. This variable is optional.}
+\item{meanVar}{An optional numeric variable to include average values in the plot.}
 
-\item{colours}{A vector of three colours for Male, Female, and Total}
+\item{colours}{A vector of three colors for male, female, and total. This parameter is optional.}
 
-\item{title}{Plot title. Default = "Population Structure".}
+\item{title}{The title of the plot; defaults to "Population Structure".}
 
-\item{subtitle}{Plot subtitle in grouped/faceted plot. Default = question of group variable.}
+\item{subtitle}{The subtitle for the plot, particularly useful in grouped plots;
+defaults to the question associated with the group variable.}
 
-\item{xLab}{X axis title. Default = "Population (\%)".}
+\item{xLab}{The title for the x-axis; defaults to "Population (\%)".}
 
-\item{yLab}{Y axis title. Default = "Age".}
+\item{yLab}{The title for the y-axis; defaults to "Age".}
 
-\item{addLabels}{Option to add \% labels to graph. Default = "no".}
+\item{addLabels}{A logical indicating whether to add percentage labels to the plot; defaults to \code{FALSE}.}
 
-\item{thresholdLab}{Numeric value to determine threshold of which labels go inside or outside of bars. Default = 3.}
+\item{thresholdLab}{A numeric threshold for label placement inside or outside the bars.}
 
-\item{nudgeLab}{Numeric value to nudge labels left or right. Default = 0.2.}
+\item{nudgeLab}{A numeric value to adjust the horizontal position of labels.}
 
-\item{sizeLab}{Numeric value to determine size of label text. Default = 3.}
+\item{sizeLab}{The font size for labels.}
 
-\item{faceLab}{Option to make labels "plain", "bold", "italic", or "bold.italic". Default = "plain".}
+\item{faceLab}{The font style for labels; can be "plain", "bold", "italic", or "bold.italic".}
 }
 \value{
-ggplot2 plot of the population structure
+A \code{ggplot2} plot representing the population profile based on the provided survey data.
 }
 \description{
-Visualise the population profile of survey data using age categories and gender.
+\code{plot_popn} creates a visual representation of the population profile using survey data.
+It can illustrate the distribution of age groups across genders or other categories,
+and optionally includes average age or other statistics.
 }
 \examples{
 \dontrun{
-# Create plot using age groups and age intervals included to return average age
-plot_popn(dataset,
-          age_groups = "age_categories",
-          gender = "gender",
-          weight = "wgtvar",
-          age_int = "age")
+  # Example: Create a population plot with age and gender
+  plot_popn(dataset,
+            xVar = "gender",
+            yVar = "age_categories",
+            weight = "wgtvar",
+            meanVar = "age")
 }
+
 }

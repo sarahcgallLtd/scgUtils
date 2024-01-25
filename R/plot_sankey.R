@@ -3,7 +3,7 @@
 #'
 #' @description `plot_sankey` enhances
 #' [`networkD3::sankeyNetwork`](https://www.rdocumentation.org/packages/networkD3/versions/0.4/topics/sankeyNetwork)
-#' and [`htmlwidgets`](https://www.htmlwidgets.org/) to create a Sankey diagram, a specific type of flow diagram
+#' utilising [`htmlwidgets`](https://www.htmlwidgets.org/) to create a Sankey diagram, a specific type of flow diagram
 #' that visually represents the movement or flow of data between different entities (referred to as "nodes").
 #' It is particularly useful for illustrating the distribution of votes flowing between parties across elections
 #' or in preferential voting systems.

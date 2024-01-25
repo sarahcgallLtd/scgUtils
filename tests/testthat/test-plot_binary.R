@@ -35,13 +35,11 @@ test_that("parameters return correct error", {
 
   # value ======================================================#
   expect_error(plot_binary(df, vars, value = 12),
-               "`value` must be a character string.")
+               "`value` must be a single character string.")
   expect_error(plot_binary(df, vars, value = c("Something Else", "Something")),
-               "`value` must be a single character string only")
+               "`value` must be a single character string.")
   expect_error(plot_binary(df, vars, value = "Something Else"),
-               "`value` must be in `vars`.")
-  expect_error(plot_binary(df, vars),
-               "`value` is required to be parsed through this function.")
+               "`vars` variables must contain binary values only, and `value` must be one of these.")
 })
 
 # ==============================================================#
@@ -68,12 +66,24 @@ test_that("function produces correct equation", {
 
 # ==============================================================#
 # TEST: RESULTS
-test_that("function produces graph)", {
+test_that("function produces graph (factors)", {
   # Total
   p <- plot_binary(df, vars, "Yes")
   expect_equal(p$labels$hjust, "hjust")
 
   # Grouped
   p <- plot_binary(df, vars, "Yes", "partyId")
+  expect_equal(p$labels$group, "id")
+})
+
+test_that("function produces graph (character)", {
+  file_path <- system.file("extdata", "survey.csv", package = "scgUtils")
+  df1 <- get_file(file_path)
+  # Total
+  p <- plot_binary(df1, vars, "Yes")
+  expect_equal(p$labels$hjust, "hjust")
+
+  # Grouped
+  p <- plot_binary(df1, vars, "Yes", "partyId")
   expect_equal(p$labels$group, "id")
 })

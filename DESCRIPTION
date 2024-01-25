@@ -22,7 +22,7 @@ Imports:
     networkD3,
     htmlwidgets,
     haven,
-    googledrive,
+    labelled,
     Microsoft365R,
     readr
 Encoding: UTF-8
@@ -34,7 +34,6 @@ Depends:
 Suggests: 
     knitr,
     rmarkdown,
-    labelled,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 VignetteBuilder: knitr

@@ -2,32 +2,57 @@
 % Please edit documentation in R/plot_bigfive.R
 \name{plot_bigfive}
 \alias{plot_bigfive}
-\title{Big Five Personality Radar Plots}
+\title{Visualise Big Five Personality Traits with Radar Plots}
 \usage{
-plot_bigfive(data, bigfive, group = NULL, weight = NULL)
+plot_bigfive(
+  data,
+  bigfive,
+  group = NULL,
+  weight = NULL,
+  totalColour = colour_pal("Regent Grey"),
+  groupColours = colour_pal("catExtended")
+)
 }
 \arguments{
-\item{data}{A data frame containing survey data. This parameter is required.}
+\item{data}{A data frame containing survey data with Big Five personality trait scores.}
 
-\item{bigfive}{A vector with the column names representing the Big Five personality trait scores. This parameter is required.}
+\item{bigfive}{A vector of column names representing the Big Five personality traits.
+Each trait's scores should be numeric and range from 0 to 100.}
 
-\item{group}{A variable overlay to compare between groups. This parameter is optional.}
+\item{group}{An optional variable for comparing trait scores between different groups.}
 
-\item{weight}{Variable containing weight factors. This variable is optional.}
+\item{weight}{An optional variable containing weight factors for the analysis.}
+
+\item{totalColour}{The colour used for plotting total average scores (default is a grey color).}
+
+\item{groupColours}{A vector of coluors used for plotting grouped average scores
+(default uses a predefined palette).}
 }
 \value{
-A radar plot created using ggplot2, displaying the average scores of the Big Five personality traits.
+A ggplot2 radar plot visualising the average scores of the Big Five
+personality traits. The plot includes comparisons for total and, if specified,
+grouped averages.
 }
 \description{
-Visualises the average scores of the Big Five personality traits on a radar graph.
+\code{plot_bigfive} creates a radar plot visualising the average scores of the Big Five
+personality traits, supporting both individual and group comparisons. It optionally
+accommodates weighted data.
+}
+\details{
+The function performs checks to ensure that the specified \code{bigfive} variables exist in
+\code{data} and are numeric within the range of 0 to 100. It then calculates average scores
+(weighted or unweighted) and creates a radar plot for visual comparison. The plot
+includes both individual trait scores and, if a \code{group} variable is provided, scores
+by group.
 }
 \examples{
 \dontrun{
-# Create a radar plot using age groups
-plot_bigfive(dataset,
-             bigfive = c("Neuroticism", "Extroversion", "Openness",
-                          "Agreeableness", "Conscientiousness"),
-             group = "age_categories",
-             weight = "wgtvar")
+  # Example: Create a radar plot for Big Five traits, grouped by age categories
+  plot_bigfive(dataset,
+               bigfive = c("Neuroticism", "Extroversion", "Openness",
+                           "Agreeableness", "Conscientiousness"),
+               group = "age_categories",
+               weight = "wgtvar")
 }
+
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/grp_mean.R
 \name{grp_mean}
 \alias{grp_mean}
-\title{Grouped Mean}
+\title{Calculate Grouped Mean in Survey Data}
 \usage{
 grp_mean(
   data,
@@ -14,36 +14,44 @@ grp_mean(
 )
 }
 \arguments{
-\item{data}{A data frame containing survey data. This parameter is required.}
+\item{data}{A data frame containing survey data.}
 
-\item{meanVar}{Variable to be averaged. var must be numeric. This parameter is required.}
+\item{meanVar}{The variable for which the mean is to be calculated; must be numeric.}
 
-\item{groups}{Variable being grouped. This parameter is required and permits one or many variables.}
+\item{groups}{Variables used for grouping; one or many variables can be specified.}
 
-\item{weight}{Variable containing weight factors. This variable is optional.}
+\item{weight}{An optional variable containing weight factors for calculating the weighted mean.}
 
-\item{set_names}{Vector of column names. This paramenter is optional.}
+\item{set_names}{An optional vector of custom column names for the output data frame.}
 
-\item{round_decimals}{Numeric value to round numeric data by x number of decimals places. Default does not round.}
+\item{round_decimals}{An optional numeric value specifying the number of decimal
+places for rounding the mean values.}
 }
 \value{
-A data frame containing averages by group
+A data frame containing the calculated means for each group, with the option
+to include weighted means and custom column names.
 }
 \description{
-Calculates the mean of a variable by a group in survey data.
+\code{grp_mean} calculates the mean (either unweighted or weighted) of a specified variable,
+grouped by one or more variables in survey data.
+}
+\details{
+The function can calculate either an unweighted mean if \code{weight} is \code{NULL}, or a
+weighted mean if \code{weight} is provided.
+If \code{weight} is provided, it calculates a weighted mean, accounting for the interaction
+between group variables. The function is designed to work with group interactions
+split by a full stop (.), which might affect the handling of group values containing periods.
+The results can be rounded to a specified
+number of decimal places, and custom column names can be set for the output data frame.
 }
 \examples{
 \dontrun{
-# Return a averages of a variable by group (weighted or unweighted)
-tmp <- grp_mean(dataset,
-               var = "age",
-               groups = "gender",
-               weight = "wgtvar")
+  # Calculate unweighted mean of 'age' grouped by 'gender'
+  df <- grp_mean(dataset, meanVar = "age", groups = "gender")
 
-#   gender     Mean
-# 1   Male 42.78670
-# 2 Female 41.06441
-
-# NB for non-grouped averages, use mean(var) or weighted.mean(var, weight)
+  # Calculate weighted mean of 'age' grouped by 'gender', with custom column names
+  df <- grp_mean(dataset, meanVar = "age", groups = "gender",
+                 weight = "wgtvar", set_names = c("Gender", "Average Age"))
 }
+
 }

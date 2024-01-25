@@ -39,4 +39,30 @@ test_that("function produces graph", {
 
   p <- plot_bigfive(tmp, c("Neuroticism", "Extroversion", "Openness", "Agreeableness", "Conscientiousness"), group = "Gender")
   expect_equal(length(p$layers), 8)
+
+  tmp <- data.frame(Gender = c("Male", "Female", "Male", "Male", "Female", "Female", "Male", "Female"),
+                    Weight = c(0.6, 0.8, 0.9, 1.0, 1.3, 1.7, 1.0, 0.99),
+                    Neuroticism = c(60, 40, 30, 80, 20, 25, 50, 10),
+                    Extroversion = c(75, 20, 35, 45, 50, 10, 60, 90),
+                    Openness = c(50, 50, 45, 30, 65, 80, 10, 55),
+                    Agreeableness = c(90, 30, 50, 20, 10, 75, 65, 35),
+                    Conscientiousness = c(45, 50, 90, 10, 25, 30, 80, 40))
+
+  tmp$Gender <- factor(tmp$Gender)
+
+  p <- plot_bigfive(tmp, c("Neuroticism", "Extroversion", "Openness", "Agreeableness", "Conscientiousness"), weight = "Weight")
+  expect_equal(length(p$layers), 6)
+
+  p <- plot_bigfive(tmp, c("Neuroticism", "Extroversion", "Openness", "Agreeableness", "Conscientiousness"), group = "Gender")
+  expect_equal(length(p$layers), 8)
+
+  tmp <- data.frame(Gender = c("Male", "Female", "Male", "Male", "Female", "Female", "Male", "Female"),
+                    Weight = c(0.6, 0.8, 0.9, 1.0, 1.3, 1.7, 1.0, 0.99),
+                    Neuroticism = c(60, 40, 30, 80, 20, 25, 50, 110),
+                    Extroversion = c(75, 20, 35, 45, 50, 10, 60, 90),
+                    Openness = c(50, 50, 45, 30, 65, 80, 10, 55),
+                    Agreeableness = c(90, 30, 50, 20, 10, 75, 65, 35),
+                    Conscientiousness = c(45, 50, 90, 10, 25, 30, 80, 40))
+  expect_error(plot_bigfive(tmp, c("Neuroticism", "Extroversion", "Openness", "Agreeableness", "Conscientiousness"), group = "Gender"),
+               "`Neuroticism` values must be between 0 and 100.")
 })

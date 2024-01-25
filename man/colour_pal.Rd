@@ -14,11 +14,11 @@ colour_pal(
 \arguments{
 \item{pal_name}{A character string specifying the name of the desired palette or individual colour.
 Options include:
-- Names of specific colours (e.g., "Jaffa"). Call `colour_display("All") for all colour names.
-- Named political palettes: "polAus", "polNZ", "polUK".
-- Named categorical palettes: "catSimplified" (max n=7), "catExtended" (max n=18).
-- Named sequential palettes (max n=7): "seqGreen", "seqBlue", "seqRed".
-- Named divergent palettes (max n=14): "divRedBlue", "divBlueGreen".
+* Names of specific colours (e.g., "Jaffa"). Call `colour_display("All") for all colour names.
+* Named political palettes: "polAus", "polNZ", "polUK".
+* Named categorical palettes: "catSimplified" (max n=7), "catExtended" (max n=18).
+* Named sequential palettes (max n=7): "seqGreen", "seqBlue", "seqRed".
+* Named divergent palettes (max n=14): "divRedBlue", "divBlueGreen".
 The function will check the input against the available predefined palettes and colour names.
 If an invalid name is provided, it will return an error.}
 
@@ -34,16 +34,16 @@ If not, warnings will be issued for length mismatches.}
 
 \item{type}{A character string specifying the type of colour palette to return.
 Options are "discrete", "discrete_as", or "continuous".
-- "discrete": Returns an unnamed vector of colours.
-- "discrete_as": Returns a named list of colours based on the 'assign' parameter.
-- "continuous": Returns a function for generating colour gradients, applicable
+* "discrete": Returns an unnamed vector of colours.
+* "discrete_as": Returns a named list of colours based on the 'assign' parameter.
+* "continuous": Returns a function for generating colour gradients, applicable
 only for sequential or divergent palettes. The default is "discrete".}
 }
 \value{
 Depending on the 'type' parameter, this function returns:
-- A vector of colour values ("discrete").
-- A named list of colour values ("discrete_as").
-- A function to create a gradient of colours ("continuous").
+* A vector of colour values ("discrete").
+* A named list of colour values ("discrete_as").
+* A function to create a gradient of colours ("continuous").
 }
 \description{
 Generates colour palettes for graphs. This function provides a versatile way to retrieve colour

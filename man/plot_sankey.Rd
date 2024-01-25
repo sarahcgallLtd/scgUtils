@@ -63,7 +63,7 @@ allowing for the exploration of individual flows and nodes.
 \description{
 \code{plot_sankey} enhances
 \href{https://www.rdocumentation.org/packages/networkD3/versions/0.4/topics/sankeyNetwork}{\code{networkD3::sankeyNetwork}}
-and \href{https://www.htmlwidgets.org/}{\code{htmlwidgets}} to create a Sankey diagram, a specific type of flow diagram
+utilising \href{https://www.htmlwidgets.org/}{\code{htmlwidgets}} to create a Sankey diagram, a specific type of flow diagram
 that visually represents the movement or flow of data between different entities (referred to as "nodes").
 It is particularly useful for illustrating the distribution of votes flowing between parties across elections
 or in preferential voting systems.

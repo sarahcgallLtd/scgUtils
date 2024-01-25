@@ -2,37 +2,56 @@
 % Please edit documentation in R/plot_binary.R
 \name{plot_binary}
 \alias{plot_binary}
-\title{Plot Binary Survey Data}
+\title{Visualise Binary Survey Data with Bar Plots}
 \usage{
-plot_binary(data, vars, value, group = NULL, weight = NULL)
+plot_binary(
+  data,
+  vars,
+  value,
+  group = NULL,
+  weight = NULL,
+  totalColour = colour_pal("French Grey"),
+  groupColours = colour_pal("catExtended")
+)
 }
 \arguments{
-\item{data}{A data frame containing survey data. This parameter is required.}
+\item{data}{A data frame containing survey data.}
 
-\item{vars}{A list of column names and the renamed variable. This parameter is required.}
+\item{vars}{A list mapping original column names to new variable names for visualisation.
+For example, \code{list(Q1a = "Art", Q1b = "Automobiles")}. This parameter is required.}
 
-\item{value}{One of two variable names to return (e.g., "Yes"). This variable is required.}
+\item{value}{The binary response value (e.g., "Yes") to be visualized. Required.}
 
-\item{group}{A variable overlay to compare between groups. This parameter is optional.}
+\item{group}{An optional variable for comparing responses between different groups.}
 
-\item{weight}{Variable containing weight factors. This variable is optional.}
+\item{weight}{An optional variable containing weight factors for analysis.}
+
+\item{totalColour}{The colour used for plotting total response percentages (default: French Grey).}
+
+\item{groupColours}{A vector of colours used for plotting grouped response percentages
+(default: an extended categorical palette).}
 }
 \value{
-a ggplot2 graph.
+A ggplot2 bar plot visualising the percentage of the specified binary response
+across the chosen variables. The plot includes comparisons for total responses and,
+if specified, grouped responses.
 }
 \description{
-Visualizes binary survey results using the \code{grid_vars} function.
+\code{plot_binary} visualises binary survey responses for specified variables using bar plots.
+It leverages the \code{grid_vars} function to create a comparative visual representation,
+supporting optional grouping and weighting.
+}
+\details{
+The function first validates the binary nature of the specified variables and then
+prepares the data for visualisation. The resulting plot shows the proportion of the
+specified binary response (\code{value}) for each variable in \code{vars}. When a \code{group}
+variable is provided, the plot includes facet-wrapped comparisons across groups.
 }
 \examples{
 \dontrun{
-# Create list
-vars <- list(Q1a = "Art",
-             Q1b = "Automobiles",
-             Q1c = "Birdwatching")
-plot_binary(dataset,
-            vars = vars,
-            group = "gender",
-            weight = "wgtvar",
-            value = "Yes")
+  # Example: Visualise binary survey responses by gender
+  vars <- list(Q1a = "Art", Q1b = "Automobiles", Q1c = "Birdwatching")
+  df <- plot_binary(dataset, vars = vars, value = "Yes", group = "gender", weight = "wgtvar")
 }
+
 }

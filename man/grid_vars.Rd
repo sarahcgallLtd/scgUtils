@@ -2,43 +2,42 @@
 % Please edit documentation in R/grid_vars.R
 \name{grid_vars}
 \alias{grid_vars}
-\title{Binary Survey Data}
+\title{Pivot Binary Grid Survey Questions Longer}
 \usage{
 grid_vars(data, vars, group = NULL, weight = NULL)
 }
 \arguments{
-\item{data}{A data frame containing survey data. This parameter is required.}
+\item{data}{A data frame containing survey data.}
 
-\item{vars}{A list of column names and the renamed variable. This parameter is required and permits multiple variables.}
+\item{vars}{A list mapping original column names to new variable names. This is
+required and allows multiple variables. For example, \code{list(Q1a = "Art", Q1b = "Automobiles")}.}
 
-\item{group}{A variable overlay to compare between groups. This parameter is optional and only permits one group.}
+\item{group}{An optional variable for comparing across groups. Only one group can
+be specified.}
 
-\item{weight}{Variable containing weight factors. This variable is optional.}
+\item{weight}{An optional variable containing weight factors for the analysis.}
 }
 \value{
-a data frame of variables from a grid survey question.
+A data frame in a long format, with each row representing a response to a
+binary grid question. The data frame includes frequencies and optionally percentages
+if groups and/or weights are specified.
 }
 \description{
-Pivot binary grid survey questions longer.
+The \code{grid_vars} function transforms binary grid survey questions into a longer format,
+enabling comparisons across different variables or groups. It supports optional grouping
+and weighting.
+}
+\details{
+The function first converts specified binary grid questions into a long format using
+\code{tidyr::pivot_longer}. It then uses \code{grp_freq} to calculate frequencies and, if
+applicable, percentages for each question-response pair. This allows for an in-depth
+analysis of binary grid survey questions, especially when combined with group and weight parameters.
 }
 \examples{
 \dontrun{
-# Create list
-vars <- list(Q1a = "Art",
-             Q1b = "Automobiles",
-             Q1c = "Birdwatching")
-grid_vars(dataset,
-            vars = vars,
-            group = "gender",
-            weight = "wgtvar")
-
-#      Question Response gender     Freq Perc
-#           Art      Yes   Male 275.3617   46
-#   Automobiles      Yes   Male 320.1372   53
-#  Birdwatching      Yes   Male 310.4357   52
-#           Art      Yes Female 204.7525   48
-#   Automobiles      Yes Female 212.0209   49
-#  Birdwatching      Yes Female 203.9380   47
-# ...
+  # Example: Convert grid questions to long format and analyze by gender
+  vars <- list(Q1a = "Art", Q1b = "Automobiles", Q1c = "Birdwatching")
+  df <- grid_vars(dataset, vars = vars, group = "gender", weight = "wgtvar")
 }
+
 }

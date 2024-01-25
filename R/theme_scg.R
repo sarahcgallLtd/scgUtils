@@ -1,20 +1,32 @@
-#' @title Theme for scg Plots
+#' @title Custom Theme for scg Plots
 #' @name theme_scg
 #'
-#' @description A theme for scg plots.
+#' @description
+#' `theme_scg` provides a custom ggplot2 theme tailored for scg plots. This theme
+#' modifies various aspects of ggplot2 plots, including fonts, colors, panel spacing,
+#' and legend formatting, to create a visually consistent and appealing style.
 #'
-#' @param base_size Size of font.
-#' @param base_font Font family. See \code{names(pdfFonts())} for options
-#' @return A ggplot2 theme
+#' @param base_size Base font size for text elements in the plot (default is 10).
+#' @param base_font Font family for text elements. See \code{names(pdfFonts())} for
+#'   available options. Default is an empty string, which uses the ggplot2 default font.
+#'
+#' @return A ggplot2 theme object that can be applied to ggplot2 plots.
+#'
+#' @details
+#' The function customizes various components of a ggplot2 plot, including the plot title,
+#' axis titles and texts, panel background, grid lines, legend, and more. The theme aims to
+#' provide a clean, professional look suitable for scg-style visualizations. Users can specify
+#' the base font size and family to further customize the appearance.
 #'
 #' @examples
 #' \dontrun{
-#' ggplot(data=df, aes(x = x, y= y, fill=reorder(group, y))) +
-#'   geom_bar(stat="identity", width=0.8, position = position_dodge(width=0.9), alpha=1) +
-#'   scale_fill_manual(values=colour_pal("catExtended")) +
-#'   labs(title = "Title", fill = y, x= x, y= y) +
-#'   theme_scg()
+#'   ggplot(data = df, aes(x = x, y = y, fill = reorder(group, y))) +
+#'     geom_bar(stat = "identity", width = 0.8, position = position_dodge(width = 0.9), alpha = 1) +
+#'     scale_fill_manual(values = colour_pal("catExtended")) +
+#'     labs(title = "Title", fill = y, x = x, y = y) +
+#'     theme_scg()
 #' }
+#'
 #' @export
 theme_scg <- function(base_size = 10, base_font = "") {
   # FONT
