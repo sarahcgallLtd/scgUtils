@@ -3,10 +3,10 @@
 #'
 #' @description
 #' `plot_sankey` enhances the [`networkD3::sankeyNetwork`](https://www.rdocumentation.org/packages/networkD3/versions/0.4/topics/sankeyNetwork)
-#' function, utilising [`htmlwidgets`](https://www.htmlwidgets.org/) to create an interactive Sankey diagram,
-#' which is a specific type of flow diagram. It's especially effective for illustrating
-#' data movement or transfer between different entities (nodes), such as the distribution
-#' of votes flowing between parties across elections or in preferential voting systems.
+#' function, utilising [`htmlwidgets`](https://www.htmlwidgets.org/) to create an interactive Sankey diagram.
+#' This type of flow diagram is particularly effective for illustrating data movement or transfer
+#' between different entities (nodes), such as in the distribution of votes across elections or
+#' in preferential voting systems.
 #'
 #' @param data A data frame containing the flow data, where each row represents a unique flow
 #'   from a source to a target node.
@@ -25,18 +25,25 @@
 #' @param width Width of the plot in pixels.
 #' @param height Height of the plot in pixels.
 #' @param shiftLabel Numeric value to adjust the position of labels; `NA` for auto-placement.
+#' @param heading An optional string for the main title of the Sankey diagram.
+#' @param sourceTitle An optional string for labeling the source nodes.
+#' @param targetTitle An optional string for labeling the target nodes.
 #'
 #' @return An interactive Sankey diagram as an HTML widget, which can be used in R Markdown documents,
-#'   Shiny applications, or the R console.
+#'   Shiny applications, or the R console. The diagram provides a visual representation of the flow data,
+#'   with customisable aspects such as colours, fonts, and node dimensions.
 #'
 #' @examples
 #' \dontrun{
-#'   # Example: Visualizing the flow of votes between parties
+#'   # Example: Visualising the flow of votes between parties
 #'   plot_sankey(data = election_data,
 #'               source = "Party_Previous_Election",
 #'               target = "Party_Current_Election",
 #'               value = "Number_of_Votes",
-#'               colours = c("Labour" = "red", "Green" = "green", "National" = "blue"))
+#'               colours = c("Labour" = "red", "Green" = "green", "National" = "blue"),
+#'               heading = "Election Vote Flow",
+#'               sourceTitle = "Previous Election",
+#'               targetTitle = "Current Election")
 #' }
 #'
 #' @export
@@ -50,10 +57,13 @@ plot_sankey <- function(data,
                         fontFamily = "Calibri",
                         nodeWidth = 20,
                         nodePadding = 10,
-                        margin = list("left" = 0, "right" = 0),
+                        margin = list(top = 0, right = 0, bottom = 0, left = 0),
                         width = 1200,
                         height = 800,
-                        shiftLabel = NULL
+                        shiftLabel = NULL,
+                        heading = NULL,
+                        sourceTitle = NULL,
+                        targetTitle = NULL
 ) {
   # ==============================================================#
   # CHECK PARAMS
@@ -76,6 +86,13 @@ plot_sankey <- function(data,
 
   # Get total number of values column
   total <- sum(sankey_data$links$value)
+
+  # Adjust margins if heading or subtitles are present
+  if (!is.null(heading)) {
+    margin$top = 50
+  } else if (!is.null(sourceTitle) || !is.null(targetTitle)) {
+    margin$top = 30
+  }
 
   # ============================================================== #
   # CREATE SANKEY
@@ -101,6 +118,39 @@ plot_sankey <- function(data,
     sankey,
     paste0('
       function(el,x){
+      var svg = d3.select(el).select("svg");
+
+      // Add labels for Source and Target
+      var labelPosition = ', nodeWidth, ' / 2
+      var linkWidth = d3.max(d3.selectAll(".node").data(), function(d) { return d.x + d.dx; });
+
+      svg.append("text")
+         .attr("x", labelPosition)
+         .attr("y", ', margin$top, ' - 10)
+         .text("', sourceTitle, '")
+         .style("font-size", "', fontSize, 'px")
+         .style("font-family", "', fontFamily, '")
+         .style("font-weight", "bold")
+         .style("text-anchor", "middle");
+
+      svg.append("text")
+         .attr("x", linkWidth - labelPosition)
+         .attr("y", ', margin$top, ' - 10)
+         .text("', targetTitle, '")
+         .style("font-size", "', fontSize, 'px")
+         .style("font-family", "', fontFamily, '")
+         .style("font-weight", "bold")
+         .style("text-anchor", "middle");
+
+      // Add heading
+       svg.append("text")
+          .attr("x", linkWidth / 2)
+          .attr("y", ', margin$top, ' - 30) // Adjust the y position as needed
+          .text("', heading, '")
+          .style("font-size", "', fontSize + 4, 'px") // Adjust heading font size as needed
+          .style("font-family", "', fontFamily, '")
+          .style("font-weight", "bold")
+          .style("text-anchor", "middle");
 
       // move source node text (Previous Action) to the left
       d3
@@ -135,7 +185,7 @@ plot_sankey <- function(data,
       // change node tooltip
       let total = d3.sum([', total, '])
       var percent = d3.format(".2%")
-      var units = [', units, ']
+      var units = "', units, '";
 
       d3
       .selectAll(".node")
@@ -152,7 +202,6 @@ plot_sankey <- function(data,
       .text(function(d) { return d.source.name + " \u2192 " + d.target.name + "\\n" +
       d3.format(",.0f")(d.value) + units; });
 
-      // have control over link colour
       }')
   )
 }

@@ -46,7 +46,8 @@ knitr::kable(head(df[, 1:6]))
 
 *For detailed uploading instructions, refer to the [Uploading & Cleaning Data article]().*
 <br>
-<br>
+
+---
 
 ### Step 2: Viewing the Full Dataset
 After uploading the data, it's important to understand its structure and content. The `sjPlot` package's [`view_df()`](http://www.strengejacke.de/sjPlot/reference/view_df.html) function provides an interactive HTML view of your dataset, allowing for an immediate and comprehensive examination of the data's attributes, frequencies, and percentages. This step is crucial for identifying the nature of variables, understanding their distribution, and planning further data processing strategies.
@@ -65,17 +66,17 @@ sjPlot::view_df(df[, 1:10],  # NB first 10 variables shown only in this example
   frameborder="0"
   allowfullscreen></iframe>
 ````
-<br>
+---
 
 ### Step 3: Weighting the Data
 Survey data analysis sometimes necessitates weighting to address issues like sample design or response biases. Future developments in `scgUtils` will introduce user-friendly functions for applying weights, ensuring your analysis reflects the intended population accurately.
 
-<br>
+---
 
 ### Step 4: Processing the Data
 Survey data often requires specific processing steps to ensure it is analysis-ready. This may involve creating new variables, recoding factors, handling missing values, and more. Future developments of the `scgUtils` package will aim to simplify these tasks, providing tools that streamline data preparation and enhance its quality for subsequent analysis.
 
-<br>
+---
 
 ### Step 5: Exploring the Data
 Exploring survey data effectively demands a nuanced approach to both numeric and categorical data. The `scgUtils` package, complemented by base R functionalities, offers a comprehensive toolkit for this exploration.
@@ -87,7 +88,7 @@ Numeric data, such as age, income, or survey ratings, can reveal significant tre
 <br>
 <br>
 
-##### ***Summary Statistics***
+***Summary Statistics***<br>
 Begin with `summary()` for a quick overview, offering key statistical measures.
 ```{r numeric1}
 summary(df$age)
@@ -101,7 +102,7 @@ tapply(df$age, df$gender, summary)
 ```
 <br>
 
-##### ***Mean Calculation***
+***Mean Calculation***<br>
 Average calculations, both weighted and unweighted, are crucial in survey analysis. Utilise `mean()` for simple averages and `weighted.mean()` for more complex scenarios where survey design needs to be accounted for.
 ```{r numeric2}
 # Unweighted:
@@ -112,7 +113,7 @@ weighted.mean(df$age, df$wt)
 ```
 <br>
 
-##### ***Grouped Mean with `grp_mean()`***
+***Grouped Mean with `grp_mean()`***<br>
 For advanced analysis, `grp_mean()` elegantly calculates group-wise means. It simplifies the process of aggregating data across one or more categorical variables, offering an efficient alternative to more verbose methods like those in `dplyr`.
 ```{r numeric3, eval = FALSE}
 # By a single group:
@@ -174,7 +175,7 @@ Categorical data typically includes demographics or multiple-choice responses. A
 <br>
 <br>
 
-##### ***Grouped Frequencies with `grp_freq()`***
+***Grouped Frequencies with `grp_freq()`***<br>
 `grp_freq()` shines in its ability to provide detailed frequency and percentage breakdowns across various groups. It's capable of handling both weighted and unweighted data, adding depth and precision to your categorical data analysis.
 ```{r categorical1, eval = FALSE}
 # By a single group:
@@ -231,7 +232,7 @@ knitr::kable(grp_freq(df,
 ```
 <br>
 
-##### ***Two-by-Two Tables with `crosstab()`**
+***Two-by-Two Tables with `crosstab()`**<br>
 Creating detailed cross-tabulations is seamless with `crosstab()`. This function not only structures your data into insightful two-by-two tables but also allows for the inclusion of additional statistical measures. Customise the output format to fit your analytical needs, whether in wide or long data formats.
 ```{r categorical3, eval = FALSE}
 crosstab(df,
@@ -279,7 +280,7 @@ knitr::kable(crosstab(df,
 ```
 <br>
 
-##### ***Efficiently Combine Statistics with `compile()`***
+***Efficiently Combine Statistics with `compile()`***<br>
 When dealing with numerous variables, `compile()` is your go-to function. It can create a comprehensive data frame of all relevant statistics like Chi-square, Degrees of Freedom, Cramer's V, and p-value, streamlining the statistical analysis process.
 ```{r categorical5, eval = FALSE}
 # the row variables are typically your questions within the survey. For ease, utilise dplyr to select the variables
@@ -324,12 +325,12 @@ knitr::kable(head(stats[order(-stats$CramersV),], 10))
 ```
 <br>
 
-#### **Working with Grid data**
+#### **Grid data**
 Grid questions, common in surveys, pose unique analytical challenges due to their format.
 <br>
 <br>
 
-##### ***Handling Grid Data with `grid_vars()`***
+***Handling Grid Data with `grid_vars()`***<br>
 `grid_vars()` is tailor-made for such data, turning complex grid questions into analysable formats. It's particularly adept at handling "select all that apply" questions or grid-type responses, transforming them into a format conducive to comparison and visualisation with libraries such as [`ggplot2`](https://ggplot2.tidyverse.org/).
 ```{r grid1, eval = FALSE}
 # Create a named list of the columns that relate to the question
@@ -371,7 +372,7 @@ knitr::kable(grid_vars(df,
 ```
 <br>
 
-##### ***Implementing `grid_vars()` by Group***
+***Implementing `grid_vars()` by Group***<br>
 Enhance the functionality of `grid_vars()` by applying it with a group variable. This allows for dissecting responses across different demographic or categorical segments, providing richer, more targeted insights.
 ```{r grid2, eval = FALSE}
 grid_vars(df,
@@ -388,7 +389,7 @@ knitr::kable(grid_vars(df,
                        weight = "wt"
 ) %>% head())
 ```
-<br>
+---
 
 ### Step 6: Visualising the Data
 Effective visualisation is key in survey data analysis, offering a way to intuitively understand and communicate complex data patterns. The `scgUtils` package provides specialised functions like `plot_popn()` for demographic analysis and `plot_sankey()` for flow visualisation, helping you to not only understand your data but also to present it in a compelling and insightful manner.
@@ -400,7 +401,7 @@ Understanding the demographic breakdown of survey respondents is crucial in many
 <br>
 <br>
 
-##### ***Using `plot_popn()`***
+***Using `plot_popn()`***<br>
 The `plot_popn` function is designed to visualise the population structure of your survey respondents. It creates a population pyramid showing distributions across gender and age groups. If a variable like average age (`meanVar`) is specified, the plot can also display this information, adding another layer of insight into the demographic composition.
 ```{r popn_plot, dpi=300, out.width = '100%', fig.height = 5}
 plot_popn(data = df,
@@ -408,12 +409,12 @@ plot_popn(data = df,
           yVar = "ageGroup",
           weight = "wt", # optional
           meanVar = "age", # optional (must be numeric)
-          addLabels = "yes" # to add % labels
+          addLabels = TRUE # to add % labels
 )
 ```
 <br>
 
-##### ***Faceting by Group***
+***Faceting by Group***<br>
 Enhance your population pyramid by faceting the `plot_popn` plot by a specific group, such as voter turnout. This feature overlays the selected group's data onto the total population structure, providing a comparative view that highlights differences or similarities within subgroups.
 ```{r popn_plot2, dpi=300, out.width = '100%', fig.height = 7}
 plot_popn(data = df,
@@ -429,7 +430,7 @@ plot_popn(data = df,
 #### **Crosstabs**
 Crosstabulation is a fundamental technique in survey analysis, especially when examining relationships between categorical variables.
 
-##### ***Visualising Crosstabs with `crosstab()`***
+***Visualising Crosstabs with `crosstab()`***<br>
 The `crosstab` function, when used with the `plot = TRUE` option, turns your data into insightful visual crosstabs. This not only aids in understanding the distribution of responses but also includes statistical measures for deeper analysis.
 ```{r crosstabInd1, eval = FALSE}
 crosstab(df,
@@ -455,7 +456,7 @@ knitr::kable(crosstab(df,
 ```
 <br>
 
-##### ***Adjusting for Readability***
+***Adjusting for Readability***<br>
 For plots with numerous variables along the X-axis, `adjustX = TRUE` rotates the labels for better readability, ensuring that even dense data remains accessible and interpretable.
 ```{r crosstabInd2, eval = FALSE}
 crosstab(df,
@@ -487,7 +488,7 @@ Flow visualisation helps in understanding how different categories of respondent
 <br>
 <br>
 
-##### ***Preparing Data with `grp_freq()`***
+***Preparing Data with `grp_freq()`***<br>
 Before visualising, prepare your data using `grp_freq()`, which aggregates frequencies necessary for the Sankey diagram.
 ```{r flow1, eval = FALSE}
 # Subset the required columns from the dataset
@@ -516,23 +517,26 @@ knitr::kable(head(sankey_df))
 ```
 <br>
 
-##### ***Customising the Sankey Diagram***
+***Customising the Sankey Diagram***<br>
 The `plot_sankey()` function offers extensive customisation, allowing the diagram to be tailored to specific data narratives. The `colour_prep()` function enhances this customisation by facilitating the assignment of meaningful colours based on categories like political party affiliations. Such customisation not only improves the aesthetic appeal of the Sankey diagram but also boosts its interpretability and effectiveness in conveying complex data flows.
 ```{r flow2, eval = FALSE}
 plot_sankey(sankey_df,
             source = "p_past_vote_2019", # on the left side
             target = "generalElectionVote", # on the right side
             value = "Freq",
-            units = "votes",
+            units = " votes",
             colours = colour_prep(df, c("generalElectionVote", "p_past_vote_2019"), pal_name = "polUK"),
             fontSize = 16, # change font size
             fontFamily = "Calibri", # default
             nodeWidth = 20, # default
             nodePadding = 10, # default
-            margin = list("left" = 0, "right" = 130), # adjust the margin
+            margin = list(top = 0, right = 130, bottom = 0, left = 0), # adjust the margin
             width = 1200, # default
             height = 800, # default
-            shiftLabel = NULL # default
+            shiftLabel = NULL, # default
+            heading = "Flow of Votes",
+            sourceTitle = "2019 Vote",
+            targetTitle = "VI"
 ) # %>%
 # save from viewer to html
 # htmlwidgets::saveWidget(file = "sankey_VI.html", selfcontained = TRUE)
@@ -548,7 +552,8 @@ plot_sankey(sankey_df,
 #### **Other Visualisations**
 For a broader spectrum of visualisation techniques and detailed guidance on effectively using colour in your plots, refer to the [Visualising Data article]() and [Creating Colour Palettes article](). These resources provide additional insights into making the most of the `scgUtils` package for visualising complex survey data.
 <br>
-<br>
+
+---
 
 ### Step 7: Presenting the Results
 Presenting the results of your survey analysis in a clear and impactful way is crucial. The `scgUtils` package offers functionalities that aid in creating detailed and informative presentations.
@@ -560,7 +565,7 @@ Tables are fundamental tools for presenting complex data in a structured and eas
 <br>
 <br>
 
-##### ***Extending `compile()` for Comprehensive Tables***
+***Extending `compile()` for Comprehensive Tables***<br>
 The `compile()` function in `scgUtils` excels in generating comprehensive crosstab tables. It efficiently processes each variable pair within your dataset, producing detailed tabular outputs. These tables can be formatted and saved as CSV files, making them perfect for inclusion in reports or further analysis. The ability to create such extensive tables is invaluable for presenting a holistic view of your survey results, encompassing various aspects and relationships within your data.
 ```{r categorical6, eval = FALSE}
 rowVars <- names(df %>% dplyr::select(turnoutUKGeneral:partyIdStrength,
@@ -585,7 +590,7 @@ knitr::include_graphics("img/crosstab_csv.png")
 <br>
 <br>
 
-##### ***Visual Representation of Compiled Tables***
+***Visual Representation of Compiled Tables***<br>
 To add visual appeal and enhance interpretability, future additions to the `scgUtils` package will include the ability to view compiled tables graphically.
 <br>
 <br>

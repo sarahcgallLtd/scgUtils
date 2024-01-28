@@ -15,10 +15,13 @@ plot_sankey(
   fontFamily = "Calibri",
   nodeWidth = 20,
   nodePadding = 10,
-  margin = list(left = 0, right = 0),
+  margin = list(top = 0, right = 0, bottom = 0, left = 0),
   width = 1200,
   height = 800,
-  shiftLabel = NULL
+  shiftLabel = NULL,
+  heading = NULL,
+  sourceTitle = NULL,
+  targetTitle = NULL
 )
 }
 \arguments{
@@ -52,26 +55,36 @@ as hexadecimal codes or colour names. Can be a named list for specific node colo
 \item{height}{Height of the plot in pixels.}
 
 \item{shiftLabel}{Numeric value to adjust the position of labels; \code{NA} for auto-placement.}
+
+\item{heading}{An optional string for the main title of the Sankey diagram.}
+
+\item{sourceTitle}{An optional string for labeling the source nodes.}
+
+\item{targetTitle}{An optional string for labeling the target nodes.}
 }
 \value{
 An interactive Sankey diagram as an HTML widget, which can be used in R Markdown documents,
-Shiny applications, or the R console.
+Shiny applications, or the R console. The diagram provides a visual representation of the flow data,
+with customisable aspects such as colours, fonts, and node dimensions.
 }
 \description{
 \code{plot_sankey} enhances the \href{https://www.rdocumentation.org/packages/networkD3/versions/0.4/topics/sankeyNetwork}{\code{networkD3::sankeyNetwork}}
-function, utilising \href{https://www.htmlwidgets.org/}{\code{htmlwidgets}} to create an interactive Sankey diagram,
-which is a specific type of flow diagram. It's especially effective for illustrating
-data movement or transfer between different entities (nodes), such as the distribution
-of votes flowing between parties across elections or in preferential voting systems.
+function, utilising \href{https://www.htmlwidgets.org/}{\code{htmlwidgets}} to create an interactive Sankey diagram.
+This type of flow diagram is particularly effective for illustrating data movement or transfer
+between different entities (nodes), such as in the distribution of votes across elections or
+in preferential voting systems.
 }
 \examples{
 \dontrun{
-  # Example: Visualizing the flow of votes between parties
+  # Example: Visualising the flow of votes between parties
   plot_sankey(data = election_data,
               source = "Party_Previous_Election",
               target = "Party_Current_Election",
               value = "Number_of_Votes",
-              colours = c("Labour" = "red", "Green" = "green", "National" = "blue"))
+              colours = c("Labour" = "red", "Green" = "green", "National" = "blue"),
+              heading = "Election Vote Flow",
+              sourceTitle = "Previous Election",
+              targetTitle = "Current Election")
 }
 
 }

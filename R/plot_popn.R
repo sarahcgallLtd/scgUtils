@@ -340,7 +340,7 @@ create_popn_plot <- function(prepared_data,
   }
 
   # Add labels if needed
-  if (addLabels == "yes") {
+  if (addLabels == TRUE) {
     data_for_labels <- if (is.null(group)) total else grouped
     p <- add_text(p, data_for_labels, "Perc", thresholdLab,
                   nudgeLab, sizeLab, faceLab, colour = text.col)

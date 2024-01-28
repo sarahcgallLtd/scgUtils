@@ -3,6 +3,10 @@ url: https://sarahcgall.github.io/scgUtils/
 template:
   package: tidytemplate
   bootstrap: 5
+  bslib:
+    base_font: { google: "Roboto" }
+    heading_font: { google: "Roboto Slab" }
+    code_font: { google: "JetBrains Mono" }
 
 development:
   mode: auto
@@ -74,7 +78,3 @@ articles:
   navbar: Function Explainers
   contents:
   - articles/uploading-data
-
-navbar:
-  structure:
-    left: [intro, reference, articles]

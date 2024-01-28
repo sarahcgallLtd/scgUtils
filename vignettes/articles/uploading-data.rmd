@@ -27,7 +27,7 @@ The `get_data()` function in `scgUtils` is designed to simplify the process of i
 <br>
 <br>
 
-##### **Example Usage:**
+***Example Usage:***<br>
 Suppose you have a dataset named "survey" within your package or want to access a dataset from another package. The `get_data()` function makes this process straightforward:
 ```{r upload_data, eval = FALSE}
 # Loading a sample dataset
@@ -71,6 +71,8 @@ knitr::kable(head(df[, 1:6]))
 ```
 <br>
 
+---
+
 ### Cleaning Data with `process_factors()`
 The `process_factors()` function is a crucial tool for data cleaning, particularly in dealing with factor variables. Often in datasets, especially those derived from surveys or categorisations, factor variables contain levels that are not used (e.g., caused by a factor level that was used to disqualify respondents).
 
@@ -78,7 +80,7 @@ These unused levels can be misleading and may affect analyses if not handled pro
 <br>
 <br>
 
-##### **Example Usage:**
+***Example Usage:***<br>
 Consider a dataset with a factor variable `ageGroup` that includes levels like "Under 18", "18-25", "26-35", etc. If your dataset does not have any entries for "Under 18", this level is redundant.
 ```{r clean_data3}
 # Examining factor levels before cleaning
@@ -103,14 +105,14 @@ class(df$turnoutUKGeneral)
 ```
 <br>
 
-<br>
+---
 
 ### Using `get_file()` for Diverse Data Sources
 The `get_file()` function is a versatile tool for importing data into R from various sources. This function is particularly useful when working with data stored in different locations or formats. It not only retrieves the data but also performs initial preprocessing based on the file type, such as handling special characters in CSV files or dealing with complexities in .sav (SPSS) files.
 <br>
 <br>
 
-##### **Local**
+#### **Local**
 For files stored locally, `get_file()` can directly access them given the correct path. This is useful for datasets stored within your project or elsewhere on your system.
 ```{r local, eval = FALSE}
 df <- get_file(file_path = "inst/extdata/survey.sav",
@@ -130,7 +132,7 @@ knitr::kable(head(df[, 1:6]))
 ```
 <br>
 
-##### **OneDrive**
+#### **OneDrive**
 `get_file()` can also interface with OneDrive, allowing for seamless integration of data stored in the cloud. This feature is particularly useful for collaborative projects or when accessing data across multiple devices.
 
 *OneDrive Authentication:*
@@ -160,7 +162,7 @@ knitr::kable(head(df[, 1:6]))
 ```
 <br>
 
-##### **Websites**
+#### **Websites**
 Retrieving files from web sources is another key feature. This allows you to directly import datasets hosted online without the need to download them manually.
 ```{r website, eval = FALSE}
 df <- get_file(file_path = "https://github.com/sarahcgall/scgUtils/blob/master/inst/extdata/survey.csv",
@@ -182,12 +184,14 @@ knitr::kable(head(df[, 1:6]))
 ```
 <br>
 
+---
+
 ### Troubleshooting .sav Files with `get_file()`
 Working with .sav files (SPSS format) can sometimes lead to challenges due to their complex structure and encoding. The `get_file()` function in the `scgUtils` package, which utilises the [`haven`](https://haven.tidyverse.org/) package for handling .sav files, is well-equipped to manage these challenges. However, users may occasionally encounter issues related to encoding or formatting.
 <br>
 <br>
 
-##### **Common Issues and Solutions:**
+#### **Common Issues and Solutions:**
 
 1. **Encoding Errors:**
 
@@ -209,7 +213,7 @@ This step ensures that R recognises missing values correctly, allowing for accur
 <br>
 <br>
 
-##### **Best Practices for Troubleshooting:**
+#### **Best Practices for Troubleshooting:**
 
 * **Check File Formatting:** Before attempting to import a .sav file, ensure it is correctly formatted. Pay special attention to any proprietary encoding or unique representations of data within the file.
 * **Read Warnings Carefully:** When using `get_file()`, carefully read any warnings or error messages that appear. These messages can provide vital clues for troubleshooting and resolving issues.
