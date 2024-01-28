@@ -1,75 +1,105 @@
 <table style="border-collapse:collapse; border:none;">
-<caption>Data frame: survey[, 1:10]</caption>
+<caption>Data frame: df[, 1:10]</caption>
 <tr>
-<th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;">ID</th><th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;">Name</th><th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;">Label</th><th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;">Values</th><th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;">Value Labels</th>
+<th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;">ID</th><th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;">Name</th><th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;">Type</th><th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;">Label</th><th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;">Values</th><th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;">Value Labels</th><th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;">weighted Freq.</th><th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;">weighted %</th>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">1</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">id</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">numeric</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">ID</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 7-19213</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">2</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">wt</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">numeric</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">New Weight Wave 25</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 0.1-6.9</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">3</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">turnoutUKGeneral</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">categorical</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">Likelihood to vote in general election</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">Very unlikely that I would vote<br>Fairly unlikely<br>Neither likely nor unlikely<br>Fairly likely<br>Very likely that I would vote<br>Don't know</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">336<br>62<br>139<br>359<br>2986<br>109</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">8.42<br>1.55<br>3.48<br>9.00<br>74.82<br>2.73</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">4</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">generalElectionVote</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">categorical</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">General election vote intention (recalled vote in<br>post-election waves)</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">I would/did not vote<br>Conservative<br>Labour<br>Liberal Democrat<br>Scottish National Party (SNP)<br>Plaid Cymru<br>United Kingdom Independence Party (UKIP)<br>Green Party<br>British National Party (BNP)<br>Other<br>Change UK- The Independent Group<br>Brexit Party/Reform UK<br>An independent candidate<br>Don't know</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">I would/did not vote<br>Conservative<br>Labour<br>Liberal Democrat<br>Scottish National Party (SNP)<br>Plaid Cymru<br>Green Party<br>Other<br>Brexit Party/Reform UK<br>Don't know</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">286<br>887<br>1140<br>311<br>107<br>16<br>158<br>87<br>246<br>714</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">7.24<br>22.44<br>28.85<br>7.87<br>2.71<br>0.40<br>4.00<br>2.20<br>6.22<br>18.07</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">5</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">partyIdStrength</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">categorical</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">Strength of party identification</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">Very strong<br>Fairly strong<br>Not very strong<br>Don't know</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">459<br>1486<br>1173<br>78</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">14.36<br>46.50<br>36.70<br>2.44</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">6</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">partyId</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">categorical</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Party identification</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Conservative<br>Labour<br>Liberal Democrat<br>Scottish National Party (SNP)<br>Plaid Cymru<br>United Kingdom Independence Party (UKIP)<br>Green Party<br>British National Party (BNP)<br>Other<br>No - none<br>Change UK- The Independent Group<br>Brexit Party/Reform UK<br>Don't know</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Conservative<br>Labour<br>Liberal Democrat<br>Scottish National Party (SNP)<br>Plaid Cymru<br>Green Party<br>Other<br>No - none<br>Brexit Party/Reform UK<br>Don't know</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1168<br>964<br>233<br>102<br>15<br>100<br>54<br>1091<br>100<br>164</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">29.27<br>24.15<br>5.84<br>2.56<br>0.38<br>2.51<br>1.35<br>27.34<br>2.51<br>4.11</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">7</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">partyIdSqueeze</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">categorical</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">Party ID if no party to first ID question</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Conservative<br>Labour<br>Liberal Democrat<br>Scottish National Party (SNP)<br>Plaid Cymru<br>United Kingdom Independence Party (UKIP)<br>Green Party<br>British National Party (BNP)<br>Other<br>No - none<br>Change UK- The Independent Group<br>Brexit Party/Reform UK<br>Don't know</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Conservative<br>Labour<br>Liberal Democrat<br>Scottish National Party (SNP)<br>Plaid Cymru<br>Green Party<br>Other<br>No - none<br>Brexit Party/Reform UK<br>Don't know</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">137<br>128<br>80<br>14<br>3<br>53<br>9<br>700<br>36<br>95</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">10.92<br>10.20<br>6.37<br>1.12<br>0.24<br>4.22<br>0.72<br>55.78<br>2.87<br>7.57</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">8</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">mii</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">categorical</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Most Important Issue</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Issue stated<br>None<br>Don't know</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">3720<br>42<br>230</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">93.19<br>1.05<br>5.76</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">9</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">mii_cat</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">categorical</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">MII manual coding</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">Health<br>Education<br>Election outcome<br>Pol-neg<br>Partisan-neg<br>Societal divides<br>Morals<br>Nat ident, goals-loss<br>Racism/discrimination<br>Welfare<br>Terrorism<br>Immigration<br>Asylum<br>Crime<br>Europe<br><span style="omit">&lt;... truncated&gt;</span></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">225<br>7<br>1<br>108<br>68<br>1<br>26<br>13<br>1<br>7<br>4<br>534<br>17<br>39<br>93</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">6.05<br>0.19<br>0.03<br>2.90<br>1.83<br>0.03<br>0.70<br>0.35<br>0.03<br>0.19<br>0.11<br>14.35<br>0.46<br>1.05<br>2.50</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">10</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">small_mii_cat</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">categorical</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">MII (manually-coded/collapsed)</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Europe<br>Immigration<br>Economy<br>Health<br>Terrorism<br>Inequality<br>Environment<br>Austerity/spending<br>Negativity<br>Other lib-auth<br>Other left-right<br>Other</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">93<br>551<br>2084<br>232<br>4<br>125<br>173<br>44<br>177<br>186<br>9<br>20</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">2.51<br>14.90<br>56.35<br>6.27<br>0.11<br>3.38<br>4.68<br>1.19<br>4.79<br>5.03<br>0.24<br>0.54</td>
 </tr>
 
 </table>

@@ -1,5 +1,5 @@
 ---
-title: "Using Survey Data"
+title: "Using scgUtils with Survey Data"
 ---
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -9,64 +9,55 @@ knitr::opts_chunk$set(
 )
 ```
 
-This article aims to guide you through the process of uploading, processing, and exploring survey data.
+This article will take you through the steps of uploading, processing, and exploring survey data using the `scgUtils` package in R. Our journey will cover the nuances of handling survey datasets, from the initial loading of the data to the advanced stages of analysis and visualisation.
 
 ```{r setup, include = FALSE}
 library(scgUtils)
+library(magrittr)
 ```
 <br>
 
-### Step 1: Upload
-##### **Using data from packages**
+### Step 1: Upload the Sample Dataset
+The process begins with loading your dataset. The `scgUtils` package offers two main functions for this purpose: `get_data()` and `get_file()`.
+<br>
+<br>
 
-If you are using the sample dataset within this package, use the following `get_data` function to access and save it as a data frame.
+**Using `get_data()`:** This function is ideal for loading datasets directly from R packages. It streamlines the process of importing and naming your dataset in the R environment.
+
 ```{r upload_data}
-df <- get_data("survey")
+# Example of loading and preprocessing a dataset
+df <- get_data("survey") %>%
+  labelled::unlabelled() %>% # Convert 'haven_labelled' data to standard format
+  process_factors() # Remove unused factor levels
 ```
-*Note on the sample data: the data only contains a small portion of full survey data from the British Electoral Survey. This article does not analyse the full survey data and is only used as an example for how to use the functions within the `scgUtils` package. The full survey data can be found here: https://www.britishelectionstudy.com/data-object/wave-25-of-the-2014-2023-british-election-study-internet-panel/*
+*Note: The sample data is a subset of the British Electoral Survey. For full data, visit [British Election Study](https://www.britishelectionstudy.com/data-object/wave-25-of-the-2014-2023-british-election-study-internet-panel/).*
+<br>
+<br>
+**Using `get_file()`:** When working with external data files, such as .sav or .csv, get_file() becomes invaluable. It not only imports the data but also preprocesses it, handling special characters and facilitates the conversion of specialised data types, such as `haven_labelled`, into standard R formats, making it a robust choice for various data sources.
+```{r upload_data1, eval = FALSE}
+# Using the  `get_file function option which includes the above preprocessing.
+df <- get_file("inst/extdata/survey.sav")
 
+head(df[, 1:6])
+```
+```{r upload_data_table, echo = FALSE}
+knitr::kable(head(df[, 1:6]))
+```
+
+*For detailed uploading instructions, refer to the [Uploading & Cleaning Data article]().*
+<br>
 <br>
 
-##### **Using other data**
+### Step 2: Viewing the Full Dataset
+After uploading the data, it's important to understand its structure and content. The `sjPlot` package's [`view_df()`](http://www.strengejacke.de/sjPlot/reference/view_df.html) function provides an interactive HTML view of your dataset, allowing for an immediate and comprehensive examination of the data's attributes, frequencies, and percentages. This step is crucial for identifying the nature of variables, understanding their distribution, and planning further data processing strategies.
 
-Alternatively, if you are uploading your own data, you can use the [`haven`](https://haven.tidyverse.org/) package to read an SPSS file in R.
-
-```{r upload_data_alternative, eval = FALSE}
-df <- haven::read_sav("your_survey_data.sav")
-```
-
-*Troubleshooting `read_sav()`:*
-
-NB if an error occurs which relates to encoding, try adding `encoding="latin1"`. Once you have uploaded the data, view which string is causing the error. This may have been caused by `NAs` which will require you to convert them from a string to `NA`. For example:
-```{r upload_data_troubleshooting, eval = FALSE}
-df <- haven::read_sav("your_survey_data.sav", encoding = "latin1")
-
-# Additional step to amend error across entire dataset (all columns)
-df[df == "__NA__"] <- NA
-```
-<br>
-
-### Step 2: View
-View the first 6 rows of the data file and the details of each column
-```{r view_data2, eval = FALSE}
-# NB first 3 variables shown only
-head(df[, 1:3])
-# A tibble: 6 x 3
-#      id    wt turnoutUKGeneral
-#   <dbl> <dbl> <dbl+lbl>
-# 1     7 0.376 5 [Very likely that I would vote]
-# 2    14 0.553 5 [Very likely that I would vote]
-# 3    15 0.712 5 [Very likely that I would vote]
-# 4    18 0.440 4 [Fairly likely]
-# 5    19 0.361 5 [Very likely that I would vote]
-# 6    24 1.69  5 [Very likely that I would vote]
-```
-<br>
-
-You can also view the original questionnaire and values easily by using the [`view_df`](http://www.strengejacke.de/sjPlot/reference/view_df.html) from the `sjPlot` package.
 ```{r view_data1, eval = FALSE}
-# NB first 10 variables shown only
-sjPlot::view_df(df[, 1:10])
+sjPlot::view_df(df[, 1:10],  # NB first 10 variables shown only in this example
+                weight.by = "wt",
+                show.type = TRUE, # show whether variable is numeric or categorical
+                show.wtd.frq = TRUE, # display weighted frequency
+                show.wtd.prc = TRUE, # display weighted %
+)
 ```
 ````{=html}
 <iframe width="100%" height="850"
@@ -76,67 +67,42 @@ sjPlot::view_df(df[, 1:10])
 ````
 <br>
 
-### Step 3: Clean
-##### **Converting labelled data into factors**
-
-To add remove the labels from the variables and convert them into factors, use the [`labelled`](https://larmarange.github.io/labelled/) package.
-```{r clean_data1}
-df <- labelled::unlabelled(df)
-```
-```{r clean_data2, eval = FALSE}
-# NB first 3 variables shown only
-head(df[, 1:3])
-# A tibble: 6 x 3
-#      id    wt turnoutUKGeneral
-#   <dbl> <dbl> <fct>
-# 1     7 0.376 Very likely that I would vote
-# 2    14 0.553 Very likely that I would vote
-# 3    15 0.712 Very likely that I would vote
-# 4    18 0.440 Fairly likely
-# 5    19 0.361 Very likely that I would vote
-# 6    24 1.69  Very likely that I would vote
-```
-<br>
-
-##### **Removing unused factor levels**
-
-Sometimes there will be circumstances where you have unused factor levels, such as "Under 18" (often occurs in surveys which disqualifies certain respondents from participating).
-```{r clean_data3}
-levels(df$ageGroup)
-```
-
-To remove all unused factor levels across the dataset, you can use the `remove_levels` function.
-```{r clean_data4}
-df <- process_factors(df)
-```
-
-Using this function will ensure that the metadata is retained and can still be accessed.
-```{r clean_data5}
-# "Under 18" has not been removed:
-levels(df$ageGroup)
-
-# The metadata containing the question/label for this column remains:
-attr(df$ageGroup, "label")
-```
-<br>
-
-### Step 4: Weighting
-*Section and functions to be added in the future (for survey data without a weighting variable)*
+### Step 3: Weighting the Data
+Survey data analysis sometimes necessitates weighting to address issues like sample design or response biases. Future developments in `scgUtils` will introduce user-friendly functions for applying weights, ensuring your analysis reflects the intended population accurately.
 
 <br>
 
-### Step 5: Explore
-##### **Numeric data**
-To explore numeric data, descriptive statistics can easily be found using `summary` and a combination of `tapply` and `summary` for statistics by group. These are for unweighted data only, however.
+### Step 4: Processing the Data
+Survey data often requires specific processing steps to ensure it is analysis-ready. This may involve creating new variables, recoding factors, handling missing values, and more. Future developments of the `scgUtils` package will aim to simplify these tasks, providing tools that streamline data preparation and enhance its quality for subsequent analysis.
+
+<br>
+
+### Step 5: Exploring the Data
+Exploring survey data effectively demands a nuanced approach to both numeric and categorical data. The `scgUtils` package, complemented by base R functionalities, offers a comprehensive toolkit for this exploration.
+<br>
+<br>
+
+#### **Numeric data**
+Numeric data, such as age, income, or survey ratings, can reveal significant trends and patterns when analysed correctly.
+<br>
+<br>
+
+##### ***Summary Statistics***
+Begin with `summary()` for a quick overview, offering key statistical measures.
 ```{r numeric1}
 summary(df$age)
+```
+<br>
 
+For group-wise insights, `tapply()` combined with `summary()` allows you to dissect the data based on categories like gender or education level, providing a clearer understanding of distribution across different segments.
+```{r numeric1_1}
 # By group:
 tapply(df$age, df$gender, summary)
 ```
 <br>
 
-To find the average of numeric data, use the `mean` or `weighted.mean` functions from the `stats` package (base R).
+##### ***Mean Calculation***
+Average calculations, both weighted and unweighted, are crucial in survey analysis. Utilise `mean()` for simple averages and `weighted.mean()` for more complex scenarios where survey design needs to be accounted for.
 ```{r numeric2}
 # Unweighted:
 mean(df$age)
@@ -146,8 +112,9 @@ weighted.mean(df$age, df$wt)
 ```
 <br>
 
-To find weighted or unweighted averages by one or many group variables, use the `grp_mean` function.
-```{r numeric3}
+##### ***Grouped Mean with `grp_mean()`***
+For advanced analysis, `grp_mean()` elegantly calculates group-wise means. It simplifies the process of aggregating data across one or more categorical variables, offering an efficient alternative to more verbose methods like those in `dplyr`.
+```{r numeric3, eval = FALSE}
 # By a single group:
 grp_mean(df,
          meanVar = "age",
@@ -155,76 +122,166 @@ grp_mean(df,
          weight = "wt" # optional
 )
 
+# `dplyr` equivalent:
+# df %>%
+#   group_by(gender) %>%
+#   summarise(Mean = weighted.mean(age, wt)) %>%
+#   ungroup()
+```
+```{r numeric3_table, echo = FALSE}
+knitr::kable(
+  grp_mean(df,
+           meanVar = "age",
+           groups = "gender",
+           weight = "wt"
+  )
+)
+```
+```{r numeric4, eval = FALSE}
 # By many groups:
 grp_mean(df,
          meanVar = "age",
          groups = c("gender", "partyId"),
          weight = "wt", # optional
-         set_names = c("Gender", "Party Identification", "Average Age"), # change names
-         round_decimals = 2 # round decimal places to 2 digits
-)
+         set_names = c("Gender", "Party Identification", "Average Age"), # optional: change names
+         round_decimals = 2 # optional: round decimal places to 2 digits
+) %>%
+  head()
 
-# NB. The `dplyr` equivalent is:
+# `dplyr` equivalent:
 # df %>%
 #   group_by(gender, partyId) %>%
-#   summarise(Mean = weighted.mean(age, wt))
+#   summarise(`Average Age` = weighted.mean(age, wt)) %>%
+#   ungroup() %>%
+#   rename(Gender = gender, `Party Identification` = partyId) %>%
+#   head()
+```
+```{r numeric4_table, echo = FALSE}
+knitr::kable(
+  grp_mean(df,
+           meanVar = "age",
+           groups = c("gender", "partyId"),
+           weight = "wt",
+           set_names = c("Gender", "Party Identification", "Average Age"),
+           round_decimals = 2
+  ) %>% head()
+)
 ```
 <br>
 
-##### **Categorical data**
-For categorical data, use the `crosstab` function and set `statistics = TRUE` to include statistics for each crosstab.
+#### **Categorical data**
+Categorical data typically includes demographics or multiple-choice responses. Analysing these effectively unlocks insights into respondent behaviours and preferences.
+<br>
+<br>
+
+##### ***Grouped Frequencies with `grp_freq()`***
+`grp_freq()` shines in its ability to provide detailed frequency and percentage breakdowns across various groups. It's capable of handling both weighted and unweighted data, adding depth and precision to your categorical data analysis.
 ```{r categorical1, eval = FALSE}
+# By a single group:
+grp_freq(df,
+         groups = "partyId",
+         weight = "wt", # optional
+         addPercent = TRUE # optional
+) %>%
+  head()
+
+# `dplyr` equivalent:
+# df %>%
+#   group_by(partyId) %>%
+#   summarise(Freq = sum(wt)) %>%
+#   ungroup() %>%
+#   mutate(Perc = Freq / sum(Freq)) %>%
+#   head()
+```
+```{r categorical1_table, echo = FALSE}
+knitr::kable(grp_freq(df,
+                      groups = "partyId",
+                      weight = "wt", # optional
+                      addPercent = TRUE # optional
+) %>% head())
+```
+```{r categorical2, eval = FALSE}
+# By many group:
+grp_freq(df,
+         groups = c("partyId", "gender"),
+         weight = "wt", # optional
+         groupsPercent = "partyId", # optional
+         round_decimals = 2 # optional: round decimal places to 2 digits
+) %>%
+  head()
+
+# `dplyr` equivalent:
+# df %>%
+#   group_by(partyId, gender) %>%
+#   summarise(Freq = sum(wt)) %>%
+#   ungroup() %>%
+#   group_by(partyId) %>%
+#   mutate(Perc = Freq / sum(Freq)) %>%
+#   ungroup() %>%
+#   head()
+
+```
+```{r categorical2_table, echo = FALSE}
+knitr::kable(grp_freq(df,
+                      groups = c("partyId", "gender"),
+                      weight = "wt", # optional
+                      groupsPercent = "partyId", # optional
+                      round_decimals = 2 # optional: round decimal places to 2 digits
+) %>% head())
+```
+<br>
+
+##### ***Two-by-Two Tables with `crosstab()`**
+Creating detailed cross-tabulations is seamless with `crosstab()`. This function not only structures your data into insightful two-by-two tables but also allows for the inclusion of additional statistical measures. Customise the output format to fit your analytical needs, whether in wide or long data formats.
+```{r categorical3, eval = FALSE}
 crosstab(df,
          rowVar = "partyId",
          colVar = "gender",
          weight = "wt", # optional
          format = "df_wide",
-         round_decimals = 2,
-         statistics = TRUE
-)
-# [1] partyId x gender: Chisq = 29.054 | DF = 9 | Cramer's V = 0.028 | p-value = 0.001
-#                          partyId Total Female  Male
-# 1                   Conservative 29.26  27.41 30.85
-# 2                         Labour 24.14  25.38 23.09
-# 3               Liberal Democrat  5.84   5.64  6.00
-# 4  Scottish National Party (SNP)  2.55   2.89  2.26
-# 5                    Plaid Cymru  0.37   0.32  0.41
-# 6                    Green Party  2.52   2.17  2.81
-# 7                          Other  1.36   1.05  1.63
-# 8                      No - none 27.35  27.93 26.85
-# 9         Brexit Party/Reform UK  2.50   1.91  3.00
-# 10                    Don't know  4.12   5.31  3.10
+         round_decimals = 2, # optional
+         statistics = TRUE # optional
+) %>%
+  head()
 ```
-<br>
-
-To see the data presented as a frequency instead of a percentage, without totals, and in a longer format, input the following into the `crosstab` function:
-```{r categorical2, eval = FALSE}
+```{r categorical3_table, echo = FALSE}
+knitr::kable(crosstab(df,
+                      rowVar = "partyId",
+                      colVar = "gender",
+                      weight = "wt",
+                      format = "df_wide",
+                      round_decimals = 2,
+                      statistics = TRUE
+) %>% head())
+```
+```{r categorical4, eval = FALSE}
 crosstab(df,
          rowVar = "partyId",
          colVar = "gender",
          weight = "wt", # optional
          format = "df_long", # default option
-         round_decimals = 2,
-         totals = FALSE,
+         round_decimals = 2, # optional
+         totals = FALSE, # optional
          convert_to = "frequency"
-)
-#                          partyId gender   Freq
-# 1                   Conservative   Male 663.95
-# 2                         Labour   Male 496.94
-# 3               Liberal Democrat   Male 129.14
-# 4  Scottish National Party (SNP)   Male  48.73
-# 5                    Plaid Cymru   Male   8.81
-# 6                    Green Party   Male  60.48
-# 7                          Other   Male  35.09
-# 8                      No - none   Male 577.89
-# 9         Brexit Party/Reform UK   Male  64.56
-# 10                    Don't know   Male  66.73
-# ...
+) %>%
+  head()
+```
+```{r categorical4_table, echo = FALSE}
+knitr::kable(crosstab(df,
+                      rowVar = "partyId",
+                      colVar = "gender",
+                      weight = "wt", # optional
+                      format = "df_long", # default option
+                      round_decimals = 2,
+                      totals = FALSE,
+                      convert_to = "frequency"
+) %>% head())
 ```
 <br>
 
-To automate the above across all variables, the `compile` function can first create a data frame of all statistics (Chi-square, Degrees of Freedom, Cramer's V, and p-value).
-```{r categorical3, eval = FALSE}
+##### ***Efficiently Combine Statistics with `compile()`***
+When dealing with numerous variables, `compile()` is your go-to function. It can create a comprehensive data frame of all relevant statistics like Chi-square, Degrees of Freedom, Cramer's V, and p-value, streamlining the statistical analysis process.
+```{r categorical5, eval = FALSE}
 # the row variables are typically your questions within the survey. For ease, utilise dplyr to select the variables
 rowVars <- names(df %>% dplyr::select(turnoutUKGeneral:partyIdStrength,
                                       partyIdSqueeze:likeGrn,
@@ -245,39 +302,35 @@ stats <- compile(df,
 
 # View first 10, sorted by Cramer's V
 head(stats[order(-stats$CramersV),], 10)
-#                 Row_Var   Col_Var     Size     Chisq DF CramersV p_value
-# 10  generalElectionVote   partyId 3953.314 10049.807 81    0.531       0
-# 316    p_past_vote_2017   partyId 3545.672  5251.916 72    0.430       0
-# 52            bestOnMII   partyId 3719.803  5886.195 81    0.419       0
-# 310    p_past_vote_2015   partyId 3567.690  5054.699 81    0.397       0
-# 258     p_education_age p_edlevel 3465.861  3157.122 30    0.390       0
-# 322    p_past_vote_2019   partyId 3551.306  4736.332 90    0.365       0
-# 248        p_job_sector  ageGroup 3991.109  1706.840 20    0.327       0
-# 200         p_work_stat  ageGroup 3991.109  2857.155 35    0.320       0
-# 298    p_past_vote_2010   partyId 3511.013  3182.663 81    0.317       0
-# 304    p_past_vote_2005   partyId 3222.173  2868.127 81    0.314       0
+```
+```{r categorical5_table, echo = FALSE}
+rowVars <- names(df %>% dplyr::select(turnoutUKGeneral:partyIdStrength,
+                                      partyIdSqueeze:likeGrn,
+                                      pcon:p_hh_size,
+                                      p_disability:p_past_vote_2019,
+                                      p_eurefturnout))
+
+colVars <- c("gender", "ageGroup", "p_socgrade", "partyId", "p_eurefvote", "p_edlevel")
+
+stats <- compile(df,
+                 rowVars = rowVars,
+                 colVars = colVars,
+                 weight = "wt", # optional
+                 save = FALSE, # turn this to FALSE to prevent saving as a .csv
+                 format = "statistics")
+
+# View first 10, sorted by Cramer's V
+knitr::kable(head(stats[order(-stats$CramersV),], 10))
 ```
 <br>
 
-Using the same `colVars` and `rowVars` as above, the `compile` function can also be used to iterate through each variable and produce tables, saved into a csv. Once in the csv, the tables can be formatted.
-```{r categorical4, eval = FALSE}
-compile(df,
-        rowVars = rowVars,
-        colVars = colVars,
-        weight = "wt", # optional
-        name = "crosstabs" # this will save as "crosstabs.csv"
-)
-```
-```{r crosstab_csv, echo=FALSE, out.width = '100%'}
-knitr::include_graphics("img/crosstab_csv.png")
-```
+#### **Working with Grid data**
+Grid questions, common in surveys, pose unique analytical challenges due to their format.
 <br>
 <br>
 
-##### **Grid data**
-In surveys, there are often *"Please select all that apply"* type questions or a grid formation for the question (e.g., *Do you have a favourable or unfavourable impression of the following political leaders?"*). In these circumstances, the results for the question is separated out into many columns, making it difficult to compare.
-
-To resolve this, use the `grid_vars` function. This function provides the Question (the named list), the Response, and the frequency and percent. The result is provided in a long format so it can easily be used in [`ggplot2`](https://ggplot2.tidyverse.org/) for visualisation.
+##### ***Handling Grid Data with `grid_vars()`***
+`grid_vars()` is tailor-made for such data, turning complex grid questions into analysable formats. It's particularly adept at handling "select all that apply" questions or grid-type responses, transforming them into a format conducive to comparison and visualisation with libraries such as [`ggplot2`](https://ggplot2.tidyverse.org/).
 ```{r grid1, eval = FALSE}
 # Create a named list of the columns that relate to the question
 vars <- list(likeSunak = "Rishi Sunak",
@@ -294,48 +347,62 @@ vars <- list(likeSunak = "Rishi Sunak",
 grid_vars(df,
           vars = vars,
           weight = "wt" # optional
+) %>%
+  head()
+```
+```{r grid1_table, echo = FALSE}
+# Create a named list of the columns that relate to the question
+vars <- list(likeSunak = "Rishi Sunak",
+             likeStarmer = "Keir Starmer",
+             likeCon = "Conservative Party",
+             likeLab = "Labour Party",
+             likeLD = "Lib Dems",
+             likeSNP = "SNP",
+             likePC = "Plaid Cymru",
+             likeBrexitParty = "Brexit Party",
+             likeGrn = "Green Party"
 )
-#               Question         Response    Freq  Perc
-# 1         Brexit Party Strongly dislike 1369.44 34.31
-# 2   Conservative Party Strongly dislike 1260.06 31.57
-# 3          Green Party Strongly dislike  810.10 20.30
-# 4         Keir Starmer Strongly dislike  850.59 21.31
-# 5         Labour Party Strongly dislike  839.85 21.04
-# 6             Lib Dems Strongly dislike  776.15 19.45
-# 7          Plaid Cymru Strongly dislike   83.67 28.25
-# 8          Rishi Sunak Strongly dislike  776.61 19.46
-# 9                  SNP Strongly dislike  181.45 38.11
-# 10        Brexit Party                1  208.83  5.23
-# ...
+
+knitr::kable(grid_vars(df,
+                       vars = vars,
+                       weight = "wt" # optional
+) %>% head()
+)
 ```
 <br>
 
-This `grid_vars` function can also be used with a `group` variable.
+##### ***Implementing `grid_vars()` by Group***
+Enhance the functionality of `grid_vars()` by applying it with a group variable. This allows for dissecting responses across different demographic or categorical segments, providing richer, more targeted insights.
 ```{r grid2, eval = FALSE}
 grid_vars(df,
           vars = vars,
-          group = "gender",
+          group = "gender", # optional
           weight = "wt" # optional
-)
-#               Question         Response gender   Freq  Perc
-# 1         Brexit Party Strongly dislike   Male 825.56 38.36
-# 2   Conservative Party Strongly dislike   Male 706.28 32.81
-# 3          Green Party Strongly dislike   Male 548.62 25.49
-# 4         Keir Starmer Strongly dislike   Male 511.98 23.79
-# 5         Labour Party Strongly dislike   Male 478.74 22.24
-# 6             Lib Dems Strongly dislike   Male 498.82 23.18
-# 7          Plaid Cymru Strongly dislike   Male  50.76 31.78
-# 8          Rishi Sunak Strongly dislike   Male 463.44 21.53
-# 9                  SNP Strongly dislike   Male 106.10 42.47
-# 10        Brexit Party                1   Male 129.24  6.00
-# ...
+) %>%
+  head()
+```
+```{r grid2_table, echo = FALSE}
+knitr::kable(grid_vars(df,
+                       vars = vars,
+                       group = "gender",
+                       weight = "wt"
+) %>% head())
 ```
 <br>
 
-### Step 6: Visualise
-##### **Population structure**
-To view the population profile of the respondents, use the `plot_popn` function. If no meanVar is provided, the graph will show just the Male and Female titles without the average age provided.
-```{r popn_plot, eval = FALSE}
+### Step 6: Visualising the Data
+Effective visualisation is key in survey data analysis, offering a way to intuitively understand and communicate complex data patterns. The `scgUtils` package provides specialised functions like `plot_popn()` for demographic analysis and `plot_sankey()` for flow visualisation, helping you to not only understand your data but also to present it in a compelling and insightful manner.
+<br>
+<br>
+
+#### **Population structure**
+Understanding the demographic breakdown of survey respondents is crucial in many analyses.
+<br>
+<br>
+
+##### ***Using `plot_popn()`***
+The `plot_popn` function is designed to visualise the population structure of your survey respondents. It creates a population pyramid showing distributions across gender and age groups. If a variable like average age (`meanVar`) is specified, the plot can also display this information, adding another layer of insight into the demographic composition.
+```{r popn_plot, dpi=300, out.width = '100%', fig.height = 5}
 plot_popn(data = df,
           xVar = "gender",
           yVar = "ageGroup",
@@ -344,43 +411,52 @@ plot_popn(data = df,
           addLabels = "yes" # to add % labels
 )
 ```
-```{r popn_plot3, echo=FALSE, out.width = '75%'}
-knitr::include_graphics("img/popn_plot3.png")
-```
 <br>
 
-The `plot_popn` function can also be facetted by a group. This will show each value of the selected group and overlay the results onto the total population population structure (in grey). The function will also automatically capture the metadata providing the question/label and provide this as the subtitle for ease of understanding.
-```{r popn_plot2, eval = FALSE}
+##### ***Faceting by Group***
+Enhance your population pyramid by faceting the `plot_popn` plot by a specific group, such as voter turnout. This feature overlays the selected group's data onto the total population structure, providing a comparative view that highlights differences or similarities within subgroups.
+```{r popn_plot2, dpi=300, out.width = '100%', fig.height = 7}
 plot_popn(data = df,
           xVar = "gender",
           yVar = "ageGroup",
           group = "turnoutUKGeneral",
           weight = "wt", # optional
-          addLabels = "yes" # to add % labels
+          addLabels = TRUE # to add % labels
 )
-```
-```{r popn_plot4, echo=FALSE, out.width = '100%'}
-knitr::include_graphics("img/popn_plot4.png")
 ```
 <br>
 
-##### **Crosstabs**
-To visualise crosstab data, use the `crosstab` function by specifying `plot = TRUE`.
+#### **Crosstabs**
+Crosstabulation is a fundamental technique in survey analysis, especially when examining relationships between categorical variables.
+
+##### ***Visualising Crosstabs with `crosstab()`***
+The `crosstab` function, when used with the `plot = TRUE` option, turns your data into insightful visual crosstabs. This not only aids in understanding the distribution of responses but also includes statistical measures for deeper analysis.
 ```{r crosstabInd1, eval = FALSE}
 crosstab(df,
          rowVar = "p_eurefvote",
          colVar = "p_edlevel",
          weight = "wt",
          plot = TRUE,
-         statistics = TRUE
-)
+         statistics = TRUE,
+         round_decimals = 2
+) %>%
+  head()
 ```
-```{r crosstab_plot1, echo=FALSE, out.width = '100%'}
-knitr::include_graphics("img/crosstab_plot1.png")
+```{r crosstabInd1_table, dpi=300, out.width = '100%', fig.height = 5, echo = FALSE}
+knitr::kable(crosstab(df,
+                      rowVar = "p_eurefvote",
+                      colVar = "p_edlevel",
+                      weight = "wt",
+                      plot = TRUE,
+                      statistics = TRUE,
+                      round_decimals = 2
+) %>%
+               head())
 ```
 <br>
 
-If there are many variables along the X-axis, these can be rotated by 45 degrees with `adjustX = "yes"`.
+##### ***Adjusting for Readability***
+For plots with numerous variables along the X-axis, `adjustX = TRUE` rotates the labels for better readability, ensuring that even dense data remains accessible and interpretable.
 ```{r crosstabInd2, eval = FALSE}
 crosstab(df,
          rowVar = "polAttention",
@@ -388,39 +464,31 @@ crosstab(df,
          weight = "wt",
          plot = TRUE,
          statistics = TRUE,
-         adjustX = "yes"
-)
+         adjustX = TRUE,
+         round_decimals = 2
+) %>%
+  head()
 ```
-```{r crosstab_plot2, echo=FALSE, out.width = '100%'}
-knitr::include_graphics("img/crosstab_plot2.png")
-```
-<br>
-
-##### **Binary data**
-The `plot_binary` function utilises the `grid_vars` function. As such, it takes similar data except is specific to binary data (e.g., "Yes" and "No"). The sample survey data unfortunately does not have this type of data but it is constructed similarly to the grid data above, whereby a `vars` named list is created and then implemented through the function.
-```{r binary1, eval = FALSE}
-# As an example:
-vars <- list(p1 = "Music",
-             p2 = "Reading",
-             p3 = "Cooking / baking",
-             p4 = "Computers",
-             p5 = "Watching sport",
-             #... etc.
-)
-
-plot_binary(survey_data_with_binary_data_columns,
-            vars = vars,
-            group = "gender", # optional
-            weight = "wt" # optional
-)
-```
-```{r binary_plot, echo=FALSE, out.width = '100%'}
-knitr::include_graphics("img/binary_plot.png")
+```{r crosstabInd2_table, dpi=300, out.width = '100%', fig.height = 5, echo = FALSE}
+knitr::kable(crosstab(df,
+                      rowVar = "polAttention",
+                      colVar = "gender",
+                      weight = "wt",
+                      plot = TRUE,
+                      statistics = TRUE,
+                      adjustX = TRUE,
+                      round_decimals = 2
+) %>% head())
 ```
 <br>
 
-##### **Flow data**
-To visualise the flow of data, use the `plot_sankey` function. To do this, the data can easily be prepared using the `grp_freq` function.
+#### **Flow data**
+Flow visualisation helps in understanding how different categories of respondents transition between various stages or choices. The `plot_sankey` function is instrumental in depicting the flow of data, especially useful in understanding voting patterns or changes in preferences over time.
+<br>
+<br>
+
+##### ***Preparing Data with `grp_freq()`***
+Before visualising, prepare your data using `grp_freq()`, which aggregates frequencies necessary for the Sankey diagram.
 ```{r flow1, eval = FALSE}
 # Subset the required columns from the dataset
 sankey_df <- df[, c("wt", "generalElectionVote", "p_past_vote_2019")]
@@ -428,28 +496,28 @@ sankey_df <- df[, c("wt", "generalElectionVote", "p_past_vote_2019")]
 # Get the frequency
 sankey_df <- grp_freq(sankey_df,
                       groups = c("generalElectionVote", "p_past_vote_2019"),
-                      weight = "wt" # optional
+                      weight = "wt", # optional
+                      round_decimals = 0, # optional
 )
 head(sankey_df)
-#             generalElectionVote p_past_vote_2019       Freq
-# 1          I would/did not vote     Conservative  74.929191
-# 2                  Conservative     Conservative 793.364394
-# 3                        Labour     Conservative 123.625176
-# 4              Liberal Democrat     Conservative  49.939047
-# 5 Scottish National Party (SNP)     Conservative   1.606790
-# 6                   Plaid Cymru     Conservative   2.361066
-
 # NB. The `dplyr` equivalent is:
 # df %>%
 #   group_by(generalElectionVote, p_past_vote_2019) %>%
 #   summarise(Freq = sum(wt))
 ```
+```{r flow1_table, echo = FALSE}
+sankey_df <- df[, c("wt", "generalElectionVote", "p_past_vote_2019")]
+sankey_df <- grp_freq(sankey_df,
+                      groups = c("generalElectionVote", "p_past_vote_2019"),
+                      weight = "wt",
+                      round_decimals = 0,
+)
+knitr::kable(head(sankey_df))
+```
+<br>
 
-The `plot_sankey` function takes many different options, so that you can adjust the diagram to suit your data. In this example, the 2019 Vote is on the left and the voting intention is on the right.
-
-The colours parameter uses a special function called `colour_prep` which takes the two source and target columns from the original dataset, combines them and then attempts to match the political party names to those listed in the `polUK` palette that is stored within the `scgUtils` package (E.g., "Scottish National Party (SNP)" in the survey data is matched to "SNP" in the palette and is therefore assigned the SNP's hexidecimal colour, #FFF95D).
-
-NB. If you wish to name a list or vector of colours, this can be done as the `plot_sankey` function will convert it to the correct hexidecimal code (e.g., c("yellow", "red", "blue", "pink", "green", "grey")).
+##### ***Customising the Sankey Diagram***
+The `plot_sankey()` function offers extensive customisation, allowing the diagram to be tailored to specific data narratives. The `colour_prep()` function enhances this customisation by facilitating the assignment of meaningful colours based on categories like political party affiliations. Such customisation not only improves the aesthetic appeal of the Sankey diagram but also boosts its interpretability and effectiveness in conveying complex data flows.
 ```{r flow2, eval = FALSE}
 plot_sankey(sankey_df,
             source = "p_past_vote_2019", # on the left side
@@ -464,10 +532,10 @@ plot_sankey(sankey_df,
             margin = list("left" = 0, "right" = 130), # adjust the margin
             width = 1200, # default
             height = 800, # default
-            shiftLabel = NA # default
+            shiftLabel = NULL # default
 ) # %>%
-  # save from viewer to html
-  # htmlwidgets::saveWidget(file = "sankey_VI.html", selfcontained = TRUE)
+# save from viewer to html
+# htmlwidgets::saveWidget(file = "sankey_VI.html", selfcontained = TRUE)
 ```
 ````{=html}
 <iframe width="100%" height="850"
@@ -475,3 +543,57 @@ plot_sankey(sankey_df,
   frameborder="0"
   allowfullscreen></iframe>
 ````
+<br>
+
+#### **Other Visualisations**
+For a broader spectrum of visualisation techniques and detailed guidance on effectively using colour in your plots, refer to the [Visualising Data article]() and [Creating Colour Palettes article](). These resources provide additional insights into making the most of the `scgUtils` package for visualising complex survey data.
+<br>
+<br>
+
+### Step 7: Presenting the Results
+Presenting the results of your survey analysis in a clear and impactful way is crucial. The `scgUtils` package offers functionalities that aid in creating detailed and informative presentations.
+<br>
+<br>
+
+#### **Tables**
+Tables are fundamental tools for presenting complex data in a structured and easily interpretable format.
+<br>
+<br>
+
+##### ***Extending `compile()` for Comprehensive Tables***
+The `compile()` function in `scgUtils` excels in generating comprehensive crosstab tables. It efficiently processes each variable pair within your dataset, producing detailed tabular outputs. These tables can be formatted and saved as CSV files, making them perfect for inclusion in reports or further analysis. The ability to create such extensive tables is invaluable for presenting a holistic view of your survey results, encompassing various aspects and relationships within your data.
+```{r categorical6, eval = FALSE}
+rowVars <- names(df %>% dplyr::select(turnoutUKGeneral:partyIdStrength,
+                                      partyIdSqueeze:likeGrn,
+                                      pcon:p_hh_size,
+                                      p_disability:p_past_vote_2019,
+                                      p_eurefturnout))
+
+colVars <- c("gender", "ageGroup", "p_socgrade", "partyId", "p_eurefvote", "p_edlevel")
+
+compile(df,
+        rowVars = rowVars,
+        colVars = colVars,
+        weight = "wt", # optional
+        name = "crosstabs" # this will save as "crosstabs.csv"
+)
+```
+```{r crosstab_csv, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("img/crosstab_csv.png")
+```
+<br>
+<br>
+<br>
+
+##### ***Visual Representation of Compiled Tables***
+To add visual appeal and enhance interpretability, future additions to the `scgUtils` package will include the ability to view compiled tables graphically.
+<br>
+<br>
+
+#### **PowerPoint Integration**
+In future updates, `scgUtils` aims to incorporate capabilities for directly exporting analysis results into PowerPoint presentations. This functionality will facilitate seamless integration of your data findings into professional and engaging presentation formats, suitable for various audiences.
+<br>
+<br>
+
+#### **Interactive Dashboards**
+Another upcoming feature is the ability to create interactive dashboards directly from your survey data. Dashboards offer a dynamic way to explore and present data, allowing users to interact with the information, drill down into specifics, and gain a deeper understanding of the underlying patterns. This functionality will be a significant enhancement, providing a powerful tool for data storytelling and decision-making processes.

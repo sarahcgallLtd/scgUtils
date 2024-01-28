@@ -97,9 +97,13 @@ crosstab <- function(data,
       plot_df <- df
     }
 
+    # Get labels
+    fillLab = get_question(data, colVar)
+    xLab = get_question(data, rowVar)
+
     # Create crosstab plot
-    plot_args <- list(plot_df, rowVar, colVar, totals, yLab, adjustX, stats)
-    names(plot_args) <- c("plot_df", "rowVar", "colVar", "totals", "yLab", "adjustX", "stats")
+    plot_args <- list(plot_df, rowVar, colVar, totals, yLab, adjustX, stats, fillLab, xLab)
+    names(plot_args) <- c("plot_df", "rowVar", "colVar", "totals", "yLab", "adjustX", "stats", "fillLab", "xLab")
     p <- do.call("create_crosstab_plot", plot_args)
 
     # Print Plot
@@ -382,7 +386,10 @@ create_crosstab_plot <- function(plot_df,
                                  yLab = "Population (%)",
                                  adjustX = FALSE,
                                  stats = NULL,
-                                 line.col = colour_pal("French Grey")) {
+                                 line.col = colour_pal("French Grey"),
+                                 fillLab,
+                                 xLab
+) {
   # Omit NaNs from graph
   p_df <- stats::na.omit(plot_df)
 
@@ -422,8 +429,8 @@ create_crosstab_plot <- function(plot_df,
     # Add labels
     labs(title = paste0("% of ", rowVar, " by ", colVar),
          caption = stats,
-         fill = get_question(p_df, colVar),
-         x = get_question(p_df, rowVar),
+         fill = fillLab,
+         x = xLab,
          y = yLab) +
 
     # Add scg theme

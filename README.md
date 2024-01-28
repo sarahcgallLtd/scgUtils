@@ -6,37 +6,82 @@ scgUtils <a href="https://sarahcgall.github.io/scgUtils/"><img src="man/figures/
 [![codecov](https://codecov.io/gh/sarahcgall/scgUtils/graph/badge.svg?token=SG99DJ56I4)](https://codecov.io/gh/sarahcgall/scgUtils)
 <!-- badges: end -->
 
-## About
-Welcome to `scgUtils`, an R package to help:
+## Overview
+`scgUtils` is a comprehensive R package designed to streamline the process of survey data analysis and visualisation. 
+It offers a range of functions for data processing, exploration, and stylish visualisations, adhering to branding 
+guidelines with custom colour schemes and themes.
 
-* Increase productivity by incorporating and formalising frequently used 
-[**functions and charts**](#functions--charts) to run cleaner and more succinct code.
-* Maintain brand [**guidelines and styles**](#guidelines--styles) by supplying colours and other 
-dataviz standards.
+### Features
+
+- **Survey Data Processing**: Simplify the manipulation of survey datasets with functions like [`get_data()`](https://sarahcgall.github.io/scgUtils/reference/get_data.html) and [`process_factors()`](https://sarahcgall.github.io/scgUtils/reference/process_factors.html).
+- **Data Exploration Tools**: Dive into your data using functions such as [`crosstab()`](https://sarahcgall.github.io/scgUtils/reference/crosstab.html) and [`grp_freq()`](https://sarahcgall.github.io/scgUtils/reference/grp_freq.html) for detailed analyses.
+- **Custom Visualizations**: Bring your data to life with various plotting functions, from [`plot_bigfive()`](https://sarahcgall.github.io/scgUtils/reference/plot_bigfive.html) for personality traits to [`plot_sankey()`](https://sarahcgall.github.io/scgUtils/reference/plot_sankey.html) for flow data representation.
+- **Styling and Brand Consistency**: Maintain brand integrity with [`colour_pal()`](https://sarahcgall.github.io/scgUtils/reference/colour_pal.html) and [`theme_scg()`](https://sarahcgall.github.io/scgUtils/reference/theme_scg.html), ensuring consistent and appealing data presentations.
 
 ### Installation
 
-The code below relies on the development version of `scgUtils`.
-Install it with:
+Install the development version of `scgUtils` directly from GitHub:
 
 ``` r
 devtools::install_github("sarahcgall/scgUtils")
 ```
 
-## Functions & Charts
-The functions and formulae aim to reduce duplication of effort across 
-projects, formalise various code, increase productivity, and reduce potential errors.
+## Getting Started
+After installation, load `scgUtils` to access its functionalities:
 
-## Guidelines & Styles
-The colours and layouts are guides only and are not rigid rules. 
-They aim to provide consistency across all dataviz design and aid in 
-the decision-making process.
+``` r
+library(scgUtils)
+```
 
-## Other Packages
-This package serves as a central hub for Sarah C Gall Ltd. Several additional 
-packages are now available which either complement or assist in project work. 
-Additional packages include:
+### Key Functions
+##### Data Processing
 
-* [`scgElectionsNZ`](https://sarahcgall.github.io/scgElectionsNZ): a package which provides datasets of NZ general elections
-* `scgElectionsAUS`: TBC
-* `scgElectionsUK`: TBC
+* [`get_file()`](https://sarahcgall.github.io/scgUtils/reference/get_file.html): Retrieve and preprocess files from various sources.
+
+##### Data Exploration
+
+* [`compile()`](https://sarahcgall.github.io/scgUtils/reference/compile.html): Combine multiple data frames for comprehensive analysis.
+* [`grid_vars()`](https://sarahcgall.github.io/scgUtils/reference/grid_vars.html): Transform binary grid survey questions for deeper insights.
+
+##### Visualisation
+
+* [`plot_parliament()`](https://sarahcgall.github.io/scgUtils/reference/plot_parliament.html): Create parliament-style visual representations.
+* [`plot_popn()`](https://sarahcgall.github.io/scgUtils/reference/plot_popn.html): Depict population profiles with customisability.
+
+##### Styling
+
+* [`colour_display()`](https://sarahcgall.github.io/scgUtils/reference/colour_display.html): Explore and display colour options for plots.
+* [`colour_prep()`](https://sarahcgall.github.io/scgUtils/reference/colour_prep.html): Prepare named colour palettes for datasets.
+
+### Example Usage
+Here's a quick example of using `scgUtils` to analyse and visualise survey data:
+
+``` r
+# Load sample data
+df <- get_file("inst/extdata/survey.sav")
+
+# Explore data with a crosstab
+crosstab(data = df,
+         rowVar = "p_eurefvote",
+         colVar = "p_edlevel",
+         weight = "wt",
+         format = "df_wide",
+         round_decimals = 2,
+         statistics = TRUE,
+         plot = TRUE
+)
+# [1] "p_eurefvote x p_edlevel: Chisq = 371.026 | DF = 10 | Cramer's V = 0.243 | p-value = 0"
+#         p_eurefvote Undergraduate A-level Below GCSE  GCSE No qualifications Postgrad Total
+# 1 I voted to remain         61.23   40.58      27.47 30.60             23.49    73.47 47.92
+# 2  I voted to leave         38.25   59.12      72.53 69.13             76.51    26.42 51.78
+# 3        Don't know          0.52    0.30       0.00  0.27              0.00     0.10  0.31
+```
+![Crosstab Results](https://github.com/sarahcgall/scgUtils/blob/master/vignettes/articles/img/crosstab_example.png)
+
+## Feedback and Contributions
+Suggestions and contributions are welcome. For any proposed additions, amendments, or feedback, please
+[create an issue](https://github.com/sarahcgall/scgUtils/issues).
+
+## Related Packages
+Check out [`scgElectionsNZ`](https://sarahcgall.github.io/scgElectionsNZ) for additional datasets relevant for 
+NZ General Elections.

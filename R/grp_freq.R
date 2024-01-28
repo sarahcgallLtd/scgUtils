@@ -64,6 +64,9 @@ grp_freq <- function(data,
   # Option: add percent
   tmp <- optionally_add_percent(tmp, addPercent, groupsPercent, round_decimals)
 
+  # Option: round decimal places
+  tmp <- round_vars(tmp, round_decimals)
+
   # Set names
   tmp <- set_column_names(tmp, groups, set_names, "Freq")
 
@@ -128,8 +131,6 @@ optionally_add_percent <- function(data,
     } else {
       data <- transform(data, Perc = stats::ave(x, data[, groupsPercent], FUN = percent))
     }
-
-    data <- round_vars(data, round_decimals)
   }
   return(data)
 }

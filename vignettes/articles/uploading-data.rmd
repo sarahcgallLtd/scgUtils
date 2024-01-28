@@ -1,0 +1,216 @@
+---
+title: "Uploading & Cleaning Data"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = TRUE
+)
+```
+
+Data preparation is a crucial step in any data analysis workflow. In this guide, we explore the `scgUtils` R package, specifically focusing on three functions: `get_data()`, `process_factors()`, and `get_file()`. These functions streamline the process of loading, cleaning, and preprocessing data, thereby simplifying your workflow:
+
+* [`get_data()`](https://sarahcgall.github.io/scgUtils/reference/get_data.html): A helper function to load datasets into your R environment, allowing you to name the data frame.
+* [`process_factors()`](https://sarahcgall.github.io/scgUtils/reference/process_factors.html): Cleans your data frames by removing unused factor levels, while keeping non-factor columns intact.
+* [`get_file()`](https://sarahcgall.github.io/scgUtils/reference/get_file.html): Retrieves and processes files from various sources, including local storage, OneDrive, and the web, and performs initial preprocessing based on file type.
+
+<br>
+
+```{r setup, include = FALSE}
+library(scgUtils)
+```
+
+### Uploading Package Data with `get_data()`
+The `get_data()` function in `scgUtils` is designed to simplify the process of importing datasets into your R environment. This function is particularly useful when working with packaged data or when you want to load data seamlessly without worrying about file paths or data import syntax.
+<br>
+<br>
+
+##### **Example Usage:**
+Suppose you have a dataset named "survey" within your package or want to access a dataset from another package. The `get_data()` function makes this process straightforward:
+```{r upload_data, eval = FALSE}
+# Loading a sample dataset
+df <- get_data("survey")
+
+# Inspecting the dataset's class and a categorical column
+class(df)
+#> [1] "tbl_df"     "tbl"        "data.frame"
+
+class(df$turnoutUKGeneral)
+#> [1] "haven_labelled" "vctrs_vctr"     "double"
+
+head(df[, 1:6])
+```
+
+```{r upload_data_table, echo = FALSE}
+df <- get_data("survey")
+knitr::kable(head(df[, 1:6]))
+```
+The function loads the dataset and assigns it to a variable, in this case, df. It then allows you to perform initial inspections and manipulations. This functionality is essential for quickly setting up your data for analysis, especially in exploratory data analysis or educational settings.
+<br>
+<br>
+
+*Additionally, notice how the dataset initially has a 'haven_labelled' class. To convert it to a more standard format, we use the [`labelled`](https://larmarange.github.io/labelled/) package:*
+```{r clean_data1, eval = FALSE}
+# Converting 'haven_labelled' data to standard format
+df <- labelled::unlabelled(df)
+
+# View class
+class(df)
+#> [1] "tbl_df"     "tbl"        "data.frame"
+
+class(df$turnoutUKGeneral)
+#> [1] "factor"
+
+head(df[, 1:6])
+```
+```{r clean_data1_table, echo = FALSE}
+df <- labelled::unlabelled(df)
+knitr::kable(head(df[, 1:6]))
+```
+<br>
+
+### Cleaning Data with `process_factors()`
+The `process_factors()` function is a crucial tool for data cleaning, particularly in dealing with factor variables. Often in datasets, especially those derived from surveys or categorisations, factor variables contain levels that are not used (e.g., caused by a factor level that was used to disqualify respondents).
+
+These unused levels can be misleading and may affect analyses if not handled properly. The `process_factors()` function simplifies this task by automatically identifying and removing unused factor levels, streamlining your dataset for analysis.
+<br>
+<br>
+
+##### **Example Usage:**
+Consider a dataset with a factor variable `ageGroup` that includes levels like "Under 18", "18-25", "26-35", etc. If your dataset does not have any entries for "Under 18", this level is redundant.
+```{r clean_data3}
+# Examining factor levels before cleaning
+levels(df$ageGroup)
+```
+
+By applying `process_factors()`, we can clean up these unused levels:
+```{r clean_data4}
+# Cleaning the dataset with process_factors
+df <- process_factors(df)
+
+# Verifying that "Under 18" is removed
+levels(df$ageGroup)
+
+# Checking the metadata of the 'ageGroup' column
+attr(df$ageGroup, "label")
+
+# Inspecting the class of cleaned columns
+class(df)
+
+class(df$turnoutUKGeneral)
+```
+<br>
+
+<br>
+
+### Using `get_file()` for Diverse Data Sources
+The `get_file()` function is a versatile tool for importing data into R from various sources. This function is particularly useful when working with data stored in different locations or formats. It not only retrieves the data but also performs initial preprocessing based on the file type, such as handling special characters in CSV files or dealing with complexities in .sav (SPSS) files.
+<br>
+<br>
+
+##### **Local**
+For files stored locally, `get_file()` can directly access them given the correct path. This is useful for datasets stored within your project or elsewhere on your system.
+```{r local, eval = FALSE}
+df <- get_file(file_path = "inst/extdata/survey.sav",
+               source = "local") # default
+
+# View class
+class(df)
+#> [1] "data.frame"
+
+class(df$turnoutUKGeneral)
+#> [1] "factor"
+
+head(df[, 1:6])
+```
+```{r local_table, echo = FALSE}
+knitr::kable(head(df[, 1:6]))
+```
+<br>
+
+##### **OneDrive**
+`get_file()` can also interface with OneDrive, allowing for seamless integration of data stored in the cloud. This feature is particularly useful for collaborative projects or when accessing data across multiple devices.
+
+*OneDrive Authentication:*
+```{r onedrive, eval = FALSE}
+df <- get_file(file_path = "scgUtils_examples_folder/survey.sav",
+               source = "onedrive")
+```
+![Microsoft Office 365 Login Screen](img/Microsoft-Office-365-Login-Screen.png)
+
+<br>
+
+*After authentication, the file is downloaded and made available in your R environment.*
+```{r onedrive1, eval = FALSE}
+#> Loading Microsoft Graph login for default tenant
+
+# View class
+class(df)
+#> [1] "data.frame"
+
+class(df$turnoutUKGeneral)
+#> [1] "factor"
+
+head(df[, 1:6])
+```
+```{r onedrive1_table, echo = FALSE}
+knitr::kable(head(df[, 1:6]))
+```
+<br>
+
+##### **Websites**
+Retrieving files from web sources is another key feature. This allows you to directly import datasets hosted online without the need to download them manually.
+```{r website, eval = FALSE}
+df <- get_file(file_path = "https://github.com/sarahcgall/scgUtils/blob/master/inst/extdata/survey.csv",
+               source = "web")
+
+# View class
+class(df)
+#> [1] "tbl_df"     "tbl"        "data.frame"
+
+class(df$turnoutUKGeneral)
+#> [1] "character"
+
+head(df[, 1:6])
+```
+```{r website_table, echo = FALSE}
+file_path <- system.file("extdata", "survey.csv", package = "scgUtils")
+df <- get_file(file_path)
+knitr::kable(head(df[, 1:6]))
+```
+<br>
+
+### Troubleshooting .sav Files with `get_file()`
+Working with .sav files (SPSS format) can sometimes lead to challenges due to their complex structure and encoding. The `get_file()` function in the `scgUtils` package, which utilises the [`haven`](https://haven.tidyverse.org/) package for handling .sav files, is well-equipped to manage these challenges. However, users may occasionally encounter issues related to encoding or formatting.
+<br>
+<br>
+
+##### **Common Issues and Solutions:**
+
+1. **Encoding Errors:**
+
+* * **Problem:** .sav files may contain characters or symbols not correctly encoded, leading to warnings or errors during the import process.
+* * **Solution:** The `get_file()` function tries to manage these by attempting to read the file with different encodings. If the default reading fails, it attempts with 'latin1' encoding. This approach handles a wide range of encoding issues that are commonly encountered in .sav files.
+
+2. **Handling NA Values:**
+
+* * **Problem:** SPSS files often have unique representations for missing values, which may not align with R's standard NA.
+* * **Solution:** The `get_file()` function includes steps to handle these discrepancies. For instance, if a .sav file represents missing values as "NA", the following code snippet can be used to convert them to R's NA:
+```{r upload_data_troubleshooting, eval = FALSE}
+# Handling NA values represented as "__NA__" in .sav files
+df[df == "__NA__"] <- NA
+
+```
+<br>
+
+This step ensures that R recognises missing values correctly, allowing for accurate data analysis and manipulation.
+<br>
+<br>
+
+##### **Best Practices for Troubleshooting:**
+
+* **Check File Formatting:** Before attempting to import a .sav file, ensure it is correctly formatted. Pay special attention to any proprietary encoding or unique representations of data within the file.
+* **Read Warnings Carefully:** When using `get_file()`, carefully read any warnings or error messages that appear. These messages can provide vital clues for troubleshooting and resolving issues.
+* **Consult Documentation:** For more detailed guidance on handling specific .sav file issues, refer to both the `scgUtils` and `haven` package documentation. These resources can offer additional insights and solutions for complex cases.

@@ -64,3 +64,17 @@ reference:
   contents:
     - theme_scg
 
+articles:
+- title: Function Example
+  navbar: ~
+  contents:
+  - articles/using-survey-data
+
+- title: Function Explainers
+  navbar: Function Explainers
+  contents:
+  - articles/uploading-data
+
+navbar:
+  structure:
+    left: [intro, reference, articles]
