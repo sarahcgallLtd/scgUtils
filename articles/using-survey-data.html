@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="scgUtils">
-<title>Using Survey Data • scgUtils</title>
+<title>Using scgUtils with Survey Data • scgUtils</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -19,7 +19,7 @@
 <link href="../deps/Source_Code_Pro-0.4.8/font.css" rel="stylesheet">
 <!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Using Survey Data">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Using scgUtils with Survey Data">
 <meta property="og:description" content="scgUtils">
 <meta property="og:image" content="https://sarahcgall.github.io/scgUtils/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -50,7 +50,10 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/using-survey-data.html">Using Survey Data</a>
+    <a class="dropdown-item" href="../articles/using-survey-data.html">Using scgUtils with Survey Data</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Function Explainers</h6>
+    <a class="dropdown-item" href="../articles/uploading-data.html">Uploading &amp; Cleaning Data</a>
   </div>
 </li>
       </ul>
@@ -77,7 +80,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Using Survey Data</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Using scgUtils with Survey Data</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/sarahcgall/scgUtils/blob/HEAD/vignettes/articles/using-survey-data.rmd" class="external-link"><code>vignettes/articles/using-survey-data.rmd</code></a></small>
@@ -86,155 +89,181 @@
 
     
     
-<p>This article aims to guide you through the process of uploading,
-processing, and exploring survey data.</p>
+<p>This article will take you through the steps of uploading,
+processing, and exploring survey data using the <code>scgUtils</code>
+package in R. Our journey will cover the nuances of handling survey
+datasets, from the initial loading of the data to the advanced stages of
+analysis and visualisation.</p>
 <p><br></p>
 <div class="section level3">
-<h3 id="step-1-upload">Step 1: Upload<a class="anchor" aria-label="anchor" href="#step-1-upload"></a>
+<h3 id="step-1-upload-the-sample-dataset">Step 1: Upload the Sample Dataset<a class="anchor" aria-label="anchor" href="#step-1-upload-the-sample-dataset"></a>
 </h3>
-<div class="section level5">
-<h5 id="using-data-from-packages">
-<strong>Using data from packages</strong><a class="anchor" aria-label="anchor" href="#using-data-from-packages"></a>
-</h5>
-<p>If you are using the sample dataset within this package, use the
-following <code>get_data</code> function to access and save it as a data
-frame.</p>
+<p>The process begins with loading your dataset. The
+<code>scgUtils</code> package offers two main functions for this
+purpose: <code><a href="../reference/get_data.html">get_data()</a></code> and <code><a href="../reference/get_file.html">get_file()</a></code>. <br><br></p>
+<p><strong>Using <code><a href="../reference/get_data.html">get_data()</a></code>:</strong> This function is
+ideal for loading datasets directly from R packages. It streamlines the
+process of importing and naming your dataset in the R environment.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_data.html">get_data</a></span><span class="op">(</span><span class="st">"survey"</span><span class="op">)</span></span></code></pre></div>
-<p><em>Note on the sample data: the data only contains a small portion
-of full survey data from the British Electoral Survey. This article does
-not analyse the full survey data and is only used as an example for how
-to use the functions within the <code>scgUtils</code> package. The full
-survey data can be found here: <a href="https://www.britishelectionstudy.com/data-object/wave-25-of-the-2014-2023-british-election-study-internet-panel/" class="external-link uri">https://www.britishelectionstudy.com/data-object/wave-25-of-the-2014-2023-british-election-study-internet-panel/</a></em></p>
-<p><br></p>
-</div>
-<div class="section level5">
-<h5 id="using-other-data">
-<strong>Using other data</strong><a class="anchor" aria-label="anchor" href="#using-other-data"></a>
-</h5>
-<p>Alternatively, if you are uploading your own data, you can use the <a href="https://haven.tidyverse.org/" class="external-link"><code>haven</code></a> package to
-read an SPSS file in R.</p>
+<code class="sourceCode R"><span><span class="co"># Example of loading and preprocessing a dataset</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_data.html">get_data</a></span><span class="op">(</span><span class="st">"survey"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">labelled</span><span class="fu">::</span><span class="fu"><a href="https://larmarange.github.io/labelled/reference/to_factor.html" class="external-link">unlabelled</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># Convert 'haven_labelled' data to standard format</span></span>
+<span>  <span class="fu"><a href="../reference/process_factors.html">process_factors</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Remove unused factor levels</span></span></code></pre></div>
+<p><em>Note: The sample data is a subset of the British Electoral
+Survey. For full data, visit <a href="https://www.britishelectionstudy.com/data-object/wave-25-of-the-2014-2023-british-election-study-internet-panel/" class="external-link">British
+Election Study</a>.</em> <br><br><strong>Using
+<code><a href="../reference/get_file.html">get_file()</a></code>:</strong> When working with external data files,
+such as .sav or .csv, get_file() becomes invaluable. It not only imports
+the data but also preprocesses it, handling special characters and
+facilitates the conversion of specialised data types, such as
+<code>haven_labelled</code>, into standard R formats, making it a robust
+choice for various data sources.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/read_spss.html" class="external-link">read_sav</a></span><span class="op">(</span><span class="st">"your_survey_data.sav"</span><span class="op">)</span></span></code></pre></div>
-<p><em>Troubleshooting <code>read_sav()</code>:</em></p>
-<p>NB if an error occurs which relates to encoding, try adding
-<code>encoding="latin1"</code>. Once you have uploaded the data, view
-which string is causing the error. This may have been caused by
-<code>NAs</code> which will require you to convert them from a string to
-<code>NA</code>. For example:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">haven</span><span class="fu">::</span><span class="fu"><a href="https://haven.tidyverse.org/reference/read_spss.html" class="external-link">read_sav</a></span><span class="op">(</span><span class="st">"your_survey_data.sav"</span>, encoding <span class="op">=</span> <span class="st">"latin1"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Using the  `get_file function option which includes the above preprocessing.</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_file.html">get_file</a></span><span class="op">(</span><span class="st">"inst/extdata/survey.sav"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Additional step to amend error across entire dataset (all columns)</span></span>
-<span><span class="va">df</span><span class="op">[</span><span class="va">df</span> <span class="op">==</span> <span class="st">"__NA__"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span></code></pre></div>
-<p><br></p>
-</div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="2%">
+<col width="8%">
+<col width="25%">
+<col width="25%">
+<col width="13%">
+<col width="25%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">id</th>
+<th align="right">wt</th>
+<th align="left">turnoutUKGeneral</th>
+<th align="left">generalElectionVote</th>
+<th align="left">partyIdStrength</th>
+<th align="left">partyId</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">0.3755288</td>
+<td align="left">Very likely that I would vote</td>
+<td align="left">Scottish National Party (SNP)</td>
+<td align="left">Fairly strong</td>
+<td align="left">Scottish National Party (SNP)</td>
+</tr>
+<tr class="even">
+<td align="right">14</td>
+<td align="right">0.5528756</td>
+<td align="left">Very likely that I would vote</td>
+<td align="left">Conservative</td>
+<td align="left">Not very strong</td>
+<td align="left">Labour</td>
+</tr>
+<tr class="odd">
+<td align="right">15</td>
+<td align="right">0.7122303</td>
+<td align="left">Very likely that I would vote</td>
+<td align="left">Brexit Party/Reform UK</td>
+<td align="left">Fairly strong</td>
+<td align="left">Brexit Party/Reform UK</td>
+</tr>
+<tr class="even">
+<td align="right">18</td>
+<td align="right">0.4396403</td>
+<td align="left">Fairly likely</td>
+<td align="left">Scottish National Party (SNP)</td>
+<td align="left">Not very strong</td>
+<td align="left">No - none</td>
+</tr>
+<tr class="odd">
+<td align="right">19</td>
+<td align="right">0.3613798</td>
+<td align="left">Very likely that I would vote</td>
+<td align="left">Labour</td>
+<td align="left">Very strong</td>
+<td align="left">Labour</td>
+</tr>
+<tr class="even">
+<td align="right">24</td>
+<td align="right">1.6864884</td>
+<td align="left">Very likely that I would vote</td>
+<td align="left">Green Party</td>
+<td align="left">NA</td>
+<td align="left">No - none</td>
+</tr>
+</tbody>
+</table>
+<p><em>For detailed uploading instructions, refer to the <a href="">Uploading &amp; Cleaning Data article</a>.</em> <br><br></p>
 </div>
 <div class="section level3">
-<h3 id="step-2-view">Step 2: View<a class="anchor" aria-label="anchor" href="#step-2-view"></a>
+<h3 id="step-2-viewing-the-full-dataset">Step 2: Viewing the Full Dataset<a class="anchor" aria-label="anchor" href="#step-2-viewing-the-full-dataset"></a>
 </h3>
-<p>View the first 6 rows of the data file and the details of each
-column</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># NB first 3 variables shown only</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co"># A tibble: 6 x 3</span></span>
-<span><span class="co">#      id    wt turnoutUKGeneral</span></span>
-<span><span class="co">#   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl+lbl&gt;</span></span>
-<span><span class="co"># 1     7 0.376 5 [Very likely that I would vote]</span></span>
-<span><span class="co"># 2    14 0.553 5 [Very likely that I would vote]</span></span>
-<span><span class="co"># 3    15 0.712 5 [Very likely that I would vote]</span></span>
-<span><span class="co"># 4    18 0.440 4 [Fairly likely]</span></span>
-<span><span class="co"># 5    19 0.361 5 [Very likely that I would vote]</span></span>
-<span><span class="co"># 6    24 1.69  5 [Very likely that I would vote]</span></span></code></pre></div>
-<p><br></p>
-<p>You can also view the original questionnaire and values easily by
-using the <a href="http://www.strengejacke.de/sjPlot/reference/view_df.html" class="external-link"><code>view_df</code></a>
-from the <code>sjPlot</code> package.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># NB first 10 variables shown only</span></span>
-<span><span class="fu">sjPlot</span><span class="fu">::</span><span class="fu">view_df</span><span class="op">(</span><span class="va">df</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<p>After uploading the data, it’s important to understand its structure
+and content. The <code>sjPlot</code> package’s <a href="http://www.strengejacke.de/sjPlot/reference/view_df.html" class="external-link"><code>view_df()</code></a>
+function provides an interactive HTML view of your dataset, allowing for
+an immediate and comprehensive examination of the data’s attributes,
+frequencies, and percentages. This step is crucial for identifying the
+nature of variables, understanding their distribution, and planning
+further data processing strategies.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">sjPlot</span><span class="fu">::</span><span class="fu">view_df</span><span class="op">(</span><span class="va">df</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>,  <span class="co"># NB first 10 variables shown only in this example</span></span>
+<span>                weight.by <span class="op">=</span> <span class="st">"wt"</span>,</span>
+<span>                show.type <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># show whether variable is numeric or categorical</span></span>
+<span>                show.wtd.frq <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># display weighted frequency</span></span>
+<span>                show.wtd.prc <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># display weighted %</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <iframe width="100%" height="850" src="img/questionnaire.html" frameborder="0" allowfullscreen></iframe>
 <p><br></p>
 </div>
 <div class="section level3">
-<h3 id="step-3-clean">Step 3: Clean<a class="anchor" aria-label="anchor" href="#step-3-clean"></a>
+<h3 id="step-3-weighting-the-data">Step 3: Weighting the Data<a class="anchor" aria-label="anchor" href="#step-3-weighting-the-data"></a>
 </h3>
-<div class="section level5">
-<h5 id="converting-labelled-data-into-factors">
-<strong>Converting labelled data into factors</strong><a class="anchor" aria-label="anchor" href="#converting-labelled-data-into-factors"></a>
-</h5>
-<p>To add remove the labels from the variables and convert them into
-factors, use the <a href="https://larmarange.github.io/labelled/" class="external-link"><code>labelled</code></a>
-package.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">labelled</span><span class="fu">::</span><span class="fu"><a href="https://larmarange.github.io/labelled/reference/to_factor.html" class="external-link">unlabelled</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># NB first 3 variables shown only</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co"># A tibble: 6 x 3</span></span>
-<span><span class="co">#      id    wt turnoutUKGeneral</span></span>
-<span><span class="co">#   &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;</span></span>
-<span><span class="co"># 1     7 0.376 Very likely that I would vote</span></span>
-<span><span class="co"># 2    14 0.553 Very likely that I would vote</span></span>
-<span><span class="co"># 3    15 0.712 Very likely that I would vote</span></span>
-<span><span class="co"># 4    18 0.440 Fairly likely</span></span>
-<span><span class="co"># 5    19 0.361 Very likely that I would vote</span></span>
-<span><span class="co"># 6    24 1.69  Very likely that I would vote</span></span></code></pre></div>
-<p><br></p>
-</div>
-<div class="section level5">
-<h5 id="removing-unused-factor-levels">
-<strong>Removing unused factor levels</strong><a class="anchor" aria-label="anchor" href="#removing-unused-factor-levels"></a>
-</h5>
-<p>Sometimes there will be circumstances where you have unused factor
-levels, such as “Under 18” (often occurs in surveys which disqualifies
-certain respondents from participating).</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">ageGroup</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Under 18" "18-25"    "26-35"    "36-45"    "46-55"    "56-65"   </span></span>
-<span><span class="co">#&gt; [7] "66+"</span></span></code></pre></div>
-<p>To remove all unused factor levels across the dataset, you can use
-the <code>remove_levels</code> function.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/process_factors.html">process_factors</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
-<p>Using this function will ensure that the metadata is retained and can
-still be accessed.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># "Under 18" has not been removed:</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">ageGroup</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "18-25" "26-35" "36-45" "46-55" "56-65" "66+"</span></span>
-<span></span>
-<span><span class="co"># The metadata containing the question/label for this column remains:</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">ageGroup</span>, <span class="st">"label"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Age group"</span></span></code></pre></div>
-<p><br></p>
-</div>
-</div>
-<div class="section level3">
-<h3 id="step-4-weighting">Step 4: Weighting<a class="anchor" aria-label="anchor" href="#step-4-weighting"></a>
-</h3>
-<p><em>Section and functions to be added in the future (for survey data
-without a weighting variable)</em></p>
+<p>Survey data analysis sometimes necessitates weighting to address
+issues like sample design or response biases. Future developments in
+<code>scgUtils</code> will introduce user-friendly functions for
+applying weights, ensuring your analysis reflects the intended
+population accurately.</p>
 <p><br></p>
 </div>
 <div class="section level3">
-<h3 id="step-5-explore">Step 5: Explore<a class="anchor" aria-label="anchor" href="#step-5-explore"></a>
+<h3 id="step-4-processing-the-data">Step 4: Processing the Data<a class="anchor" aria-label="anchor" href="#step-4-processing-the-data"></a>
 </h3>
-<div class="section level5">
-<h5 id="numeric-data">
+<p>Survey data often requires specific processing steps to ensure it is
+analysis-ready. This may involve creating new variables, recoding
+factors, handling missing values, and more. Future developments of the
+<code>scgUtils</code> package will aim to simplify these tasks,
+providing tools that streamline data preparation and enhance its quality
+for subsequent analysis.</p>
+<p><br></p>
+</div>
+<div class="section level3">
+<h3 id="step-5-exploring-the-data">Step 5: Exploring the Data<a class="anchor" aria-label="anchor" href="#step-5-exploring-the-data"></a>
+</h3>
+<p>Exploring survey data effectively demands a nuanced approach to both
+numeric and categorical data. The <code>scgUtils</code> package,
+complemented by base R functionalities, offers a comprehensive toolkit
+for this exploration. <br><br></p>
+<div class="section level4">
+<h4 id="numeric-data">
 <strong>Numeric data</strong><a class="anchor" aria-label="anchor" href="#numeric-data"></a>
+</h4>
+<p>Numeric data, such as age, income, or survey ratings, can reveal
+significant trends and patterns when analysed correctly. <br><br></p>
+<div class="section level5">
+<h5 id="summary-statistics">
+<strong><em>Summary Statistics</em></strong><a class="anchor" aria-label="anchor" href="#summary-statistics"></a>
 </h5>
-<p>To explore numeric data, descriptive statistics can easily be found
-using <code>summary</code> and a combination of <code>tapply</code> and
-<code>summary</code> for statistics by group. These are for unweighted
-data only, however.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<p>Begin with <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> for a quick overview, offering key
+statistical measures.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">age</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
-<span><span class="co">#&gt;   18.00   55.00   66.00   63.58   73.00   93.00</span></span>
-<span></span>
-<span><span class="co"># By group:</span></span>
+<span><span class="co">#&gt;   18.00   55.00   66.00   63.58   73.00   93.00</span></span></code></pre></div>
+<p><br></p>
+<p>For group-wise insights, <code><a href="https://rdrr.io/r/base/tapply.html" class="external-link">tapply()</a></code> combined with
+<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> allows you to dissect the data based on
+categories like gender or education level, providing a clearer
+understanding of distribution across different segments.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># By group:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/tapply.html" class="external-link">tapply</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">age</span>, <span class="va">df</span><span class="op">$</span><span class="va">gender</span>, <span class="va">summary</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $Male</span></span>
 <span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
@@ -244,10 +273,16 @@ data only, however.</p>
 <span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
 <span><span class="co">#&gt;   18.00   54.00   66.00   62.97   73.00   93.00</span></span></code></pre></div>
 <p><br></p>
-<p>To find the average of numeric data, use the <code>mean</code> or
-<code>weighted.mean</code> functions from the <code>stats</code> package
-(base R).</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+</div>
+<div class="section level5">
+<h5 id="mean-calculation">
+<strong><em>Mean Calculation</em></strong><a class="anchor" aria-label="anchor" href="#mean-calculation"></a>
+</h5>
+<p>Average calculations, both weighted and unweighted, are crucial in
+survey analysis. Utilise <code><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean()</a></code> for simple averages and
+<code><a href="https://rdrr.io/r/stats/weighted.mean.html" class="external-link">weighted.mean()</a></code> for more complex scenarios where survey
+design needs to be accounted for.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Unweighted:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">age</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 63.5824</span></span>
@@ -256,114 +291,371 @@ data only, however.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/weighted.mean.html" class="external-link">weighted.mean</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">age</span>, <span class="va">df</span><span class="op">$</span><span class="va">wt</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 60.17577</span></span></code></pre></div>
 <p><br></p>
-<p>To find weighted or unweighted averages by one or many group
-variables, use the <code>grp_mean</code> function.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+</div>
+<div class="section level5">
+<h5 id="grouped-mean-with-grp_mean">
+<strong><em>Grouped Mean with
+<code>grp_mean()</code></em></strong><a class="anchor" aria-label="anchor" href="#grouped-mean-with-grp_mean"></a>
+</h5>
+<p>For advanced analysis, <code><a href="../reference/grp_mean.html">grp_mean()</a></code> elegantly calculates
+group-wise means. It simplifies the process of aggregating data across
+one or more categorical variables, offering an efficient alternative to
+more verbose methods like those in <code>dplyr</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># By a single group:</span></span>
 <span><span class="fu"><a href="../reference/grp_mean.html">grp_mean</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>         meanVar <span class="op">=</span> <span class="st">"age"</span>,</span>
 <span>         groups <span class="op">=</span> <span class="st">"gender"</span>,</span>
 <span>         weight <span class="op">=</span> <span class="st">"wt"</span> <span class="co"># optional</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt;   gender     Mean</span></span>
-<span><span class="co">#&gt; 1   Male 60.14175</span></span>
-<span><span class="co">#&gt; 2 Female 60.21559</span></span>
 <span></span>
-<span><span class="co"># By many groups:</span></span>
+<span><span class="co"># `dplyr` equivalent:</span></span>
+<span><span class="co"># df %&gt;%</span></span>
+<span><span class="co">#   group_by(gender) %&gt;%</span></span>
+<span><span class="co">#   summarise(Mean = weighted.mean(age, wt)) %&gt;%</span></span>
+<span><span class="co">#   ungroup()</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">gender</th>
+<th align="right">Mean</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Male</td>
+<td align="right">60.14175</td>
+</tr>
+<tr class="even">
+<td align="left">Female</td>
+<td align="right">60.21559</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># By many groups:</span></span>
 <span><span class="fu"><a href="../reference/grp_mean.html">grp_mean</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>         meanVar <span class="op">=</span> <span class="st">"age"</span>,</span>
 <span>         groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gender"</span>, <span class="st">"partyId"</span><span class="op">)</span>,</span>
 <span>         weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
-<span>         set_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Gender"</span>, <span class="st">"Party Identification"</span>, <span class="st">"Average Age"</span><span class="op">)</span>, <span class="co"># change names</span></span>
-<span>         round_decimals <span class="op">=</span> <span class="fl">2</span> <span class="co"># round decimal places to 2 digits</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt;    Gender          Party Identification Average Age</span></span>
-<span><span class="co">#&gt; 1    Male                  Conservative       64.60</span></span>
-<span><span class="co">#&gt; 2  Female                  Conservative       65.86</span></span>
-<span><span class="co">#&gt; 3    Male                        Labour       59.81</span></span>
-<span><span class="co">#&gt; 4  Female                        Labour       59.29</span></span>
-<span><span class="co">#&gt; 5    Male              Liberal Democrat       60.44</span></span>
-<span><span class="co">#&gt; 6  Female              Liberal Democrat       59.71</span></span>
-<span><span class="co">#&gt; 7    Male Scottish National Party (SNP)       60.70</span></span>
-<span><span class="co">#&gt; 8  Female Scottish National Party (SNP)       60.01</span></span>
-<span><span class="co">#&gt; 9    Male                   Plaid Cymru       58.51</span></span>
-<span><span class="co">#&gt; 10 Female                   Plaid Cymru       52.41</span></span>
-<span><span class="co">#&gt; 11   Male                   Green Party       55.97</span></span>
-<span><span class="co">#&gt; 12 Female                   Green Party       57.01</span></span>
-<span><span class="co">#&gt; 13   Male                         Other       62.45</span></span>
-<span><span class="co">#&gt; 14 Female                         Other       64.69</span></span>
-<span><span class="co">#&gt; 15   Male                     No - none       55.95</span></span>
-<span><span class="co">#&gt; 16 Female                     No - none       56.27</span></span>
-<span><span class="co">#&gt; 17   Male        Brexit Party/Reform UK       62.17</span></span>
-<span><span class="co">#&gt; 18 Female        Brexit Party/Reform UK       67.62</span></span>
-<span><span class="co">#&gt; 19   Male                    Don't know       54.33</span></span>
-<span><span class="co">#&gt; 20 Female                    Don't know       55.12</span></span>
+<span>         set_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Gender"</span>, <span class="st">"Party Identification"</span>, <span class="st">"Average Age"</span><span class="op">)</span>, <span class="co"># optional: change names</span></span>
+<span>         round_decimals <span class="op">=</span> <span class="fl">2</span> <span class="co"># optional: round decimal places to 2 digits</span></span>
+<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># NB. The `dplyr` equivalent is:</span></span>
+<span><span class="co"># `dplyr` equivalent:</span></span>
 <span><span class="co"># df %&gt;%</span></span>
 <span><span class="co">#   group_by(gender, partyId) %&gt;%</span></span>
-<span><span class="co">#   summarise(Mean = weighted.mean(age, wt))</span></span></code></pre></div>
+<span><span class="co">#   summarise(`Average Age` = weighted.mean(age, wt)) %&gt;%</span></span>
+<span><span class="co">#   ungroup() %&gt;%</span></span>
+<span><span class="co">#   rename(Gender = gender, `Party Identification` = partyId) %&gt;%</span></span>
+<span><span class="co">#   head()</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Gender</th>
+<th align="left">Party Identification</th>
+<th align="right">Average Age</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Male</td>
+<td align="left">Conservative</td>
+<td align="right">64.60</td>
+</tr>
+<tr class="even">
+<td align="left">Female</td>
+<td align="left">Conservative</td>
+<td align="right">65.86</td>
+</tr>
+<tr class="odd">
+<td align="left">Male</td>
+<td align="left">Labour</td>
+<td align="right">59.81</td>
+</tr>
+<tr class="even">
+<td align="left">Female</td>
+<td align="left">Labour</td>
+<td align="right">59.29</td>
+</tr>
+<tr class="odd">
+<td align="left">Male</td>
+<td align="left">Liberal Democrat</td>
+<td align="right">60.44</td>
+</tr>
+<tr class="even">
+<td align="left">Female</td>
+<td align="left">Liberal Democrat</td>
+<td align="right">59.71</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+</div>
+</div>
+<div class="section level4">
+<h4 id="categorical-data">
+<strong>Categorical data</strong><a class="anchor" aria-label="anchor" href="#categorical-data"></a>
+</h4>
+<p>Categorical data typically includes demographics or multiple-choice
+responses. Analysing these effectively unlocks insights into respondent
+behaviours and preferences. <br><br></p>
+<div class="section level5">
+<h5 id="grouped-frequencies-with-grp_freq">
+<strong><em>Grouped Frequencies with
+<code>grp_freq()</code></em></strong><a class="anchor" aria-label="anchor" href="#grouped-frequencies-with-grp_freq"></a>
+</h5>
+<p><code><a href="../reference/grp_freq.html">grp_freq()</a></code> shines in its ability to provide detailed
+frequency and percentage breakdowns across various groups. It’s capable
+of handling both weighted and unweighted data, adding depth and
+precision to your categorical data analysis.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># By a single group:</span></span>
+<span><span class="fu"><a href="../reference/grp_freq.html">grp_freq</a></span><span class="op">(</span><span class="va">df</span>,</span>
+<span>         groups <span class="op">=</span> <span class="st">"partyId"</span>,</span>
+<span>         weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
+<span>         addPercent <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># optional</span></span>
+<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># `dplyr` equivalent:</span></span>
+<span><span class="co"># df %&gt;%</span></span>
+<span><span class="co">#   group_by(partyId) %&gt;%</span></span>
+<span><span class="co">#   summarise(Freq = sum(wt)) %&gt;%</span></span>
+<span><span class="co">#   ungroup() %&gt;%</span></span>
+<span><span class="co">#   mutate(Perc = Freq / sum(Freq)) %&gt;%</span></span>
+<span><span class="co">#   head()</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">partyId</th>
+<th align="right">Freq</th>
+<th align="right">Perc</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Conservative</td>
+<td align="right">1167.9802</td>
+<td align="right">29.264551</td>
+</tr>
+<tr class="even">
+<td align="left">Labour</td>
+<td align="right">963.5791</td>
+<td align="right">24.143139</td>
+</tr>
+<tr class="odd">
+<td align="left">Liberal Democrat</td>
+<td align="right">232.9101</td>
+<td align="right">5.835724</td>
+</tr>
+<tr class="even">
+<td align="left">Scottish National Party (SNP)</td>
+<td align="right">101.8282</td>
+<td align="right">2.551375</td>
+</tr>
+<tr class="odd">
+<td align="left">Plaid Cymru</td>
+<td align="right">14.6336</td>
+<td align="right">0.366655</td>
+</tr>
+<tr class="even">
+<td align="left">Green Party</td>
+<td align="right">100.3786</td>
+<td align="right">2.515055</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># By many group:</span></span>
+<span><span class="fu"><a href="../reference/grp_freq.html">grp_freq</a></span><span class="op">(</span><span class="va">df</span>,</span>
+<span>         groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"partyId"</span>, <span class="st">"gender"</span><span class="op">)</span>,</span>
+<span>         weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
+<span>         groupsPercent <span class="op">=</span> <span class="st">"partyId"</span>, <span class="co"># optional</span></span>
+<span>         round_decimals <span class="op">=</span> <span class="fl">2</span> <span class="co"># optional: round decimal places to 2 digits</span></span>
+<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># `dplyr` equivalent:</span></span>
+<span><span class="co"># df %&gt;%</span></span>
+<span><span class="co">#   group_by(partyId, gender) %&gt;%</span></span>
+<span><span class="co">#   summarise(Freq = sum(wt)) %&gt;%</span></span>
+<span><span class="co">#   ungroup() %&gt;%</span></span>
+<span><span class="co">#   group_by(partyId) %&gt;%</span></span>
+<span><span class="co">#   mutate(Perc = Freq / sum(Freq)) %&gt;%</span></span>
+<span><span class="co">#   ungroup() %&gt;%</span></span>
+<span><span class="co">#   head()</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">partyId</th>
+<th align="left">gender</th>
+<th align="right">Freq</th>
+<th align="right">Perc</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Conservative</td>
+<td align="left">Male</td>
+<td align="right">663.95</td>
+<td align="right">56.85</td>
+</tr>
+<tr class="even">
+<td align="left">Labour</td>
+<td align="left">Male</td>
+<td align="right">496.94</td>
+<td align="right">51.57</td>
+</tr>
+<tr class="odd">
+<td align="left">Liberal Democrat</td>
+<td align="left">Male</td>
+<td align="right">129.14</td>
+<td align="right">55.45</td>
+</tr>
+<tr class="even">
+<td align="left">Scottish National Party (SNP)</td>
+<td align="left">Male</td>
+<td align="right">48.73</td>
+<td align="right">47.85</td>
+</tr>
+<tr class="odd">
+<td align="left">Plaid Cymru</td>
+<td align="left">Male</td>
+<td align="right">8.81</td>
+<td align="right">60.20</td>
+</tr>
+<tr class="even">
+<td align="left">Green Party</td>
+<td align="left">Male</td>
+<td align="right">60.48</td>
+<td align="right">60.25</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
 </div>
 <div class="section level5">
-<h5 id="categorical-data">
-<strong>Categorical data</strong><a class="anchor" aria-label="anchor" href="#categorical-data"></a>
+<h5 id="two-by-two-tables-with-crosstab">*<strong>Two-by-Two Tables with
+<code>crosstab()</code></strong><a class="anchor" aria-label="anchor" href="#two-by-two-tables-with-crosstab"></a>
 </h5>
-<p>For categorical data, use the <code>crosstab</code> function and set
-<code>statistics = TRUE</code> to include statistics for each
-crosstab.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<p>Creating detailed cross-tabulations is seamless with
+<code><a href="../reference/crosstab.html">crosstab()</a></code>. This function not only structures your data
+into insightful two-by-two tables but also allows for the inclusion of
+additional statistical measures. Customise the output format to fit your
+analytical needs, whether in wide or long data formats.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/crosstab.html">crosstab</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>         rowVar <span class="op">=</span> <span class="st">"partyId"</span>,</span>
 <span>         colVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
 <span>         weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
 <span>         format <span class="op">=</span> <span class="st">"df_wide"</span>,</span>
-<span>         round_decimals <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>         statistics <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co"># [1] partyId x gender: Chisq = 29.054 | DF = 9 | Cramer's V = 0.028 | p-value = 0.001</span></span>
-<span><span class="co">#                          partyId Total Female  Male</span></span>
-<span><span class="co"># 1                   Conservative 29.26  27.41 30.85</span></span>
-<span><span class="co"># 2                         Labour 24.14  25.38 23.09</span></span>
-<span><span class="co"># 3               Liberal Democrat  5.84   5.64  6.00</span></span>
-<span><span class="co"># 4  Scottish National Party (SNP)  2.55   2.89  2.26</span></span>
-<span><span class="co"># 5                    Plaid Cymru  0.37   0.32  0.41</span></span>
-<span><span class="co"># 6                    Green Party  2.52   2.17  2.81</span></span>
-<span><span class="co"># 7                          Other  1.36   1.05  1.63</span></span>
-<span><span class="co"># 8                      No - none 27.35  27.93 26.85</span></span>
-<span><span class="co"># 9         Brexit Party/Reform UK  2.50   1.91  3.00</span></span>
-<span><span class="co"># 10                    Don't know  4.12   5.31  3.10</span></span></code></pre></div>
-<p><br></p>
-<p>To see the data presented as a frequency instead of a percentage,
-without totals, and in a longer format, input the following into the
-<code>crosstab</code> function:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<span>         round_decimals <span class="op">=</span> <span class="fl">2</span>, <span class="co"># optional</span></span>
+<span>         statistics <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># optional</span></span>
+<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; [1] "partyId x gender: Chisq = 29.054 | DF = 9 | Cramer's V = 0.028 | p-value = 0.001"</span></span></code></pre>
+<table class="table">
+<thead><tr class="header">
+<th align="left">partyId</th>
+<th align="right">Total</th>
+<th align="right">Female</th>
+<th align="right">Male</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Conservative</td>
+<td align="right">29.26</td>
+<td align="right">27.41</td>
+<td align="right">30.85</td>
+</tr>
+<tr class="even">
+<td align="left">Labour</td>
+<td align="right">24.14</td>
+<td align="right">25.38</td>
+<td align="right">23.09</td>
+</tr>
+<tr class="odd">
+<td align="left">Liberal Democrat</td>
+<td align="right">5.84</td>
+<td align="right">5.64</td>
+<td align="right">6.00</td>
+</tr>
+<tr class="even">
+<td align="left">Scottish National Party (SNP)</td>
+<td align="right">2.55</td>
+<td align="right">2.89</td>
+<td align="right">2.26</td>
+</tr>
+<tr class="odd">
+<td align="left">Plaid Cymru</td>
+<td align="right">0.37</td>
+<td align="right">0.32</td>
+<td align="right">0.41</td>
+</tr>
+<tr class="even">
+<td align="left">Green Party</td>
+<td align="right">2.52</td>
+<td align="right">2.17</td>
+<td align="right">2.81</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/crosstab.html">crosstab</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>         rowVar <span class="op">=</span> <span class="st">"partyId"</span>,</span>
 <span>         colVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
 <span>         weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
 <span>         format <span class="op">=</span> <span class="st">"df_long"</span>, <span class="co"># default option</span></span>
-<span>         round_decimals <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>         totals <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>         round_decimals <span class="op">=</span> <span class="fl">2</span>, <span class="co"># optional</span></span>
+<span>         totals <span class="op">=</span> <span class="cn">FALSE</span>, <span class="co"># optional</span></span>
 <span>         convert_to <span class="op">=</span> <span class="st">"frequency"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#                          partyId gender   Freq</span></span>
-<span><span class="co"># 1                   Conservative   Male 663.95</span></span>
-<span><span class="co"># 2                         Labour   Male 496.94</span></span>
-<span><span class="co"># 3               Liberal Democrat   Male 129.14</span></span>
-<span><span class="co"># 4  Scottish National Party (SNP)   Male  48.73</span></span>
-<span><span class="co"># 5                    Plaid Cymru   Male   8.81</span></span>
-<span><span class="co"># 6                    Green Party   Male  60.48</span></span>
-<span><span class="co"># 7                          Other   Male  35.09</span></span>
-<span><span class="co"># 8                      No - none   Male 577.89</span></span>
-<span><span class="co"># 9         Brexit Party/Reform UK   Male  64.56</span></span>
-<span><span class="co"># 10                    Don't know   Male  66.73</span></span>
-<span><span class="co"># ...</span></span></code></pre></div>
+<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">partyId</th>
+<th align="left">gender</th>
+<th align="right">Freq</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Conservative</td>
+<td align="left">Male</td>
+<td align="right">663.95</td>
+</tr>
+<tr class="even">
+<td align="left">Labour</td>
+<td align="left">Male</td>
+<td align="right">496.94</td>
+</tr>
+<tr class="odd">
+<td align="left">Liberal Democrat</td>
+<td align="left">Male</td>
+<td align="right">129.14</td>
+</tr>
+<tr class="even">
+<td align="left">Scottish National Party (SNP)</td>
+<td align="left">Male</td>
+<td align="right">48.73</td>
+</tr>
+<tr class="odd">
+<td align="left">Plaid Cymru</td>
+<td align="left">Male</td>
+<td align="right">8.81</td>
+</tr>
+<tr class="even">
+<td align="left">Green Party</td>
+<td align="left">Male</td>
+<td align="right">60.48</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
-<p>To automate the above across all variables, the <code>compile</code>
-function can first create a data frame of all statistics (Chi-square,
-Degrees of Freedom, Cramer’s V, and p-value).</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+</div>
+<div class="section level5">
+<h5 id="efficiently-combine-statistics-with-compile">
+<strong><em>Efficiently Combine Statistics with
+<code>compile()</code></em></strong><a class="anchor" aria-label="anchor" href="#efficiently-combine-statistics-with-compile"></a>
+</h5>
+<p>When dealing with numerous variables, <code><a href="../reference/compile.html">compile()</a></code> is your
+go-to function. It can create a comprehensive data frame of all relevant
+statistics like Chi-square, Degrees of Freedom, Cramer’s V, and p-value,
+streamlining the statistical analysis process.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># the row variables are typically your questions within the survey. For ease, utilise dplyr to select the variables</span></span>
 <span><span class="va">rowVars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">turnoutUKGeneral</span><span class="op">:</span><span class="va">partyIdStrength</span>,</span>
 <span>                                      <span class="va">partyIdSqueeze</span><span class="op">:</span><span class="va">likeGrn</span>,</span>
@@ -383,47 +675,151 @@ Degrees of Freedom, Cramer’s V, and p-value).</p>
 <span>                 format <span class="op">=</span> <span class="st">"statistics"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># View first 10, sorted by Cramer's V</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">stats</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">stats</span><span class="op">$</span><span class="va">CramersV</span><span class="op">)</span>,<span class="op">]</span>, <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#                 Row_Var   Col_Var     Size     Chisq DF CramersV p_value</span></span>
-<span><span class="co"># 10  generalElectionVote   partyId 3953.314 10049.807 81    0.531       0</span></span>
-<span><span class="co"># 316    p_past_vote_2017   partyId 3545.672  5251.916 72    0.430       0</span></span>
-<span><span class="co"># 52            bestOnMII   partyId 3719.803  5886.195 81    0.419       0</span></span>
-<span><span class="co"># 310    p_past_vote_2015   partyId 3567.690  5054.699 81    0.397       0</span></span>
-<span><span class="co"># 258     p_education_age p_edlevel 3465.861  3157.122 30    0.390       0</span></span>
-<span><span class="co"># 322    p_past_vote_2019   partyId 3551.306  4736.332 90    0.365       0</span></span>
-<span><span class="co"># 248        p_job_sector  ageGroup 3991.109  1706.840 20    0.327       0</span></span>
-<span><span class="co"># 200         p_work_stat  ageGroup 3991.109  2857.155 35    0.320       0</span></span>
-<span><span class="co"># 298    p_past_vote_2010   partyId 3511.013  3182.663 81    0.317       0</span></span>
-<span><span class="co"># 304    p_past_vote_2005   partyId 3222.173  2868.127 81    0.314       0</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">stats</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">stats</span><span class="op">$</span><span class="va">CramersV</span><span class="op">)</span>,<span class="op">]</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="5%">
+<col width="27%">
+<col width="13%">
+<col width="12%">
+<col width="13%">
+<col width="4%">
+<col width="12%">
+<col width="10%">
+</colgroup>
+<thead><tr class="header">
+<th align="left"></th>
+<th align="left">Row_Var</th>
+<th align="left">Col_Var</th>
+<th align="right">Size</th>
+<th align="right">Chisq</th>
+<th align="right">DF</th>
+<th align="right">CramersV</th>
+<th align="right">p_value</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">10</td>
+<td align="left">generalElectionVote</td>
+<td align="left">partyId</td>
+<td align="right">3953.314</td>
+<td align="right">10049.807</td>
+<td align="right">81</td>
+<td align="right">0.531</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">316</td>
+<td align="left">p_past_vote_2017</td>
+<td align="left">partyId</td>
+<td align="right">3545.672</td>
+<td align="right">5251.916</td>
+<td align="right">72</td>
+<td align="right">0.430</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">52</td>
+<td align="left">bestOnMII</td>
+<td align="left">partyId</td>
+<td align="right">3719.803</td>
+<td align="right">5886.195</td>
+<td align="right">81</td>
+<td align="right">0.419</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">310</td>
+<td align="left">p_past_vote_2015</td>
+<td align="left">partyId</td>
+<td align="right">3567.690</td>
+<td align="right">5054.699</td>
+<td align="right">81</td>
+<td align="right">0.397</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">258</td>
+<td align="left">p_education_age</td>
+<td align="left">p_edlevel</td>
+<td align="right">3465.861</td>
+<td align="right">3157.122</td>
+<td align="right">30</td>
+<td align="right">0.390</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">322</td>
+<td align="left">p_past_vote_2019</td>
+<td align="left">partyId</td>
+<td align="right">3551.306</td>
+<td align="right">4736.332</td>
+<td align="right">90</td>
+<td align="right">0.365</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">248</td>
+<td align="left">p_job_sector</td>
+<td align="left">ageGroup</td>
+<td align="right">3991.109</td>
+<td align="right">1706.840</td>
+<td align="right">20</td>
+<td align="right">0.327</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">200</td>
+<td align="left">p_work_stat</td>
+<td align="left">ageGroup</td>
+<td align="right">3991.109</td>
+<td align="right">2857.155</td>
+<td align="right">35</td>
+<td align="right">0.320</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">298</td>
+<td align="left">p_past_vote_2010</td>
+<td align="left">partyId</td>
+<td align="right">3511.013</td>
+<td align="right">3182.663</td>
+<td align="right">81</td>
+<td align="right">0.317</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">304</td>
+<td align="left">p_past_vote_2005</td>
+<td align="left">partyId</td>
+<td align="right">3222.173</td>
+<td align="right">2868.127</td>
+<td align="right">81</td>
+<td align="right">0.314</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
-<p>Using the same <code>colVars</code> and <code>rowVars</code> as
-above, the <code>compile</code> function can also be used to iterate
-through each variable and produce tables, saved into a csv. Once in the
-csv, the tables can be formatted.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/compile.html">compile</a></span><span class="op">(</span><span class="va">df</span>,</span>
-<span>        rowVars <span class="op">=</span> <span class="va">rowVars</span>,</span>
-<span>        colVars <span class="op">=</span> <span class="va">colVars</span>,</span>
-<span>        weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
-<span>        name <span class="op">=</span> <span class="st">"crosstabs"</span> <span class="co"># this will save as "crosstabs.csv"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="img/crosstab_csv.png" width="100%"><br><br></p>
 </div>
+</div>
+<div class="section level4">
+<h4 id="working-with-grid-data">
+<strong>Working with Grid data</strong><a class="anchor" aria-label="anchor" href="#working-with-grid-data"></a>
+</h4>
+<p>Grid questions, common in surveys, pose unique analytical challenges
+due to their format. <br><br></p>
 <div class="section level5">
-<h5 id="grid-data">
-<strong>Grid data</strong><a class="anchor" aria-label="anchor" href="#grid-data"></a>
+<h5 id="handling-grid-data-with-grid_vars">
+<strong><em>Handling Grid Data with
+<code>grid_vars()</code></em></strong><a class="anchor" aria-label="anchor" href="#handling-grid-data-with-grid_vars"></a>
 </h5>
-<p>In surveys, there are often <em>“Please select all that apply”</em>
-type questions or a grid formation for the question (e.g., <em>Do you
-have a favourable or unfavourable impression of the following political
-leaders?“</em>). In these circumstances, the results for the question is
-separated out into many columns, making it difficult to compare.</p>
-<p>To resolve this, use the <code>grid_vars</code> function. This
-function provides the Question (the named list), the Response, and the
-frequency and percent. The result is provided in a long format so it can
-easily be used in <a href="https://ggplot2.tidyverse.org/" class="external-link"><code>ggplot2</code></a> for
-visualisation.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<p><code><a href="../reference/grid_vars.html">grid_vars()</a></code> is tailor-made for such data, turning
+complex grid questions into analysable formats. It’s particularly adept
+at handling “select all that apply” questions or grid-type responses,
+transforming them into a format conducive to comparison and
+visualisation with libraries such as <a href="https://ggplot2.tidyverse.org/" class="external-link"><code>ggplot2</code></a>.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create a named list of the columns that relate to the question</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>likeSunak <span class="op">=</span> <span class="st">"Rishi Sunak"</span>,</span>
 <span>             likeStarmer <span class="op">=</span> <span class="st">"Keir Starmer"</span>,</span>
@@ -439,55 +835,156 @@ visualisation.</p>
 <span><span class="fu"><a href="../reference/grid_vars.html">grid_vars</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>          vars <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>          weight <span class="op">=</span> <span class="st">"wt"</span> <span class="co"># optional</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#               Question         Response    Freq  Perc</span></span>
-<span><span class="co"># 1         Brexit Party Strongly dislike 1369.44 34.31</span></span>
-<span><span class="co"># 2   Conservative Party Strongly dislike 1260.06 31.57</span></span>
-<span><span class="co"># 3          Green Party Strongly dislike  810.10 20.30</span></span>
-<span><span class="co"># 4         Keir Starmer Strongly dislike  850.59 21.31</span></span>
-<span><span class="co"># 5         Labour Party Strongly dislike  839.85 21.04</span></span>
-<span><span class="co"># 6             Lib Dems Strongly dislike  776.15 19.45</span></span>
-<span><span class="co"># 7          Plaid Cymru Strongly dislike   83.67 28.25</span></span>
-<span><span class="co"># 8          Rishi Sunak Strongly dislike  776.61 19.46</span></span>
-<span><span class="co"># 9                  SNP Strongly dislike  181.45 38.11</span></span>
-<span><span class="co"># 10        Brexit Party                1  208.83  5.23</span></span>
-<span><span class="co"># ...</span></span></code></pre></div>
+<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Question</th>
+<th align="left">Response</th>
+<th align="right">Freq</th>
+<th align="right">Perc</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Brexit Party</td>
+<td align="left">Strongly dislike</td>
+<td align="right">1369.44</td>
+<td align="right">34.31</td>
+</tr>
+<tr class="even">
+<td align="left">Conservative Party</td>
+<td align="left">Strongly dislike</td>
+<td align="right">1260.06</td>
+<td align="right">31.57</td>
+</tr>
+<tr class="odd">
+<td align="left">Green Party</td>
+<td align="left">Strongly dislike</td>
+<td align="right">810.10</td>
+<td align="right">20.30</td>
+</tr>
+<tr class="even">
+<td align="left">Keir Starmer</td>
+<td align="left">Strongly dislike</td>
+<td align="right">850.59</td>
+<td align="right">21.31</td>
+</tr>
+<tr class="odd">
+<td align="left">Labour Party</td>
+<td align="left">Strongly dislike</td>
+<td align="right">839.85</td>
+<td align="right">21.04</td>
+</tr>
+<tr class="even">
+<td align="left">Lib Dems</td>
+<td align="left">Strongly dislike</td>
+<td align="right">776.15</td>
+<td align="right">19.45</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
-<p>This <code>grid_vars</code> function can also be used with a
-<code>group</code> variable.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+</div>
+<div class="section level5">
+<h5 id="implementing-grid_vars-by-group">
+<strong><em>Implementing <code>grid_vars()</code> by
+Group</em></strong><a class="anchor" aria-label="anchor" href="#implementing-grid_vars-by-group"></a>
+</h5>
+<p>Enhance the functionality of <code><a href="../reference/grid_vars.html">grid_vars()</a></code> by applying it
+with a group variable. This allows for dissecting responses across
+different demographic or categorical segments, providing richer, more
+targeted insights.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/grid_vars.html">grid_vars</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>          vars <span class="op">=</span> <span class="va">vars</span>,</span>
-<span>          group <span class="op">=</span> <span class="st">"gender"</span>,</span>
+<span>          group <span class="op">=</span> <span class="st">"gender"</span>, <span class="co"># optional</span></span>
 <span>          weight <span class="op">=</span> <span class="st">"wt"</span> <span class="co"># optional</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#               Question         Response gender   Freq  Perc</span></span>
-<span><span class="co"># 1         Brexit Party Strongly dislike   Male 825.56 38.36</span></span>
-<span><span class="co"># 2   Conservative Party Strongly dislike   Male 706.28 32.81</span></span>
-<span><span class="co"># 3          Green Party Strongly dislike   Male 548.62 25.49</span></span>
-<span><span class="co"># 4         Keir Starmer Strongly dislike   Male 511.98 23.79</span></span>
-<span><span class="co"># 5         Labour Party Strongly dislike   Male 478.74 22.24</span></span>
-<span><span class="co"># 6             Lib Dems Strongly dislike   Male 498.82 23.18</span></span>
-<span><span class="co"># 7          Plaid Cymru Strongly dislike   Male  50.76 31.78</span></span>
-<span><span class="co"># 8          Rishi Sunak Strongly dislike   Male 463.44 21.53</span></span>
-<span><span class="co"># 9                  SNP Strongly dislike   Male 106.10 42.47</span></span>
-<span><span class="co"># 10        Brexit Party                1   Male 129.24  6.00</span></span>
-<span><span class="co"># ...</span></span></code></pre></div>
+<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Question</th>
+<th align="left">Response</th>
+<th align="left">gender</th>
+<th align="right">Freq</th>
+<th align="right">Perc</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Brexit Party</td>
+<td align="left">Strongly dislike</td>
+<td align="left">Male</td>
+<td align="right">825.56</td>
+<td align="right">38.36</td>
+</tr>
+<tr class="even">
+<td align="left">Conservative Party</td>
+<td align="left">Strongly dislike</td>
+<td align="left">Male</td>
+<td align="right">706.28</td>
+<td align="right">32.81</td>
+</tr>
+<tr class="odd">
+<td align="left">Green Party</td>
+<td align="left">Strongly dislike</td>
+<td align="left">Male</td>
+<td align="right">548.62</td>
+<td align="right">25.49</td>
+</tr>
+<tr class="even">
+<td align="left">Keir Starmer</td>
+<td align="left">Strongly dislike</td>
+<td align="left">Male</td>
+<td align="right">511.98</td>
+<td align="right">23.79</td>
+</tr>
+<tr class="odd">
+<td align="left">Labour Party</td>
+<td align="left">Strongly dislike</td>
+<td align="left">Male</td>
+<td align="right">478.74</td>
+<td align="right">22.24</td>
+</tr>
+<tr class="even">
+<td align="left">Lib Dems</td>
+<td align="left">Strongly dislike</td>
+<td align="left">Male</td>
+<td align="right">498.82</td>
+<td align="right">23.18</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
+</div>
 </div>
 </div>
 <div class="section level3">
-<h3 id="step-6-visualise">Step 6: Visualise<a class="anchor" aria-label="anchor" href="#step-6-visualise"></a>
+<h3 id="step-6-visualising-the-data">Step 6: Visualising the Data<a class="anchor" aria-label="anchor" href="#step-6-visualising-the-data"></a>
 </h3>
-<div class="section level5">
-<h5 id="population-structure">
+<p>Effective visualisation is key in survey data analysis, offering a
+way to intuitively understand and communicate complex data patterns. The
+<code>scgUtils</code> package provides specialised functions like
+<code><a href="../reference/plot_popn.html">plot_popn()</a></code> for demographic analysis and
+<code><a href="../reference/plot_sankey.html">plot_sankey()</a></code> for flow visualisation, helping you to not
+only understand your data but also to present it in a compelling and
+insightful manner. <br><br></p>
+<div class="section level4">
+<h4 id="population-structure">
 <strong>Population structure</strong><a class="anchor" aria-label="anchor" href="#population-structure"></a>
+</h4>
+<p>Understanding the demographic breakdown of survey respondents is
+crucial in many analyses. <br><br></p>
+<div class="section level5">
+<h5 id="using-plot_popn">
+<strong><em>Using <code>plot_popn()</code></em></strong><a class="anchor" aria-label="anchor" href="#using-plot_popn"></a>
 </h5>
-<p>To view the population profile of the respondents, use the
-<code>plot_popn</code> function. If no meanVar is provided, the graph
-will show just the Male and Female titles without the average age
-provided.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<p>The <code>plot_popn</code> function is designed to visualise the
+population structure of your survey respondents. It creates a population
+pyramid showing distributions across gender and age groups. If a
+variable like average age (<code>meanVar</code>) is specified, the plot
+can also display this information, adding another layer of insight into
+the demographic composition.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_popn.html">plot_popn</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span>
 <span>          xVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
 <span>          yVar <span class="op">=</span> <span class="st">"ageGroup"</span>,</span>
@@ -495,124 +992,259 @@ provided.</p>
 <span>          meanVar <span class="op">=</span> <span class="st">"age"</span>, <span class="co"># optional (must be numeric)</span></span>
 <span>          addLabels <span class="op">=</span> <span class="st">"yes"</span> <span class="co"># to add % labels</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="img/popn_plot3.png" width="75%"><br></p>
-<p>The <code>plot_popn</code> function can also be facetted by a group.
-This will show each value of the selected group and overlay the results
-onto the total population population structure (in grey). The function
-will also automatically capture the metadata providing the
-question/label and provide this as the subtitle for ease of
-understanding.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<p><img src="using-survey-data_files/figure-html/popn_plot-1.png" width="100%"><br></p>
+</div>
+<div class="section level5">
+<h5 id="faceting-by-group">
+<strong><em>Faceting by Group</em></strong><a class="anchor" aria-label="anchor" href="#faceting-by-group"></a>
+</h5>
+<p>Enhance your population pyramid by faceting the
+<code>plot_popn</code> plot by a specific group, such as voter turnout.
+This feature overlays the selected group’s data onto the total
+population structure, providing a comparative view that highlights
+differences or similarities within subgroups.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_popn.html">plot_popn</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span>
 <span>          xVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
 <span>          yVar <span class="op">=</span> <span class="st">"ageGroup"</span>,</span>
 <span>          group <span class="op">=</span> <span class="st">"turnoutUKGeneral"</span>,</span>
 <span>          weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
-<span>          addLabels <span class="op">=</span> <span class="st">"yes"</span> <span class="co"># to add % labels</span></span>
+<span>          addLabels <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># to add % labels</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="img/popn_plot4.png" width="100%"><br></p>
+<p><img src="using-survey-data_files/figure-html/popn_plot2-1.png" width="100%"><br></p>
 </div>
-<div class="section level5">
-<h5 id="crosstabs">
+</div>
+<div class="section level4">
+<h4 id="crosstabs">
 <strong>Crosstabs</strong><a class="anchor" aria-label="anchor" href="#crosstabs"></a>
+</h4>
+<p>Crosstabulation is a fundamental technique in survey analysis,
+especially when examining relationships between categorical
+variables.</p>
+<div class="section level5">
+<h5 id="visualising-crosstabs-with-crosstab">
+<strong><em>Visualising Crosstabs with
+<code>crosstab()</code></em></strong><a class="anchor" aria-label="anchor" href="#visualising-crosstabs-with-crosstab"></a>
 </h5>
-<p>To visualise crosstab data, use the <code>crosstab</code> function by
-specifying <code>plot = TRUE</code>.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<p>The <code>crosstab</code> function, when used with the
+<code>plot = TRUE</code> option, turns your data into insightful visual
+crosstabs. This not only aids in understanding the distribution of
+responses but also includes statistical measures for deeper
+analysis.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/crosstab.html">crosstab</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>         rowVar <span class="op">=</span> <span class="st">"p_eurefvote"</span>,</span>
 <span>         colVar <span class="op">=</span> <span class="st">"p_edlevel"</span>,</span>
 <span>         weight <span class="op">=</span> <span class="st">"wt"</span>,</span>
 <span>         plot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>         statistics <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="img/crosstab_plot1.png" width="100%"><br></p>
-<p>If there are many variables along the X-axis, these can be rotated by
-45 degrees with <code>adjustX = "yes"</code>.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<span>         statistics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>         round_decimals <span class="op">=</span> <span class="fl">2</span></span>
+<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; [1] "p_eurefvote x p_edlevel: Chisq = 371.026 | DF = 10 | Cramer's V = 0.243 | p-value = 0"</span></span></code></pre>
+<p><img src="using-survey-data_files/figure-html/crosstabInd1_table-1.png" width="100%"></p>
+<table class="table">
+<thead><tr class="header">
+<th align="left">p_eurefvote</th>
+<th align="left">p_edlevel</th>
+<th align="right">Freq</th>
+<th align="right">Perc</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">I voted to remain</td>
+<td align="left">No qualifications</td>
+<td align="right">56.18</td>
+<td align="right">23.49</td>
+</tr>
+<tr class="even">
+<td align="left">I voted to leave</td>
+<td align="left">No qualifications</td>
+<td align="right">182.98</td>
+<td align="right">76.51</td>
+</tr>
+<tr class="odd">
+<td align="left">Don’t know</td>
+<td align="left">No qualifications</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">I voted to remain</td>
+<td align="left">Below GCSE</td>
+<td align="right">43.66</td>
+<td align="right">27.47</td>
+</tr>
+<tr class="odd">
+<td align="left">I voted to leave</td>
+<td align="left">Below GCSE</td>
+<td align="right">115.30</td>
+<td align="right">72.53</td>
+</tr>
+<tr class="even">
+<td align="left">Don’t know</td>
+<td align="left">Below GCSE</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+</div>
+<div class="section level5">
+<h5 id="adjusting-for-readability">
+<strong><em>Adjusting for Readability</em></strong><a class="anchor" aria-label="anchor" href="#adjusting-for-readability"></a>
+</h5>
+<p>For plots with numerous variables along the X-axis,
+<code>adjustX = TRUE</code> rotates the labels for better readability,
+ensuring that even dense data remains accessible and interpretable.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/crosstab.html">crosstab</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>         rowVar <span class="op">=</span> <span class="st">"polAttention"</span>,</span>
 <span>         colVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
 <span>         weight <span class="op">=</span> <span class="st">"wt"</span>,</span>
 <span>         plot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>         statistics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>         adjustX <span class="op">=</span> <span class="st">"yes"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="img/crosstab_plot2.png" width="100%"><br></p>
+<span>         adjustX <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>         round_decimals <span class="op">=</span> <span class="fl">2</span></span>
+<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; [1] "polAttention x gender: Chisq = 163.768 | DF = 11 | Cramer's V = 0.061 | p-value = 0"</span></span></code></pre>
+<p><img src="using-survey-data_files/figure-html/crosstabInd2_table-1.png" width="100%"></p>
+<table class="table">
+<thead><tr class="header">
+<th align="left">polAttention</th>
+<th align="left">gender</th>
+<th align="right">Freq</th>
+<th align="right">Perc</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Pay no attention</td>
+<td align="left">Male</td>
+<td align="right">65.46</td>
+<td align="right">3.04</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">Male</td>
+<td align="right">39.89</td>
+<td align="right">1.85</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">Male</td>
+<td align="right">47.53</td>
+<td align="right">2.21</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="left">Male</td>
+<td align="right">54.82</td>
+<td align="right">2.55</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="left">Male</td>
+<td align="right">56.93</td>
+<td align="right">2.64</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="left">Male</td>
+<td align="right">161.07</td>
+<td align="right">7.48</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
 </div>
-<div class="section level5">
-<h5 id="binary-data">
-<strong>Binary data</strong><a class="anchor" aria-label="anchor" href="#binary-data"></a>
-</h5>
-<p>The <code>plot_binary</code> function utilises the
-<code>grid_vars</code> function. As such, it takes similar data except
-is specific to binary data (e.g., “Yes” and “No”). The sample survey
-data unfortunately does not have this type of data but it is constructed
-similarly to the grid data above, whereby a <code>vars</code> named list
-is created and then implemented through the function.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># As an example:</span></span>
-<span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>p1 <span class="op">=</span> <span class="st">"Music"</span>,</span>
-<span>             p2 <span class="op">=</span> <span class="st">"Reading"</span>,</span>
-<span>             p3 <span class="op">=</span> <span class="st">"Cooking / baking"</span>,</span>
-<span>             p4 <span class="op">=</span> <span class="st">"Computers"</span>,</span>
-<span>             p5 <span class="op">=</span> <span class="st">"Watching sport"</span>,</span>
-<span>             <span class="co">#... etc.</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/plot_binary.html">plot_binary</a></span><span class="op">(</span><span class="va">survey_data_with_binary_data_columns</span>,</span>
-<span>            vars <span class="op">=</span> <span class="va">vars</span>,</span>
-<span>            group <span class="op">=</span> <span class="st">"gender"</span>, <span class="co"># optional</span></span>
-<span>            weight <span class="op">=</span> <span class="st">"wt"</span> <span class="co"># optional</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="img/binary_plot.png" width="100%"><br></p>
 </div>
-<div class="section level5">
-<h5 id="flow-data">
+<div class="section level4">
+<h4 id="flow-data">
 <strong>Flow data</strong><a class="anchor" aria-label="anchor" href="#flow-data"></a>
+</h4>
+<p>Flow visualisation helps in understanding how different categories of
+respondents transition between various stages or choices. The
+<code>plot_sankey</code> function is instrumental in depicting the flow
+of data, especially useful in understanding voting patterns or changes
+in preferences over time. <br><br></p>
+<div class="section level5">
+<h5 id="preparing-data-with-grp_freq">
+<strong><em>Preparing Data with
+<code>grp_freq()</code></em></strong><a class="anchor" aria-label="anchor" href="#preparing-data-with-grp_freq"></a>
 </h5>
-<p>To visualise the flow of data, use the <code>plot_sankey</code>
-function. To do this, the data can easily be prepared using the
-<code>grp_freq</code> function.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<p>Before visualising, prepare your data using <code><a href="../reference/grp_freq.html">grp_freq()</a></code>,
+which aggregates frequencies necessary for the Sankey diagram.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Subset the required columns from the dataset</span></span>
 <span><span class="va">sankey_df</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wt"</span>, <span class="st">"generalElectionVote"</span>, <span class="st">"p_past_vote_2019"</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># Get the frequency</span></span>
 <span><span class="va">sankey_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/grp_freq.html">grp_freq</a></span><span class="op">(</span><span class="va">sankey_df</span>,</span>
 <span>                      groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"generalElectionVote"</span>, <span class="st">"p_past_vote_2019"</span><span class="op">)</span>,</span>
-<span>                      weight <span class="op">=</span> <span class="st">"wt"</span> <span class="co"># optional</span></span>
+<span>                      weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
+<span>                      round_decimals <span class="op">=</span> <span class="fl">0</span>, <span class="co"># optional</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sankey_df</span><span class="op">)</span></span>
-<span><span class="co">#             generalElectionVote p_past_vote_2019       Freq</span></span>
-<span><span class="co"># 1          I would/did not vote     Conservative  74.929191</span></span>
-<span><span class="co"># 2                  Conservative     Conservative 793.364394</span></span>
-<span><span class="co"># 3                        Labour     Conservative 123.625176</span></span>
-<span><span class="co"># 4              Liberal Democrat     Conservative  49.939047</span></span>
-<span><span class="co"># 5 Scottish National Party (SNP)     Conservative   1.606790</span></span>
-<span><span class="co"># 6                   Plaid Cymru     Conservative   2.361066</span></span>
-<span></span>
 <span><span class="co"># NB. The `dplyr` equivalent is:</span></span>
 <span><span class="co"># df %&gt;%</span></span>
 <span><span class="co">#   group_by(generalElectionVote, p_past_vote_2019) %&gt;%</span></span>
 <span><span class="co">#   summarise(Freq = sum(wt))</span></span></code></pre></div>
-<p>The <code>plot_sankey</code> function takes many different options,
-so that you can adjust the diagram to suit your data. In this example,
-the 2019 Vote is on the left and the voting intention is on the
-right.</p>
-<p>The colours parameter uses a special function called
-<code>colour_prep</code> which takes the two source and target columns
-from the original dataset, combines them and then attempts to match the
-political party names to those listed in the <code>polUK</code> palette
-that is stored within the <code>scgUtils</code> package (E.g., “Scottish
-National Party (SNP)” in the survey data is matched to “SNP” in the
-palette and is therefore assigned the SNP’s hexidecimal colour,
-#FFF95D).</p>
-<p>NB. If you wish to name a list or vector of colours, this can be done
-as the <code>plot_sankey</code> function will convert it to the correct
-hexidecimal code (e.g., c(“yellow”, “red”, “blue”, “pink”, “green”,
-“grey”)).</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<table class="table">
+<thead><tr class="header">
+<th align="left">generalElectionVote</th>
+<th align="left">p_past_vote_2019</th>
+<th align="right">Freq</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">I would/did not vote</td>
+<td align="left">Conservative</td>
+<td align="right">75</td>
+</tr>
+<tr class="even">
+<td align="left">Conservative</td>
+<td align="left">Conservative</td>
+<td align="right">793</td>
+</tr>
+<tr class="odd">
+<td align="left">Labour</td>
+<td align="left">Conservative</td>
+<td align="right">124</td>
+</tr>
+<tr class="even">
+<td align="left">Liberal Democrat</td>
+<td align="left">Conservative</td>
+<td align="right">50</td>
+</tr>
+<tr class="odd">
+<td align="left">Scottish National Party (SNP)</td>
+<td align="left">Conservative</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Plaid Cymru</td>
+<td align="left">Conservative</td>
+<td align="right">2</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+</div>
+<div class="section level5">
+<h5 id="customising-the-sankey-diagram">
+<strong><em>Customising the Sankey Diagram</em></strong><a class="anchor" aria-label="anchor" href="#customising-the-sankey-diagram"></a>
+</h5>
+<p>The <code><a href="../reference/plot_sankey.html">plot_sankey()</a></code> function offers extensive
+customisation, allowing the diagram to be tailored to specific data
+narratives. The <code><a href="../reference/colour_prep.html">colour_prep()</a></code> function enhances this
+customisation by facilitating the assignment of meaningful colours based
+on categories like political party affiliations. Such customisation not
+only improves the aesthetic appeal of the Sankey diagram but also boosts
+its interpretability and effectiveness in conveying complex data
+flows.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_sankey.html">plot_sankey</a></span><span class="op">(</span><span class="va">sankey_df</span>,</span>
 <span>            source <span class="op">=</span> <span class="st">"p_past_vote_2019"</span>, <span class="co"># on the left side</span></span>
 <span>            target <span class="op">=</span> <span class="st">"generalElectionVote"</span>, <span class="co"># on the right side</span></span>
@@ -626,11 +1258,99 @@ hexidecimal code (e.g., c(“yellow”, “red”, “blue”, “pink”, “gr
 <span>            margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"left"</span> <span class="op">=</span> <span class="fl">0</span>, <span class="st">"right"</span> <span class="op">=</span> <span class="fl">130</span><span class="op">)</span>, <span class="co"># adjust the margin</span></span>
 <span>            width <span class="op">=</span> <span class="fl">1200</span>, <span class="co"># default</span></span>
 <span>            height <span class="op">=</span> <span class="fl">800</span>, <span class="co"># default</span></span>
-<span>            shiftLabel <span class="op">=</span> <span class="cn">NA</span> <span class="co"># default</span></span>
+<span>            shiftLabel <span class="op">=</span> <span class="cn">NULL</span> <span class="co"># default</span></span>
 <span><span class="op">)</span> <span class="co"># %&gt;%</span></span>
-<span>  <span class="co"># save from viewer to html</span></span>
-<span>  <span class="co"># htmlwidgets::saveWidget(file = "sankey_VI.html", selfcontained = TRUE)</span></span></code></pre></div>
+<span><span class="co"># save from viewer to html</span></span>
+<span><span class="co"># htmlwidgets::saveWidget(file = "sankey_VI.html", selfcontained = TRUE)</span></span></code></pre></div>
 <iframe width="100%" height="850" src="img/sankey_VI.html" frameborder="0" allowfullscreen></iframe>
+<p><br></p>
+</div>
+</div>
+<div class="section level4">
+<h4 id="other-visualisations">
+<strong>Other Visualisations</strong><a class="anchor" aria-label="anchor" href="#other-visualisations"></a>
+</h4>
+<p>For a broader spectrum of visualisation techniques and detailed
+guidance on effectively using colour in your plots, refer to the <a href="">Visualising Data article</a> and <a href="">Creating Colour
+Palettes article</a>. These resources provide additional insights into
+making the most of the <code>scgUtils</code> package for visualising
+complex survey data. <br><br></p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="step-7-presenting-the-results">Step 7: Presenting the Results<a class="anchor" aria-label="anchor" href="#step-7-presenting-the-results"></a>
+</h3>
+<p>Presenting the results of your survey analysis in a clear and
+impactful way is crucial. The <code>scgUtils</code> package offers
+functionalities that aid in creating detailed and informative
+presentations. <br><br></p>
+<div class="section level4">
+<h4 id="tables">
+<strong>Tables</strong><a class="anchor" aria-label="anchor" href="#tables"></a>
+</h4>
+<p>Tables are fundamental tools for presenting complex data in a
+structured and easily interpretable format. <br><br></p>
+<div class="section level5">
+<h5 id="extending-compile-for-comprehensive-tables">
+<strong><em>Extending <code>compile()</code> for Comprehensive
+Tables</em></strong><a class="anchor" aria-label="anchor" href="#extending-compile-for-comprehensive-tables"></a>
+</h5>
+<p>The <code><a href="../reference/compile.html">compile()</a></code> function in <code>scgUtils</code> excels
+in generating comprehensive crosstab tables. It efficiently processes
+each variable pair within your dataset, producing detailed tabular
+outputs. These tables can be formatted and saved as CSV files, making
+them perfect for inclusion in reports or further analysis. The ability
+to create such extensive tables is invaluable for presenting a holistic
+view of your survey results, encompassing various aspects and
+relationships within your data.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rowVars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">turnoutUKGeneral</span><span class="op">:</span><span class="va">partyIdStrength</span>,</span>
+<span>                                      <span class="va">partyIdSqueeze</span><span class="op">:</span><span class="va">likeGrn</span>,</span>
+<span>                                      <span class="va">pcon</span><span class="op">:</span><span class="va">p_hh_size</span>,</span>
+<span>                                      <span class="va">p_disability</span><span class="op">:</span><span class="va">p_past_vote_2019</span>,</span>
+<span>                                      <span class="va">p_eurefturnout</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">colVars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gender"</span>, <span class="st">"ageGroup"</span>, <span class="st">"p_socgrade"</span>, <span class="st">"partyId"</span>, <span class="st">"p_eurefvote"</span>, <span class="st">"p_edlevel"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/compile.html">compile</a></span><span class="op">(</span><span class="va">df</span>,</span>
+<span>        rowVars <span class="op">=</span> <span class="va">rowVars</span>,</span>
+<span>        colVars <span class="op">=</span> <span class="va">colVars</span>,</span>
+<span>        weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
+<span>        name <span class="op">=</span> <span class="st">"crosstabs"</span> <span class="co"># this will save as "crosstabs.csv"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="img/crosstab_csv.png" width="100%"><br><br><br></p>
+</div>
+<div class="section level5">
+<h5 id="visual-representation-of-compiled-tables">
+<strong><em>Visual Representation of Compiled
+Tables</em></strong><a class="anchor" aria-label="anchor" href="#visual-representation-of-compiled-tables"></a>
+</h5>
+<p>To add visual appeal and enhance interpretability, future additions
+to the <code>scgUtils</code> package will include the ability to view
+compiled tables graphically. <br><br></p>
+</div>
+</div>
+<div class="section level4">
+<h4 id="powerpoint-integration">
+<strong>PowerPoint Integration</strong><a class="anchor" aria-label="anchor" href="#powerpoint-integration"></a>
+</h4>
+<p>In future updates, <code>scgUtils</code> aims to incorporate
+capabilities for directly exporting analysis results into PowerPoint
+presentations. This functionality will facilitate seamless integration
+of your data findings into professional and engaging presentation
+formats, suitable for various audiences. <br><br></p>
+</div>
+<div class="section level4">
+<h4 id="interactive-dashboards">
+<strong>Interactive Dashboards</strong><a class="anchor" aria-label="anchor" href="#interactive-dashboards"></a>
+</h4>
+<p>Another upcoming feature is the ability to create interactive
+dashboards directly from your survey data. Dashboards offer a dynamic
+way to explore and present data, allowing users to interact with the
+information, drill down into specifics, and gain a deeper understanding
+of the underlying patterns. This functionality will be a significant
+enhancement, providing a powerful tool for data storytelling and
+decision-making processes.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
