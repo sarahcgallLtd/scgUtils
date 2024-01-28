@@ -82,10 +82,4 @@ articles:
 
 navbar:
   structure:
-    left: [intro, "Getting Started" reference, articles]
-
-navbar:
-  components:
-    "Getting Started":
-      text: "Getting Started"
-      href: articles/getting-started
+    left: [intro, reference, articles]
