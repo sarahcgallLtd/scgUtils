@@ -15,8 +15,9 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.8/font.css" rel="stylesheet">
-<link href="../deps/Source_Code_Pro-0.4.8/font.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.8/font.css" rel="stylesheet">
+<link href="../deps/JetBrains_Mono-0.4.8/font.css" rel="stylesheet">
+<link href="../deps/Roboto_Slab-0.4.8/font.css" rel="stylesheet">
 <!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Using scgUtils with Survey Data">
@@ -54,6 +55,7 @@
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Function Explainers</h6>
     <a class="dropdown-item" href="../articles/uploading-data.html">Uploading &amp; Cleaning Data</a>
+    <a class="dropdown-item" href="../articles/creating-colour-palettes.html">Mastering Colour Selection</a>
   </div>
 </li>
       </ul>
@@ -191,7 +193,8 @@ choice for various data sources.</p>
 </tr>
 </tbody>
 </table>
-<p><em>For detailed uploading instructions, refer to the <a href="">Uploading &amp; Cleaning Data article</a>.</em> <br><br></p>
+<p><em>For detailed uploading instructions, refer to the <a href="">Uploading &amp; Cleaning Data article</a>.</em> <br></p>
+<hr>
 </div>
 <div class="section level3">
 <h3 id="step-2-viewing-the-full-dataset">Step 2: Viewing the Full Dataset<a class="anchor" aria-label="anchor" href="#step-2-viewing-the-full-dataset"></a>
@@ -211,7 +214,7 @@ further data processing strategies.</p>
 <span>                show.wtd.prc <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># display weighted %</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <iframe width="100%" height="850" src="img/questionnaire.html" frameborder="0" allowfullscreen></iframe>
-<p><br></p>
+<hr>
 </div>
 <div class="section level3">
 <h3 id="step-3-weighting-the-data">Step 3: Weighting the Data<a class="anchor" aria-label="anchor" href="#step-3-weighting-the-data"></a>
@@ -221,7 +224,7 @@ issues like sample design or response biases. Future developments in
 <code>scgUtils</code> will introduce user-friendly functions for
 applying weights, ensuring your analysis reflects the intended
 population accurately.</p>
-<p><br></p>
+<hr>
 </div>
 <div class="section level3">
 <h3 id="step-4-processing-the-data">Step 4: Processing the Data<a class="anchor" aria-label="anchor" href="#step-4-processing-the-data"></a>
@@ -232,7 +235,7 @@ factors, handling missing values, and more. Future developments of the
 <code>scgUtils</code> package will aim to simplify these tasks,
 providing tools that streamline data preparation and enhance its quality
 for subsequent analysis.</p>
-<p><br></p>
+<hr>
 </div>
 <div class="section level3">
 <h3 id="step-5-exploring-the-data">Step 5: Exploring the Data<a class="anchor" aria-label="anchor" href="#step-5-exploring-the-data"></a>
@@ -247,12 +250,9 @@ for this exploration. <br><br></p>
 </h4>
 <p>Numeric data, such as age, income, or survey ratings, can reveal
 significant trends and patterns when analysed correctly. <br><br></p>
-<div class="section level5">
-<h5 id="summary-statistics">
-<strong><em>Summary Statistics</em></strong><a class="anchor" aria-label="anchor" href="#summary-statistics"></a>
-</h5>
-<p>Begin with <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> for a quick overview, offering key
-statistical measures.</p>
+<p><strong><em>Summary Statistics</em></strong><br> Begin with
+<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> for a quick overview, offering key statistical
+measures.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">age</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
@@ -273,15 +273,11 @@ understanding of distribution across different segments.</p>
 <span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
 <span><span class="co">#&gt;   18.00   54.00   66.00   62.97   73.00   93.00</span></span></code></pre></div>
 <p><br></p>
-</div>
-<div class="section level5">
-<h5 id="mean-calculation">
-<strong><em>Mean Calculation</em></strong><a class="anchor" aria-label="anchor" href="#mean-calculation"></a>
-</h5>
-<p>Average calculations, both weighted and unweighted, are crucial in
-survey analysis. Utilise <code><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean()</a></code> for simple averages and
-<code><a href="https://rdrr.io/r/stats/weighted.mean.html" class="external-link">weighted.mean()</a></code> for more complex scenarios where survey
-design needs to be accounted for.</p>
+<p><strong><em>Mean Calculation</em></strong><br> Average calculations,
+both weighted and unweighted, are crucial in survey analysis. Utilise
+<code><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean()</a></code> for simple averages and <code><a href="https://rdrr.io/r/stats/weighted.mean.html" class="external-link">weighted.mean()</a></code>
+for more complex scenarios where survey design needs to be accounted
+for.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Unweighted:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">age</span><span class="op">)</span></span>
@@ -291,16 +287,12 @@ design needs to be accounted for.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/weighted.mean.html" class="external-link">weighted.mean</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">age</span>, <span class="va">df</span><span class="op">$</span><span class="va">wt</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 60.17577</span></span></code></pre></div>
 <p><br></p>
-</div>
-<div class="section level5">
-<h5 id="grouped-mean-with-grp_mean">
-<strong><em>Grouped Mean with
-<code>grp_mean()</code></em></strong><a class="anchor" aria-label="anchor" href="#grouped-mean-with-grp_mean"></a>
-</h5>
-<p>For advanced analysis, <code><a href="../reference/grp_mean.html">grp_mean()</a></code> elegantly calculates
-group-wise means. It simplifies the process of aggregating data across
-one or more categorical variables, offering an efficient alternative to
-more verbose methods like those in <code>dplyr</code>.</p>
+<p><strong><em>Grouped Mean with
+<code><a href="../reference/grp_mean.html">grp_mean()</a></code></em></strong><br> For advanced analysis,
+<code><a href="../reference/grp_mean.html">grp_mean()</a></code> elegantly calculates group-wise means. It
+simplifies the process of aggregating data across one or more
+categorical variables, offering an efficient alternative to more verbose
+methods like those in <code>dplyr</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># By a single group:</span></span>
 <span><span class="fu"><a href="../reference/grp_mean.html">grp_mean</a></span><span class="op">(</span><span class="va">df</span>,</span>
@@ -389,7 +381,6 @@ more verbose methods like those in <code>dplyr</code>.</p>
 </table>
 <p><br></p>
 </div>
-</div>
 <div class="section level4">
 <h4 id="categorical-data">
 <strong>Categorical data</strong><a class="anchor" aria-label="anchor" href="#categorical-data"></a>
@@ -397,15 +388,12 @@ more verbose methods like those in <code>dplyr</code>.</p>
 <p>Categorical data typically includes demographics or multiple-choice
 responses. Analysing these effectively unlocks insights into respondent
 behaviours and preferences. <br><br></p>
-<div class="section level5">
-<h5 id="grouped-frequencies-with-grp_freq">
-<strong><em>Grouped Frequencies with
-<code>grp_freq()</code></em></strong><a class="anchor" aria-label="anchor" href="#grouped-frequencies-with-grp_freq"></a>
-</h5>
-<p><code><a href="../reference/grp_freq.html">grp_freq()</a></code> shines in its ability to provide detailed
-frequency and percentage breakdowns across various groups. It’s capable
-of handling both weighted and unweighted data, adding depth and
-precision to your categorical data analysis.</p>
+<p><strong><em>Grouped Frequencies with
+<code><a href="../reference/grp_freq.html">grp_freq()</a></code></em></strong><br><code><a href="../reference/grp_freq.html">grp_freq()</a></code> shines
+in its ability to provide detailed frequency and percentage breakdowns
+across various groups. It’s capable of handling both weighted and
+unweighted data, adding depth and precision to your categorical data
+analysis.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># By a single group:</span></span>
 <span><span class="fu"><a href="../reference/grp_freq.html">grp_freq</a></span><span class="op">(</span><span class="va">df</span>,</span>
@@ -527,12 +515,8 @@ precision to your categorical data analysis.</p>
 </tbody>
 </table>
 <p><br></p>
-</div>
-<div class="section level5">
-<h5 id="two-by-two-tables-with-crosstab">*<strong>Two-by-Two Tables with
-<code>crosstab()</code></strong><a class="anchor" aria-label="anchor" href="#two-by-two-tables-with-crosstab"></a>
-</h5>
-<p>Creating detailed cross-tabulations is seamless with
+<p>*<strong>Two-by-Two Tables with <code><a href="../reference/crosstab.html">crosstab()</a></code></strong><br>
+Creating detailed cross-tabulations is seamless with
 <code><a href="../reference/crosstab.html">crosstab()</a></code>. This function not only structures your data
 into insightful two-by-two tables but also allows for the inclusion of
 additional statistical measures. Customise the output format to fit your
@@ -645,16 +629,12 @@ analytical needs, whether in wide or long data formats.</p>
 </tbody>
 </table>
 <p><br></p>
-</div>
-<div class="section level5">
-<h5 id="efficiently-combine-statistics-with-compile">
-<strong><em>Efficiently Combine Statistics with
-<code>compile()</code></em></strong><a class="anchor" aria-label="anchor" href="#efficiently-combine-statistics-with-compile"></a>
-</h5>
-<p>When dealing with numerous variables, <code><a href="../reference/compile.html">compile()</a></code> is your
-go-to function. It can create a comprehensive data frame of all relevant
-statistics like Chi-square, Degrees of Freedom, Cramer’s V, and p-value,
-streamlining the statistical analysis process.</p>
+<p><strong><em>Efficiently Combine Statistics with
+<code><a href="../reference/compile.html">compile()</a></code></em></strong><br> When dealing with numerous
+variables, <code><a href="../reference/compile.html">compile()</a></code> is your go-to function. It can create
+a comprehensive data frame of all relevant statistics like Chi-square,
+Degrees of Freedom, Cramer’s V, and p-value, streamlining the
+statistical analysis process.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># the row variables are typically your questions within the survey. For ease, utilise dplyr to select the variables</span></span>
 <span><span class="va">rowVars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">turnoutUKGeneral</span><span class="op">:</span><span class="va">partyIdStrength</span>,</span>
@@ -802,23 +782,18 @@ streamlining the statistical analysis process.</p>
 </table>
 <p><br></p>
 </div>
-</div>
 <div class="section level4">
-<h4 id="working-with-grid-data">
-<strong>Working with Grid data</strong><a class="anchor" aria-label="anchor" href="#working-with-grid-data"></a>
+<h4 id="grid-data">
+<strong>Grid data</strong><a class="anchor" aria-label="anchor" href="#grid-data"></a>
 </h4>
 <p>Grid questions, common in surveys, pose unique analytical challenges
 due to their format. <br><br></p>
-<div class="section level5">
-<h5 id="handling-grid-data-with-grid_vars">
-<strong><em>Handling Grid Data with
-<code>grid_vars()</code></em></strong><a class="anchor" aria-label="anchor" href="#handling-grid-data-with-grid_vars"></a>
-</h5>
-<p><code><a href="../reference/grid_vars.html">grid_vars()</a></code> is tailor-made for such data, turning
-complex grid questions into analysable formats. It’s particularly adept
-at handling “select all that apply” questions or grid-type responses,
-transforming them into a format conducive to comparison and
-visualisation with libraries such as <a href="https://ggplot2.tidyverse.org/" class="external-link"><code>ggplot2</code></a>.</p>
+<p><strong><em>Handling Grid Data with
+<code><a href="../reference/grid_vars.html">grid_vars()</a></code></em></strong><br><code><a href="../reference/grid_vars.html">grid_vars()</a></code> is
+tailor-made for such data, turning complex grid questions into
+analysable formats. It’s particularly adept at handling “select all that
+apply” questions or grid-type responses, transforming them into a format
+conducive to comparison and visualisation with libraries such as <a href="https://ggplot2.tidyverse.org/" class="external-link"><code>ggplot2</code></a>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create a named list of the columns that relate to the question</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>likeSunak <span class="op">=</span> <span class="st">"Rishi Sunak"</span>,</span>
@@ -884,16 +859,11 @@ visualisation with libraries such as <a href="https://ggplot2.tidyverse.org/" cl
 </tbody>
 </table>
 <p><br></p>
-</div>
-<div class="section level5">
-<h5 id="implementing-grid_vars-by-group">
-<strong><em>Implementing <code>grid_vars()</code> by
-Group</em></strong><a class="anchor" aria-label="anchor" href="#implementing-grid_vars-by-group"></a>
-</h5>
-<p>Enhance the functionality of <code><a href="../reference/grid_vars.html">grid_vars()</a></code> by applying it
-with a group variable. This allows for dissecting responses across
-different demographic or categorical segments, providing richer, more
-targeted insights.</p>
+<p><strong><em>Implementing <code><a href="../reference/grid_vars.html">grid_vars()</a></code> by
+Group</em></strong><br> Enhance the functionality of
+<code><a href="../reference/grid_vars.html">grid_vars()</a></code> by applying it with a group variable. This
+allows for dissecting responses across different demographic or
+categorical segments, providing richer, more targeted insights.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/grid_vars.html">grid_vars</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>          vars <span class="op">=</span> <span class="va">vars</span>,</span>
@@ -954,8 +924,7 @@ targeted insights.</p>
 </tr>
 </tbody>
 </table>
-<p><br></p>
-</div>
+<hr>
 </div>
 </div>
 <div class="section level3">
@@ -974,35 +943,28 @@ insightful manner. <br><br></p>
 </h4>
 <p>Understanding the demographic breakdown of survey respondents is
 crucial in many analyses. <br><br></p>
-<div class="section level5">
-<h5 id="using-plot_popn">
-<strong><em>Using <code>plot_popn()</code></em></strong><a class="anchor" aria-label="anchor" href="#using-plot_popn"></a>
-</h5>
-<p>The <code>plot_popn</code> function is designed to visualise the
-population structure of your survey respondents. It creates a population
-pyramid showing distributions across gender and age groups. If a
-variable like average age (<code>meanVar</code>) is specified, the plot
-can also display this information, adding another layer of insight into
-the demographic composition.</p>
+<p><strong><em>Using <code><a href="../reference/plot_popn.html">plot_popn()</a></code></em></strong><br> The
+<code>plot_popn</code> function is designed to visualise the population
+structure of your survey respondents. It creates a population pyramid
+showing distributions across gender and age groups. If a variable like
+average age (<code>meanVar</code>) is specified, the plot can also
+display this information, adding another layer of insight into the
+demographic composition.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_popn.html">plot_popn</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span>
 <span>          xVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
 <span>          yVar <span class="op">=</span> <span class="st">"ageGroup"</span>,</span>
 <span>          weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
 <span>          meanVar <span class="op">=</span> <span class="st">"age"</span>, <span class="co"># optional (must be numeric)</span></span>
-<span>          addLabels <span class="op">=</span> <span class="st">"yes"</span> <span class="co"># to add % labels</span></span>
+<span>          addLabels <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># to add % labels</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="using-survey-data_files/figure-html/popn_plot-1.png" width="100%"><br></p>
-</div>
-<div class="section level5">
-<h5 id="faceting-by-group">
-<strong><em>Faceting by Group</em></strong><a class="anchor" aria-label="anchor" href="#faceting-by-group"></a>
-</h5>
-<p>Enhance your population pyramid by faceting the
-<code>plot_popn</code> plot by a specific group, such as voter turnout.
-This feature overlays the selected group’s data onto the total
-population structure, providing a comparative view that highlights
-differences or similarities within subgroups.</p>
+<p><strong><em>Faceting by Group</em></strong><br> Enhance your
+population pyramid by faceting the <code>plot_popn</code> plot by a
+specific group, such as voter turnout. This feature overlays the
+selected group’s data onto the total population structure, providing a
+comparative view that highlights differences or similarities within
+subgroups.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_popn.html">plot_popn</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span>
 <span>          xVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
@@ -1013,7 +975,6 @@ differences or similarities within subgroups.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="using-survey-data_files/figure-html/popn_plot2-1.png" width="100%"><br></p>
 </div>
-</div>
 <div class="section level4">
 <h4 id="crosstabs">
 <strong>Crosstabs</strong><a class="anchor" aria-label="anchor" href="#crosstabs"></a>
@@ -1021,16 +982,12 @@ differences or similarities within subgroups.</p>
 <p>Crosstabulation is a fundamental technique in survey analysis,
 especially when examining relationships between categorical
 variables.</p>
-<div class="section level5">
-<h5 id="visualising-crosstabs-with-crosstab">
-<strong><em>Visualising Crosstabs with
-<code>crosstab()</code></em></strong><a class="anchor" aria-label="anchor" href="#visualising-crosstabs-with-crosstab"></a>
-</h5>
-<p>The <code>crosstab</code> function, when used with the
-<code>plot = TRUE</code> option, turns your data into insightful visual
-crosstabs. This not only aids in understanding the distribution of
-responses but also includes statistical measures for deeper
-analysis.</p>
+<p><strong><em>Visualising Crosstabs with
+<code><a href="../reference/crosstab.html">crosstab()</a></code></em></strong><br> The <code>crosstab</code>
+function, when used with the <code>plot = TRUE</code> option, turns your
+data into insightful visual crosstabs. This not only aids in
+understanding the distribution of responses but also includes
+statistical measures for deeper analysis.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/crosstab.html">crosstab</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>         rowVar <span class="op">=</span> <span class="st">"p_eurefvote"</span>,</span>
@@ -1090,14 +1047,10 @@ analysis.</p>
 </tbody>
 </table>
 <p><br></p>
-</div>
-<div class="section level5">
-<h5 id="adjusting-for-readability">
-<strong><em>Adjusting for Readability</em></strong><a class="anchor" aria-label="anchor" href="#adjusting-for-readability"></a>
-</h5>
-<p>For plots with numerous variables along the X-axis,
-<code>adjustX = TRUE</code> rotates the labels for better readability,
-ensuring that even dense data remains accessible and interpretable.</p>
+<p><strong><em>Adjusting for Readability</em></strong><br> For plots
+with numerous variables along the X-axis, <code>adjustX = TRUE</code>
+rotates the labels for better readability, ensuring that even dense data
+remains accessible and interpretable.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/crosstab.html">crosstab</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>         rowVar <span class="op">=</span> <span class="st">"polAttention"</span>,</span>
@@ -1159,7 +1112,6 @@ ensuring that even dense data remains accessible and interpretable.</p>
 </table>
 <p><br></p>
 </div>
-</div>
 <div class="section level4">
 <h4 id="flow-data">
 <strong>Flow data</strong><a class="anchor" aria-label="anchor" href="#flow-data"></a>
@@ -1169,13 +1121,10 @@ respondents transition between various stages or choices. The
 <code>plot_sankey</code> function is instrumental in depicting the flow
 of data, especially useful in understanding voting patterns or changes
 in preferences over time. <br><br></p>
-<div class="section level5">
-<h5 id="preparing-data-with-grp_freq">
-<strong><em>Preparing Data with
-<code>grp_freq()</code></em></strong><a class="anchor" aria-label="anchor" href="#preparing-data-with-grp_freq"></a>
-</h5>
-<p>Before visualising, prepare your data using <code><a href="../reference/grp_freq.html">grp_freq()</a></code>,
-which aggregates frequencies necessary for the Sankey diagram.</p>
+<p><strong><em>Preparing Data with
+<code><a href="../reference/grp_freq.html">grp_freq()</a></code></em></strong><br> Before visualising, prepare
+your data using <code><a href="../reference/grp_freq.html">grp_freq()</a></code>, which aggregates frequencies
+necessary for the Sankey diagram.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Subset the required columns from the dataset</span></span>
 <span><span class="va">sankey_df</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wt"</span>, <span class="st">"generalElectionVote"</span>, <span class="st">"p_past_vote_2019"</span><span class="op">)</span><span class="op">]</span></span>
@@ -1231,40 +1180,37 @@ which aggregates frequencies necessary for the Sankey diagram.</p>
 </tbody>
 </table>
 <p><br></p>
-</div>
-<div class="section level5">
-<h5 id="customising-the-sankey-diagram">
-<strong><em>Customising the Sankey Diagram</em></strong><a class="anchor" aria-label="anchor" href="#customising-the-sankey-diagram"></a>
-</h5>
-<p>The <code><a href="../reference/plot_sankey.html">plot_sankey()</a></code> function offers extensive
-customisation, allowing the diagram to be tailored to specific data
-narratives. The <code><a href="../reference/colour_prep.html">colour_prep()</a></code> function enhances this
-customisation by facilitating the assignment of meaningful colours based
-on categories like political party affiliations. Such customisation not
-only improves the aesthetic appeal of the Sankey diagram but also boosts
-its interpretability and effectiveness in conveying complex data
-flows.</p>
+<p><strong><em>Customising the Sankey Diagram</em></strong><br> The
+<code><a href="../reference/plot_sankey.html">plot_sankey()</a></code> function offers extensive customisation,
+allowing the diagram to be tailored to specific data narratives. The
+<code><a href="../reference/colour_prep.html">colour_prep()</a></code> function enhances this customisation by
+facilitating the assignment of meaningful colours based on categories
+like political party affiliations. Such customisation not only improves
+the aesthetic appeal of the Sankey diagram but also boosts its
+interpretability and effectiveness in conveying complex data flows.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_sankey.html">plot_sankey</a></span><span class="op">(</span><span class="va">sankey_df</span>,</span>
 <span>            source <span class="op">=</span> <span class="st">"p_past_vote_2019"</span>, <span class="co"># on the left side</span></span>
 <span>            target <span class="op">=</span> <span class="st">"generalElectionVote"</span>, <span class="co"># on the right side</span></span>
 <span>            value <span class="op">=</span> <span class="st">"Freq"</span>,</span>
-<span>            units <span class="op">=</span> <span class="st">"votes"</span>,</span>
+<span>            units <span class="op">=</span> <span class="st">" votes"</span>,</span>
 <span>            colours <span class="op">=</span> <span class="fu"><a href="../reference/colour_prep.html">colour_prep</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"generalElectionVote"</span>, <span class="st">"p_past_vote_2019"</span><span class="op">)</span>, pal_name <span class="op">=</span> <span class="st">"polUK"</span><span class="op">)</span>,</span>
 <span>            fontSize <span class="op">=</span> <span class="fl">16</span>, <span class="co"># change font size</span></span>
 <span>            fontFamily <span class="op">=</span> <span class="st">"Calibri"</span>, <span class="co"># default</span></span>
 <span>            nodeWidth <span class="op">=</span> <span class="fl">20</span>, <span class="co"># default</span></span>
 <span>            nodePadding <span class="op">=</span> <span class="fl">10</span>, <span class="co"># default</span></span>
-<span>            margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"left"</span> <span class="op">=</span> <span class="fl">0</span>, <span class="st">"right"</span> <span class="op">=</span> <span class="fl">130</span><span class="op">)</span>, <span class="co"># adjust the margin</span></span>
+<span>            margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>top <span class="op">=</span> <span class="fl">0</span>, right <span class="op">=</span> <span class="fl">130</span>, bottom <span class="op">=</span> <span class="fl">0</span>, left <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>, <span class="co"># adjust the margin</span></span>
 <span>            width <span class="op">=</span> <span class="fl">1200</span>, <span class="co"># default</span></span>
 <span>            height <span class="op">=</span> <span class="fl">800</span>, <span class="co"># default</span></span>
-<span>            shiftLabel <span class="op">=</span> <span class="cn">NULL</span> <span class="co"># default</span></span>
+<span>            shiftLabel <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># default</span></span>
+<span>            heading <span class="op">=</span> <span class="st">"Flow of Votes"</span>,</span>
+<span>            sourceTitle <span class="op">=</span> <span class="st">"2019 Vote"</span>,</span>
+<span>            targetTitle <span class="op">=</span> <span class="st">"VI"</span></span>
 <span><span class="op">)</span> <span class="co"># %&gt;%</span></span>
 <span><span class="co"># save from viewer to html</span></span>
 <span><span class="co"># htmlwidgets::saveWidget(file = "sankey_VI.html", selfcontained = TRUE)</span></span></code></pre></div>
 <iframe width="100%" height="850" src="img/sankey_VI.html" frameborder="0" allowfullscreen></iframe>
 <p><br></p>
-</div>
 </div>
 <div class="section level4">
 <h4 id="other-visualisations">
@@ -1274,7 +1220,8 @@ flows.</p>
 guidance on effectively using colour in your plots, refer to the <a href="">Visualising Data article</a> and <a href="">Creating Colour
 Palettes article</a>. These resources provide additional insights into
 making the most of the <code>scgUtils</code> package for visualising
-complex survey data. <br><br></p>
+complex survey data. <br></p>
+<hr>
 </div>
 </div>
 <div class="section level3">
@@ -1290,19 +1237,15 @@ presentations. <br><br></p>
 </h4>
 <p>Tables are fundamental tools for presenting complex data in a
 structured and easily interpretable format. <br><br></p>
-<div class="section level5">
-<h5 id="extending-compile-for-comprehensive-tables">
-<strong><em>Extending <code>compile()</code> for Comprehensive
-Tables</em></strong><a class="anchor" aria-label="anchor" href="#extending-compile-for-comprehensive-tables"></a>
-</h5>
-<p>The <code><a href="../reference/compile.html">compile()</a></code> function in <code>scgUtils</code> excels
-in generating comprehensive crosstab tables. It efficiently processes
-each variable pair within your dataset, producing detailed tabular
-outputs. These tables can be formatted and saved as CSV files, making
-them perfect for inclusion in reports or further analysis. The ability
-to create such extensive tables is invaluable for presenting a holistic
-view of your survey results, encompassing various aspects and
-relationships within your data.</p>
+<p><strong><em>Extending <code><a href="../reference/compile.html">compile()</a></code> for Comprehensive
+Tables</em></strong><br> The <code><a href="../reference/compile.html">compile()</a></code> function in
+<code>scgUtils</code> excels in generating comprehensive crosstab
+tables. It efficiently processes each variable pair within your dataset,
+producing detailed tabular outputs. These tables can be formatted and
+saved as CSV files, making them perfect for inclusion in reports or
+further analysis. The ability to create such extensive tables is
+invaluable for presenting a holistic view of your survey results,
+encompassing various aspects and relationships within your data.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rowVars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">turnoutUKGeneral</span><span class="op">:</span><span class="va">partyIdStrength</span>,</span>
 <span>                                      <span class="va">partyIdSqueeze</span><span class="op">:</span><span class="va">likeGrn</span>,</span>
@@ -1319,16 +1262,10 @@ relationships within your data.</p>
 <span>        name <span class="op">=</span> <span class="st">"crosstabs"</span> <span class="co"># this will save as "crosstabs.csv"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="img/crosstab_csv.png" width="100%"><br><br><br></p>
-</div>
-<div class="section level5">
-<h5 id="visual-representation-of-compiled-tables">
-<strong><em>Visual Representation of Compiled
-Tables</em></strong><a class="anchor" aria-label="anchor" href="#visual-representation-of-compiled-tables"></a>
-</h5>
-<p>To add visual appeal and enhance interpretability, future additions
-to the <code>scgUtils</code> package will include the ability to view
-compiled tables graphically. <br><br></p>
-</div>
+<p><strong><em>Visual Representation of Compiled
+Tables</em></strong><br> To add visual appeal and enhance
+interpretability, future additions to the <code>scgUtils</code> package
+will include the ability to view compiled tables graphically. <br><br></p>
 </div>
 <div class="section level4">
 <h4 id="powerpoint-integration">

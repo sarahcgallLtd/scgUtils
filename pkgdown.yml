@@ -2,9 +2,10 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
+  creating-colour-palettes: creating-colour-palettes.html
   uploading-data: uploading-data.html
   using-survey-data: using-survey-data.html
-last_built: 2024-01-28T14:50Z
+last_built: 2024-01-28T21:43Z
 urls:
   reference: https://sarahcgall.github.io/scgUtils/reference
   article: https://sarahcgall.github.io/scgUtils/articles
