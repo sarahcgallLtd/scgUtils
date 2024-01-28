@@ -23,7 +23,7 @@ Colour plays a crucial role in data visualisation. It not only makes plots more 
 
 The `colour_display()` function visualises colour options from a specified palette. It integrates with `colour_pal()` to fetch colour data and uses an internal helper function, `contrast_test()`, to ensure text readability on coloured bars.
 
-```{r colour_display}
+```{r colour_display, warning=FALSE}
 # Example: Visualise the 'polUK' palette
 colour_display("polUK")
 # Example: Visualise an individual colour
