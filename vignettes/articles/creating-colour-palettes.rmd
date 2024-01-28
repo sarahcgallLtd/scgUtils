@@ -1,0 +1,70 @@
+---
+title: "Mastering Colour Selection"
+output: html_document
+---
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = TRUE
+)
+```
+
+This document provides guidance on using the `colour_display()`, `colour_pal()`, and `colour_prep()` functions from an R package to create and visualise colour palettes effectively.
+```{r setup, include = FALSE}
+library(scgUtils)
+```
+
+Colour plays a crucial role in data visualisation. It not only makes plots more aesthetically pleasing but also aids in communicating data patterns and insights more effectively. The functions `colour_display()`, `colour_pal()`, and `colour_prep()` are designed to help users select and apply colour palettes with ease.
+<br>
+<br>
+
+### `colour_display()`
+
+The `colour_display()` function visualises colour options from a specified palette. It integrates with `colour_pal()` to fetch colour data and uses an internal helper function, `contrast_test()`, to ensure text readability on coloured bars.
+
+```{r colour_display}
+# Example: Visualise the 'polUK' palette
+colour_display("polUK")
+# Example: Visualise an individual colour
+colour_display("Jaffa")
+# Example: Visualise all individual colours
+colour_display("All")
+# Example: View a sequential colour palette with a continuous scale
+colour_display("seqGreen", 7, type = "continuous")
+```
+<br>
+<br>
+
+### `colour_pal()`
+The `colour_pal()` function generates colour palettes for graphs. It supports sequential, diverging, categorical, and political palettes, allowing users to retrieve individual colours or ranges of colours based on the specified palette.
+
+```{r colour_pal}
+# Example: Return full categorical extended palette
+colour_pal("catExtended")
+
+# Example: Return an individual colour
+colour_pal("Jaffa")
+
+# Example: Return a diverging palette with assigned categories
+colour_pal("divBlueGreen", 5, c("Very Likely", "Likely", "Neutral", "Unlikely", "Very Unlikely"))
+```
+<br>
+<br>
+
+### `colour_prep()`
+`colour_prep()` prepares a colour palette for visualising data by assigning colours to unique values across specified columns in a data frame. It is particularly useful for creating consistent colour mappings in visualisations.
+
+```{r colour_prep}
+# Example data frame
+df <- data.frame(
+  Category1 = c("Scottish National Party (SNP)", "Labour", "Conservative", "Other"),
+  Category2 = c("An independent candidate", "Invalid_Party_Name", "Other", "Conservative")
+)
+
+# Prepare a colour palette for the unique values in Category1 and Category2
+colour_palette <- colour_prep(df, c("Category1", "Category2"))
+
+# Print the prepared colour palette
+print(colour_palette)
+```

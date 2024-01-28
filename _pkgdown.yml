@@ -78,3 +78,14 @@ articles:
   navbar: Function Explainers
   contents:
   - articles/uploading-data
+  - articles/creating-colour-palettes
+
+navbar:
+  structure:
+    left: [intro, "Getting Started" reference, articles]
+
+navbar:
+  components:
+    "Getting Started":
+      text: "Getting Started"
+      href: articles/getting-started
