@@ -75,6 +75,7 @@ articles:
   contents:
   - articles/uploading-data
   - articles/creating-colour-palettes
+  - articles/visualising-data
 
 navbar:
   structure:

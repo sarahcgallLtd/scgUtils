@@ -1,0 +1,177 @@
+---
+title: "Visualising Data"
+output: html_document
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = TRUE
+)
+```
+
+This article demonstrates the powerful visualisation capabilities of the `scgUtils` package, offering tools for diverse data presentations ranging from personality profiles to demographic and flow analyses.
+```{r setup, include = FALSE}
+library(scgUtils)
+library(magrittr)
+
+df <- get_data("survey") %>%
+  labelled::unlabelled() %>%
+  process_factors()
+```
+<br>
+
+### Sankey Diagram
+Flow visualisation helps in understanding how different categories of respondents transition between various stages or choices. The `plot_sankey()` function is instrumental in depicting the flow of data, especially useful in understanding voting patterns or changes in preferences over time.
+<br>
+<br>
+
+##### Preparing Data with `grp_freq()`
+Before visualising, prepare your data using `grp_freq()`, which aggregates frequencies necessary for the Sankey diagram.
+```{r flow1, eval = FALSE}
+# Subset the required columns from the dataset
+sankey_df <- df[, c("wt", "generalElectionVote", "p_past_vote_2019")]
+
+# Get the frequency
+sankey_df <- grp_freq(sankey_df,
+                      groups = c("generalElectionVote", "p_past_vote_2019"),
+                      weight = "wt", # optional
+                      round_decimals = 0, # optional
+)
+head(sankey_df)
+# NB. The `dplyr` equivalent is:
+# df %>%
+#   group_by(generalElectionVote, p_past_vote_2019) %>%
+#   summarise(Freq = sum(wt))
+```
+```{r flow1_table, echo = FALSE}
+sankey_df <- df[, c("wt", "generalElectionVote", "p_past_vote_2019")]
+sankey_df <- grp_freq(sankey_df,
+                      groups = c("generalElectionVote", "p_past_vote_2019"),
+                      weight = "wt",
+                      round_decimals = 0,
+)
+knitr::kable(head(sankey_df))
+```
+<br>
+
+##### Customising the Sankey Diagram
+The `plot_sankey()` function offers extensive customisation, allowing the diagram to be tailored to specific data narratives. The `colour_prep()` function enhances this customisation by facilitating the assignment of meaningful colours based on categories like political party affiliations. Such customisation not only improves the aesthetic appeal of the Sankey diagram but also boosts its interpretability and effectiveness in conveying complex data flows.
+```{r flow2, eval = FALSE}
+plot_sankey(sankey_df,
+            source = "p_past_vote_2019", # on the left side
+            target = "generalElectionVote", # on the right side
+            value = "Freq",
+            units = " votes",
+            colours = colour_prep(df, c("generalElectionVote", "p_past_vote_2019"), pal_name = "polUK"),
+            fontSize = 16, # change font size
+            fontFamily = "Calibri", # default
+            nodeWidth = 20, # default
+            nodePadding = 10, # default
+            margin = list(top = 0, right = 130, bottom = 0, left = 0), # adjust the margin
+            width = 1200, # default
+            height = 800, # default
+            shiftLabel = NULL, # default
+            heading = "Flow of Votes",
+            sourceTitle = "2019 Vote",
+            targetTitle = "VI"
+) # %>%
+# save from viewer to html
+# htmlwidgets::saveWidget(file = "sankey_VI.html", selfcontained = TRUE)
+```
+````{=html}
+<iframe width="100%" height="850"
+  src="img/sankey_VI.html"
+  frameborder="0"
+  allowfullscreen></iframe>
+````
+<br>
+
+### Personality Plot
+The `plot_bigfive()` function returns a [ggplot2](https://ggplot2.tidyverse.org/reference/theme.html) chart to help visualise the personality profile of the survey data. This radar chart is primarily to visualise the Big Five personality traits (neuroticism, extroversion, openness, agreeableness, and conscientiousness) but can be amended for other quantitative data types with a scale between 0 and 100.
+```{r bigfive_plot1, eval = FALSE}
+# Create single plot using unweighted data
+plot_bigfive(dataset,
+             big_five = c("Neuroticism", "Extroversion", "Openness", "Agreeableness", "Conscientiousness"))
+```
+```{r img/bigfive_plot1, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("img/bigfive_plot1.png")
+```
+<br>
+
+When a group is provided, the function returns faceted plots with the variables within the group plotted on top of the average. This provides an easy comparison between the variable and the rest of the cohort in the survey.
+
+```{r plot_bigfive2, eval = FALSE}
+# Create faceted plot using age groups and weighted data
+plot_bigfive(dataset,
+             big_five = c("Neuroticism", "Extroversion", "Openness", "Agreeableness", "Conscientiousness"),
+             group = "Gender",
+             weight = "wgtvar")
+```
+```{r img/bigfive_plot2, echo=FALSE, eval = TRUE, out.width = '100%'}
+knitr::include_graphics("img/bigfive_plot2.png")
+```
+
+### Population Plot
+Understanding demographic distribution is vital in survey analysis. `plot_popn()` creates visual representations of population profiles.
+
+##### Using `plot_popn`
+The `plot_popn()` function is designed to visualise the population structure of your survey respondents. It creates a population pyramid showing distributions across gender and age groups. If a variable like average age (`meanVar`) is specified, the plot can also display this information, adding another layer of insight into the demographic composition.
+
+```{r popn_plot, dpi=300, out.width = '100%', fig.height = 5}
+plot_popn(data = df,
+          xVar = "gender",
+          yVar = "ageGroup",
+          weight = "wt", # optional
+          meanVar = "age", # optional (must be numeric)
+          addLabels = TRUE # to add % labels
+)
+```
+<br>
+
+##### Faceting by Group
+Enhance your population pyramid by faceting the `plot_popn` plot by a specific group, such as voter turnout. This feature overlays the selected group's data onto the total population structure, providing a comparative view that highlights differences or similarities within subgroups.
+
+```{r popn_plot2, dpi=300, out.width = '100%', fig.height = 7}
+plot_popn(data = df,
+          xVar = "gender",
+          yVar = "ageGroup",
+          group = "turnoutUKGeneral",
+          weight = "wt", # optional
+          addLabels = TRUE # to add % labels
+)
+```
+<br>
+
+### Binary Plot
+The `plot_binary()` function visualises binary survey responses (e.g., "Yes" vs "No"). It is particularly effective for comparative analysis. This function utilises the `grid_vars()` function to help transform the data into the correct format.
+
+```{r plot_binary, eval = FALSE}
+# Create list
+vars <- list(Q1a = "Art",
+             Q1b = "Automobiles",
+             Q1c = "Birdwatching"
+#             ...
+)
+# Create plot
+plot_binary(dataset,
+            vars = vars,
+            group = "gender",
+            weight = "wgtvar",
+            return_var = "Yes")
+```
+```{r img/binary_plot, echo=FALSE, eval = TRUE, out.width = '100%'}
+knitr::include_graphics("img/binary_plot.png")
+```
+<br>
+
+### Parliament Plots
+Future updates to `scgUtils` will introduce Parliament plots, further expanding the package's visualisation capabilities.
+
+### Butterfly Plots
+Future updates to `scgUtils` will introduce Butterfly plots, further expanding the package's visualisation capabilities.
+
+### Likert Plots
+Likert scale responses will be visualisable with upcoming features, providing nuanced insights into survey data.
+

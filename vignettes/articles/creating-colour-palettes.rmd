@@ -10,7 +10,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This document provides guidance on using the `colour_display()`, `colour_pal()`, and `colour_prep()` functions from an R package to create and visualise colour palettes effectively.
+This article provides guidance on using the `colour_display()`, `colour_pal()`, and `colour_prep()` functions from an R package to create and visualise colour palettes effectively.
 ```{r setup, include = FALSE}
 library(scgUtils)
 ```
@@ -19,7 +19,7 @@ Colour plays a crucial role in data visualisation. It not only makes plots more 
 <br>
 <br>
 
-### `colour_display()`
+### Viewing Available Colours with `colour_display()`
 
 The `colour_display()` function visualises colour options from a specified palette. It integrates with `colour_pal()` to fetch colour data and uses an internal helper function, `contrast_test()`, to ensure text readability on coloured bars.
 
@@ -36,7 +36,7 @@ colour_display("seqGreen", 7, type = "continuous")
 <br>
 <br>
 
-### `colour_pal()`
+### Retrieving Colours with `colour_pal()`
 The `colour_pal()` function generates colour palettes for graphs. It supports sequential, diverging, categorical, and political palettes, allowing users to retrieve individual colours or ranges of colours based on the specified palette.
 
 ```{r colour_pal}
@@ -52,7 +52,7 @@ colour_pal("divBlueGreen", 5, c("Very Likely", "Likely", "Neutral", "Unlikely", 
 <br>
 <br>
 
-### `colour_prep()`
+### Preparing Palettes with `colour_prep()`
 `colour_prep()` prepares a colour palette for visualising data by assigning colours to unique values across specified columns in a data frame. It is particularly useful for creating consistent colour mappings in visualisations.
 
 ```{r colour_prep}

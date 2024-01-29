@@ -396,37 +396,6 @@ Effective visualisation is key in survey data analysis, offering a way to intuit
 <br>
 <br>
 
-#### **Population structure**
-Understanding the demographic breakdown of survey respondents is crucial in many analyses.
-<br>
-<br>
-
-***Using `plot_popn()`***<br>
-The `plot_popn` function is designed to visualise the population structure of your survey respondents. It creates a population pyramid showing distributions across gender and age groups. If a variable like average age (`meanVar`) is specified, the plot can also display this information, adding another layer of insight into the demographic composition.
-```{r popn_plot, dpi=300, out.width = '100%', fig.height = 5}
-plot_popn(data = df,
-          xVar = "gender",
-          yVar = "ageGroup",
-          weight = "wt", # optional
-          meanVar = "age", # optional (must be numeric)
-          addLabels = TRUE # to add % labels
-)
-```
-<br>
-
-***Faceting by Group***<br>
-Enhance your population pyramid by faceting the `plot_popn` plot by a specific group, such as voter turnout. This feature overlays the selected group's data onto the total population structure, providing a comparative view that highlights differences or similarities within subgroups.
-```{r popn_plot2, dpi=300, out.width = '100%', fig.height = 7}
-plot_popn(data = df,
-          xVar = "gender",
-          yVar = "ageGroup",
-          group = "turnoutUKGeneral",
-          weight = "wt", # optional
-          addLabels = TRUE # to add % labels
-)
-```
-<br>
-
 #### **Crosstabs**
 Crosstabulation is a fundamental technique in survey analysis, especially when examining relationships between categorical variables.
 
@@ -483,74 +452,8 @@ knitr::kable(crosstab(df,
 ```
 <br>
 
-#### **Flow data**
-Flow visualisation helps in understanding how different categories of respondents transition between various stages or choices. The `plot_sankey` function is instrumental in depicting the flow of data, especially useful in understanding voting patterns or changes in preferences over time.
-<br>
-<br>
-
-***Preparing Data with `grp_freq()`***<br>
-Before visualising, prepare your data using `grp_freq()`, which aggregates frequencies necessary for the Sankey diagram.
-```{r flow1, eval = FALSE}
-# Subset the required columns from the dataset
-sankey_df <- df[, c("wt", "generalElectionVote", "p_past_vote_2019")]
-
-# Get the frequency
-sankey_df <- grp_freq(sankey_df,
-                      groups = c("generalElectionVote", "p_past_vote_2019"),
-                      weight = "wt", # optional
-                      round_decimals = 0, # optional
-)
-head(sankey_df)
-# NB. The `dplyr` equivalent is:
-# df %>%
-#   group_by(generalElectionVote, p_past_vote_2019) %>%
-#   summarise(Freq = sum(wt))
-```
-```{r flow1_table, echo = FALSE}
-sankey_df <- df[, c("wt", "generalElectionVote", "p_past_vote_2019")]
-sankey_df <- grp_freq(sankey_df,
-                      groups = c("generalElectionVote", "p_past_vote_2019"),
-                      weight = "wt",
-                      round_decimals = 0,
-)
-knitr::kable(head(sankey_df))
-```
-<br>
-
-***Customising the Sankey Diagram***<br>
-The `plot_sankey()` function offers extensive customisation, allowing the diagram to be tailored to specific data narratives. The `colour_prep()` function enhances this customisation by facilitating the assignment of meaningful colours based on categories like political party affiliations. Such customisation not only improves the aesthetic appeal of the Sankey diagram but also boosts its interpretability and effectiveness in conveying complex data flows.
-```{r flow2, eval = FALSE}
-plot_sankey(sankey_df,
-            source = "p_past_vote_2019", # on the left side
-            target = "generalElectionVote", # on the right side
-            value = "Freq",
-            units = " votes",
-            colours = colour_prep(df, c("generalElectionVote", "p_past_vote_2019"), pal_name = "polUK"),
-            fontSize = 16, # change font size
-            fontFamily = "Calibri", # default
-            nodeWidth = 20, # default
-            nodePadding = 10, # default
-            margin = list(top = 0, right = 130, bottom = 0, left = 0), # adjust the margin
-            width = 1200, # default
-            height = 800, # default
-            shiftLabel = NULL, # default
-            heading = "Flow of Votes",
-            sourceTitle = "2019 Vote",
-            targetTitle = "VI"
-) # %>%
-# save from viewer to html
-# htmlwidgets::saveWidget(file = "sankey_VI.html", selfcontained = TRUE)
-```
-````{=html}
-<iframe width="100%" height="850"
-  src="img/sankey_VI.html"
-  frameborder="0"
-  allowfullscreen></iframe>
-````
-<br>
-
 #### **Other Visualisations**
-For a broader spectrum of visualisation techniques and detailed guidance on effectively using colour in your plots, refer to the [Visualising Data article]() and [Creating Colour Palettes article](). These resources provide additional insights into making the most of the `scgUtils` package for visualising complex survey data.
+For a broader spectrum of visualisation techniques and detailed guidance on effectively using colour in your plots, refer to the [Visualising Data article]() and [Mastering Colour Selection article](https://sarahcgall.github.io/scgUtils/articles/creating-colour-palettes.html#colour_display). These resources provide additional insights into making the most of the `scgUtils` package for visualising complex survey data.
 <br>
 
 ---
