@@ -5,7 +5,8 @@ articles:
   creating-colour-palettes: creating-colour-palettes.html
   uploading-data: uploading-data.html
   using-survey-data: using-survey-data.html
-last_built: 2024-01-28T21:50Z
+  visualising-data: visualising-data.html
+last_built: 2024-01-29T09:20Z
 urls:
   reference: https://sarahcgall.github.io/scgUtils/reference
   article: https://sarahcgall.github.io/scgUtils/articles

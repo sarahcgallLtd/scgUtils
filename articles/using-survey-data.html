@@ -55,6 +55,7 @@
     <h6 class="dropdown-header" data-toc-skip>Function Explainers</h6>
     <a class="dropdown-item" href="../articles/uploading-data.html">Uploading &amp; Cleaning Data</a>
     <a class="dropdown-item" href="../articles/creating-colour-palettes.html">Mastering Colour Selection</a>
+    <a class="dropdown-item" href="../articles/visualising-data.html">Visualising Data</a>
   </div>
 </li>
       </ul>
@@ -937,44 +938,6 @@ way to intuitively understand and communicate complex data patterns. The
 only understand your data but also to present it in a compelling and
 insightful manner. <br><br></p>
 <div class="section level4">
-<h4 id="population-structure">
-<strong>Population structure</strong><a class="anchor" aria-label="anchor" href="#population-structure"></a>
-</h4>
-<p>Understanding the demographic breakdown of survey respondents is
-crucial in many analyses. <br><br></p>
-<p><strong><em>Using <code><a href="../reference/plot_popn.html">plot_popn()</a></code></em></strong><br> The
-<code>plot_popn</code> function is designed to visualise the population
-structure of your survey respondents. It creates a population pyramid
-showing distributions across gender and age groups. If a variable like
-average age (<code>meanVar</code>) is specified, the plot can also
-display this information, adding another layer of insight into the
-demographic composition.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_popn.html">plot_popn</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span>
-<span>          xVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
-<span>          yVar <span class="op">=</span> <span class="st">"ageGroup"</span>,</span>
-<span>          weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
-<span>          meanVar <span class="op">=</span> <span class="st">"age"</span>, <span class="co"># optional (must be numeric)</span></span>
-<span>          addLabels <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># to add % labels</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="using-survey-data_files/figure-html/popn_plot-1.png" width="100%"><br></p>
-<p><strong><em>Faceting by Group</em></strong><br> Enhance your
-population pyramid by faceting the <code>plot_popn</code> plot by a
-specific group, such as voter turnout. This feature overlays the
-selected group’s data onto the total population structure, providing a
-comparative view that highlights differences or similarities within
-subgroups.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_popn.html">plot_popn</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span>
-<span>          xVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
-<span>          yVar <span class="op">=</span> <span class="st">"ageGroup"</span>,</span>
-<span>          group <span class="op">=</span> <span class="st">"turnoutUKGeneral"</span>,</span>
-<span>          weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
-<span>          addLabels <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># to add % labels</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="using-survey-data_files/figure-html/popn_plot2-1.png" width="100%"><br></p>
-</div>
-<div class="section level4">
 <h4 id="crosstabs">
 <strong>Crosstabs</strong><a class="anchor" aria-label="anchor" href="#crosstabs"></a>
 </h4>
@@ -987,7 +950,7 @@ function, when used with the <code>plot = TRUE</code> option, turns your
 data into insightful visual crosstabs. This not only aids in
 understanding the distribution of responses but also includes
 statistical measures for deeper analysis.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/crosstab.html">crosstab</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>         rowVar <span class="op">=</span> <span class="st">"p_eurefvote"</span>,</span>
 <span>         colVar <span class="op">=</span> <span class="st">"p_edlevel"</span>,</span>
@@ -1050,7 +1013,7 @@ statistical measures for deeper analysis.</p>
 with numerous variables along the X-axis, <code>adjustX = TRUE</code>
 rotates the labels for better readability, ensuring that even dense data
 remains accessible and interpretable.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/crosstab.html">crosstab</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>         rowVar <span class="op">=</span> <span class="st">"polAttention"</span>,</span>
 <span>         colVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
@@ -1112,114 +1075,14 @@ remains accessible and interpretable.</p>
 <p><br></p>
 </div>
 <div class="section level4">
-<h4 id="flow-data">
-<strong>Flow data</strong><a class="anchor" aria-label="anchor" href="#flow-data"></a>
-</h4>
-<p>Flow visualisation helps in understanding how different categories of
-respondents transition between various stages or choices. The
-<code>plot_sankey</code> function is instrumental in depicting the flow
-of data, especially useful in understanding voting patterns or changes
-in preferences over time. <br><br></p>
-<p><strong><em>Preparing Data with
-<code><a href="../reference/grp_freq.html">grp_freq()</a></code></em></strong><br> Before visualising, prepare
-your data using <code><a href="../reference/grp_freq.html">grp_freq()</a></code>, which aggregates frequencies
-necessary for the Sankey diagram.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Subset the required columns from the dataset</span></span>
-<span><span class="va">sankey_df</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wt"</span>, <span class="st">"generalElectionVote"</span>, <span class="st">"p_past_vote_2019"</span><span class="op">)</span><span class="op">]</span></span>
-<span></span>
-<span><span class="co"># Get the frequency</span></span>
-<span><span class="va">sankey_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/grp_freq.html">grp_freq</a></span><span class="op">(</span><span class="va">sankey_df</span>,</span>
-<span>                      groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"generalElectionVote"</span>, <span class="st">"p_past_vote_2019"</span><span class="op">)</span>,</span>
-<span>                      weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
-<span>                      round_decimals <span class="op">=</span> <span class="fl">0</span>, <span class="co"># optional</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sankey_df</span><span class="op">)</span></span>
-<span><span class="co"># NB. The `dplyr` equivalent is:</span></span>
-<span><span class="co"># df %&gt;%</span></span>
-<span><span class="co">#   group_by(generalElectionVote, p_past_vote_2019) %&gt;%</span></span>
-<span><span class="co">#   summarise(Freq = sum(wt))</span></span></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="left">generalElectionVote</th>
-<th align="left">p_past_vote_2019</th>
-<th align="right">Freq</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">I would/did not vote</td>
-<td align="left">Conservative</td>
-<td align="right">75</td>
-</tr>
-<tr class="even">
-<td align="left">Conservative</td>
-<td align="left">Conservative</td>
-<td align="right">793</td>
-</tr>
-<tr class="odd">
-<td align="left">Labour</td>
-<td align="left">Conservative</td>
-<td align="right">124</td>
-</tr>
-<tr class="even">
-<td align="left">Liberal Democrat</td>
-<td align="left">Conservative</td>
-<td align="right">50</td>
-</tr>
-<tr class="odd">
-<td align="left">Scottish National Party (SNP)</td>
-<td align="left">Conservative</td>
-<td align="right">2</td>
-</tr>
-<tr class="even">
-<td align="left">Plaid Cymru</td>
-<td align="left">Conservative</td>
-<td align="right">2</td>
-</tr>
-</tbody>
-</table>
-<p><br></p>
-<p><strong><em>Customising the Sankey Diagram</em></strong><br> The
-<code><a href="../reference/plot_sankey.html">plot_sankey()</a></code> function offers extensive customisation,
-allowing the diagram to be tailored to specific data narratives. The
-<code><a href="../reference/colour_prep.html">colour_prep()</a></code> function enhances this customisation by
-facilitating the assignment of meaningful colours based on categories
-like political party affiliations. Such customisation not only improves
-the aesthetic appeal of the Sankey diagram but also boosts its
-interpretability and effectiveness in conveying complex data flows.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_sankey.html">plot_sankey</a></span><span class="op">(</span><span class="va">sankey_df</span>,</span>
-<span>            source <span class="op">=</span> <span class="st">"p_past_vote_2019"</span>, <span class="co"># on the left side</span></span>
-<span>            target <span class="op">=</span> <span class="st">"generalElectionVote"</span>, <span class="co"># on the right side</span></span>
-<span>            value <span class="op">=</span> <span class="st">"Freq"</span>,</span>
-<span>            units <span class="op">=</span> <span class="st">" votes"</span>,</span>
-<span>            colours <span class="op">=</span> <span class="fu"><a href="../reference/colour_prep.html">colour_prep</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"generalElectionVote"</span>, <span class="st">"p_past_vote_2019"</span><span class="op">)</span>, pal_name <span class="op">=</span> <span class="st">"polUK"</span><span class="op">)</span>,</span>
-<span>            fontSize <span class="op">=</span> <span class="fl">16</span>, <span class="co"># change font size</span></span>
-<span>            fontFamily <span class="op">=</span> <span class="st">"Calibri"</span>, <span class="co"># default</span></span>
-<span>            nodeWidth <span class="op">=</span> <span class="fl">20</span>, <span class="co"># default</span></span>
-<span>            nodePadding <span class="op">=</span> <span class="fl">10</span>, <span class="co"># default</span></span>
-<span>            margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>top <span class="op">=</span> <span class="fl">0</span>, right <span class="op">=</span> <span class="fl">130</span>, bottom <span class="op">=</span> <span class="fl">0</span>, left <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>, <span class="co"># adjust the margin</span></span>
-<span>            width <span class="op">=</span> <span class="fl">1200</span>, <span class="co"># default</span></span>
-<span>            height <span class="op">=</span> <span class="fl">800</span>, <span class="co"># default</span></span>
-<span>            shiftLabel <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># default</span></span>
-<span>            heading <span class="op">=</span> <span class="st">"Flow of Votes"</span>,</span>
-<span>            sourceTitle <span class="op">=</span> <span class="st">"2019 Vote"</span>,</span>
-<span>            targetTitle <span class="op">=</span> <span class="st">"VI"</span></span>
-<span><span class="op">)</span> <span class="co"># %&gt;%</span></span>
-<span><span class="co"># save from viewer to html</span></span>
-<span><span class="co"># htmlwidgets::saveWidget(file = "sankey_VI.html", selfcontained = TRUE)</span></span></code></pre></div>
-<iframe width="100%" height="850" src="img/sankey_VI.html" frameborder="0" allowfullscreen></iframe>
-<p><br></p>
-</div>
-<div class="section level4">
 <h4 id="other-visualisations">
 <strong>Other Visualisations</strong><a class="anchor" aria-label="anchor" href="#other-visualisations"></a>
 </h4>
 <p>For a broader spectrum of visualisation techniques and detailed
-guidance on effectively using colour in your plots, refer to the <a href="">Visualising Data article</a> and <a href="">Creating Colour
-Palettes article</a>. These resources provide additional insights into
-making the most of the <code>scgUtils</code> package for visualising
-complex survey data. <br></p>
+guidance on effectively using colour in your plots, refer to the <a href="">Visualising Data article</a> and <a href="https://sarahcgall.github.io/scgUtils/articles/creating-colour-palettes.html#colour_display">Mastering
+Colour Selection article</a>. These resources provide additional
+insights into making the most of the <code>scgUtils</code> package for
+visualising complex survey data. <br></p>
 <hr>
 </div>
 </div>
@@ -1245,7 +1108,7 @@ saved as CSV files, making them perfect for inclusion in reports or
 further analysis. The ability to create such extensive tables is
 invaluable for presenting a holistic view of your survey results,
 encompassing various aspects and relationships within your data.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rowVars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">turnoutUKGeneral</span><span class="op">:</span><span class="va">partyIdStrength</span>,</span>
 <span>                                      <span class="va">partyIdSqueeze</span><span class="op">:</span><span class="va">likeGrn</span>,</span>
 <span>                                      <span class="va">pcon</span><span class="op">:</span><span class="va">p_hh_size</span>,</span>
