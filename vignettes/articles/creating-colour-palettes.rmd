@@ -2,6 +2,17 @@
 title: "Mastering Colour Selection"
 output: html_document
 ---
+```{=html}
+<style>
+  .content p {
+    margin-top: 30px !important;
+  }
+
+  details {
+    margin-bottom: 40px;
+  }
+</style>
+```
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -9,8 +20,10 @@ knitr::opts_chunk$set(
   eval = TRUE
 )
 ```
-
+<br>
 This article provides guidance on using the `colour_display()`, `colour_pal()`, and `colour_prep()` functions from an R package to create and visualise colour palettes effectively.
+<br>
+
 ```{r setup, include = FALSE}
 library(scgUtils)
 ```

@@ -25,15 +25,13 @@
 #' @return A `ggplot2` object representing the seat distribution in a parliament, with options to include a percentage bar and a majority line.
 #'
 #' @examples
-#' \dontrun{
-#'   # Sample usage with fictional data
+#' # Sample usage with fictional data
 #'   parliament_data <- data.frame(
 #'     Party = c("Party A", "Party B", "Party C"),
 #'     Seats = c(120, 80, 50),
 #'     Percentage = c(40, 27, 17)
 #'   )
 #'   plot_parliament(parliament_data, partyCol = "Party", seatCol = "Seats", percentCol = "Percentage")
-#' }
 #'
 #' @export
 plot_parliament <- function(data,

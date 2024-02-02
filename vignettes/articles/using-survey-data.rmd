@@ -1,6 +1,17 @@
 ---
 title: "Using scgUtils with Survey Data"
 ---
+```{=html}
+<style>
+  .content p {
+    margin-top: 30px !important;
+  }
+
+  details {
+    margin-bottom: 40px;
+  }
+</style>
+```
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -8,15 +19,14 @@ knitr::opts_chunk$set(
   eval = TRUE
 )
 ```
-
+<br>
 This article will take you through the steps of uploading, processing, and exploring survey data using the `scgUtils` package in R. Our journey will cover the nuances of handling survey datasets, from the initial loading of the data to the advanced stages of analysis and visualisation.
+<br>
 
 ```{r setup, include = FALSE}
 library(scgUtils)
 library(magrittr)
 ```
-<br>
-
 ### Step 1: Upload the Sample Dataset
 The process begins with loading your dataset. The `scgUtils` package offers two main functions for this purpose: `get_data()` and `get_file()`.
 <br>

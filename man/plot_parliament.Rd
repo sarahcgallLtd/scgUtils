@@ -62,14 +62,12 @@ It depicts the number of seats each party holds in a semi-circular parliament la
 with optional addition of a percentage bar to show the popular vote won by each party.
 }
 \examples{
-\dontrun{
-  # Sample usage with fictional data
+# Sample usage with fictional data
   parliament_data <- data.frame(
     Party = c("Party A", "Party B", "Party C"),
     Seats = c(120, 80, 50),
     Percentage = c(40, 27, 17)
   )
   plot_parliament(parliament_data, partyCol = "Party", seatCol = "Seats", percentCol = "Percentage")
-}
 
 }

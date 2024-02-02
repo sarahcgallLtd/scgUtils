@@ -1,6 +1,17 @@
 ---
 title: "Uploading & Cleaning Data"
 ---
+```{=html}
+<style>
+  .content p {
+    margin-top: 30px !important;
+  }
+
+  details {
+    margin-bottom: 40px;
+  }
+</style>
+```
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -9,7 +20,7 @@ knitr::opts_chunk$set(
   eval = TRUE
 )
 ```
-
+<br>
 Data preparation is a crucial step in any data analysis workflow. In this guide, we explore the `scgUtils` R package, specifically focusing on three functions: `get_data()`, `process_factors()`, and `get_file()`. These functions streamline the process of loading, cleaning, and preprocessing data, thereby simplifying your workflow:
 
 * [`get_data()`](https://sarahcgall.github.io/scgUtils/reference/get_data.html): A helper function to load datasets into your R environment, allowing you to name the data frame.
@@ -21,7 +32,6 @@ Data preparation is a crucial step in any data analysis workflow. In this guide,
 ```{r setup, include = FALSE}
 library(scgUtils)
 ```
-
 ### Uploading Package Data with `get_data()`
 The `get_data()` function in `scgUtils` is designed to simplify the process of importing datasets into your R environment. This function is particularly useful when working with packaged data or when you want to load data seamlessly without worrying about file paths or data import syntax.
 <br>
