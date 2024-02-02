@@ -94,13 +94,21 @@
 
     
     
-<p>This article demonstrates the powerful visualisation capabilities of
-the <code>scgUtils</code> package, offering tools for diverse data
-presentations ranging from personality profiles to demographic and flow
-analyses.</p>
-<p><br></p>
+<style>
+  .content p {
+    margin-top: 30px !important;
+  }
+
+  details {
+    margin-bottom: 40px;
+  }
+</style>
+<p><br> This article demonstrates the powerful visualisation
+capabilities of the <code>scgUtils</code> package, offering tools for
+diverse data presentations ranging from personality profiles to
+demographic and flow analyses. <br></p>
 <div class="section level3">
-<h3 id="sankey-diagram">Sankey Diagram<a class="anchor" aria-label="anchor" href="#sankey-diagram"></a>
+<h3 id="sankey">Sankey<a class="anchor" aria-label="anchor" href="#sankey"></a>
 </h3>
 <p>Flow visualisation helps in understanding how different categories of
 respondents transition between various stages or choices. The
@@ -205,12 +213,12 @@ flows.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="parliament-plot">Parliament Plot<a class="anchor" aria-label="anchor" href="#parliament-plot"></a>
+<h3 id="parliament">Parliament<a class="anchor" aria-label="anchor" href="#parliament"></a>
 </h3>
 <p>Understanding the distribution of parliamentary seats among political
 parties is crucial for grasping the political landscape. The
 <code><a href="../reference/plot_parliament.html">plot_parliament()</a></code> function in <code>scgUtils</code> is
-designed to visualise this distribution in a semi-circular parliament
+designed to visualise this distribution in a semicircular parliament
 layout. It is particularly useful for illustrating the composition of a
 parliament following an election. <br><br></p>
 <div class="section level5">
@@ -233,7 +241,7 @@ within the parliament.</p>
 <span>                seatCol <span class="op">=</span> <span class="st">"Result"</span>,</span>
 <span>                colours <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#e3000f"</span>, <span class="st">"#409a3c"</span>, <span class="st">"#ffed00"</span>, <span class="st">"#be3075"</span>, <span class="st">"#dcdcdc"</span>, <span class="st">"#00a2de"</span>, <span class="st">"black"</span><span class="op">)</span> <span class="co"># optional</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="visualising-data_files/figure-html/parliament1-1.png" width="700"><br></p>
+<p><img src="visualising-data_files/figure-html/parliament1-1.png" width="100%"><br></p>
 </div>
 <div class="section level5">
 <h5 id="adding-a-percentage-bar">Adding a Percentage Bar<a class="anchor" aria-label="anchor" href="#adding-a-percentage-bar"></a>
@@ -252,24 +260,23 @@ reflecting how party popularity translates into parliamentary seats.</p>
 <span></span>
 <span><span class="co"># Plot</span></span>
 <span><span class="fu"><a href="../reference/plot_parliament.html">plot_parliament</a></span><span class="op">(</span><span class="va">uk_parliament</span>,</span>
-<span>                  <span class="st">"Party"</span>,</span>
-<span>                  <span class="st">"Seats"</span>,</span>
-<span>                  <span class="st">"Percentage"</span>,</span>
-<span>                  majorityLine <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># add line down centre</span></span>
-<span>                  title <span class="op">=</span> <span class="st">"2019 UK General Election"</span>, <span class="co"># add title</span></span>
-<span>                  subtitle <span class="op">=</span> <span class="st">"Results"</span>,<span class="co"># add subtitle</span></span>
-<span>                  size <span class="op">=</span> <span class="fl">4</span>, <span class="co"># increase the size of the points</span></span>
-<span>                  legend <span class="op">=</span> <span class="st">"bottom"</span>, <span class="co"># add legend to bottom</span></span>
-<span>                  colours <span class="op">=</span> <span class="fu"><a href="../reference/colour_prep.html">colour_prep</a></span><span class="op">(</span><span class="va">uk_parliament</span>, <span class="st">"Party"</span>, <span class="st">"polUK"</span><span class="op">)</span>, <span class="co"># match colours using `colour_prep()`</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="visualising-data_files/figure-html/parliament2-1.png" width="700"><br> This plot offers an intuitive way to analyse election results,
+<span>                <span class="st">"Party"</span>,</span>
+<span>                <span class="st">"Seats"</span>,</span>
+<span>                <span class="st">"Percentage"</span>,</span>
+<span>                majorityLine <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># add line down centre</span></span>
+<span>                title <span class="op">=</span> <span class="st">"2019 UK General Election"</span>, <span class="co"># add title</span></span>
+<span>                subtitle <span class="op">=</span> <span class="st">"Results"</span>, <span class="co"># add subtitle</span></span>
+<span>                legend <span class="op">=</span> <span class="st">"bottom"</span>, <span class="co"># add legend to bottom</span></span>
+<span>                colours <span class="op">=</span> <span class="fu"><a href="../reference/colour_prep.html">colour_prep</a></span><span class="op">(</span><span class="va">uk_parliament</span>, <span class="st">"Party"</span>, <span class="st">"polUK"</span><span class="op">)</span>, <span class="co"># match colours using `colour_prep()`</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="visualising-data_files/figure-html/parliament2-1.png" width="100%"><br><br> This plot offers an intuitive way to analyse election results,
 party strengths, and their representation in the parliament. The
 inclusion of a majority line further enhances the plot by delineating
 the threshold needed for a majority. <br><br></p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="personality-plot">Personality Plot<a class="anchor" aria-label="anchor" href="#personality-plot"></a>
+<h3 id="personality">Personality<a class="anchor" aria-label="anchor" href="#personality"></a>
 </h3>
 <p>The <code><a href="../reference/plot_bigfive.html">plot_bigfive()</a></code> function returns a <a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">ggplot2</a>
 chart to help visualise the personality profile of the survey data. This
@@ -278,10 +285,19 @@ radar chart is primarily to visualise the Big Five personality traits
 conscientiousness) but can be amended for other quantitative data types
 with a scale between 0 and 100.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Create single plot using unweighted data</span></span>
+<code class="sourceCode R"><span><span class="co"># Create data</span></span>
+<span><span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span>, <span class="st">"Male"</span>, <span class="st">"Male"</span>, <span class="st">"Female"</span>, <span class="st">"Female"</span>, <span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
+<span>                      Weight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>, <span class="fl">1.0</span>, <span class="fl">1.3</span>, <span class="fl">1.7</span>, <span class="fl">1.0</span>, <span class="fl">0.99</span><span class="op">)</span>,</span>
+<span>                      Neuroticism <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">40</span>, <span class="fl">30</span>, <span class="fl">80</span>, <span class="fl">20</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">10</span><span class="op">)</span>,</span>
+<span>                      Extroversion <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">20</span>, <span class="fl">35</span>, <span class="fl">45</span>, <span class="fl">50</span>, <span class="fl">10</span>, <span class="fl">60</span>, <span class="fl">90</span><span class="op">)</span>,</span>
+<span>                      Openness <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span>, <span class="fl">45</span>, <span class="fl">30</span>, <span class="fl">65</span>, <span class="fl">80</span>, <span class="fl">10</span>, <span class="fl">55</span><span class="op">)</span>,</span>
+<span>                      Agreeableness <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">30</span>, <span class="fl">50</span>, <span class="fl">20</span>, <span class="fl">10</span>, <span class="fl">75</span>, <span class="fl">65</span>, <span class="fl">35</span><span class="op">)</span>,</span>
+<span>                      Conscientiousness <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">45</span>, <span class="fl">50</span>, <span class="fl">90</span>, <span class="fl">10</span>, <span class="fl">25</span>, <span class="fl">30</span>, <span class="fl">80</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create single plot using unweighted data</span></span>
 <span><span class="fu"><a href="../reference/plot_bigfive.html">plot_bigfive</a></span><span class="op">(</span><span class="va">dataset</span>,</span>
-<span>             big_five <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Neuroticism"</span>, <span class="st">"Extroversion"</span>, <span class="st">"Openness"</span>, <span class="st">"Agreeableness"</span>, <span class="st">"Conscientiousness"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="img/bigfive_plot1.png" width="100%"><br></p>
+<span>             bigfive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Neuroticism"</span>, <span class="st">"Extroversion"</span>, <span class="st">"Openness"</span>, <span class="st">"Agreeableness"</span>, <span class="st">"Conscientiousness"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="visualising-data_files/figure-html/bigfive_plot1-1.png" width="100%"><br></p>
 <p>When a group is provided, the function returns faceted plots with the
 variables within the group plotted on top of the average. This provides
 an easy comparison between the variable and the rest of the cohort in
@@ -289,13 +305,13 @@ the survey.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create faceted plot using age groups and weighted data</span></span>
 <span><span class="fu"><a href="../reference/plot_bigfive.html">plot_bigfive</a></span><span class="op">(</span><span class="va">dataset</span>,</span>
-<span>             big_five <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Neuroticism"</span>, <span class="st">"Extroversion"</span>, <span class="st">"Openness"</span>, <span class="st">"Agreeableness"</span>, <span class="st">"Conscientiousness"</span><span class="op">)</span>,</span>
+<span>             bigfive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Neuroticism"</span>, <span class="st">"Extroversion"</span>, <span class="st">"Openness"</span>, <span class="st">"Agreeableness"</span>, <span class="st">"Conscientiousness"</span><span class="op">)</span>,</span>
 <span>             group <span class="op">=</span> <span class="st">"Gender"</span>,</span>
-<span>             weight <span class="op">=</span> <span class="st">"wgtvar"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="img/bigfive_plot2.png" width="100%"></p>
+<span>             weight <span class="op">=</span> <span class="st">"Weight"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="visualising-data_files/figure-html/plot_bigfive2-1.png" width="100%"></p>
 </div>
 <div class="section level3">
-<h3 id="population-plot">Population Plot<a class="anchor" aria-label="anchor" href="#population-plot"></a>
+<h3 id="population">Population<a class="anchor" aria-label="anchor" href="#population"></a>
 </h3>
 <p>Understanding demographic distribution is vital in survey analysis.
 <code><a href="../reference/plot_popn.html">plot_popn()</a></code> creates visual representations of population
@@ -339,7 +355,7 @@ differences or similarities within subgroups.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="binary-plot">Binary Plot<a class="anchor" aria-label="anchor" href="#binary-plot"></a>
+<h3 id="binary">Binary<a class="anchor" aria-label="anchor" href="#binary"></a>
 </h3>
 <p>The <code><a href="../reference/plot_binary.html">plot_binary()</a></code> function visualises binary survey
 responses (e.g., “Yes” vs “No”). It is particularly effective for
@@ -362,12 +378,6 @@ correct format.</p>
 <p><img src="img/binary_plot.png" width="100%"><br></p>
 </div>
 <div class="section level3">
-<h3 id="parliament-plots">Parliament Plots<a class="anchor" aria-label="anchor" href="#parliament-plots"></a>
-</h3>
-<p>Future updates to <code>scgUtils</code> will introduce Parliament
-plots, further expanding the package’s visualisation capabilities.</p>
-</div>
-<div class="section level3">
 <h3 id="butterfly-plots">Butterfly Plots<a class="anchor" aria-label="anchor" href="#butterfly-plots"></a>
 </h3>
 <p>Future updates to <code>scgUtils</code> will introduce Butterfly
@@ -376,8 +386,14 @@ plots, further expanding the package’s visualisation capabilities.</p>
 <div class="section level3">
 <h3 id="likert-plots">Likert Plots<a class="anchor" aria-label="anchor" href="#likert-plots"></a>
 </h3>
-<p>Likert scale responses will be visualisable with upcoming features,
+<p>Likert scale responses will be visualised with upcoming features,
 providing nuanced insights into survey data.</p>
+</div>
+<div class="section level3">
+<h3 id="waffle-plots">Waffle Plots<a class="anchor" aria-label="anchor" href="#waffle-plots"></a>
+</h3>
+<p>Future updates to <code>scgUtils</code> will introduce Waffle charts,
+further expanding the package’s visualisation capabilities.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
