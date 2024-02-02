@@ -2,24 +2,74 @@
 % Please edit documentation in R/plot_parliament.R
 \name{plot_parliament}
 \alias{plot_parliament}
-\title{Parliament Plot}
+\title{Visualise Parliamentary Seats by Party}
 \usage{
-plot_parliament(data, group)
+plot_parliament(
+  data,
+  partyCol,
+  seatCol,
+  percentCol = NULL,
+  colours = colour_pal("catExtended"),
+  size = 3,
+  alpha = 1,
+  title = NULL,
+  subtitle = NULL,
+  legend = c("none", "right", "bottom", "left", "top"),
+  majorityLine = FALSE,
+  extendLine = 0.05,
+  num_rows = NULL,
+  rMin = 1,
+  rMax = 2.5
+)
 }
 \arguments{
-\item{data}{A data frame containing survey data. This parameter is required.}
+\item{data}{A data frame containing survey data, specifically party names and their seat counts.}
 
-\item{group}{A variable overlay to compare between groups. This parameter is optional.}
+\item{partyCol}{The column in \code{data} representing the names of political parties.}
+
+\item{seatCol}{The column in \code{data} representing the number of seats held by each party.}
+
+\item{percentCol}{Optional: The column in \code{data} representing the popular vote won by each party.}
+
+\item{colours}{A named vector of colours for the parties. If unspecified, default colours from \code{colour_pal("catExtended")} are used.}
+
+\item{size}{Size of each seat marker in the plot.}
+
+\item{alpha}{Transparency level of seat markers.}
+
+\item{title}{Title of the plot.}
+
+\item{subtitle}{Subtitle of the plot.}
+
+\item{legend}{Position of the legend in the plot. Can be 'none', 'right', 'bottom', 'left', or 'top'.}
+
+\item{majorityLine}{Boolean; if \code{TRUE}, adds a line indicating the majority threshold.}
+
+\item{extendLine}{Length to extend the majority line on both sides, if \code{majorityLine} is \code{TRUE}.}
+
+\item{num_rows}{The number of rows to distribute seats across in the semi-circle. If \code{NULL}, it's calculated based on total seats.}
+
+\item{rMin}{Minimum radius for the innermost row in the semi-circle.}
+
+\item{rMax}{Maximum radius for the outermost row in the semi-circle.}
 }
 \value{
-ggplot2 plot of the parliamentary seats
+A \code{ggplot2} object representing the seat distribution in a parliament, with options to include a percentage bar and a majority line.
 }
 \description{
-Visualise the number of seats in parliament by party.
+\code{plot_parliament} creates a visual representation of a parliament's seat distribution by party.
+It depicts the number of seats each party holds in a semi-circular parliament layout,
+with optional addition of a percentage bar to show the popular vote won by each party.
 }
 \examples{
 \dontrun{
-# Create plot using age groups and age intervals included to return average age
-plot_parliament(dataset,)
+  # Sample usage with fictional data
+  parliament_data <- data.frame(
+    Party = c("Party A", "Party B", "Party C"),
+    Seats = c(120, 80, 50),
+    Percentage = c(40, 27, 17)
+  )
+  plot_parliament(parliament_data, partyCol = "Party", seatCol = "Seats", percentCol = "Percentage")
 }
+
 }

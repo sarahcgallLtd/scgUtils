@@ -88,6 +88,57 @@ plot_sankey(sankey_df,
 ````
 <br>
 
+### Parliament Plot
+Understanding the distribution of parliamentary seats among political parties is crucial for grasping the political landscape. The `plot_parliament()` function in `scgUtils` is designed to visualise this distribution in a semi-circular parliament layout. It is particularly useful for illustrating the composition of a parliament following an election.
+<br>
+<br>
+
+##### Basic Parliament
+The basic usage of `plot_parliament()` involves creating a plot that shows the number of seats each party holds. This representation helps in quickly understanding the strength of each party within the parliament.
+```{r parliament1}
+# Prepare Data
+de_parliament <- data.frame(
+  Party = c("SPD", "Greens", "FDP", "The Left", "Other", "AfD", "CDU/CSU"),
+  Result = c(206, 118, 92, 39, 1, 83, 97)
+)
+
+# Plot
+plot_parliament(de_parliament,
+                partyCol = "Party",
+                seatCol = "Result",
+                colours = c("#e3000f", "#409a3c", "#ffed00", "#be3075", "#dcdcdc", "#00a2de", "black") # optional
+)
+```
+<br>
+
+##### Adding a Percentage Bar
+For a more detailed analysis, `plot_parliament()` can also include a percentage bar that shows the popular vote won by each party. This feature provides additional context to the seat distribution, reflecting how party popularity translates into parliamentary seats.
+```{r parliament2}
+# Prepare Data
+uk_parliament <- data.frame(
+  Party = c("Labour", "SNP", "Other", "Liberal Democrat", "Conservative"),
+  Seats = c(202, 48, 24, 11, 365),
+  Percentage = c(32.1, 3.9, 8.8, 11.6, 43.6)
+)
+
+# Plot
+plot_parliament(uk_parliament,
+                  "Party",
+                  "Seats",
+                  "Percentage",
+                  majorityLine = TRUE, # add line down centre
+                  title = "2019 UK General Election", # add title
+                  subtitle = "Results",# add subtitle
+                  size = 4, # increase the size of the points
+                  legend = "bottom", # add legend to bottom
+                  colours = colour_prep(uk_parliament, "Party", "polUK"), # match colours using `colour_prep()`
+  )
+```
+<br>
+This plot offers an intuitive way to analyse election results, party strengths, and their representation in the parliament. The inclusion of a majority line further enhances the plot by delineating the threshold needed for a majority.
+<br>
+<br>
+
 ### Personality Plot
 The `plot_bigfive()` function returns a [ggplot2](https://ggplot2.tidyverse.org/reference/theme.html) chart to help visualise the personality profile of the survey data. This radar chart is primarily to visualise the Big Five personality traits (neuroticism, extroversion, openness, agreeableness, and conscientiousness) but can be amended for other quantitative data types with a scale between 0 and 100.
 ```{r bigfive_plot1, eval = FALSE}
@@ -152,7 +203,7 @@ The `plot_binary()` function visualises binary survey responses (e.g., "Yes" vs 
 vars <- list(Q1a = "Art",
              Q1b = "Automobiles",
              Q1c = "Birdwatching"
-#             ...
+             #             ...
 )
 # Create plot
 plot_binary(dataset,

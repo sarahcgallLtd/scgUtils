@@ -51,7 +51,7 @@ check_params <- function(data, ..., vars = NULL, groups = NULL, groupsPercent = 
 
     if (!is.null(value)) {
       check_in_data(name, value, data)
-      if (name %in% c("weight", "meanVar") && !is.numeric(data[[value]])) {
+      if (name %in% c("weight", "meanVar", "seatCol", "percentCol") && !is.numeric(data[[value]])) {
         stop(paste0("`", name, "` must be numeric."))
       }
     }
