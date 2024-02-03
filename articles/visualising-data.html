@@ -122,7 +122,7 @@ changes in preferences over time. <br><br></p>
 which aggregates frequencies necessary for the Sankey diagram.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Subset the required columns from the dataset</span></span>
-<span><span class="va">sankey_df</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wt"</span>, <span class="st">"generalElectionVote"</span>, <span class="st">"p_past_vote_2019"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">sankey_df</span> <span class="op">&lt;-</span> <span class="va">survey_df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wt"</span>, <span class="st">"generalElectionVote"</span>, <span class="st">"p_past_vote_2019"</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># Get the frequency</span></span>
 <span><span class="va">sankey_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/grp_freq.html">grp_freq</a></span><span class="op">(</span><span class="va">sankey_df</span>,</span>
@@ -276,41 +276,6 @@ the threshold needed for a majority. <br><br></p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="personality">Personality<a class="anchor" aria-label="anchor" href="#personality"></a>
-</h3>
-<p>The <code><a href="../reference/plot_bigfive.html">plot_bigfive()</a></code> function returns a <a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">ggplot2</a>
-chart to help visualise the personality profile of the survey data. This
-radar chart is primarily to visualise the Big Five personality traits
-(neuroticism, extroversion, openness, agreeableness, and
-conscientiousness) but can be amended for other quantitative data types
-with a scale between 0 and 100.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Create data</span></span>
-<span><span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span>, <span class="st">"Male"</span>, <span class="st">"Male"</span>, <span class="st">"Female"</span>, <span class="st">"Female"</span>, <span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>,</span>
-<span>                      Weight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>, <span class="fl">1.0</span>, <span class="fl">1.3</span>, <span class="fl">1.7</span>, <span class="fl">1.0</span>, <span class="fl">0.99</span><span class="op">)</span>,</span>
-<span>                      Neuroticism <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">40</span>, <span class="fl">30</span>, <span class="fl">80</span>, <span class="fl">20</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">10</span><span class="op">)</span>,</span>
-<span>                      Extroversion <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">20</span>, <span class="fl">35</span>, <span class="fl">45</span>, <span class="fl">50</span>, <span class="fl">10</span>, <span class="fl">60</span>, <span class="fl">90</span><span class="op">)</span>,</span>
-<span>                      Openness <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span>, <span class="fl">45</span>, <span class="fl">30</span>, <span class="fl">65</span>, <span class="fl">80</span>, <span class="fl">10</span>, <span class="fl">55</span><span class="op">)</span>,</span>
-<span>                      Agreeableness <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">30</span>, <span class="fl">50</span>, <span class="fl">20</span>, <span class="fl">10</span>, <span class="fl">75</span>, <span class="fl">65</span>, <span class="fl">35</span><span class="op">)</span>,</span>
-<span>                      Conscientiousness <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">45</span>, <span class="fl">50</span>, <span class="fl">90</span>, <span class="fl">10</span>, <span class="fl">25</span>, <span class="fl">30</span>, <span class="fl">80</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Create single plot using unweighted data</span></span>
-<span><span class="fu"><a href="../reference/plot_bigfive.html">plot_bigfive</a></span><span class="op">(</span><span class="va">dataset</span>,</span>
-<span>             bigfive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Neuroticism"</span>, <span class="st">"Extroversion"</span>, <span class="st">"Openness"</span>, <span class="st">"Agreeableness"</span>, <span class="st">"Conscientiousness"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="visualising-data_files/figure-html/bigfive_plot1-1.png" width="100%"><br></p>
-<p>When a group is provided, the function returns faceted plots with the
-variables within the group plotted on top of the average. This provides
-an easy comparison between the variable and the rest of the cohort in
-the survey.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Create faceted plot using age groups and weighted data</span></span>
-<span><span class="fu"><a href="../reference/plot_bigfive.html">plot_bigfive</a></span><span class="op">(</span><span class="va">dataset</span>,</span>
-<span>             bigfive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Neuroticism"</span>, <span class="st">"Extroversion"</span>, <span class="st">"Openness"</span>, <span class="st">"Agreeableness"</span>, <span class="st">"Conscientiousness"</span><span class="op">)</span>,</span>
-<span>             group <span class="op">=</span> <span class="st">"Gender"</span>,</span>
-<span>             weight <span class="op">=</span> <span class="st">"Weight"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="visualising-data_files/figure-html/plot_bigfive2-1.png" width="100%"></p>
-</div>
-<div class="section level3">
 <h3 id="population">Population<a class="anchor" aria-label="anchor" href="#population"></a>
 </h3>
 <p>Understanding demographic distribution is vital in survey analysis.
@@ -325,8 +290,8 @@ pyramid showing distributions across gender and age groups. If a
 variable like average age (<code>meanVar</code>) is specified, the plot
 can also display this information, adding another layer of insight into
 the demographic composition.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_popn.html">plot_popn</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_popn.html">plot_popn</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">survey_df</span>,</span>
 <span>          xVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
 <span>          yVar <span class="op">=</span> <span class="st">"ageGroup"</span>,</span>
 <span>          weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
@@ -343,8 +308,8 @@ the demographic composition.</p>
 This feature overlays the selected group’s data onto the total
 population structure, providing a comparative view that highlights
 differences or similarities within subgroups.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_popn.html">plot_popn</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_popn.html">plot_popn</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">survey_df</span>,</span>
 <span>          xVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
 <span>          yVar <span class="op">=</span> <span class="st">"ageGroup"</span>,</span>
 <span>          group <span class="op">=</span> <span class="st">"turnoutUKGeneral"</span>,</span>
@@ -355,6 +320,32 @@ differences or similarities within subgroups.</p>
 </div>
 </div>
 <div class="section level3">
+<h3 id="personality">Personality<a class="anchor" aria-label="anchor" href="#personality"></a>
+</h3>
+<p>The <code><a href="../reference/plot_bigfive.html">plot_bigfive()</a></code> function returns a <a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">ggplot2</a>
+chart to help visualise the personality profile of the survey data. This
+radar chart is primarily to visualise the Big Five personality traits
+(neuroticism, extroversion, openness, agreeableness, and
+conscientiousness) but can be amended for other quantitative data types
+with a scale between 0 and 100.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create single plot using unweighted data</span></span>
+<span><span class="fu"><a href="../reference/plot_bigfive.html">plot_bigfive</a></span><span class="op">(</span><span class="va">bigfive_df</span>,</span>
+<span>             bigfive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Neuroticism"</span>, <span class="st">"Extroversion"</span>, <span class="st">"Openness"</span>, <span class="st">"Agreeableness"</span>, <span class="st">"Conscientiousness"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="visualising-data_files/figure-html/bigfive_plot1-1.png" width="100%"><br></p>
+<p>When a group is provided, the function returns faceted plots with the
+variables within the group plotted on top of the average. This provides
+an easy comparison between the variable and the rest of the cohort in
+the survey.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create faceted plot using age groups and weighted data</span></span>
+<span><span class="fu"><a href="../reference/plot_bigfive.html">plot_bigfive</a></span><span class="op">(</span><span class="va">bigfive_df</span>,</span>
+<span>             bigfive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Neuroticism"</span>, <span class="st">"Extroversion"</span>, <span class="st">"Openness"</span>, <span class="st">"Agreeableness"</span>, <span class="st">"Conscientiousness"</span><span class="op">)</span>,</span>
+<span>             group <span class="op">=</span> <span class="st">"Gender"</span>,</span>
+<span>             weight <span class="op">=</span> <span class="st">"Weight"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="visualising-data_files/figure-html/plot_bigfive2-1.png" width="100%"><br></p>
+</div>
+<div class="section level3">
 <h3 id="binary">Binary<a class="anchor" aria-label="anchor" href="#binary"></a>
 </h3>
 <p>The <code><a href="../reference/plot_binary.html">plot_binary()</a></code> function visualises binary survey
@@ -363,37 +354,118 @@ comparative analysis. This function utilises the
 <code><a href="../reference/grid_vars.html">grid_vars()</a></code> function to help transform the data into the
 correct format.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Create list</span></span>
+<code class="sourceCode R"><span><span class="co"># Create list for dummy data</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Q1a <span class="op">=</span> <span class="st">"Art"</span>,</span>
 <span>             Q1b <span class="op">=</span> <span class="st">"Automobiles"</span>,</span>
-<span>             Q1c <span class="op">=</span> <span class="st">"Birdwatching"</span></span>
-<span>             <span class="co">#             ...</span></span>
+<span>             Q1c <span class="op">=</span> <span class="st">"Birdwatching"</span>,</span>
+<span>             Q1d <span class="op">=</span> <span class="st">"Music"</span>,</span>
+<span>             Q1e <span class="op">=</span> <span class="st">"Reading"</span>,</span>
+<span>             Q1f <span class="op">=</span> <span class="st">"Cooking"</span>,</span>
+<span>             Q1g <span class="op">=</span> <span class="st">"Hiking"</span>,</span>
+<span>             Q1h <span class="op">=</span> <span class="st">"Watching Sport"</span>,</span>
+<span>             Q1i <span class="op">=</span> <span class="st">"Computers"</span>,</span>
+<span>             Q1j <span class="op">=</span> <span class="st">"Gaming"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co"># Create plot</span></span>
-<span><span class="fu"><a href="../reference/plot_binary.html">plot_binary</a></span><span class="op">(</span><span class="va">dataset</span>,</span>
+<span><span class="co"># Create plot of total dataset using unweighted data</span></span>
+<span><span class="fu"><a href="../reference/plot_binary.html">plot_binary</a></span><span class="op">(</span><span class="va">binary_df</span>,</span>
 <span>            vars <span class="op">=</span> <span class="va">vars</span>,</span>
-<span>            group <span class="op">=</span> <span class="st">"gender"</span>,</span>
-<span>            weight <span class="op">=</span> <span class="st">"wgtvar"</span>,</span>
-<span>            return_var <span class="op">=</span> <span class="st">"Yes"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="img/binary_plot.png" width="100%"><br></p>
+<span>            value <span class="op">=</span> <span class="st">"Yes"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="visualising-data_files/figure-html/plot_binary1-1.png" width="100%"><br></p>
+<p>When a group is provided, the function return faceted plots with the
+variables within the group plotted against the total. This provides an
+easy comparison between the variable and the rest of the cohort in the
+survey.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create faceted plot using Gender and weighted data</span></span>
+<span><span class="fu"><a href="../reference/plot_binary.html">plot_binary</a></span><span class="op">(</span><span class="va">binary_df</span>,</span>
+<span>            vars <span class="op">=</span> <span class="va">vars</span>,</span>
+<span>            value <span class="op">=</span> <span class="st">"Yes"</span>,</span>
+<span>            group <span class="op">=</span> <span class="st">"Gender"</span>, <span class="co"># optional</span></span>
+<span>            weight <span class="op">=</span> <span class="st">"Weight"</span> <span class="co"># optional</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="visualising-data_files/figure-html/plot_binary2-1.png" width="100%"><br></p>
 </div>
 <div class="section level3">
-<h3 id="butterfly-plots">Butterfly Plots<a class="anchor" aria-label="anchor" href="#butterfly-plots"></a>
+<h3 id="waffle">Waffle<a class="anchor" aria-label="anchor" href="#waffle"></a>
 </h3>
-<p>Future updates to <code>scgUtils</code> will introduce Butterfly
-plots, further expanding the package’s visualisation capabilities.</p>
+<p>Waffle plots provide a unique and compelling way to visualise
+categorical data, making them ideal for representing proportions or
+percentages in datasets, including survey responses. The
+<code><a href="../reference/plot_waffle.html">plot_waffle()</a></code> function in the <code>scgUtils</code> package
+offers a straightforward method to create these plots. <br><br> #####
+Basic Usage The basic use of <code><a href="../reference/plot_waffle.html">plot_waffle()</a></code> involves
+creating a plot that represents the distribution of different
+categories. This method is especially effective for visually
+demonstrating the relative sizes of groups within a population.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Prepare Data</span></span>
+<span><span class="va">waffle_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    Category <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>,</span>
+<span>    Count <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">40</span>, <span class="fl">30</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot</span></span>
+<span><span class="fu"><a href="../reference/plot_waffle.html">plot_waffle</a></span><span class="op">(</span><span class="va">waffle_df</span>,</span>
+<span>            group <span class="op">=</span> <span class="st">"Category"</span>,</span>
+<span>            values <span class="op">=</span> <span class="st">"Count"</span>,</span>
+<span>            isolateVar <span class="op">=</span> <span class="st">"A"</span> <span class="co"># isolate a single plot</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="visualising-data_files/figure-html/waffle1-1.png" width="100%"><br></p>
+<div class="section level5">
+<h5 id="using-plot_waffle-with-survey-data">Using <code>plot_waffle()</code> with Survey Data<a class="anchor" aria-label="anchor" href="#using-plot_waffle-with-survey-data"></a>
+</h5>
+<p><code><a href="../reference/plot_waffle.html">plot_waffle()</a></code> is particularly adept at handling survey
+data, supporting both weighted and unweighted analysis. The function can
+automatically extract and display relevant labels from survey questions,
+enhancing the plot’s interpretability.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Waffle plot with unweighted survey data</span></span>
+<span><span class="fu"><a href="../reference/plot_waffle.html">plot_waffle</a></span><span class="op">(</span><span class="va">survey_df</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">p_socgrade</span> <span class="op">!=</span> <span class="st">"Unknown"</span><span class="op">)</span>, <span class="co"># removing unknowns</span></span>
+<span>            group <span class="op">=</span> <span class="st">"p_socgrade"</span>,</span>
+<span>            title <span class="op">=</span> <span class="st">"p_socgrade"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="visualising-data_files/figure-html/waffle2-1.png" width="100%"><br><br> For a more refined visual presentation,
+<code><a href="../reference/plot_waffle.html">plot_waffle()</a></code> allows customisation of colours and plot
+order. This flexibility is invaluable for aligning the visual aesthetic
+with specific data narratives or brand guidelines. <br><br></p>
+</div>
 </div>
 <div class="section level3">
 <h3 id="likert-plots">Likert Plots<a class="anchor" aria-label="anchor" href="#likert-plots"></a>
 </h3>
 <p>Likert scale responses will be visualised with upcoming features,
-providing nuanced insights into survey data.</p>
+providing nuanced insights into survey data. This function will contain
+four options for visualisations, including:</p>
+<ul>
+<li><code>100% Stacked Bars</code></li>
+<li><code>Diverging with Neutrals</code></li>
+<li><code>Diverging without Neutrals</code></li>
+<li><code>Faceted Bars</code></li>
+</ul>
 </div>
 <div class="section level3">
-<h3 id="waffle-plots">Waffle Plots<a class="anchor" aria-label="anchor" href="#waffle-plots"></a>
+<h3 id="other-plots">Other Plots<a class="anchor" aria-label="anchor" href="#other-plots"></a>
 </h3>
-<p>Future updates to <code>scgUtils</code> will introduce Waffle charts,
-further expanding the package’s visualisation capabilities.</p>
+<p>Future updates to <code>scgUtils</code> will introduce other plots
+such as:</p>
+<ul>
+<li>
+<code>plot_dumbbell()</code> which can be used to compare two
+categories and view the differences between numeric data.</li>
+<li>
+<code>plot_wordcloud()</code> to highlight keywords from either
+qualitative or quantitative results.</li>
+<li>
+<code>plot_donut()</code> to illustrate numerical proportions.</li>
+<li>
+<code>plot_radar()</code> which will expand the capabilities of
+<code><a href="../reference/plot_bigfive.html">plot_bigfive()</a></code> in order to allow the comparison of any
+numeric multivariate data.</li>
+<li>
+<code>plot_mekko()</code>to represent categorical data with multiple
+subcategories.</li>
+</ul>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
