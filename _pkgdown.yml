@@ -46,6 +46,7 @@ reference:
   - plot_parliament
   - plot_popn
   - plot_sankey
+  - plot_waffle
 
 - title: Styling
   desc: >
