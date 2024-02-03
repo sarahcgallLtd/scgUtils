@@ -49,7 +49,7 @@ crosstab(data = df,
 # 2  I voted to leave         38.25   59.12      72.53 69.13             76.51    26.42 51.78
 # 3        Don't know          0.52    0.30       0.00  0.27              0.00     0.10  0.31
 ```
-![`scgElectionsNZ`](vignettes/articles/img/crosstab_example.png)
+![](vignettes/articles/img/crosstab_example.png)
 
 ## Feedback and Contributions
 Suggestions and contributions are welcome. For any proposed additions, amendments, or feedback, please

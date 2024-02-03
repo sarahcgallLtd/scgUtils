@@ -27,7 +27,9 @@ This article demonstrates the powerful visualisation capabilities of the `scgUti
 
 ```{r setup, include = FALSE}
 library(scgUtils)
-library(tidyverse)
+library(magrittr)
+library(dplyr)
+library(tidyr)
 
 survey_df <- get_data("survey") %>%
   labelled::unlabelled() %>%
@@ -224,13 +226,13 @@ binary_df <- tibble(row = 1:1000) %>% select(-row)
 # Add columns Q1a to Q1j with varying proportions of "Yes" and "No"
 for (col in letters[1:10]) {
   col_name <- paste0("Q1", col)
-  yes_proportion <- runif(1) # Random proportion for "Yes"
+  yes_proportion <- stats::runif(1) # Random proportion for "Yes"
   binary_df[[col_name]] <- factor(sample(c("Yes", "No"), 1000, replace = TRUE, prob = c(yes_proportion, 1 - yes_proportion)),
                                   levels = c("Yes", "No"))
 }
 
 # Add a "Weight" column with values between 0.5 and 2.0
-binary_df$Weight <- runif(1000, min = 0.5, max = 2.0)
+binary_df$Weight <- stats::runif(1000, min = 0.5, max = 2.0)
 
 # Add a "Gender" column with approximately equal "Male" and "Female" values
 binary_df$Gender <- factor(sample(c("Male", "Female"), 1000, replace = TRUE),
