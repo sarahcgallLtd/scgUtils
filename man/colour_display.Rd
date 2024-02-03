@@ -44,9 +44,6 @@ colour_display("polUK")
 # View individual colour
 colour_display("Jaffa")
 
-# View all individual colours
-colour_display("All")
-
 # View sequential colour palette with 7 levels on a continuous scale
 colour_display("seqGreen", 7, type="continuous")
 

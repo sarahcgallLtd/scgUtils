@@ -271,6 +271,9 @@ create_parliament_plot <- function(plot_df,
     theme_void() +
     coord_fixed(ratio = 1) +
     theme(
+      plot.margin = margin(0.5, 0.5,
+                         0.5, 0.5,
+                         "cm"),
       plot.title = element_text(face = "bold",
                                 colour = colour_pal("Black96"),
                                 size = 12,

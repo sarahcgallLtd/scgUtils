@@ -10,6 +10,6 @@ NULL
 globalVariables(c("palette", "name", "colour", "value", "number", "colours",
                   "Freq", "Group", "Group2", "Mean", "Metric", "Perc",
                   "Question", "Response", "id", "label", "x", "y", "Total",
-                  "cumulative_percent","percent_width", "Party", "Percentage",
-                  "party")
+                  "cumulative_percent", "percent_width", "Party", "Percentage",
+                  "party", "category", "variable")
 )

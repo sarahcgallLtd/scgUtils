@@ -27,9 +27,9 @@ This article demonstrates the powerful visualisation capabilities of the `scgUti
 
 ```{r setup, include = FALSE}
 library(scgUtils)
-library(magrittr)
+library(tidyverse)
 
-df <- get_data("survey") %>%
+survey_df <- get_data("survey") %>%
   labelled::unlabelled() %>%
   process_factors()
 ```
@@ -42,7 +42,7 @@ Flow visualisation helps in understanding how different categories of respondent
 Before visualising, prepare your data using `grp_freq()`, which aggregates frequencies necessary for the Sankey diagram.
 ```{r flow1, eval = FALSE}
 # Subset the required columns from the dataset
-sankey_df <- df[, c("wt", "generalElectionVote", "p_past_vote_2019")]
+sankey_df <- survey_df[, c("wt", "generalElectionVote", "p_past_vote_2019")]
 
 # Get the frequency
 sankey_df <- grp_freq(sankey_df,
@@ -57,7 +57,7 @@ head(sankey_df)
 #   summarise(Freq = sum(wt))
 ```
 ```{r flow1_table, echo = FALSE}
-sankey_df <- df[, c("wt", "generalElectionVote", "p_past_vote_2019")]
+sankey_df <- survey_df[, c("wt", "generalElectionVote", "p_past_vote_2019")]
 sankey_df <- grp_freq(sankey_df,
                       groups = c("generalElectionVote", "p_past_vote_2019"),
                       weight = "wt",
@@ -150,34 +150,6 @@ This plot offers an intuitive way to analyse election results, party strengths, 
 <br>
 <br>
 
-### Personality
-The `plot_bigfive()` function returns a [ggplot2](https://ggplot2.tidyverse.org/reference/theme.html) chart to help visualise the personality profile of the survey data. This radar chart is primarily to visualise the Big Five personality traits (neuroticism, extroversion, openness, agreeableness, and conscientiousness) but can be amended for other quantitative data types with a scale between 0 and 100.
-```{r bigfive_plot1, dpi=300, out.width = '100%', fig.height = 5}
-# Create data
-dataset <- data.frame(Gender = c("Male", "Female", "Male", "Male", "Female", "Female", "Male", "Female"),
-                      Weight = c(0.6, 0.8, 0.9, 1.0, 1.3, 1.7, 1.0, 0.99),
-                      Neuroticism = c(60, 40, 30, 80, 20, 25, 50, 10),
-                      Extroversion = c(75, 20, 35, 45, 50, 10, 60, 90),
-                      Openness = c(50, 50, 45, 30, 65, 80, 10, 55),
-                      Agreeableness = c(90, 30, 50, 20, 10, 75, 65, 35),
-                      Conscientiousness = c(45, 50, 90, 10, 25, 30, 80, 40))
-
-# Create single plot using unweighted data
-plot_bigfive(dataset,
-             bigfive = c("Neuroticism", "Extroversion", "Openness", "Agreeableness", "Conscientiousness"))
-```
-<br>
-
-When a group is provided, the function returns faceted plots with the variables within the group plotted on top of the average. This provides an easy comparison between the variable and the rest of the cohort in the survey.
-
-```{r plot_bigfive2, dpi=300, out.width = '100%', fig.height = 5}
-# Create faceted plot using age groups and weighted data
-plot_bigfive(dataset,
-             bigfive = c("Neuroticism", "Extroversion", "Openness", "Agreeableness", "Conscientiousness"),
-             group = "Gender",
-             weight = "Weight")
-```
-
 ### Population
 Understanding demographic distribution is vital in survey analysis. `plot_popn()` creates visual representations of population profiles.
 
@@ -185,7 +157,7 @@ Understanding demographic distribution is vital in survey analysis. `plot_popn()
 The `plot_popn()` function is designed to visualise the population structure of your survey respondents. It creates a population pyramid showing distributions across gender and age groups. If a variable like average age (`meanVar`) is specified, the plot can also display this information, adding another layer of insight into the demographic composition.
 
 ```{r popn_plot, dpi=300, out.width = '100%', fig.height = 5}
-plot_popn(data = df,
+plot_popn(data = survey_df,
           xVar = "gender",
           yVar = "ageGroup",
           weight = "wt", # optional
@@ -199,7 +171,7 @@ plot_popn(data = df,
 Enhance your population pyramid by faceting the `plot_popn` plot by a specific group, such as voter turnout. This feature overlays the selected group's data onto the total population structure, providing a comparative view that highlights differences or similarities within subgroups.
 
 ```{r popn_plot2, dpi=300, out.width = '100%', fig.height = 7}
-plot_popn(data = df,
+plot_popn(data = survey_df,
           xVar = "gender",
           yVar = "ageGroup",
           group = "turnoutUKGeneral",
@@ -209,33 +181,145 @@ plot_popn(data = df,
 ```
 <br>
 
-### Binary
-The `plot_binary()` function visualises binary survey responses (e.g., "Yes" vs "No"). It is particularly effective for comparative analysis. This function utilises the `grid_vars()` function to help transform the data into the correct format.
+### Personality
+The `plot_bigfive()` function returns a [ggplot2](https://ggplot2.tidyverse.org/reference/theme.html) chart to help visualise the personality profile of the survey data. This radar chart is primarily to visualise the Big Five personality traits (neuroticism, extroversion, openness, agreeableness, and conscientiousness) but can be amended for other quantitative data types with a scale between 0 and 100.
 
-```{r plot_binary, eval = FALSE}
-# Create list
-vars <- list(Q1a = "Art",
-             Q1b = "Automobiles",
-             Q1c = "Birdwatching"
-             #             ...
-)
-# Create plot
-plot_binary(dataset,
-            vars = vars,
-            group = "gender",
-            weight = "wgtvar",
-            return_var = "Yes")
+```{r dummydata_personality, echo = FALSE}
+# Create dummy dataset
+bigfive_df <- data.frame(Gender = c("Male", "Female", "Male", "Male", "Female", "Female", "Male", "Female"),
+                         Weight = c(0.6, 0.8, 0.9, 1.0, 1.3, 1.7, 1.0, 0.99),
+                         Neuroticism = c(60, 40, 30, 80, 20, 25, 50, 10),
+                         Extroversion = c(75, 20, 35, 45, 50, 10, 60, 90),
+                         Openness = c(50, 50, 45, 30, 65, 80, 10, 55),
+                         Agreeableness = c(90, 30, 50, 20, 10, 75, 65, 35),
+                         Conscientiousness = c(45, 50, 90, 10, 25, 30, 80, 40))
 ```
-```{r img/binary_plot, echo=FALSE, eval = TRUE, out.width = '100%'}
-knitr::include_graphics("img/binary_plot.png")
+
+```{r bigfive_plot1, dpi=300, out.width = '100%', fig.height = 5}
+# Create single plot using unweighted data
+plot_bigfive(bigfive_df,
+             bigfive = c("Neuroticism", "Extroversion", "Openness", "Agreeableness", "Conscientiousness"))
 ```
 <br>
 
-### Butterfly Plots
-Future updates to `scgUtils` will introduce Butterfly plots, further expanding the package's visualisation capabilities.
+When a group is provided, the function returns faceted plots with the variables within the group plotted on top of the average. This provides an easy comparison between the variable and the rest of the cohort in the survey.
+
+```{r plot_bigfive2, dpi=300, out.width = '100%', fig.height = 5}
+# Create faceted plot using age groups and weighted data
+plot_bigfive(bigfive_df,
+             bigfive = c("Neuroticism", "Extroversion", "Openness", "Agreeableness", "Conscientiousness"),
+             group = "Gender",
+             weight = "Weight")
+```
+<br>
+
+### Binary
+The `plot_binary()` function visualises binary survey responses (e.g., "Yes" vs "No"). It is particularly effective for comparative analysis. This function utilises the `grid_vars()` function to help transform the data into the correct format.
+```{r dummydata_binary, echo = FALSE}
+set.seed(0) # For reproducibility
+
+# Initialise an empty tibble (data frame) with 1000 rows
+binary_df <- tibble(row = 1:1000) %>% select(-row)
+
+# Add columns Q1a to Q1j with varying proportions of "Yes" and "No"
+for (col in letters[1:10]) {
+  col_name <- paste0("Q1", col)
+  yes_proportion <- runif(1) # Random proportion for "Yes"
+  binary_df[[col_name]] <- factor(sample(c("Yes", "No"), 1000, replace = TRUE, prob = c(yes_proportion, 1 - yes_proportion)),
+                                  levels = c("Yes", "No"))
+}
+
+# Add a "Weight" column with values between 0.5 and 2.0
+binary_df$Weight <- runif(1000, min = 0.5, max = 2.0)
+
+# Add a "Gender" column with approximately equal "Male" and "Female" values
+binary_df$Gender <- factor(sample(c("Male", "Female"), 1000, replace = TRUE),
+                           levels = c("Male", "Female"))
+```
+```{r plot_binary1, dpi=300, out.width = '100%', fig.height = 5}
+# Create list for dummy data
+vars <- list(Q1a = "Art",
+             Q1b = "Automobiles",
+             Q1c = "Birdwatching",
+             Q1d = "Music",
+             Q1e = "Reading",
+             Q1f = "Cooking",
+             Q1g = "Hiking",
+             Q1h = "Watching Sport",
+             Q1i = "Computers",
+             Q1j = "Gaming"
+)
+# Create plot of total dataset using unweighted data
+plot_binary(binary_df,
+            vars = vars,
+            value = "Yes"
+)
+```
+<br>
+
+When a group is provided, the function return faceted plots with the variables within the group plotted against the total. This provides an easy comparison between the variable and the rest of the cohort in the survey.
+```{r plot_binary2, dpi=300, out.width = '100%', fig.height = 5}
+# Create faceted plot using Gender and weighted data
+plot_binary(binary_df,
+            vars = vars,
+            value = "Yes",
+            group = "Gender", # optional
+            weight = "Weight" # optional
+)
+```
+<br>
+
+### Waffle
+Waffle plots provide a unique and compelling way to visualise categorical data, making them ideal for representing proportions or percentages in datasets, including survey responses. The `plot_waffle()` function in the `scgUtils` package offers a straightforward method to create these plots.
+<br>
+<br>
+##### Basic Usage
+The basic use of `plot_waffle()` involves creating a plot that represents the distribution of different categories. This method is especially effective for visually demonstrating the relative sizes of groups within a population.
+```{r waffle1, dpi=300, out.width = '100%', fig.height = 4}
+# Prepare Data
+waffle_df <- data.frame(
+    Category = c("A", "B", "C"),
+    Count = c(30, 40, 30)
+  )
+
+# Plot
+plot_waffle(waffle_df,
+            group = "Category",
+            values = "Count",
+            isolateVar = "A" # isolate a single plot
+)
+```
+<br>
+
+##### Using `plot_waffle()` with Survey Data
+`plot_waffle()` is particularly adept at handling survey data, supporting both weighted and unweighted analysis. The function can automatically extract and display relevant labels from survey questions, enhancing the plot's interpretability.
+```{r waffle2, dpi=300, out.width = '100%', fig.height = 6}
+# Waffle plot with unweighted survey data
+plot_waffle(survey_df %>% filter(p_socgrade != "Unknown"), # removing unknowns
+            group = "p_socgrade",
+            title = "p_socgrade"
+)
+```
+<br>
+<br>
+For a more refined visual presentation, `plot_waffle()` allows customisation of colours and plot order. This flexibility is invaluable for aligning the visual aesthetic with specific data narratives or brand guidelines.
+<br>
+<br>
 
 ### Likert Plots
-Likert scale responses will be visualised with upcoming features, providing nuanced insights into survey data.
+Likert scale responses will be visualised with upcoming features, providing nuanced insights into survey data. This function will contain four options for visualisations, including:
 
-### Waffle Plots
-Future updates to `scgUtils` will introduce Waffle charts, further expanding the package's visualisation capabilities.
+* `100% Stacked Bars`
+* `Diverging with Neutrals`
+* `Diverging without Neutrals`
+* `Faceted Bars`
+
+### Other Plots
+Future updates to `scgUtils` will introduce other plots such as:
+
+* `plot_dumbbell()` which can be used to compare two categories and view the differences between numeric data.
+* `plot_wordcloud()` to highlight keywords from either qualitative or quantitative results.
+* `plot_donut()` to illustrate numerical proportions.
+* `plot_radar()` which will expand the capabilities of `plot_bigfive()` in order to allow the comparison of any numeric multivariate data.
+* `plot_mekko()`to represent categorical data with multiple subcategories.
+

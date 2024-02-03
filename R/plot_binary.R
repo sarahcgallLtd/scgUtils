@@ -79,11 +79,15 @@ plot_binary <- function(data,
                        breaks = c(0, 25, 50, 75, 100),
                        labels = c("0%", "25%", "50%", "75%", "100%")) +
 
+    # Turn clip "off"
+    coord_cartesian(clip = "off") +
+
     # Add scg theme
     theme_scg() +
 
     # Remove horizontal gridlines and legend
     theme(panel.grid.major.y = element_blank(),
+          panel.spacing = unit(2, "lines"),
           legend.position = "none")
 
   # ==============================================================#

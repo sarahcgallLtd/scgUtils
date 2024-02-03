@@ -57,6 +57,7 @@ Collate:
     'plot_parliament.R'
     'plot_popn.R'
     'plot_sankey.R'
+    'plot_waffle.R'
     'process_factors.R'
     'scgUtils_package.R'
     'theme_scg.R'
