@@ -15,7 +15,7 @@
 #'   'ascending', or 'descending'. Default is 'none'.
 #' @param title The title of the waffle plot. If the title matches the group name, the function
 #'    will return the label attribute if present.
-#' @param varColours A named or unnamed vector of colours for each category in the plot.
+#' @param groupColours A named or unnamed vector of colours for each category in the plot.
 #' @param backgroundColour Colour for the background of the plot.
 #' @param backgroundAlpha Alpha value (transparency) for the background.
 #' @param borderColour Colour for the border of the tiles in the plot.
@@ -24,7 +24,6 @@
 #' @return A `ggplot` object representing a waffle plot.
 #'
 #' @examples
-#' \dontrun{
 #'   data <- data.frame(
 #'     Category = c("A", "B", "C"),
 #'     Count = c(30, 40, 30)
@@ -34,8 +33,7 @@
 #'               values = "Count",
 #'               title = "Sample Waffle Plot",
 #'               orderPlots = "descending",
-#'               varColours = c(A = "blue", B = "green", C = "red"))
-#' }
+#'               groupColours = c(A = "blue", B = "yellow", C = "red"))
 #'
 #' @export
 plot_waffle <- function(data,
@@ -45,7 +43,7 @@ plot_waffle <- function(data,
                         isolateVar = NULL,
                         orderPlots = c("none", "descending", "ascending"),
                         title = NULL,
-                        varColours = colour_pal("catExtended"),
+                        groupColours = colour_pal("catExtended"),
                         backgroundColour = colour_pal("French Grey"),
                         backgroundAlpha = 0.5,
                         borderColour = "white",
@@ -86,14 +84,14 @@ plot_waffle <- function(data,
   }
 
   # Ensure varColours has names
-  if (is.null(names(varColours))) {
-    names(varColours) <- unique(calculated_data[[group]])
+  if (is.null(names(groupColours))) {
+    names(groupColours) <- unique(calculated_data[[group]])
   }
-  varColours["zzz"] <- backgroundColour
+  groupColours["zzz"] <- backgroundColour
 
   # ==============================================================#
   # PLOT
-  p <- create_waffle_plot(accumulated_grid, orderPlots, title, varColours,
+  p <- create_waffle_plot(accumulated_grid, orderPlots, title, groupColours,
                           backgroundColour, backgroundAlpha,
                           borderColour, borderWidth)
 
@@ -153,9 +151,9 @@ calculate_proportions <- function(data,
 #'
 #' @noRd
 create_waffle_grid <- function(data,
-                        group,
-                        variable,
-                        orderPlots
+                               group,
+                               variable,
+                               orderPlots
 ) {
   # Calculate the number of squares to fill for the given variable
   data_subset <- subset(data, data[[group]] == variable)
@@ -190,7 +188,7 @@ create_waffle_grid <- function(data,
 #' @param data The grid data prepared for the waffle plot.
 #' @param orderPlots Specifies how the plots should be ordered ('ascending', 'descending', or 'none').
 #' @param title The title of the waffle plot.
-#' @param varColours A named vector of colours for each category in the plot.
+#' @param groupColours A named vector of colours for each category in the plot.
 #' @param backgroundColour Colour for the background of the plot.
 #' @param backgroundAlpha Alpha value (transparency) for the background.
 #' @param borderColour Colour for the border of the tiles in the plot.
@@ -202,7 +200,7 @@ create_waffle_grid <- function(data,
 create_waffle_plot <- function(data,
                                orderPlots,
                                title,
-                               varColours,
+                               groupColours,
                                backgroundColour,
                                backgroundAlpha,
                                borderColour,
@@ -215,7 +213,7 @@ create_waffle_plot <- function(data,
     geom_tile(colour = borderColour,
               linewidth = borderWidth,
               alpha = ifelse(data$category == "zzz", backgroundAlpha, 1)) +
-    scale_fill_manual(values = varColours) +
+    scale_fill_manual(values = groupColours) +
     labs(title = title) +
     coord_fixed(ratio = 1, clip = "off") +
     facet_wrap(. ~ reorder(label, if (orderPlots == "descending") -order else order)) +

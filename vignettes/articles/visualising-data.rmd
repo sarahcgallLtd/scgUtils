@@ -218,24 +218,19 @@ plot_bigfive(bigfive_df,
 ### Binary
 The `plot_binary()` function visualises binary survey responses (e.g., "Yes" vs "No"). It is particularly effective for comparative analysis. This function utilises the `grid_vars()` function to help transform the data into the correct format.
 ```{r dummydata_binary, echo = FALSE}
-set.seed(0) # For reproducibility
+set.seed(0)
 
-# Initialise an empty tibble (data frame) with 1000 rows
-binary_df <- tibble(row = 1:1000) %>% select(-row)
+# Initialize the data frame with binary responses
+binary_df <- as_tibble(replicate(10, sample(c("Yes", "No"), 1000, replace = TRUE, prob = c(runif(1), 1-runif(1)))))
 
-# Add columns Q1a to Q1j with varying proportions of "Yes" and "No"
-for (col in letters[1:10]) {
-  col_name <- paste0("Q1", col)
-  yes_proportion <- stats::runif(1) # Random proportion for "Yes"
-  binary_df[[col_name]] <- factor(sample(c("Yes", "No"), 1000, replace = TRUE, prob = c(yes_proportion, 1 - yes_proportion)),
-                                  levels = c("Yes", "No"))
-}
+# Name the columns accordingly
+names(binary_df) <- paste0("Q1", letters[1:10])
 
 # Add a "Weight" column with values between 0.5 and 2.0
 binary_df$Weight <- stats::runif(1000, min = 0.5, max = 2.0)
 
 # Add a "Gender" column with approximately equal "Male" and "Female" values
-binary_df$Gender <- factor(sample(c("Male", "Female"), 1000, replace = TRUE),
+binary_df$Gender <- factor(sample(c("Male", "Female"), 1000, replace = TRUE, prob = c(48,52)),
                            levels = c("Male", "Female"))
 ```
 ```{r plot_binary1, dpi=300, out.width = '100%', fig.height = 5}
@@ -266,7 +261,9 @@ plot_binary(binary_df,
             vars = vars,
             value = "Yes",
             group = "Gender", # optional
-            weight = "Weight" # optional
+            weight = "Weight", # optional
+            title = "Hobbies",
+            subtitle = "by Gender"
 )
 ```
 <br>
@@ -288,7 +285,7 @@ waffle_df <- data.frame(
 plot_waffle(waffle_df,
             group = "Category",
             values = "Count",
-            isolateVar = "A" # isolate a single plot
+            isolateVar = "A" # show a single plot only
 )
 ```
 <br>

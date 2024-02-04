@@ -10,6 +10,8 @@ plot_binary(
   value,
   group = NULL,
   weight = NULL,
+  title = NULL,
+  subtitle = NULL,
   totalColour = colour_pal("French Grey"),
   groupColours = colour_pal("catExtended")
 )
@@ -25,6 +27,10 @@ For example, \code{list(Q1a = "Art", Q1b = "Automobiles")}. This parameter is re
 \item{group}{An optional variable for comparing responses between different groups.}
 
 \item{weight}{An optional variable containing weight factors for analysis.}
+
+\item{title}{The title of the plot.}
+
+\item{subtitle}{The subtitle of the plot.}
 
 \item{totalColour}{The colour used for plotting total response percentages (default: French Grey).}
 

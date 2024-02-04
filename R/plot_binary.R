@@ -12,6 +12,8 @@
 #' @param value The binary response value (e.g., "Yes") to be visualized. Required.
 #' @param group An optional variable for comparing responses between different groups.
 #' @param weight An optional variable containing weight factors for analysis.
+#' @param title The title of the plot.
+#' @param subtitle The subtitle of the plot.
 #' @param totalColour The colour used for plotting total response percentages (default: French Grey).
 #' @param groupColours A vector of colours used for plotting grouped response percentages
 #'   (default: an extended categorical palette).
@@ -39,6 +41,8 @@ plot_binary <- function(data,
                         value,
                         group = NULL,
                         weight = NULL,
+                        title = NULL,
+                        subtitle = NULL,
                         totalColour = colour_pal("French Grey"),
                         groupColours = colour_pal("catExtended")
 ) {
@@ -54,7 +58,7 @@ plot_binary <- function(data,
 
   # ==============================================================#
   # PREPARE DATA
-   # Data preparation
+  # Data preparation
   prepared_data <- prepare_binary_data(data, vars, value, group, weight)
 
   # Plotting
@@ -66,9 +70,11 @@ plot_binary <- function(data,
     geom_text(aes(hjust = 0), nudge_x = 1, colour = colour_pal("Black80")) +
 
     # Remove axes titles
-    labs(x = "",
-         y = "",
-         fill = "") +
+    labs(title = title,
+         subtitle = subtitle,
+         x = NULL,
+         y = NULL,
+         fill = NULL) +
 
     # Add colours to
     scale_fill_manual(values = groupColours) +
@@ -165,7 +171,7 @@ prepare_binary_data <- function(data,
     # Get grid vars by group
     grouped <- grid_vars(data, vars, group, weight)
 
-     # Filter by value
+    # Filter by value
     grouped <- grouped[grouped$Response == value, -which(names(grouped) == "Response")]
   }
   list(total = total, grouped = grouped)

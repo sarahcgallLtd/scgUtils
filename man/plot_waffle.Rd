@@ -12,7 +12,7 @@ plot_waffle(
   isolateVar = NULL,
   orderPlots = c("none", "descending", "ascending"),
   title = NULL,
-  varColours = colour_pal("catExtended"),
+  groupColours = colour_pal("catExtended"),
   backgroundColour = colour_pal("French Grey"),
   backgroundAlpha = 0.5,
   borderColour = "white",
@@ -37,7 +37,7 @@ calculating proportions. If not provided, counts of \code{group} categories are 
 \item{title}{The title of the waffle plot. If the title matches the group name, the function
 will return the label attribute if present.}
 
-\item{varColours}{A named or unnamed vector of colours for each category in the plot.}
+\item{groupColours}{A named or unnamed vector of colours for each category in the plot.}
 
 \item{backgroundColour}{Colour for the background of the plot.}
 
@@ -55,7 +55,6 @@ A \code{ggplot} object representing a waffle plot.
 showing proportions or percentages in a visually appealing and easily understandable format.
 }
 \examples{
-\dontrun{
   data <- data.frame(
     Category = c("A", "B", "C"),
     Count = c(30, 40, 30)
@@ -65,7 +64,6 @@ showing proportions or percentages in a visually appealing and easily understand
               values = "Count",
               title = "Sample Waffle Plot",
               orderPlots = "descending",
-              varColours = c(A = "blue", B = "green", C = "red"))
-}
+              groupColours = c(A = "blue", B = "yellow", C = "red"))
 
 }

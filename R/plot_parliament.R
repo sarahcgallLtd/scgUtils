@@ -29,7 +29,7 @@
 #'   parliament_data <- data.frame(
 #'     Party = c("Party A", "Party B", "Party C"),
 #'     Seats = c(120, 80, 50),
-#'     Percentage = c(40, 27, 17)
+#'     Percentage = c(48, 32, 20)
 #'   )
 #'   plot_parliament(parliament_data, partyCol = "Party", seatCol = "Seats", percentCol = "Percentage")
 #'

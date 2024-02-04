@@ -19,9 +19,9 @@ test_that("function returns correct errors", {
 
 test_that("function correctly returns plot", {
   x <- plot_waffle(df, "generalElectionVote", weight = "wt", title = "generalElectionVote",
-                   varColours = colour_prep(df, "generalElectionVote", pal_name = "polUK"),
+                   groupColours = colour_prep(df, "generalElectionVote", pal_name = "polUK"),
                    orderPlots = "ascending", isolateVar = "Conservative")
-  expect_equal(x$plot_env$varColours$Conservative, "#2e84c6")
+  expect_equal(x$plot_env$groupColours$Conservative, "#2e84c6")
 
   x <- plot_waffle(df %>% filter(p_socgrade != "Unknown"), "p_socgrade", weight = "wt", title = "p_socgrade")
   expect_equal(x$labels$title, "Social Grade")
