@@ -220,8 +220,8 @@ The `plot_binary()` function visualises binary survey responses (e.g., "Yes" vs 
 ```{r dummydata_binary, echo = FALSE}
 set.seed(0)
 
-# Initialize the data frame with binary responses
-binary_df <- as_tibble(replicate(10, sample(c("Yes", "No"), 1000, replace = TRUE, prob = c(runif(1), 1-runif(1)))))
+# Initialise the data frame with binary responses
+binary_df <- as_tibble(replicate(10, sample(c("Yes", "No"), 1000, replace = TRUE, prob = c(runif(1), 1-runif(1)))), .name_repair = "minimal")
 
 # Name the columns accordingly
 names(binary_df) <- paste0("Q1", letters[1:10])
@@ -272,6 +272,7 @@ plot_binary(binary_df,
 Waffle plots provide a unique and compelling way to visualise categorical data, making them ideal for representing proportions or percentages in datasets, including survey responses. The `plot_waffle()` function in the `scgUtils` package offers a straightforward method to create these plots.
 <br>
 <br>
+
 ##### Basic Usage
 The basic use of `plot_waffle()` involves creating a plot that represents the distribution of different categories. This method is especially effective for visually demonstrating the relative sizes of groups within a population.
 ```{r waffle1, dpi=300, out.width = '100%', fig.height = 4}
@@ -305,7 +306,7 @@ For a more refined visual presentation, `plot_waffle()` allows customisation of 
 <br>
 <br>
 
-### Likert Plots
+### Likert Scales
 Likert scale responses will be visualised with upcoming features, providing nuanced insights into survey data. This function will contain four options for visualisations, including:
 
 * `100% Stacked Bars`

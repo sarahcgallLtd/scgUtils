@@ -43,6 +43,7 @@ reference:
   contents:
   - plot_bigfive
   - plot_binary
+  - plot_likert
   - plot_parliament
   - plot_popn
   - plot_sankey

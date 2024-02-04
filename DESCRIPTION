@@ -54,6 +54,7 @@ Collate:
     'grp_mean.R'
     'plot_bigfive.R'
     'plot_binary.R'
+    'plot_likert.R'
     'plot_parliament.R'
     'plot_popn.R'
     'plot_sankey.R'

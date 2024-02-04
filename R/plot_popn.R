@@ -314,6 +314,8 @@ create_popn_plot <- function(prepared_data,
     # Add scg theme
     theme_scg() +
 
+    coord_cartesian(clip = 'off') +
+
     # Add labels
     labs(title = attributes$title, fill = "",
          subtitle = if (is.null(group)) NULL else attributes$subtitle) +
@@ -437,7 +439,6 @@ theme_modifications <- function(line.col) {
 #' @noRd
 add_annotations <- function(plot, attributes, yLevels, colour) {
   plot +
-    coord_cartesian(clip = 'off') +
     annotate("text",
              x = 1,
              y = yLevels,
