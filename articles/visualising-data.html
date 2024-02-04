@@ -353,7 +353,13 @@ responses (e.g., “Yes” vs “No”). It is particularly effective for
 comparative analysis. This function utilises the
 <code><a href="../reference/grid_vars.html">grid_vars()</a></code> function to help transform the data into the
 correct format.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">#&gt; Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if</span></span>
+<span><span class="co">#&gt; `.name_repair` is omitted as of tibble 2.0.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using compatibility `.name_repair`.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create list for dummy data</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Q1a <span class="op">=</span> <span class="st">"Art"</span>,</span>
 <span>             Q1b <span class="op">=</span> <span class="st">"Automobiles"</span>,</span>
@@ -376,13 +382,15 @@ correct format.</p>
 variables within the group plotted against the total. This provides an
 easy comparison between the variable and the rest of the cohort in the
 survey.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create faceted plot using Gender and weighted data</span></span>
 <span><span class="fu"><a href="../reference/plot_binary.html">plot_binary</a></span><span class="op">(</span><span class="va">binary_df</span>,</span>
 <span>            vars <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>            value <span class="op">=</span> <span class="st">"Yes"</span>,</span>
 <span>            group <span class="op">=</span> <span class="st">"Gender"</span>, <span class="co"># optional</span></span>
-<span>            weight <span class="op">=</span> <span class="st">"Weight"</span> <span class="co"># optional</span></span>
+<span>            weight <span class="op">=</span> <span class="st">"Weight"</span>, <span class="co"># optional</span></span>
+<span>            title <span class="op">=</span> <span class="st">"Hobbies"</span>,</span>
+<span>            subtitle <span class="op">=</span> <span class="st">"by Gender"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualising-data_files/figure-html/plot_binary2-1.png" width="100%"><br></p>
 </div>
@@ -398,7 +406,7 @@ Basic Usage The basic use of <code><a href="../reference/plot_waffle.html">plot_
 creating a plot that represents the distribution of different
 categories. This method is especially effective for visually
 demonstrating the relative sizes of groups within a population.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Prepare Data</span></span>
 <span><span class="va">waffle_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>    Category <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>,</span>
@@ -409,7 +417,7 @@ demonstrating the relative sizes of groups within a population.</p>
 <span><span class="fu"><a href="../reference/plot_waffle.html">plot_waffle</a></span><span class="op">(</span><span class="va">waffle_df</span>,</span>
 <span>            group <span class="op">=</span> <span class="st">"Category"</span>,</span>
 <span>            values <span class="op">=</span> <span class="st">"Count"</span>,</span>
-<span>            isolateVar <span class="op">=</span> <span class="st">"A"</span> <span class="co"># isolate a single plot</span></span>
+<span>            isolateVar <span class="op">=</span> <span class="st">"A"</span> <span class="co"># show a single plot only</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualising-data_files/figure-html/waffle1-1.png" width="100%"><br></p>
 <div class="section level5">
@@ -419,7 +427,7 @@ demonstrating the relative sizes of groups within a population.</p>
 data, supporting both weighted and unweighted analysis. The function can
 automatically extract and display relevant labels from survey questions,
 enhancing the plot’s interpretability.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Waffle plot with unweighted survey data</span></span>
 <span><span class="fu"><a href="../reference/plot_waffle.html">plot_waffle</a></span><span class="op">(</span><span class="va">survey_df</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">p_socgrade</span> <span class="op">!=</span> <span class="st">"Unknown"</span><span class="op">)</span>, <span class="co"># removing unknowns</span></span>
 <span>            group <span class="op">=</span> <span class="st">"p_socgrade"</span>,</span>
