@@ -53,6 +53,7 @@ NULL
 #'
 #' @export
 #' @seealso `colour_display()`
+#' @md
 colour_pal <- function(pal_name,
                        n = NULL,
                        assign = NULL,
