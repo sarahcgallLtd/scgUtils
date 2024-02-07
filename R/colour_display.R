@@ -118,7 +118,7 @@ create_palette_plot <- function(pal_col,
     if (is.null(n)) n <- length(pal_col)
 
     # Determine the brightness of the colour for contrast against text colour
-    con_pal <- contrast_test(pal_col)
+    #con_pal <- contrast_test(pal_col)
 
     # Create dummary data
     df <- data.frame(
@@ -133,10 +133,11 @@ create_palette_plot <- function(pal_col,
     )
 
     # Create plot
-    p <- ggplot(data = df, aes(x = x, y = y, fill = value, label = label)) +
+    p <- ggplot(data = df,
+                aes(x = x, y = y, fill = value, label = label)) +
       geom_bar(stat = "identity") +
       scale_fill_manual(values = pal_col) +
-      geom_text(colour = ifelse(con_pal == TRUE, "white", "black"),
+      geom_text(colour = contrast_test(pal_col),
                 position = position_stack(vjust = 0.5)) +
       guides(fill = "none")
 

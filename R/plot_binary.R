@@ -94,9 +94,11 @@ plot_binary <- function(data,
     theme_scg() +
 
     # Remove horizontal gridlines and legend
-    theme(panel.grid.major.y = element_blank(),
-          panel.grid.minor.x = element_blank(),
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
           panel.spacing = unit(2, "lines"),
+          axis.line.x = element_blank(),
+          axis.text.x = element_blank(),
           legend.position = "none")
 
   # ==============================================================#

@@ -14,6 +14,8 @@
 #' @param neutrals Handling of neutral responses in the plot, can be 'no_change', 'right', or 'exclude'.
 #' @param total If TRUE and `group` is specified, includes an option for the total population alongside group-specific plots.
 #' @param NET If TRUE, calculates and includes a Net Rating Score (difference between positive and negative responses).
+#' @param labels if TRUE, adds % labels to the plot.
+#' @param threshold A numeric value to adjust the threshold for labels to be shown.
 #' @param title The title of the plot.
 #' @param subtitle The subtitle of the plot. When `group` is not NULL, defaults to the name of the group variable unless specified.
 #' @param order_by Specifies how to order responses in the plot. Can be NULL or based on 'left', 'right', or 'NET' responses.
@@ -49,8 +51,10 @@ plot_likert <- function(data,
                         neutrals = c("no_change", "right", "exclude"), # position of neutrals (if no "no_change", neutrals must be provided
                         total = FALSE, # if group is provided, the option for the total population will be included if TRUE
                         NET = FALSE, # provide the net rating score (netPos - netNeg)
-                        title = NULL,
-                        subtitle = NULL,
+                        labels = FALSE, # add labels
+                        threshold = 0, # threshold
+                        title = NULL, # add title
+                        subtitle = NULL, # add subtitle
                         order_by = NULL, # order the plot
                         colours = NULL, # colours
                         legend = c("top", "right", "left", "bottom", "none"),
@@ -93,9 +97,18 @@ plot_likert <- function(data,
     data <- reorder_response_variables(data, vars, varLevels)
   }
 
+  # Return plot logic for type of plot to create based on vars and group arguments
+  logic <- if (is.null(group)) "standard" else if (length(vars) > 1) "group_facet" else "group_y"
+
   # ==============================================================#
   # PREPARE DATA
   prepared_data <- grid_vars(data, vars, group = group, weight = weight)
+
+  if (total) {
+    total_data <- grid_vars(data, vars, weight = weight)
+    total_data[[group]] <- "Total"
+    prepared_data <- rbind(prepared_data, total_data)
+  }
 
   # Colours
   if (is.null(colours)) {
@@ -113,7 +126,7 @@ plot_likert <- function(data,
     }
 
     if (!is.null(order_by)) {
-      prepared_data <- add_order_column(prepared_data, order_by)
+      prepared_data <- add_order_column(prepared_data, group, order_by, logic)
     }
   }
 
@@ -122,12 +135,10 @@ plot_likert <- function(data,
   # Font size
   geom_size <- base_size + 1
 
-  # Return plot logic for type of plot to create based on vars and group arguments
-  logic <- if (is.null(group)) "standard" else if (length(vars) > 1) "group_facet" else "group_y"
-
   # Get plot type
   p <- switch(type,
-              stacked = create_stacked_likert(prepared_data, group, width, ncol, geom_size, logic),
+              stacked = create_stacked_likert(prepared_data, group, labels, threshold,
+                                              width, ncol, geom_size, logic),
               divergent = create_divergent_likert(prepared_data),
               facetted = create_facetted_likert(prepared_data))
 
@@ -140,6 +151,7 @@ plot_likert <- function(data,
          subtitle = if (logic == "group_facet") get_question(data, group) else subtitle,
          y = NULL,
          x = NULL,
+         colour = NULL,
          fill = NULL) +
     guides(fill = guide_legend(reverse = TRUE)) +
     theme_scg(base_size, base_font) +
@@ -161,6 +173,17 @@ plot_likert <- function(data,
   if (NET) {
     p <- p +
       theme(axis.line.x = element_blank())
+  }
+
+  # Remove x-axis if labels = TRUE
+  if (labels) {
+    p <- p +
+      guides(colour = "none") +
+      scale_colour_manual(values = contrast_test(colours)) +
+      theme(axis.line.x = element_blank(),
+            axis.ticks.x = element_blank(),
+            axis.text.x = element_blank()
+      )
   }
 
   # ==============================================================#
@@ -351,22 +374,40 @@ add_net_rows <- function(data,
 
 #' Adds Order Column for Faceting
 #'
-#' Calculates an order metric based on the mean percentage of responses and
-#' adds it as a new column to facilitate ordered faceting in plots.
+#' This function calculates an order metric based on the mean percentage of responses according to a specified criterion. It then adds this metric as a new column to the dataset to facilitate ordered faceting in plots. The function adapts to different plotting logics, including standard, group faceting, and grouping by a specific variable for y-axis ordering.
 #'
 #' @param data Dataset containing the survey responses.
-#' @param order_by Criteria used to determine the order of the facets.
+#' @param group (Optional) The grouping variable used in faceted plots. This parameter influences how ordering calculations are performed, especially in the context of grouped or facetted visualizations.
+#' @param order_by The variable based on which the order of facets or plot elements is determined. This typically refers to a specific response category whose average percentage is used for ordering.
+#' @param logic A character string indicating the plotting logic to be applied. This affects the aggregation formula and the merge process. Valid options are 'standard', 'group_facet', and 'group_y'. The 'standard' logic applies when no grouping is used, 'group_facet' applies when facetting by groups, and 'group_y' is used when grouping affects the y-axis ordering directly.
 #'
-#' @return Dataset with an added order column.
+#' @return A dataset with an added order column (`_order` suffix), facilitating the ordered arrangement of plot facets or elements.
+#'
+#' @details
+#' The `add_order_column` function enhances data preparation for Likert and other survey plots by enabling ordered visualization based on response averages. It supports varying levels of complexity in plot design, accommodating simple, grouped, and facetted layouts.
+#'
+#'
 #' @noRd
 add_order_column <- function(data,
-                             order_by
+                             group,
+                             order_by,
+                             logic
 ) {
   # Calculate the sum/average percentage of left/right/net responses for each question
-  order_perc <- stats::aggregate(Perc ~ Question, data[data$Id == order_by,], mean)
+  order_formula <- switch(logic,
+                          standard = "Perc ~ Question",
+                          group_facet = paste0("Perc ~ Question + ", group),
+                          group_y = paste0("Perc ~ ", group)
+  )
+  order_perc <- stats::aggregate(stats::as.formula(order_formula), data[data$Id == order_by,], mean)
 
   # Merge this information back into your original data
-  data <- merge(data, order_perc, by = "Question", suffixes = c("", "_order"))
+  byCols <- switch(logic,
+                   standard = "Question",
+                   group_facet = c("Question", group),
+                   group_y = group
+  )
+  data <- merge(data, order_perc, by = byCols, suffixes = c("", "_order"))
 
   return(data)
 }
@@ -386,6 +427,8 @@ add_order_column <- function(data,
 #' @noRd
 create_stacked_likert <- function(data,
                                   group,
+                                  labels,
+                                  threshold,
                                   width,
                                   ncol,
                                   geom_size,
@@ -404,18 +447,27 @@ create_stacked_likert <- function(data,
   stacked_plot <- ggplot(plot_data,
                          aes(x = Perc,
                              y = y_aes,
-                             fill = Response)
+                             fill = Response,
+                             label = ifelse(Perc > threshold, sprintf("%.0f%%", Perc), ""))
   ) +
     geom_bar(stat = "identity", width = width,
              position = position_stack(reverse = TRUE)) +
     scale_x_continuous(expand = c(0, 0),
                        labels = percent_label())
 
-  stacked_plot <- add_net_column(data, width, stacked_plot, group, geom_size, logic)
+  if (labels) {
+    stacked_plot <- stacked_plot +
+      geom_text(aes(colour = Response),
+                position = position_stack(vjust = .5, reverse = TRUE),
+                size = convert_sizing(geom_size))
+  }
+
+  stacked_plot <- add_net_column(data, width, stacked_plot,
+                                 group, geom_size, logic, labels)
 
   if (logic == "group_facet") {
     stacked_plot <- stacked_plot +
-      facet_wrap(~ .data[[group]], ncol = ncol)
+      facet_wrap(~.data[[group]], ncol = ncol)
   }
 
   return(stacked_plot)
@@ -471,7 +523,8 @@ add_net_column <- function(data,
                            plot,
                            group,
                            geom_size,
-                           logic
+                           logic,
+                           labels
 ) {
   if ("NET" %in% data$Id) {
     # font size
@@ -481,7 +534,7 @@ add_net_column <- function(data,
     net_data <- data[data$Id == "NET",]
 
     # Determine the variable to use based on 'logic'
-    y_aes <- if (logic == "group_y") net_data[[group]] else net_data$Question
+    y_aes <- if (logic == "group_y")net_data[[group]] else net_data$Question
     height <- if (logic == "group_y") width / 2 - 0.1 else width
     # TODO unsure why y = group vs y = Question affects the height
 
@@ -515,16 +568,20 @@ add_net_column <- function(data,
                 colour = colour_pal("Regent Grey"),
                 size = size,
                 nudge_y = if (!is.null(group)) 0.5 else 0,
-                hjust = 0.5) +
+                hjust = 0.5)
 
-      # Manually set axis
-      annotate("segment",
-               x = 0,
-               xend = 100,
-               y = 0.4,
-               yend = 0.4,
-               colour = colour_pal("French Grey"),
-               linewidth = 0.25)
+    if (labels == FALSE) {
+      plot <- plot +
+        # Manually set axis
+        annotate("segment",
+                 x = 0,
+                 xend = 100,
+                 y = 0.4,
+                 yend = 0.4,
+                 colour = colour_pal("French Grey"),
+                 linewidth = 0.25)
+    }
+
   }
   return(plot)
 }

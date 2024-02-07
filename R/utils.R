@@ -407,27 +407,21 @@ convert_neg <- function(data, xVar, value, column) {
   return(data)
 }
 
-# convert_neg <- function(data, xVar, value, column) {
-#   indices <- which(data[[xVar]] == value)
-#   data[indices, column] <- -1 * data[indices, column]
-#   return(data)
-# }
-
-#' Evaluate Contrast of Color List for Text Legibility
+#' Evaluate Contrast of Colour List for Text Legibility
 #'
-#' This function assesses the brightness of each color in a provided list and
+#' This function assesses the brightness of each colour in a provided list and
 #' determines whether the contrast is suitable for use with text. It's based on
-#' the concept that colors with lower brightness are more suitable for text on
+#' the concept that colours with lower brightness are more suitable for text on
 #' light backgrounds and vice versa.
 #'
-#' @param colour_list A list of color values (in hexadecimal or named colors)
+#' @param colour_list A list of colour values (in hexadecimal or named colours)
 #'   to be tested for text contrast.
 #'
 #' @details
-#' The function converts each color in `colour_list` to its RGB values, then
+#' The function converts each colour in `colour_list` to its RGB values, then
 #' applies a formula to determine its brightness. The formula considers standard
-#' weights for the red, green, and blue components of the color. A brightness
-#' threshold is used to classify whether the color is suitable for text contrast
+#' weights for the red, green, and blue components of the colour. A brightness
+#' threshold is used to classify whether the colour is suitable for text contrast
 #' (true if suitable for dark text on light background, false otherwise).
 #'
 #' @return Returns a data frame with a boolean column `contrast`. Each row
@@ -439,14 +433,12 @@ convert_neg <- function(data, xVar, value, column) {
 #' @importFrom grDevices col2rgb
 #' @noRd
 contrast_test <- function(colour_list) {
-  col.list <- data.frame()
-  for (x in unname(unlist(colour_list))) {
-    contrast <- (sum(grDevices::col2rgb(x) * c(299, 587, 114)) / 1000 < 123)
-    col.list <- rbind(col.list, contrast)
-  }
-  colnames(col.list)[1] <- "contrast"
-
-  return(col.list)
+  contrasts <- sapply(colour_list, function(x) {
+    brightness <- (sum(grDevices::col2rgb(x) * c(299, 587, 114)) / 1000)
+    ifelse(brightness < 123, "white", colour_pal("Black80"))
+  })
+  names(contrasts) <- names(colour_list)
+  return(contrasts)
 }
 
 #' Convert Colour Names to Hexadecimal Codes

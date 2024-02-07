@@ -80,8 +80,8 @@ test_that("correct errors are thrown", {
                "When `neutrals` is not 'no_change', `NET` is TRUE, or order_by is not NULL, `varLevels` must be a list.")
   expect_error(plot_likert(df, vars, varLevels_vector, order_by = "right"),
                "When `neutrals` is not 'no_change', `NET` is TRUE, or order_by is not NULL, `varLevels` must be a list.")
-  # expect_warning(plot_likert(df, vars, total = TRUE),
-  #                "`total` will be ignored because `group` is NULL.")
+  expect_warning(plot_likert(df, vars, total = TRUE),
+                 "`total` will be ignored because `group` is NULL.")
   expect_warning(plot_likert(df, vars, varLevels_list, type = "stacked", neutrals = "right"),
                  "`neutrals` will be set to 'no_change' as it is only applicable for the 'divergent' type of plot.")
   expect_warning(plot_likert(df, vars, varLevels_list, type = "stacked", neutrals = "exclude"),
@@ -108,7 +108,7 @@ test_that("function return correct plot for stacked bar chart", {
 
   # weighted, list vars, group = NULL, NET = FALSE
   p <- plot_likert(df, vars, weight = "wt", varLevels = varLevels_list,
-                   legend = "top")
+                   legend = "top", labels = TRUE, threshold = 3)
 
   # unweighted, list vars, group = "gender", NET = TRUE
   p <- plot_likert(df, vars, group = "gender", varLevels = varLevels_list,
@@ -140,7 +140,7 @@ test_that("function return correct plot for stacked bar chart", {
                    varLevels = list(left = c("Strongly disagree", "Disagree"),
                                     neutral = "Don't know",
                                     right = c("Agree", "Strongly agree")),
-                   NET = TRUE, order_by = "right", legend = "bottom")
+                   total = TRUE, NET = TRUE, order_by = "right", legend = "bottom")
 
   # unweighted, vector vars, group = NULL, NET = FALSE
   p <- plot_likert(df, vars = "pidWeThey",
