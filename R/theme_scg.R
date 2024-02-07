@@ -107,7 +107,9 @@ theme_scg <- function(base_size = 10, base_font = "") {
                                 family = font,
                                 size = size,
                                 colour = text.col),
-    legend.text = element_text(face = "plain",
+    legend.text = element_text(margin = margin(t = 0, r = 10,
+                                                 b = 0, l = 0),
+                               face = "plain",
                                family = font,
                                size = size,
                                colour = text.col),
@@ -122,6 +124,6 @@ theme_scg <- function(base_size = 10, base_font = "") {
     strip.text = element_text(face = "bold",
                               family = font,
                               size = size,
-                              colour = text.col)
+                              colour = text.col),
   )
 }

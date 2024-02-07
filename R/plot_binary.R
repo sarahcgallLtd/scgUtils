@@ -67,7 +67,10 @@ plot_binary <- function(data,
   # Final plot adjustments
   p <- p +
     # Add labels
-    geom_text(aes(hjust = 0), nudge_x = 1, colour = colour_pal("Black80")) +
+    geom_text(aes(hjust = 0),
+              size = convert_sizing(11),
+              nudge_x = 1,
+              colour = colour_pal("Black80")) +
 
     # Remove axes titles
     labs(title = title,
@@ -82,8 +85,7 @@ plot_binary <- function(data,
     # Set x axis
     scale_x_continuous(expand = c(0, 0),
                        limits = c(0, 100),
-                       breaks = c(0, 25, 50, 75, 100),
-                       labels = c("0%", "25%", "50%", "75%", "100%")) +
+                       labels = percent_label()) +
 
     # Turn clip "off"
     coord_cartesian(clip = "off") +
@@ -93,6 +95,7 @@ plot_binary <- function(data,
 
     # Remove horizontal gridlines and legend
     theme(panel.grid.major.y = element_blank(),
+          panel.grid.minor.x = element_blank(),
           panel.spacing = unit(2, "lines"),
           legend.position = "none")
 
@@ -120,6 +123,10 @@ validate_binary_data <- function(data,
                                  vars,
                                  value
 ) {
+  if (!is.list(vars) || is.null(names(vars))) {
+      stop("`vars` must be a non-empty list with named elements.")
+    }
+
   if (!is.character(value) || length(value) != 1) {
     stop("`value` must be a single character string.")
   }
@@ -213,7 +220,8 @@ plot_binary_data <- function(total,
                alpha = 0.5) +
 
       # Add grouped layer
-      geom_bar(stat = "identity", alpha = 0.8) +
+      geom_bar(stat = "identity",
+               alpha = 0.8) +
 
       # Facet by group
       facet_wrap(vars(!!rlang::ensym(group)))

@@ -136,9 +136,9 @@ uk_parliament <- data.frame(
 
 # Plot
 plot_parliament(uk_parliament,
-                "Party",
-                "Seats",
-                "Percentage",
+                partyCol = "Party",
+                seatCol = "Seats",
+                percentCol = "Percentage",
                 majorityLine = TRUE, # add line down centre
                 title = "2019 UK General Election", # add title
                 subtitle = "Results", # add subtitle
@@ -233,7 +233,7 @@ binary_df$Weight <- stats::runif(1000, min = 0.5, max = 2.0)
 binary_df$Gender <- factor(sample(c("Male", "Female"), 1000, replace = TRUE, prob = c(48,52)),
                            levels = c("Male", "Female"))
 ```
-```{r plot_binary1, dpi=300, out.width = '100%', fig.height = 5}
+```{r plot_binary1, dpi=300, out.width = '90%', fig.height = 5}
 # Create list for dummy data
 vars <- list(Q1a = "Art",
              Q1b = "Automobiles",
@@ -249,7 +249,9 @@ vars <- list(Q1a = "Art",
 # Create plot of total dataset using unweighted data
 plot_binary(binary_df,
             vars = vars,
-            value = "Yes"
+            value = "Yes",
+            title = "Hobbies", # option
+            totalColour = "maroon" # optional (default = grey)
 )
 ```
 <br>

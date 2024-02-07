@@ -12,7 +12,7 @@ test_that("parameters return correct error", {
 
   # vars =======================================================#
   expect_error(plot_binary(df, "vars"),
-               "`vars` must be a non-empty list with named elements.")
+               "`vars` must be a column in `data`.")
   var <- list("column1")
   expect_error(plot_binary(df, var),
                "`vars` must be a non-empty list with named elements.")

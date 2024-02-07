@@ -14,12 +14,12 @@ plot_popn(
   colours = NULL,
   title = "Population Structure",
   subtitle = NULL,
-  xLab = "Population (\%)",
+  xLab = "Population",
   yLab = "Age",
   addLabels = FALSE,
   thresholdLab = 3,
   nudgeLab = 0.2,
-  sizeLab = 3,
+  sizeLab = 11,
   faceLab = c("plain", "bold", "italic", "bold.italic")
 )
 }

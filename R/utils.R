@@ -59,10 +59,13 @@ check_params <- function(data, ..., vars = NULL, groups = NULL, groupsPercent = 
 
   # Special check for vars (list) and groups (vector)
   if (!missing(vars) && !is.null(vars)) {
-    if (!is.list(vars) || is.null(names(vars))) {
+    if (is.list(vars) && is.null(names(vars))) {
       stop("`vars` must be a non-empty list with named elements.")
+    } else if (!is.list(vars)) {
+      check_in_data("vars", vars, data)
+    } else {
+      check_in_data("vars", names(vars), data)
     }
-    check_in_data("vars", names(vars), data)
   }
 
   if (!missing(groups) && !is.null(groups)) {
@@ -482,4 +485,60 @@ convert_colours <- function(colours) {
     stop("Colours must be a list or a vector.")
   }
   return(colours_hex)
+}
+
+
+#' Convert Base Font Size to Geom Font Size
+#'
+#' `convert_sizing` is a utility function that adjusts a base font size to a corresponding size suitable for `geom` elements in `ggplot2`. It's particularly useful for maintaining consistent and proportional font sizes across different plot components.
+#'
+#' @param base_size Numeric value representing the base font size.
+#'
+#' @return Numeric value representing the adjusted font size for `geom` elements.
+#'
+#' @details
+#' The function calculates the `geom` font size by scaling the `base_size` with a predetermined ratio, ensuring that the text size in `geom` elements (like labels, titles, etc.) is proportionate and visually coherent with the rest of the plot. The ratio used in this function is based on the default settings of `ggplot2` where a base size of 14 corresponds to a `geom` size of 5.
+#'
+#' @examples
+#' \dontrun{
+#'   base_size <- 12
+#'   geom_size <- convert_sizing(base_size)
+#'   # Use `geom_size` in ggplot2's geom_text(), geom_label(), etc.
+#' }
+#'
+#' @noRd
+convert_sizing <- function(base_size) {
+  geom_font_size = base_size / (14/5)
+  return(geom_font_size)
+}
+
+#' Format Numeric Values as Percentage Labels
+#'
+#' `percent_label` is a utility function designed for formatting numeric values as percentage labels, suitable for use in `ggplot2` axis labels or anywhere percentages are required in a human-readable format. This function can handle both absolute and actual percentage values.
+#'
+#' @param absolute Logical flag indicating whether to use absolute values. If set to `TRUE`, the function converts all values to their absolute equivalents before formatting. Defaults to `FALSE`.
+#'
+#' @return A function that takes a numeric vector `x` and returns a character vector where each element is a formatted percentage string.
+#'
+#' @details
+#' The `percent_label` function returns another function that formats numeric values as percentage strings. The returned function takes a numeric vector `x` and applies the formatting. The `absolute` parameter in `percent_label` determines whether the inner function uses the absolute value of each element in `x` or retains its original sign. For example, a value of -20 with `absolute = TRUE` would be formatted as "20%", whereas with `absolute = FALSE`, it would be "-20%".
+#'
+#' @examples
+#' \dontrun{
+#'   percentages <- c(-0.2, 0.3, 0.15)
+#'   label_func <- percent_label(absolute = TRUE)
+#'   label_func(percentages)  # "20%", "30%", "15%"
+#'   label_func <- percent_label(absolute = FALSE)
+#'   label_func(percentages)  # "-20%", "30%", "15%"
+#' }
+#'
+#' @noRd
+percent_label <- function(absolute = FALSE) {
+  function(x) {
+    if (absolute) {
+      sprintf("%.0f%%", abs(x))
+    } else {
+      sprintf("%.0f%%", x)
+    }
+  }
 }

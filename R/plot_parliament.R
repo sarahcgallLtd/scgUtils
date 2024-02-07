@@ -256,12 +256,17 @@ create_parliament_plot <- function(plot_df,
               aes(x = x,
                   y = y)
   ) +
-    geom_segment(x = 0, xend = 0, y = rMin - extendLine, yend = rMax + extendLine,
-                 linetype = "dashed", linewidth = 0.35,
+    geom_segment(x = 0,
+                 xend = 0,
+                 y = rMin - extendLine,
+                 yend = rMax + extendLine,
+                 linetype = "dashed",
+                 linewidth = 0.35,
                  colour = text.col,
                  alpha = ifelse(majorityLine == TRUE, 0.8, 0)) +
 
-    geom_point(aes(colour = party), size = size,
+    geom_point(aes(colour = party),
+               size = size,
                alpha = alpha) +
 
     scale_colour_manual(values = colours,
@@ -290,8 +295,10 @@ create_parliament_plot <- function(plot_df,
       legend.position = legend,
       legend.text = element_text(margin = margin(t = 0, r = 10,
                                                  b = 0, l = 0),
-                                 size = 9,
-                                 colour = text.col, hjust = 0))
+                                 size = 10,
+                                 colour = text.col,
+                                 hjust = 0)
+    )
 
   return(p)
 }
@@ -340,7 +347,10 @@ add_percentage_plot <- function(plot,
                   fill = Party),
               colour = "white") +
 
-    geom_segment(x = 0, xend = 0, y = gap - (height / 2), yend = gap + (height / 2),
+    geom_segment(x = 0,
+                 xend = 0,
+                 y = gap - (height / 2),
+                 yend = gap + (height / 2),
                  linetype = "solid", linewidth = 0.25,
                  colour = "white",
                  alpha = ifelse(majorityLine == TRUE, 0.8, 0)) +
@@ -348,8 +358,10 @@ add_percentage_plot <- function(plot,
     geom_text(data = data,
               aes(x = cumulative_percent,
                   y = gap + (height / 1.8),
-                  label = paste0(round(Percentage, 1), "%")),
-              vjust = -0.5, colour = text.col, size = 3.5) +
+                  label = sprintf("%.1f%%", Percentage)),
+              vjust = -0.5,
+              colour = text.col,
+              size = convert_sizing(10)) +
 
     scale_fill_manual(values = colours) +
     guides(fill = "none")

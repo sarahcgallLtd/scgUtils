@@ -47,12 +47,12 @@ plot_popn <- function(data,
                       colours = NULL,
                       title = "Population Structure",
                       subtitle = NULL,
-                      xLab = "Population (%)",
+                      xLab = "Population",
                       yLab = "Age",
                       addLabels = FALSE,
                       thresholdLab = 3,
                       nudgeLab = 0.2,
-                      sizeLab = 3,
+                      sizeLab = 11,
                       faceLab = c("plain", "bold", "italic", "bold.italic")
 ) {
   # ==============================================================#
@@ -327,7 +327,7 @@ create_popn_plot <- function(prepared_data,
                       breaks = names(colour)) +
 
     # Make x axis left of butterfly plot negative
-    scale_x_continuous(labels = abs) +
+    scale_x_continuous(labels = percent_label(absolute = TRUE)) +
 
     # Modify theme
     theme_modifications(line.col)
@@ -344,7 +344,7 @@ create_popn_plot <- function(prepared_data,
   # Add labels if needed
   if (addLabels == TRUE) {
     data_for_labels <- if (is.null(group)) total else grouped
-    p <- add_text(p, data_for_labels, "Perc", thresholdLab,
+    p <- add_text(p, data_for_labels, group, "Perc", thresholdLab,
                   nudgeLab, sizeLab, faceLab, colour = text.col)
   }
 
@@ -358,6 +358,7 @@ create_popn_plot <- function(prepared_data,
 #'
 #' @param plot The ggplot object to which text labels are to be added.
 #' @param data A data frame containing the data used in the plot.
+#' @param group An optional variable for additional grouping or comparison.
 #' @param column The name of the column in `data` used for determining label characteristics.
 #' @param thresholdLab A numeric threshold for determining the color of the text labels.
 #' @param nudgeLab A numeric value specifying the amount of horizontal nudge for text labels.
@@ -378,16 +379,27 @@ create_popn_plot <- function(prepared_data,
 #' does not work correctly for smaller negative values.
 #'
 #' @noRd
-add_text <- function(plot, data, column, thresholdLab, nudgeLab, sizeLab, faceLab, colour) {
+add_text <- function(plot,
+                     data,
+                     group,
+                     column,
+                     thresholdLab,
+                     nudgeLab,
+                     sizeLab,
+                     faceLab,
+                     colour
+) {
   # Check if the column exists and has values
   if (column %in% names(data) && !all(is.na(data[[column]]))) {
-    label_values <- sprintf("%.2f%%", abs(data[[column]]))
+    label_values <- if (!is.null(group)) sprintf("%.0f", abs(data[[column]])) else sprintf("%.1f%%", abs(data[[column]]))
 
     p <- plot +
       geom_text(
-        aes(label = label_values),  # Ensure the column is referenced correctly
+        aes(label = label_values), # Ensure the column is referenced correctly
         data = data,
-        size = sizeLab, fontface = faceLab, na.rm = TRUE,
+        size = convert_sizing(sizeLab),
+        fontface = faceLab,
+        na.rm = TRUE,
         colour = ifelse(abs(data[, column]) >= thresholdLab, "white", colour),
         nudge_x = dplyr::case_when(
           abs(data[, column]) >= thresholdLab & data[, column] < 0.00 ~ nudgeLab,

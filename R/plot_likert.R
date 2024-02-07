@@ -3,36 +3,40 @@
 #'
 #' @description
 #' `plot_likert` generates various types of Likert plots (stacked, divergent, or facetted) for visualising
-#' survey data. It is versatile in handling different plot types, the inclusion of NET scores, and custom orderings.
+#' survey data, handling different configurations of data presentation including NET scores and custom ordering.
 #'
 #' @param data A data frame containing survey data.
-#' @param vars A vector of variables containing Likert responses.
+#' @param vars A vector of variables containing Likert responses. If `group` is specified, `vars` should only contain a single variable.
 #' @param varLevels A vector or a named list with 'left', 'neutral', and 'right' elements specifying the levels of the Likert scale.
-#' @param group An optional grouping variable for creating facetted plots. If specified, `vars` should contain only a single variable.
+#' @param group An optional grouping variable for creating facetted plots.
 #' @param weight An optional weighting variable for the survey data.
-#' @param type The type of Likert plot: 'stacked', 'divergent', or 'facetted'.
-#' @param neutrals Handling of neutral responses in the plot. Can be 'no_change', 'right', or 'exclude'.
-#' @param total If TRUE and `group` is specified, includes an option for the total population.
-#' @param NET If TRUE, provides a Net Rating Score (positive minus negative responses).
-#' @param title Title of the plot.
-#' @param subtitle Subtitle of the plot.
-#' @param order_by Specifies the ordering of responses in the plot.
-#' @param colours Colour palette for the variables. Default = colour_pal("divRedBlue").
-#' @param legend Position of the legend in the plot ('top', 'right', 'left', 'bottom', 'none').
-#' @param nrow Number of rows for the legend, if applicable. Default = 1.
-#' @param width Width of the bars in the plot. Default = 0.8.
-#' @param ratio Aspect ratio of the plot. Default = 6.
+#' @param type The type of Likert plot to generate: 'stacked', 'divergent', or 'facetted'.
+#' @param neutrals Handling of neutral responses in the plot, can be 'no_change', 'right', or 'exclude'.
+#' @param total If TRUE and `group` is specified, includes an option for the total population alongside group-specific plots.
+#' @param NET If TRUE, calculates and includes a Net Rating Score (difference between positive and negative responses).
+#' @param title The title of the plot.
+#' @param subtitle The subtitle of the plot. When `group` is not NULL, defaults to the name of the group variable unless specified.
+#' @param order_by Specifies how to order responses in the plot. Can be NULL or based on 'left', 'right', or 'NET' responses.
+#' @param colours A named vector of colours for plotting variables. Default uses `colour_pal("divRedBlue")`.
+#' @param legend Position of the legend ('top', 'right', 'left', 'bottom', or 'none').
+#' @param nrow Number of rows in the legend, applicable when `legend` is 'top' or 'bottom'.
+#' @param ncol Number of columns to use when facetting the plot by `group`, applicable for 'facetted' plot type.
+#' @param width Width of the bars in the plot, applicable to 'stacked' and 'divergent' plot types.
+#' @param ratio Aspect ratio of the plot, influencing the spacing and layout of plot elements.
+#' @param base_size Base font size for text elements within the plot.
+#' @param base_font Base font family for text elements within the plot.
 #'
-#' @return A `ggplot2` object representing the Likert plot.
+#' @return A `ggplot2` object representing the Likert plot according to the specified parameters.
 #'
 #' @examples
 #' \dontrun{
 #'   data <- survey_data
-#'   vars <- c(Q1 = "Category 1", Q2 = "Category 2")
+#'   vars <- c("Q1", "Q2")
 #'   varLevels <- list(left = c("Strongly Disagree", "Disagree"),
 #'                     neutral = "Neutral",
 #'                     right = c("Agree", "Strongly Agree"))
-#'   plot_likert(data, vars, varLevels, type = "divergent")
+#'   plot_likert(data, vars, varLevels, type = "divergent",
+#'               group = "DemographicGroup", NET = TRUE, order_by = "right")
 #' }
 #'
 #' @export
@@ -48,11 +52,14 @@ plot_likert <- function(data,
                         title = NULL,
                         subtitle = NULL,
                         order_by = NULL, # order the plot
-                        colours = colour_pal("divRedBlue"), # colour of vars
+                        colours = NULL, # colours
                         legend = c("top", "right", "left", "bottom", "none"),
                         nrow = 1, # control the number of rows of the legend
+                        ncol = 3, # control the number of columns in facets
                         width = 0.8, # adjust the width of the bars
-                        ratio = 6 # adjust the ratio of the plot
+                        ratio = 6, # adjust the ratio of the plot
+                        base_size = 10, # base font size
+                        base_font = "" # base font style
 ) {
   # ==============================================================#
   # CHECK PARAMS
@@ -90,6 +97,11 @@ plot_likert <- function(data,
   # PREPARE DATA
   prepared_data <- grid_vars(data, vars, group = group, weight = weight)
 
+  # Colours
+  if (is.null(colours)) {
+    n <- length(unique(prepared_data$Response))
+    colours <- colour_pal("divRedBlue", n = n)
+  }
 
   if (!is.null(varLevels) && is.list(varLevels)) {
     # Add identifier column for positive, negative, and neutral responses
@@ -97,7 +109,7 @@ plot_likert <- function(data,
 
     if (NET) {
       # Add NET rows
-      prepared_data <- add_net_rows(prepared_data)
+      prepared_data <- add_net_rows(prepared_data, group)
     }
 
     if (!is.null(order_by)) {
@@ -107,8 +119,15 @@ plot_likert <- function(data,
 
   # ==============================================================#
   # PLOT
+  # Font size
+  geom_size <- base_size + 1
+
+  # Return plot logic for type of plot to create based on vars and group arguments
+  logic <- if (is.null(group)) "standard" else if (length(vars) > 1) "group_facet" else "group_y"
+
+  # Get plot type
   p <- switch(type,
-              stacked = create_stacked_likert(prepared_data, width),
+              stacked = create_stacked_likert(prepared_data, group, width, ncol, geom_size, logic),
               divergent = create_divergent_likert(prepared_data),
               facetted = create_facetted_likert(prepared_data))
 
@@ -118,12 +137,12 @@ plot_likert <- function(data,
                       na.translate = FALSE) +
     coord_fixed(clip = "off", ratio = ratio) +
     labs(title = title,
-         subtitle = subtitle,
+         subtitle = if (logic == "group_facet") get_question(data, group) else subtitle,
          y = NULL,
          x = NULL,
          fill = NULL) +
     guides(fill = guide_legend(reverse = TRUE)) +
-    theme_scg() +
+    theme_scg(base_size, base_font) +
     theme(legend.position = legend,
           legend.direction = if (legend %in% c("top", "bottom")) "horizontal",
           panel.grid.major = element_blank(),
@@ -148,10 +167,10 @@ plot_likert <- function(data,
   return(p)
 }
 
-#' Check and Validate Likert Plot Arguments
+#' Validates Arguments for Likert Plot Function
 #'
-#' This function validates the arguments passed to the `plot_likert` function.
-#' It ensures that the combination of arguments is consistent and applicable for the desired plot.
+#' Ensures that the arguments provided to the `plot_likert` function are consistent
+#' and compatible with the intended plot configuration.
 #'
 #' @param vars Variables to be used in the Likert plot.
 #' @param varLevels Levels of the variables, either as a vector or a named list.
@@ -162,7 +181,7 @@ plot_likert <- function(data,
 #' @param NET Whether to include a NET (sum of positives minus negatives) calculation.
 #' @param order_by Specifies the ordering of responses in the plot.
 #'
-#' @return A list containing updated and validated parameters.
+#' @return A list containing validated parameters.
 #' @noRd
 check_likert_arguments <- function(vars,
                                    varLevels,
@@ -173,11 +192,6 @@ check_likert_arguments <- function(vars,
                                    NET,
                                    order_by
 ) {
-  # Check if group is not NULL, then that vars only contains a single variable/column, stop with error
-  if (!is.null(group) && length(vars) != 1) {
-    stop("When `group` is specified, `vars` should contain only a single variable.")
-  }
-
   # Check if neutrals != "no_change" or if NET == TRUE, varLevels MUST be a list, stop with error
   if ((neutrals != "no_change" ||
     NET ||
@@ -217,17 +231,23 @@ check_likert_arguments <- function(vars,
   return(list(total = total, neutrals = neutrals, NET = NET, order_by = order_by))
 }
 
-#' Reorder Response Variables in Data
+#' Reorders Response Variables Based on Specified Levels
 #'
-#' Reorders the response variables in the dataset as per the specified levels in `varLevels`.
+#' Adjusts the order of response variable levels in the dataset according to the
+#' levels specified in `varLevels`.
 #'
-#' @param data The data frame containing the survey data.
-#' @param vars The variables to be reordered.
+#' @param data Dataset containing the variables to be reordered.
+#' @param vars Variables whose levels are to be reordered.
 #' @param varLevels A vector or a named list specifying the desired order of variable levels.
 #'
-#' @return The data frame with reordered factor levels.
+#' @return Dataset with reordered factor levels for specified variables.
 #' @noRd
-reorder_response_variables <- function(data, vars, varLevels) {
+reorder_response_variables <- function(data,
+                                       vars,
+                                       varLevels
+) {
+  vars <- if (is.list(vars)) names(vars) else vars
+
   # Combine all levels into a single vector if varLevels is a list
   if (is.list(varLevels)) {
     if (!all(c("left", "neutral", "right") %in% names(varLevels))) {
@@ -239,7 +259,7 @@ reorder_response_variables <- function(data, vars, varLevels) {
   }
 
   # Check for extra and missing levels in varLevels
-  for (var_name in names(vars)) {
+  for (var_name in vars) {
     data_levels <- levels(data[[var_name]])
 
     # Check for extra levels in varLevels
@@ -258,20 +278,21 @@ reorder_response_variables <- function(data, vars, varLevels) {
   # Apply the specified order to all factors in vars
   data <- dplyr::mutate(data,
                         dplyr::across(
-                          tidyr::all_of(names(vars)),
+                          tidyr::all_of(vars),
                           ~factor(.x, levels = varLevels)))
 
   return(data)
 }
 
-#' Add Identifier Column to Data
+#' Adds Identifier Column to Dataset
 #'
-#' Adds an identifier column to the data, classifying responses as 'left', 'neutral', or 'right'.
+#' Classifies responses into 'left', 'neutral', or 'right' categories based on
+#' `varLevels` and adds this classification as a new column.
 #'
-#' @param data The data frame containing the survey data.
-#' @param varLevels Levels of the variables to classify responses.
+#' @param data Dataset containing the survey responses.
+#' @param varLevels Named list specifying the levels associated with 'left', 'neutral', and 'right'.
 #'
-#' @return The data frame with an added identifier column.
+#' @return Dataset with an added identifier column.
 #' @noRd
 add_identifier_column <- function(data,
                                   varLevels
@@ -287,36 +308,40 @@ add_identifier_column <- function(data,
   return(data)
 }
 
-#' Add NET Rows to Data
+#' Adds NET Rows to Data
 #'
-#' Calculates the NET (sum of positives minus negatives) for each question and adds it to the data.
+#' Computes the NET score (difference between positive and negative responses)
+#' for each question and adds these scores as new rows in the dataset.
 #'
-#' @param data The data frame containing the survey data.
+#' @param data Dataset containing the survey responses.
 #'
-#' @return The data frame with added NET rows.
+#' @return Dataset augmented with NET score rows.
 #' @noRd
-add_net_rows <- function(data) {
-  # Group by Question and Id, summarize Freq and Perc
-  summary_data <- stats::aggregate(cbind(Freq, Perc) ~ Question + Id, data, sum)
+add_net_rows <- function(data,
+                         group
+) {
+  # Determine the columns to group by
+  group_cols <- append_if_exists("Question", group)
 
-  # Remove Neutrals
-  summary_data <- summary_data[summary_data$Id != "neutral",]
+  # Determine formula
+  agg_formula <- stats::as.formula(paste0("cbind(Freq, Perc) ~ Question + Id", if (!is.null(group)) paste0("+", group) else NULL))
 
-  # Initialize NET data frame
-  net_data <- data.frame(Question = unique(summary_data$Question), Freq = NA, Perc = NA, stringsAsFactors = FALSE)
+  # Aggregate data and remove neutrals from data
+  agg_data <- stats::aggregate(agg_formula, data = data, subset = Id != "neutral", FUN = sum, na.rm = TRUE)
 
-  # Calculate NET by subtracting Negative from Positive for each Question
-  for (q in net_data$Question) {
-    pos_vals <- subset(summary_data, Question == q & Id == "right", select = c("Freq", "Perc"))
-    neg_vals <- subset(summary_data, Question == q & Id == "left", select = c("Freq", "Perc"))
+  # Create a net data frame
+  net_data <- data.frame(unique(agg_data[group_cols]), Response = NA,
+                         Freq = NA, Perc = NA, Id = "NET",
+                         stringsAsFactors = TRUE)
 
-    net_data[net_data$Question == q, "Freq"] <- sum(pos_vals$Freq, na.rm = TRUE) - sum(neg_vals$Freq, na.rm = TRUE)
-    net_data[net_data$Question == q, "Perc"] <- sum(pos_vals$Perc, na.rm = TRUE) - sum(neg_vals$Perc, na.rm = TRUE)
+  # Loop through unique combinations of groupings to calculate NET values
+  for (i in seq_len(nrow(net_data))) {
+    subset_condition <- as.logical(Reduce("&", lapply(group_cols, function(col) agg_data[[col]] == net_data[i, col])))
+    right_vars <- agg_data[subset_condition & agg_data$Id == "right",]
+    left_vars <- agg_data[subset_condition & agg_data$Id == "left",]
+    net_data$Freq[i] <- sum(right_vars$Freq, na.rm = TRUE) - sum(left_vars$Freq, na.rm = TRUE)
+    net_data$Perc[i] <- sum(right_vars$Perc, na.rm = TRUE) - sum(left_vars$Perc, na.rm = TRUE)
   }
-
-  # Prepare NET data for merging
-  net_data$Response <- NA
-  net_data$Id <- "NET"
 
   # Add NET rows to main data
   final_data <- rbind(data, net_data)
@@ -324,14 +349,15 @@ add_net_rows <- function(data) {
   return(final_data)
 }
 
-#' Add Order Column for Plotting
+#' Adds Order Column for Faceting
 #'
-#' Adds a column to the data to facilitate ordering of plot facets based on mean percentage.
+#' Calculates an order metric based on the mean percentage of responses and
+#' adds it as a new column to facilitate ordered faceting in plots.
 #'
-#' @param data The data frame containing the survey data.
-#' @param order_by The variable by which to order the plot facets.
+#' @param data Dataset containing the survey responses.
+#' @param order_by Criteria used to determine the order of the facets.
 #'
-#' @return The data frame with an added order column.
+#' @return Dataset with an added order column.
 #' @noRd
 add_order_column <- function(data,
                              order_by
@@ -345,24 +371,34 @@ add_order_column <- function(data,
   return(data)
 }
 
-#' Create Stacked Likert Plot
+#' Generates a Stacked Likert Plot
 #'
-#' Generates a stacked Likert plot from the processed data.
+#' Creates a stacked Likert plot from the provided data, organizing responses into stacked bars. This function can also facet the plot based on a grouping variable and adjust the plot aesthetics according to specified parameters.
 #'
-#' @param data The processed data for the plot.
+#' @param data Processed data suitable for plotting.
+#' @param group (Optional) The grouping variable used for facetting the plot.
 #' @param width Width of the bars in the plot.
+#' @param ncol The number of columns to use when facetting the plot based on the group variable. This parameter is only relevant if `logic` is set to "group_facet".
+#' @param geom_size Size parameter for geometric objects in the plot, influencing the appearance of bars and text.
+#' @param logic A character string indicating how the plot should be adjusted based on the group variable. Possible values include "group_y" for adjusting y aesthetics based on the group and "group_facet" for creating a facetted plot.
 #'
-#' @return A `ggplot` object representing a stacked Likert plot.
+#' @return A ggplot object representing the stacked Likert plot with optional facetting and aesthetic adjustments.
 #' @noRd
 create_stacked_likert <- function(data,
-                                  width
+                                  group,
+                                  width,
+                                  ncol,
+                                  geom_size,
+                                  logic
 ) {
   # Subset data
   plot_data <- data[data$Id != "NET",]
 
+  # Determine the variable to use based on 'logic'
+  y_var <- if (logic == "group_y") plot_data[[group]] else plot_data$Question
+
   # Check if 'Perc_order' column exists in the data
-  y_aes <- if ("Perc_order" %in% names(plot_data)) stats::reorder(plot_data$Question,
-                                                           plot_data$Perc_order) else plot_data$Question
+  y_aes <- if ("Perc_order" %in% names(plot_data)) stats::reorder(y_var, plot_data$Perc_order) else y_var
 
   # Create 100% stacked bar chart
   stacked_plot <- ggplot(plot_data,
@@ -373,21 +409,26 @@ create_stacked_likert <- function(data,
     geom_bar(stat = "identity", width = width,
              position = position_stack(reverse = TRUE)) +
     scale_x_continuous(expand = c(0, 0),
-                       labels = c("0%", "25%", "50%", "75%", "100%"))
+                       labels = percent_label())
 
+  stacked_plot <- add_net_column(data, width, stacked_plot, group, geom_size, logic)
 
-  stacked_plot <- add_net_column(data, width, stacked_plot)
+  if (logic == "group_facet") {
+    stacked_plot <- stacked_plot +
+      facet_wrap(~ .data[[group]], ncol = ncol)
+  }
 
   return(stacked_plot)
 }
 
-#' Create Divergent Likert Plot
+#' Generates a Divergent Likert Plot
 #'
-#' Generates a divergent Likert plot from the processed data.
+#' Creates a divergent Likert plot from the provided data, emphasizing the
+#' divergence from a central neutral point.
 #'
-#' @param data The processed data for the plot.
+#' @param data Processed data suitable for plotting.
 #'
-#' @return A `ggplot` object representing a divergent Likert plot.
+#' @return A ggplot object representing the divergent Likert plot.
 #' @noRd
 create_divergent_likert <- function(data
 
@@ -395,13 +436,14 @@ create_divergent_likert <- function(data
 
 }
 
-#' Create Facetted Likert Plot
+#' Generates a Facetted Likert Plot
 #'
-#' Generates a facetted Likert plot from the processed data.
+#' Creates a facetted Likert plot from the provided data, allowing for comparison
+#' across multiple groups or categories.
 #'
-#' @param data The processed data for the plot.
+#' @param data Processed data suitable for plotting.
 #'
-#' @return A `ggplot` object representing a facetted Likert plot.
+#' @return A ggplot object representing the facetted Likert plot.
 #' @noRd
 create_facetted_likert <- function(data
 
@@ -409,51 +451,70 @@ create_facetted_likert <- function(data
 
 }
 
-#' Add NET Column to Likert Plot
+#' Adds NET Column to Likert Plot
 #'
-#' Adds a NET column to the Likert plot, representing the sum of positives minus negatives.
+#' Augments a Likert plot with an additional column representing the NET score,
+#' calculated as the difference between positive and negative responses. This function
+#' also adjusts the plot based on additional aesthetics and logical parameters.
 #'
-#' @param data The processed data for the plot.
+#' @param data Processed data including NET scores.
 #' @param width Width of the bars in the plot.
-#' @param plot The initial `ggplot` object.
+#' @param plot Initial ggplot object to which the NET column will be added.
+#' @param group The grouping variable used to categorize data, affecting how NET scores are displayed.
+#' @param geom_size Size parameter for the geometric objects in the plot, influencing the size of the NET column.
+#' @param logic A character string indicating the logical condition for adjusting plot aesthetics. Possible values include "group_y" for adjusting based on the grouping variable and "group_facet" for facetting the plot according to the group.
 #'
-#' @return A `ggplot` object with an added NET column.
+#' @return A ggplot object with an added NET column and adjusted according to specified logic and aesthetics.
 #' @noRd
 add_net_column <- function(data,
                            width,
-                           plot
+                           plot,
+                           group,
+                           geom_size,
+                           logic
 ) {
   if ("NET" %in% data$Id) {
+    # font size
+    size <- if (logic == "group_facet") convert_sizing(geom_size - 2.5) else convert_sizing(geom_size)
+
     # Subset NET data
     net_data <- data[data$Id == "NET",]
+
+    # Determine the variable to use based on 'logic'
+    y_aes <- if (logic == "group_y") net_data[[group]] else net_data$Question
+    height <- if (logic == "group_y") width / 2 - 0.1 else width
+    # TODO unsure why y = group vs y = Question affects the height
+
     # Get position of last factor
-    net_label_y_pos <- max(as.numeric(data$Question)) + width
+    net_label_y_pos <- max(as.numeric(factor(y_aes))) + height
 
     # Add column using tiles and text
     plot <- plot +
       geom_tile(data = net_data,
                 aes(x = 105,
-                    y = Question,
+                    y = y_aes,
                     width = 5,
                     height = width),
                 fill = colour_pal("Regent Grey"),
                 alpha = 0.3) +
       geom_text(data = net_data,
                 aes(x = 105,
-                    y = Question,
+                    y = y_aes,
                     label = ifelse(net_data$Perc >= 0,
-                                   paste("+", round(net_data$Perc)),
+                                   paste0("+", round(net_data$Perc)),
                                    as.character(round(net_data$Perc)))),
                 colour = colour_pal("Black80"),
-                size = 3.5,
+                size = size,
                 hjust = 0.5) +
 
       # Add the "NET" label with a consistent nudge upwards
-      geom_text(aes(x = 105, y = net_label_y_pos, label = "NET"),
+      geom_text(aes(x = 105,
+                    y = net_label_y_pos,
+                    label = "NET"),
                 inherit.aes = FALSE, # Prevent inheriting aesthetics
                 colour = colour_pal("Regent Grey"),
-                fontface = "plain",
-                size = 3.75,
+                size = size,
+                nudge_y = if (!is.null(group)) 0.5 else 0,
                 hjust = 0.5) +
 
       # Manually set axis

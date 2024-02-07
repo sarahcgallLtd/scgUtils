@@ -62,7 +62,7 @@ grp_freq <- function(data,
   tmp <- calculate_frequency(data, grp, weight)
 
   # Option: add percent
-  tmp <- optionally_add_percent(tmp, addPercent, groupsPercent, round_decimals)
+  tmp <- optionally_add_percent(tmp, addPercent, groupsPercent)
 
   # Option: round decimal places
   tmp <- round_vars(tmp, round_decimals)
@@ -73,7 +73,6 @@ grp_freq <- function(data,
   # ==============================================================#
   return(tmp)
 }
-
 
 #' Calculate Frequency for Grouped Data
 #'
@@ -122,8 +121,7 @@ calculate_frequency <- function(data,
 #' @noRd
 optionally_add_percent <- function(data,
                                    addPercent = FALSE,
-                                   groupsPercent = NULL,
-                                   round_decimals = NULL
+                                   groupsPercent = NULL
 ) {
   if (addPercent == TRUE || !is.null(groupsPercent)) {
     if (is.null(groupsPercent)) {

@@ -13,7 +13,7 @@ test_that("parameters return correct error", {
                "Parameter `data` is required and must be a data frame.")
   # vars =======================================================#
   expect_error(grid_vars(df, "vars"),
-               "`vars` must be a non-empty list with named elements.")
+               "`vars` must be a column in `data`.")
   var <- list("column1")
   expect_error(grid_vars(df, var),
                "`vars` must be a non-empty list with named elements.")

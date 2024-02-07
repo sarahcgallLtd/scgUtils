@@ -47,7 +47,7 @@ grid_vars <- function(data,
 
   # ==============================================================#
   # Prepare variables
-  x <- names(vars)
+  x <- if (is.list(vars)) names(vars) else vars
   y <- append_if_exists(group, weight, x)
 
   # TRANSFORM DATA
@@ -58,13 +58,19 @@ grid_vars <- function(data,
   tmp[sapply(tmp, is.character)] <- lapply(tmp[sapply(tmp, is.character)], as.factor)
 
   # Make data frame longer
-  tmp <- tidyr::pivot_longer(tmp, cols = names(tmp[, x]), names_to = "Question", values_to = "Response")
+  if (length(x) > 1) {
+    tmp <- tidyr::pivot_longer(tmp, cols = names(tmp[, x]), names_to = "Question", values_to = "Response")
 
-  # Change names of vars to from column names to new names
-  tmp$Question <- unlist(vars)[tmp$Question]
+    # Change names of vars to from column names to new names
+    tmp$Question <- unlist(vars)[tmp$Question]
+
+  } else {
+    tmp$Question <- if (is.list(vars)) unlist(vars) else x
+    names(tmp)[names(tmp) == x] <- "Response"
+  }
 
   # Make Question variable factor
-  tmp$Question <- factor(tmp$Question)
+    tmp$Question <- factor(tmp$Question)
 
   # Get grouped frequency and percent
   tmp <- grp_freq(data = tmp,

@@ -17,63 +17,73 @@ plot_likert(
   title = NULL,
   subtitle = NULL,
   order_by = NULL,
-  colours = colour_pal("divRedBlue"),
+  colours = NULL,
   legend = c("top", "right", "left", "bottom", "none"),
   nrow = 1,
+  ncol = 3,
   width = 0.8,
-  ratio = 6
+  ratio = 6,
+  base_size = 10,
+  base_font = ""
 )
 }
 \arguments{
 \item{data}{A data frame containing survey data.}
 
-\item{vars}{A vector of variables containing Likert responses.}
+\item{vars}{A vector of variables containing Likert responses. If \code{group} is specified, \code{vars} should only contain a single variable.}
 
 \item{varLevels}{A vector or a named list with 'left', 'neutral', and 'right' elements specifying the levels of the Likert scale.}
 
-\item{group}{An optional grouping variable for creating facetted plots. If specified, \code{vars} should contain only a single variable.}
+\item{group}{An optional grouping variable for creating facetted plots.}
 
 \item{weight}{An optional weighting variable for the survey data.}
 
-\item{type}{The type of Likert plot: 'stacked', 'divergent', or 'facetted'.}
+\item{type}{The type of Likert plot to generate: 'stacked', 'divergent', or 'facetted'.}
 
-\item{neutrals}{Handling of neutral responses in the plot. Can be 'no_change', 'right', or 'exclude'.}
+\item{neutrals}{Handling of neutral responses in the plot, can be 'no_change', 'right', or 'exclude'.}
 
-\item{total}{If TRUE and \code{group} is specified, includes an option for the total population.}
+\item{total}{If TRUE and \code{group} is specified, includes an option for the total population alongside group-specific plots.}
 
-\item{NET}{If TRUE, provides a Net Rating Score (positive minus negative responses).}
+\item{NET}{If TRUE, calculates and includes a Net Rating Score (difference between positive and negative responses).}
 
-\item{title}{Title of the plot.}
+\item{title}{The title of the plot.}
 
-\item{subtitle}{Subtitle of the plot.}
+\item{subtitle}{The subtitle of the plot. When \code{group} is not NULL, defaults to the name of the group variable unless specified.}
 
-\item{order_by}{Specifies the ordering of responses in the plot.}
+\item{order_by}{Specifies how to order responses in the plot. Can be NULL or based on 'left', 'right', or 'NET' responses.}
 
-\item{colours}{Colour palette for the variables. Default = colour_pal("divRedBlue").}
+\item{colours}{A named vector of colours for plotting variables. Default uses \code{colour_pal("divRedBlue")}.}
 
-\item{legend}{Position of the legend in the plot ('top', 'right', 'left', 'bottom', 'none').}
+\item{legend}{Position of the legend ('top', 'right', 'left', 'bottom', or 'none').}
 
-\item{nrow}{Number of rows for the legend, if applicable. Default = 1.}
+\item{nrow}{Number of rows in the legend, applicable when \code{legend} is 'top' or 'bottom'.}
 
-\item{width}{Width of the bars in the plot. Default = 0.8.}
+\item{ncol}{Number of columns to use when facetting the plot by \code{group}, applicable for 'facetted' plot type.}
 
-\item{ratio}{Aspect ratio of the plot. Default = 6.}
+\item{width}{Width of the bars in the plot, applicable to 'stacked' and 'divergent' plot types.}
+
+\item{ratio}{Aspect ratio of the plot, influencing the spacing and layout of plot elements.}
+
+\item{base_size}{Base font size for text elements within the plot.}
+
+\item{base_font}{Base font family for text elements within the plot.}
 }
 \value{
-A \code{ggplot2} object representing the Likert plot.
+A \code{ggplot2} object representing the Likert plot according to the specified parameters.
 }
 \description{
 \code{plot_likert} generates various types of Likert plots (stacked, divergent, or facetted) for visualising
-survey data. It is versatile in handling different plot types, the inclusion of NET scores, and custom orderings.
+survey data, handling different configurations of data presentation including NET scores and custom ordering.
 }
 \examples{
 \dontrun{
   data <- survey_data
-  vars <- c(Q1 = "Category 1", Q2 = "Category 2")
+  vars <- c("Q1", "Q2")
   varLevels <- list(left = c("Strongly Disagree", "Disagree"),
                     neutral = "Neutral",
                     right = c("Agree", "Strongly Agree"))
-  plot_likert(data, vars, varLevels, type = "divergent")
+  plot_likert(data, vars, varLevels, type = "divergent",
+              group = "DemographicGroup", NET = TRUE, order_by = "right")
 }
 
 }
