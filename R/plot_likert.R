@@ -392,7 +392,7 @@ create_stacked_likert <- function(data,
                                   logic
 ) {
   # Subset data
-  plot_data <- data[data$Id != "NET",]
+  plot_data <- if ("Id" %in% names(data)) data[data$Id != "NET",] else data
 
   # Determine the variable to use based on 'logic'
   y_var <- if (logic == "group_y") plot_data[[group]] else plot_data$Question

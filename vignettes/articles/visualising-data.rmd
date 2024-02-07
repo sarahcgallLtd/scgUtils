@@ -126,7 +126,7 @@ plot_parliament(de_parliament,
 
 ##### Adding a Percentage Bar
 For a more detailed analysis, `plot_parliament()` can also include a percentage bar that shows the popular vote won by each party. This feature provides additional context to the seat distribution, reflecting how party popularity translates into parliamentary seats.
-```{r parliament2, dpi=300, out.width = '100%', fig.height = 5}
+```{r parliament2, dpi=300, out.width = '95%', fig.height = 5}
 # Prepare Data
 uk_parliament <- data.frame(
   Party = c("Labour", "SNP", "Other", "Liberal Democrat", "Conservative"),
@@ -178,7 +178,6 @@ plot_popn(data = survey_df,
           yVar = "ageGroup",
           group = "turnoutUKGeneral",
           weight = "wt", # optional
-          addLabels = TRUE # to add % labels
 )
 ```
 <br>
@@ -221,7 +220,7 @@ The `plot_binary()` function visualises binary survey responses (e.g., "Yes" vs 
 set.seed(0)
 
 # Initialise the data frame with binary responses
-binary_df <- as_tibble(replicate(10, sample(c("Yes", "No"), 1000, replace = TRUE, prob = c(runif(1), 1-runif(1)))), .name_repair = "minimal")
+binary_df <- as_tibble(replicate(10, sample(c("Yes", "No"), 1000, replace = TRUE, prob = c(runif(1), 1 - runif(1)))), .name_repair = "minimal")
 
 # Name the columns accordingly
 names(binary_df) <- paste0("Q1", letters[1:10])
@@ -230,7 +229,7 @@ names(binary_df) <- paste0("Q1", letters[1:10])
 binary_df$Weight <- stats::runif(1000, min = 0.5, max = 2.0)
 
 # Add a "Gender" column with approximately equal "Male" and "Female" values
-binary_df$Gender <- factor(sample(c("Male", "Female"), 1000, replace = TRUE, prob = c(48,52)),
+binary_df$Gender <- factor(sample(c("Male", "Female"), 1000, replace = TRUE, prob = c(48, 52)),
                            levels = c("Male", "Female"))
 ```
 ```{r plot_binary1, dpi=300, out.width = '90%', fig.height = 5}
@@ -280,9 +279,9 @@ The basic use of `plot_waffle()` involves creating a plot that represents the di
 ```{r waffle1, dpi=300, out.width = '100%', fig.height = 4}
 # Prepare Data
 waffle_df <- data.frame(
-    Category = c("A", "B", "C"),
-    Count = c(30, 40, 30)
-  )
+  Category = c("A", "B", "C"),
+  Count = c(30, 40, 30)
+)
 
 # Plot
 plot_waffle(waffle_df,
@@ -309,12 +308,113 @@ For a more refined visual presentation, `plot_waffle()` allows customisation of 
 <br>
 
 ### Likert Scales
-Likert scale responses will be visualised with upcoming features, providing nuanced insights into survey data. This function will contain four options for visualisations, including:
+Likert scale responses provide nuanced insights into survey data. The `plot_likert()` functions contain three options for visualisations, including:
 
 * `100% Stacked Bars`
-* `Diverging with Neutrals`
-* `Diverging without Neutrals`
+* `Diverging Bars`
 * `Faceted Bars`
+
+#### 100% Stacked Bar Chart
+
+##### Basic Chart with One Question
+The optional `varLevels` argument controls the order from left to right of the response variables within `vars`.
+```{r likert1, dpi=300, out.width = '100%', fig.height = 4, eval = FALSE}
+# Plot with unweighted data and vars on the y-axis
+plot_likert(survey_df,
+            vars = "pidWeThey",
+            varLevels = c("Strongly disagree", "Disagree",
+                          "Don't know", "Agree", "Strongly agree") # optional to order Levels from left to right
+)
+```
+##### Enhancing the Chart with a Group and NET
+By changing the `varLevels` to a list, allows you to add additional controls, including adding the NET value ("Net Promoter Score") which subtracts the right from the left within the list. You can also opt to add colours using the `colour_pal()` function.
+```{r likert2, dpi=300, out.width = '100%', fig.height = 5}
+# Prepare palette with 5 colours from the divergent colour scale Blue to Green
+colours <- colour_pal(pal_name = "divBlueGreen",
+                      n = 5, # number of colours required
+                      assign = c("Strongly disagree", "Disagree",
+                                 "Don't know",
+                                 "Agree", "Strongly agree")
+)
+
+# Prepare varLevels as named list with 'left', 'neutral', and 'right' elements.
+varLevels <- list(left = c("Strongly disagree", "Disagree"),
+                  neutral = "Don't know",
+                  right = c("Agree", "Strongly agree"))
+
+# Plot with weighted data and group on the y-axis
+plot_likert(survey_df,
+            vars = "pidWeThey",
+            group = "partyId",
+            weight = "wt",
+            varLevels = varLevels,
+            title = "When I speak about this party, I usually say 'we' instead of 'they'", # Add title
+            subtitle = "by Party Identification",
+            colours = colours, # add colours
+            NET = TRUE, # Add NET score (right - left)
+            legend = "bottom" # Move legend to bottom
+
+) +
+  ggplot2::geom_vline(xintercept = 50, colour = "white") # add vertical line for readability
+```
+
+##### Basic Chart with Many Questions
+```{r likert3, dpi=300, out.width = '100%', fig.height = 5}
+# Prepare vars argument as list. The strings will be plotted on the y axis.
+vars <- list(likeSunak = "Sunak",
+             likeStarmer = "Starmer",
+             likeCon = "Conservative",
+             likeLab = "Labour",
+             likeLD = "Lib Dems",
+             likeSNP = "SNP",
+             likePC = "Plaid",
+             likeBrexitParty = "Reform",
+             likeGrn = "Greens"
+)
+
+# Prepare varLevels (NB these must match all columns contained within vars
+varLevels <- list(left = c("Strongly dislike", "1", "2", "3", "4"),
+                  neutral = c("5","Don't know"),
+                  right = c("6", "7", "8", "9", "Strongly like"))
+
+# Prepare colours
+colours <- colour_pal("divRedBlue", 11, c("Strongly dislike", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Strongly like"))
+colours$`Don't know` <- "grey90" # Make "Don't know" grey
+
+# Plot weighted data
+plot_likert(survey_df,
+            vars = vars,
+            varLevels = varLevels,
+            weight = "wt",
+            colours = colours,
+            NET = TRUE,
+            order_by = "left", # ordering by the mean of Strongly dislike etc (left side)
+            title = "Un*favourability of Political Parties and Leaders",
+            legend = "bottom",
+            nrow = 2, # put the legend on two rows
+) +
+  ggplot2::geom_vline(xintercept = 50, colour = "white")
+```
+
+##### Adding a Group to the Many Question Chart
+```{r likert4, dpi=300, out.width = '100%', fig.height = 7}
+# Plot weighted data faceted by EU referendum vote
+plot_likert(survey_df,
+            vars = vars,
+            group = "p_eurefvote",
+            varLevels = varLevels,
+            weight = "wt",
+            colours = colours,
+            order_by = "left", # ordering by the mean of Strongly dislike etc (left side)
+            title = "Un*favourability of Political Parties and Leaders",
+            legend = "bottom",
+            ncol = 1, # change number of columns from 3 to one to stack plots
+            nrow = 2, # put the legend on two rows
+            ratio = 3, # reduce the fixed ratio of the coordinates from 6 to 3
+            base_size = 9 # reduce the base font from 10 to 9
+) +
+  ggplot2::geom_vline(xintercept = 50, colour = "white")
+```
 
 ### Other Plots
 Future updates to `scgUtils` will introduce other plots such as:
