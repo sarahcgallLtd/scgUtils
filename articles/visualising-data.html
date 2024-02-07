@@ -260,9 +260,9 @@ reflecting how party popularity translates into parliamentary seats.</p>
 <span></span>
 <span><span class="co"># Plot</span></span>
 <span><span class="fu"><a href="../reference/plot_parliament.html">plot_parliament</a></span><span class="op">(</span><span class="va">uk_parliament</span>,</span>
-<span>                <span class="st">"Party"</span>,</span>
-<span>                <span class="st">"Seats"</span>,</span>
-<span>                <span class="st">"Percentage"</span>,</span>
+<span>                partyCol <span class="op">=</span> <span class="st">"Party"</span>,</span>
+<span>                seatCol <span class="op">=</span> <span class="st">"Seats"</span>,</span>
+<span>                percentCol <span class="op">=</span> <span class="st">"Percentage"</span>,</span>
 <span>                majorityLine <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># add line down centre</span></span>
 <span>                title <span class="op">=</span> <span class="st">"2019 UK General Election"</span>, <span class="co"># add title</span></span>
 <span>                subtitle <span class="op">=</span> <span class="st">"Results"</span>, <span class="co"># add subtitle</span></span>
@@ -369,9 +369,11 @@ correct format.</p>
 <span><span class="co"># Create plot of total dataset using unweighted data</span></span>
 <span><span class="fu"><a href="../reference/plot_binary.html">plot_binary</a></span><span class="op">(</span><span class="va">binary_df</span>,</span>
 <span>            vars <span class="op">=</span> <span class="va">vars</span>,</span>
-<span>            value <span class="op">=</span> <span class="st">"Yes"</span></span>
+<span>            value <span class="op">=</span> <span class="st">"Yes"</span>,</span>
+<span>            title <span class="op">=</span> <span class="st">"Hobbies"</span>, <span class="co"># option</span></span>
+<span>            totalColour <span class="op">=</span> <span class="st">"maroon"</span> <span class="co"># optional (default = grey)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="visualising-data_files/figure-html/plot_binary1-1.png" width="100%"><br></p>
+<p><img src="visualising-data_files/figure-html/plot_binary1-1.png" width="90%"><br></p>
 <p>When a group is provided, the function return faceted plots with the
 variables within the group plotted against the total. This provides an
 easy comparison between the variable and the rest of the cohort in the
