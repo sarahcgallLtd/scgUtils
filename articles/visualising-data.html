@@ -269,7 +269,7 @@ reflecting how party popularity translates into parliamentary seats.</p>
 <span>                legend <span class="op">=</span> <span class="st">"bottom"</span>, <span class="co"># add legend to bottom</span></span>
 <span>                colours <span class="op">=</span> <span class="fu"><a href="../reference/colour_prep.html">colour_prep</a></span><span class="op">(</span><span class="va">uk_parliament</span>, <span class="st">"Party"</span>, <span class="st">"polUK"</span><span class="op">)</span>, <span class="co"># match colours using `colour_prep()`</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="visualising-data_files/figure-html/parliament2-1.png" width="95%"><br><br> This plot offers an intuitive way to analyse election results,
+<p><img src="visualising-data_files/figure-html/parliament2-1.png" width="90%"><br><br> This plot offers an intuitive way to analyse election results,
 party strengths, and their representation in the parliament. The
 inclusion of a majority line further enhances the plot by delineating
 the threshold needed for a majority. <br><br></p>
@@ -441,39 +441,36 @@ with specific data narratives or brand guidelines. <br><br></p>
 <div class="section level3">
 <h3 id="likert-scales">Likert Scales<a class="anchor" aria-label="anchor" href="#likert-scales"></a>
 </h3>
-<p>Likert scale responses provide nuanced insights into survey data. The
-<code><a href="../reference/plot_likert.html">plot_likert()</a></code> functions contain three options for
-visualisations, including:</p>
+<p>Likert scales are a staple in survey research, providing detailed
+insights into respondents’ attitudes and opinions. The
+<code><a href="../reference/plot_likert.html">plot_likert()</a></code> function within the <code>scgUtils</code>
+package offers versatile visualisation options to effectively
+communicate the nuances of Likert scale data. This function includes
+three distinct visualisation styles:</p>
 <ul>
-<li><code>100% Stacked Bars</code></li>
-<li><code>Diverging Bars</code></li>
-<li><code>Faceted Bars</code></li>
+<li>100% Stacked Bars</li>
+<li>Diverging Bars</li>
+<li>Faceted Bars</li>
 </ul>
+<p><br><br></p>
 <div class="section level4">
 <h4 id="stacked-bar-chart">100% Stacked Bar Chart<a class="anchor" aria-label="anchor" href="#stacked-bar-chart"></a>
 </h4>
+<p>Visualising Likert scale responses with a 100% stacked bar chart
+allows for an intuitive comparison of agreement levels across different
+questions or groups. <br><br></p>
 <div class="section level5">
-<h5 id="basic-chart-with-one-question">Basic Chart with One Question<a class="anchor" aria-label="anchor" href="#basic-chart-with-one-question"></a>
+<h5 id="stacked-bar-chart-with-one-question-and-one-group">Stacked Bar Chart with One Question and One Group<a class="anchor" aria-label="anchor" href="#stacked-bar-chart-with-one-question-and-one-group"></a>
 </h5>
-<p>The optional <code>varLevels</code> argument controls the order from
-left to right of the response variables within <code>vars</code>.</p>
+<p>To enhance clarity and interpretability, the
+<code><a href="../reference/plot_likert.html">plot_likert()</a></code> function supports the optional
+<code>varLevels</code> argument to dictate the order of response
+variables. Colour customisation is achievable through the
+<code><a href="../reference/colour_pal.html">colour_pal()</a></code> function, aiding in distinguishing between
+different levels of agreement or sentiment. Additionally, text colour is
+set based on an internal contrast test to ensure readability of
+labels.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Plot with unweighted data and vars on the y-axis</span></span>
-<span><span class="fu"><a href="../reference/plot_likert.html">plot_likert</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
-<span>            vars <span class="op">=</span> <span class="st">"pidWeThey"</span>,</span>
-<span>            varLevels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Strongly disagree"</span>, <span class="st">"Disagree"</span>,</span>
-<span>                          <span class="st">"Don't know"</span>, <span class="st">"Agree"</span>, <span class="st">"Strongly agree"</span><span class="op">)</span> <span class="co"># optional to order Levels from left to right</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level5">
-<h5 id="enhancing-the-chart-with-a-group-and-net">Enhancing the Chart with a Group and NET<a class="anchor" aria-label="anchor" href="#enhancing-the-chart-with-a-group-and-net"></a>
-</h5>
-<p>By changing the <code>varLevels</code> to a list, allows you to add
-additional controls, including adding the NET value (“Net Promoter
-Score”) which subtracts the right from the left within the list. You can
-also opt to add colours using the <code><a href="../reference/colour_pal.html">colour_pal()</a></code>
-function.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Prepare palette with 5 colours from the divergent colour scale Blue to Green</span></span>
 <span><span class="va">colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/colour_pal.html">colour_pal</a></span><span class="op">(</span>pal_name <span class="op">=</span> <span class="st">"divBlueGreen"</span>,</span>
 <span>                      n <span class="op">=</span> <span class="fl">5</span>, <span class="co"># number of colours required</span></span>
@@ -483,30 +480,38 @@ function.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Prepare varLevels as named list with 'left', 'neutral', and 'right' elements.</span></span>
+<span><span class="co"># (NB these must match all columns contained within vars</span></span>
 <span><span class="va">varLevels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>left <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Strongly disagree"</span>, <span class="st">"Disagree"</span><span class="op">)</span>,</span>
-<span>                  neutral <span class="op">=</span> <span class="st">"Don't know"</span>,</span>
+<span>                  neutral <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Don't know"</span><span class="op">)</span>,</span>
 <span>                  right <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agree"</span>, <span class="st">"Strongly agree"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Plot with weighted data and group on the y-axis</span></span>
+<span><span class="co"># Likert plot with custom settings (weighted data and group on the y-axis)</span></span>
 <span><span class="fu"><a href="../reference/plot_likert.html">plot_likert</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
 <span>            vars <span class="op">=</span> <span class="st">"pidWeThey"</span>,</span>
 <span>            group <span class="op">=</span> <span class="st">"partyId"</span>,</span>
 <span>            weight <span class="op">=</span> <span class="st">"wt"</span>,</span>
 <span>            varLevels <span class="op">=</span> <span class="va">varLevels</span>,</span>
+<span>            total <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># set TRUE to add comparison against total population (available when group is present)</span></span>
+<span>            NET <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># set TRUE to add NET score</span></span>
+<span>            labels <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Add % labels</span></span>
+<span>            threshold <span class="op">=</span> <span class="fl">3</span>, <span class="co"># Set threshold for % that labels will be shown on plot</span></span>
+<span>            order_by <span class="op">=</span> <span class="st">"NET"</span>, <span class="co"># order bars by NET score</span></span>
 <span>            title <span class="op">=</span> <span class="st">"When I speak about this party, I usually say 'we' instead of 'they'"</span>, <span class="co"># Add title</span></span>
-<span>            subtitle <span class="op">=</span> <span class="st">"by Party Identification"</span>,</span>
-<span>            colours <span class="op">=</span> <span class="va">colours</span>, <span class="co"># add colours</span></span>
-<span>            NET <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Add NET score (right - left)</span></span>
+<span>            subtitle <span class="op">=</span> <span class="st">"by Party Identification"</span>, <span class="co"># Add subtitle</span></span>
+<span>            colours <span class="op">=</span> <span class="va">colours</span>, <span class="co"># Add colours</span></span>
 <span>            legend <span class="op">=</span> <span class="st">"bottom"</span> <span class="co"># Move legend to bottom</span></span>
 <span></span>
-<span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">50</span>, colour <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="co"># add vertical line for readability</span></span></code></pre></div>
-<p><img src="visualising-data_files/figure-html/likert2-1.png" width="100%"></p>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="visualising-data_files/figure-html/likert1-1.png" width="100%"><br></p>
 </div>
 <div class="section level5">
-<h5 id="basic-chart-with-many-questions">Basic Chart with Many Questions<a class="anchor" aria-label="anchor" href="#basic-chart-with-many-questions"></a>
+<h5 id="basic-chart-with-multiple-questions">Basic Chart with Multiple Questions<a class="anchor" aria-label="anchor" href="#basic-chart-with-multiple-questions"></a>
 </h5>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<p>This approach allows for a comprehensive overview of several
+questions simultaneously, with the <code>varLevels</code> list
+controlling the response variable ordering and the inclusion of a Net
+Promoter Score-like metric for additional insight.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Prepare vars argument as list. The strings will be plotted on the y axis.</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>likeSunak <span class="op">=</span> <span class="st">"Sunak"</span>,</span>
 <span>             likeStarmer <span class="op">=</span> <span class="st">"Starmer"</span>,</span>
@@ -519,16 +524,16 @@ function.</p>
 <span>             likeGrn <span class="op">=</span> <span class="st">"Greens"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Prepare varLevels (NB these must match all columns contained within vars</span></span>
+<span><span class="co"># Response level settings</span></span>
 <span><span class="va">varLevels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>left <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Strongly dislike"</span>, <span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span><span class="op">)</span>,</span>
 <span>                  neutral <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"5"</span>,<span class="st">"Don't know"</span><span class="op">)</span>,</span>
 <span>                  right <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"8"</span>, <span class="st">"9"</span>, <span class="st">"Strongly like"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Prepare colours</span></span>
+<span><span class="co"># Custom colours</span></span>
 <span><span class="va">colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/colour_pal.html">colour_pal</a></span><span class="op">(</span><span class="st">"divRedBlue"</span>, <span class="fl">11</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Strongly dislike"</span>, <span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"8"</span>, <span class="st">"9"</span>, <span class="st">"Strongly like"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">colours</span><span class="op">$</span><span class="va">`Don't know`</span> <span class="op">&lt;-</span> <span class="st">"grey90"</span> <span class="co"># Make "Don't know" grey</span></span>
 <span></span>
-<span><span class="co"># Plot weighted data</span></span>
+<span><span class="co"># Plotting multiple questions (vars are along the y-axis)</span></span>
 <span><span class="fu"><a href="../reference/plot_likert.html">plot_likert</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
 <span>            vars <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>            varLevels <span class="op">=</span> <span class="va">varLevels</span>,</span>
@@ -540,13 +545,16 @@ function.</p>
 <span>            legend <span class="op">=</span> <span class="st">"bottom"</span>,</span>
 <span>            nrow <span class="op">=</span> <span class="fl">2</span>, <span class="co"># put the legend on two rows</span></span>
 <span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">50</span>, colour <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="visualising-data_files/figure-html/likert3-1.png" width="100%"></p>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">50</span>, colour <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="co"># add white intercept line at the 50% point</span></span></code></pre></div>
+<p><img src="visualising-data_files/figure-html/likert2-1.png" width="100%"><br></p>
 </div>
 <div class="section level5">
-<h5 id="adding-a-group-to-the-many-question-chart">Adding a Group to the Many Question Chart<a class="anchor" aria-label="anchor" href="#adding-a-group-to-the-many-question-chart"></a>
+<h5 id="grouped-likert-chart">Grouped Likert Chart<a class="anchor" aria-label="anchor" href="#grouped-likert-chart"></a>
 </h5>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<p>Adding a grouping variable allows for the nuanced comparison of
+Likert scale responses across different segments of the survey
+population, further enriching the data’s interpretative value.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot weighted data faceted by EU referendum vote</span></span>
 <span><span class="fu"><a href="../reference/plot_likert.html">plot_likert</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
 <span>            vars <span class="op">=</span> <span class="va">vars</span>,</span>
@@ -563,7 +571,7 @@ function.</p>
 <span>            base_size <span class="op">=</span> <span class="fl">9</span> <span class="co"># reduce the base font from 10 to 9</span></span>
 <span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">50</span>, colour <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="visualising-data_files/figure-html/likert4-1.png" width="100%"></p>
+<p><img src="visualising-data_files/figure-html/likert3-1.png" width="100%"><br></p>
 </div>
 </div>
 </div>
