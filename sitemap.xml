@@ -10,6 +10,9 @@
     <loc>https://sarahcgall.github.io/scgUtils/articles/creating-colour-palettes.html</loc>
   </url>
   <url>
+    <loc>https://sarahcgall.github.io/scgUtils/articles/crosstabs.html</loc>
+  </url>
+  <url>
     <loc>https://sarahcgall.github.io/scgUtils/articles/img/questionnaire.html</loc>
   </url>
   <url>
@@ -56,6 +59,9 @@
   </url>
   <url>
     <loc>https://sarahcgall.github.io/scgUtils/reference/get_file.html</loc>
+  </url>
+  <url>
+    <loc>https://sarahcgall.github.io/scgUtils/reference/get_question.html</loc>
   </url>
   <url>
     <loc>https://sarahcgall.github.io/scgUtils/reference/grid_vars.html</loc>

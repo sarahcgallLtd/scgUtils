@@ -3,10 +3,11 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   creating-colour-palettes: creating-colour-palettes.html
+  crosstabs: crosstabs.html
   uploading-data: uploading-data.html
   using-survey-data: using-survey-data.html
   visualising-data: visualising-data.html
-last_built: 2024-02-07T23:04Z
+last_built: 2024-02-09T11:36Z
 urls:
   reference: https://sarahcgall.github.io/scgUtils/reference
   article: https://sarahcgall.github.io/scgUtils/articles

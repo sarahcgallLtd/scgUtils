@@ -54,6 +54,7 @@
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Function Explainers</h6>
     <a class="dropdown-item" href="../articles/uploading-data.html">Uploading &amp; Cleaning Data</a>
+    <a class="dropdown-item" href="../articles/crosstabs.html">Conducting Cross-Tabulation Analysis</a>
     <a class="dropdown-item" href="../articles/creating-colour-palettes.html">Mastering Colour Selection</a>
     <a class="dropdown-item" href="../articles/visualising-data.html">Visualising Data</a>
   </div>
@@ -204,7 +205,8 @@ choice for various data sources.</p>
 </tr>
 </tbody>
 </table>
-<p><em>For detailed uploading instructions, refer to the <a href="">Uploading &amp; Cleaning Data article</a>.</em> <br></p>
+<p><em>For detailed uploading instructions, refer to the <a href="https://sarahcgall.github.io/scgUtils/articles/uploading-data.html">Uploading
+&amp; Cleaning Data article</a>.</em> <br></p>
 <hr>
 </div>
 <div class="section level3">
@@ -526,272 +528,11 @@ analysis.</p>
 </tbody>
 </table>
 <p><br></p>
-<p>*<strong>Two-by-Two Tables with <code><a href="../reference/crosstab.html">crosstab()</a></code></strong><br>
-Creating detailed cross-tabulations is seamless with
-<code><a href="../reference/crosstab.html">crosstab()</a></code>. This function not only structures your data
-into insightful two-by-two tables but also allows for the inclusion of
-additional statistical measures. Customise the output format to fit your
-analytical needs, whether in wide or long data formats.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/crosstab.html">crosstab</a></span><span class="op">(</span><span class="va">df</span>,</span>
-<span>         rowVar <span class="op">=</span> <span class="st">"partyId"</span>,</span>
-<span>         colVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
-<span>         weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
-<span>         format <span class="op">=</span> <span class="st">"df_wide"</span>,</span>
-<span>         round_decimals <span class="op">=</span> <span class="fl">2</span>, <span class="co"># optional</span></span>
-<span>         statistics <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># optional</span></span>
-<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; [1] "partyId x gender: Chisq = 29.054 | DF = 9 | Cramer's V = 0.028 | p-value = 0.001"</span></span></code></pre>
-<table class="table">
-<thead><tr class="header">
-<th align="left">partyId</th>
-<th align="right">Total</th>
-<th align="right">Female</th>
-<th align="right">Male</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">Conservative</td>
-<td align="right">29.26</td>
-<td align="right">27.41</td>
-<td align="right">30.85</td>
-</tr>
-<tr class="even">
-<td align="left">Labour</td>
-<td align="right">24.14</td>
-<td align="right">25.38</td>
-<td align="right">23.09</td>
-</tr>
-<tr class="odd">
-<td align="left">Liberal Democrat</td>
-<td align="right">5.84</td>
-<td align="right">5.64</td>
-<td align="right">6.00</td>
-</tr>
-<tr class="even">
-<td align="left">Scottish National Party (SNP)</td>
-<td align="right">2.55</td>
-<td align="right">2.89</td>
-<td align="right">2.26</td>
-</tr>
-<tr class="odd">
-<td align="left">Plaid Cymru</td>
-<td align="right">0.37</td>
-<td align="right">0.32</td>
-<td align="right">0.41</td>
-</tr>
-<tr class="even">
-<td align="left">Green Party</td>
-<td align="right">2.52</td>
-<td align="right">2.17</td>
-<td align="right">2.81</td>
-</tr>
-</tbody>
-</table>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/crosstab.html">crosstab</a></span><span class="op">(</span><span class="va">df</span>,</span>
-<span>         rowVar <span class="op">=</span> <span class="st">"partyId"</span>,</span>
-<span>         colVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
-<span>         weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
-<span>         format <span class="op">=</span> <span class="st">"df_long"</span>, <span class="co"># default option</span></span>
-<span>         round_decimals <span class="op">=</span> <span class="fl">2</span>, <span class="co"># optional</span></span>
-<span>         totals <span class="op">=</span> <span class="cn">FALSE</span>, <span class="co"># optional</span></span>
-<span>         convert_to <span class="op">=</span> <span class="st">"frequency"</span></span>
-<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="left">partyId</th>
-<th align="left">gender</th>
-<th align="right">Freq</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">Conservative</td>
-<td align="left">Male</td>
-<td align="right">663.95</td>
-</tr>
-<tr class="even">
-<td align="left">Labour</td>
-<td align="left">Male</td>
-<td align="right">496.94</td>
-</tr>
-<tr class="odd">
-<td align="left">Liberal Democrat</td>
-<td align="left">Male</td>
-<td align="right">129.14</td>
-</tr>
-<tr class="even">
-<td align="left">Scottish National Party (SNP)</td>
-<td align="left">Male</td>
-<td align="right">48.73</td>
-</tr>
-<tr class="odd">
-<td align="left">Plaid Cymru</td>
-<td align="left">Male</td>
-<td align="right">8.81</td>
-</tr>
-<tr class="even">
-<td align="left">Green Party</td>
-<td align="left">Male</td>
-<td align="right">60.48</td>
-</tr>
-</tbody>
-</table>
-<p><br></p>
-<p><strong><em>Efficiently Combine Statistics with
-<code><a href="../reference/compile.html">compile()</a></code></em></strong><br> When dealing with numerous
-variables, <code><a href="../reference/compile.html">compile()</a></code> is your go-to function. It can create
-a comprehensive data frame of all relevant statistics like Chi-square,
-Degrees of Freedom, Cramer’s V, and p-value, streamlining the
-statistical analysis process.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># the row variables are typically your questions within the survey. For ease, utilise dplyr to select the variables</span></span>
-<span><span class="va">rowVars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">turnoutUKGeneral</span><span class="op">:</span><span class="va">partyIdStrength</span>,</span>
-<span>                                      <span class="va">partyIdSqueeze</span><span class="op">:</span><span class="va">likeGrn</span>,</span>
-<span>                                      <span class="va">pcon</span><span class="op">:</span><span class="va">p_hh_size</span>,</span>
-<span>                                      <span class="va">p_disability</span><span class="op">:</span><span class="va">p_past_vote_2019</span>,</span>
-<span>                                      <span class="va">p_eurefturnout</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># the column variables tend to be the demographic variables</span></span>
-<span><span class="va">colVars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gender"</span>, <span class="st">"ageGroup"</span>, <span class="st">"p_socgrade"</span>, <span class="st">"partyId"</span>, <span class="st">"p_eurefvote"</span>, <span class="st">"p_edlevel"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># compile stats and save to data frame called `stats`</span></span>
-<span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compile.html">compile</a></span><span class="op">(</span><span class="va">df</span>,</span>
-<span>                 rowVars <span class="op">=</span> <span class="va">rowVars</span>,</span>
-<span>                 colVars <span class="op">=</span> <span class="va">colVars</span>,</span>
-<span>                 weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
-<span>                 save <span class="op">=</span> <span class="cn">FALSE</span>, <span class="co"># turn this to FALSE to prevent saving as a .csv</span></span>
-<span>                 format <span class="op">=</span> <span class="st">"statistics"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># View first 10, sorted by Cramer's V</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">stats</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">stats</span><span class="op">$</span><span class="va">CramersV</span><span class="op">)</span>,<span class="op">]</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<colgroup>
-<col width="5%">
-<col width="27%">
-<col width="13%">
-<col width="12%">
-<col width="13%">
-<col width="4%">
-<col width="12%">
-<col width="10%">
-</colgroup>
-<thead><tr class="header">
-<th align="left"></th>
-<th align="left">Row_Var</th>
-<th align="left">Col_Var</th>
-<th align="right">Size</th>
-<th align="right">Chisq</th>
-<th align="right">DF</th>
-<th align="right">CramersV</th>
-<th align="right">p_value</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">10</td>
-<td align="left">generalElectionVote</td>
-<td align="left">partyId</td>
-<td align="right">3953.314</td>
-<td align="right">10049.807</td>
-<td align="right">81</td>
-<td align="right">0.531</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">316</td>
-<td align="left">p_past_vote_2017</td>
-<td align="left">partyId</td>
-<td align="right">3545.672</td>
-<td align="right">5251.916</td>
-<td align="right">72</td>
-<td align="right">0.430</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">52</td>
-<td align="left">bestOnMII</td>
-<td align="left">partyId</td>
-<td align="right">3719.803</td>
-<td align="right">5886.195</td>
-<td align="right">81</td>
-<td align="right">0.419</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">310</td>
-<td align="left">p_past_vote_2015</td>
-<td align="left">partyId</td>
-<td align="right">3567.690</td>
-<td align="right">5054.699</td>
-<td align="right">81</td>
-<td align="right">0.397</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">258</td>
-<td align="left">p_education_age</td>
-<td align="left">p_edlevel</td>
-<td align="right">3465.861</td>
-<td align="right">3157.122</td>
-<td align="right">30</td>
-<td align="right">0.390</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">322</td>
-<td align="left">p_past_vote_2019</td>
-<td align="left">partyId</td>
-<td align="right">3551.306</td>
-<td align="right">4736.332</td>
-<td align="right">90</td>
-<td align="right">0.365</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">248</td>
-<td align="left">p_job_sector</td>
-<td align="left">ageGroup</td>
-<td align="right">3991.109</td>
-<td align="right">1706.840</td>
-<td align="right">20</td>
-<td align="right">0.327</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">200</td>
-<td align="left">p_work_stat</td>
-<td align="left">ageGroup</td>
-<td align="right">3991.109</td>
-<td align="right">2857.155</td>
-<td align="right">35</td>
-<td align="right">0.320</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">298</td>
-<td align="left">p_past_vote_2010</td>
-<td align="left">partyId</td>
-<td align="right">3511.013</td>
-<td align="right">3182.663</td>
-<td align="right">81</td>
-<td align="right">0.317</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">304</td>
-<td align="left">p_past_vote_2005</td>
-<td align="left">partyId</td>
-<td align="right">3222.173</td>
-<td align="right">2868.127</td>
-<td align="right">81</td>
-<td align="right">0.314</td>
-<td align="right">0</td>
-</tr>
-</tbody>
-</table>
-<p><br></p>
+<p><strong><em>Crosstabs</em></strong><br> Crosstabulation is a
+fundamental technique in survey analysis, especially when examining
+relationships between categorical variables. For an overview of using
+crosstab functions within the <code>scgUtils</code> package, view the <a href="https://sarahcgall.github.io/scgUtils/articles/crosstab.html">Conducting
+Cross-Tabulation Analysis article</a>. <br><br></p>
 </div>
 <div class="section level4">
 <h4 id="grid-data">
@@ -805,7 +546,7 @@ tailor-made for such data, turning complex grid questions into
 analysable formats. It’s particularly adept at handling “select all that
 apply” questions or grid-type responses, transforming them into a format
 conducive to comparison and visualisation with libraries such as <a href="https://ggplot2.tidyverse.org/" class="external-link"><code>ggplot2</code></a>.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create a named list of the columns that relate to the question</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>likeSunak <span class="op">=</span> <span class="st">"Rishi Sunak"</span>,</span>
 <span>             likeStarmer <span class="op">=</span> <span class="st">"Keir Starmer"</span>,</span>
@@ -875,7 +616,7 @@ Group</em></strong><br> Enhance the functionality of
 <code><a href="../reference/grid_vars.html">grid_vars()</a></code> by applying it with a group variable. This
 allows for dissecting responses across different demographic or
 categorical segments, providing richer, more targeted insights.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/grid_vars.html">grid_vars</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>          vars <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>          group <span class="op">=</span> <span class="st">"gender"</span>, <span class="co"># optional</span></span>
@@ -947,155 +688,14 @@ way to intuitively understand and communicate complex data patterns. The
 <code><a href="../reference/plot_popn.html">plot_popn()</a></code> for demographic analysis and
 <code><a href="../reference/plot_sankey.html">plot_sankey()</a></code> for flow visualisation, helping you to not
 only understand your data but also to present it in a compelling and
-insightful manner. <br><br></p>
-<div class="section level4">
-<h4 id="crosstabs">
-<strong>Crosstabs</strong><a class="anchor" aria-label="anchor" href="#crosstabs"></a>
-</h4>
-<p>Crosstabulation is a fundamental technique in survey analysis,
-especially when examining relationships between categorical
-variables.</p>
-<p><strong><em>Visualising Crosstabs with
-<code><a href="../reference/crosstab.html">crosstab()</a></code></em></strong><br> The <code>crosstab</code>
-function, when used with the <code>plot = TRUE</code> option, turns your
-data into insightful visual crosstabs. This not only aids in
-understanding the distribution of responses but also includes
-statistical measures for deeper analysis.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/crosstab.html">crosstab</a></span><span class="op">(</span><span class="va">df</span>,</span>
-<span>         rowVar <span class="op">=</span> <span class="st">"p_eurefvote"</span>,</span>
-<span>         colVar <span class="op">=</span> <span class="st">"p_edlevel"</span>,</span>
-<span>         weight <span class="op">=</span> <span class="st">"wt"</span>,</span>
-<span>         plot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>         statistics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>         round_decimals <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; [1] "p_eurefvote x p_edlevel: Chisq = 371.026 | DF = 10 | Cramer's V = 0.243 | p-value = 0"</span></span></code></pre>
-<p><img src="using-survey-data_files/figure-html/crosstabInd1_table-1.png" width="100%"></p>
-<table class="table">
-<thead><tr class="header">
-<th align="left">p_eurefvote</th>
-<th align="left">p_edlevel</th>
-<th align="right">Freq</th>
-<th align="right">Perc</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">I voted to remain</td>
-<td align="left">No qualifications</td>
-<td align="right">56.18</td>
-<td align="right">23.49</td>
-</tr>
-<tr class="even">
-<td align="left">I voted to leave</td>
-<td align="left">No qualifications</td>
-<td align="right">182.98</td>
-<td align="right">76.51</td>
-</tr>
-<tr class="odd">
-<td align="left">Don’t know</td>
-<td align="left">No qualifications</td>
-<td align="right">0.00</td>
-<td align="right">0.00</td>
-</tr>
-<tr class="even">
-<td align="left">I voted to remain</td>
-<td align="left">Below GCSE</td>
-<td align="right">43.66</td>
-<td align="right">27.47</td>
-</tr>
-<tr class="odd">
-<td align="left">I voted to leave</td>
-<td align="left">Below GCSE</td>
-<td align="right">115.30</td>
-<td align="right">72.53</td>
-</tr>
-<tr class="even">
-<td align="left">Don’t know</td>
-<td align="left">Below GCSE</td>
-<td align="right">0.00</td>
-<td align="right">0.00</td>
-</tr>
-</tbody>
-</table>
-<p><br></p>
-<p><strong><em>Adjusting for Readability</em></strong><br> For plots
-with numerous variables along the X-axis, <code>adjustX = TRUE</code>
-rotates the labels for better readability, ensuring that even dense data
-remains accessible and interpretable.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/crosstab.html">crosstab</a></span><span class="op">(</span><span class="va">df</span>,</span>
-<span>         rowVar <span class="op">=</span> <span class="st">"polAttention"</span>,</span>
-<span>         colVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
-<span>         weight <span class="op">=</span> <span class="st">"wt"</span>,</span>
-<span>         plot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>         statistics <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>         adjustX <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>         round_decimals <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; [1] "polAttention x gender: Chisq = 163.768 | DF = 11 | Cramer's V = 0.061 | p-value = 0"</span></span></code></pre>
-<p><img src="using-survey-data_files/figure-html/crosstabInd2_table-1.png" width="100%"></p>
-<table class="table">
-<thead><tr class="header">
-<th align="left">polAttention</th>
-<th align="left">gender</th>
-<th align="right">Freq</th>
-<th align="right">Perc</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">Pay no attention</td>
-<td align="left">Male</td>
-<td align="right">65.46</td>
-<td align="right">3.04</td>
-</tr>
-<tr class="even">
-<td align="left">1</td>
-<td align="left">Male</td>
-<td align="right">39.89</td>
-<td align="right">1.85</td>
-</tr>
-<tr class="odd">
-<td align="left">2</td>
-<td align="left">Male</td>
-<td align="right">47.53</td>
-<td align="right">2.21</td>
-</tr>
-<tr class="even">
-<td align="left">3</td>
-<td align="left">Male</td>
-<td align="right">54.82</td>
-<td align="right">2.55</td>
-</tr>
-<tr class="odd">
-<td align="left">4</td>
-<td align="left">Male</td>
-<td align="right">56.93</td>
-<td align="right">2.64</td>
-</tr>
-<tr class="even">
-<td align="left">5</td>
-<td align="left">Male</td>
-<td align="right">161.07</td>
-<td align="right">7.48</td>
-</tr>
-</tbody>
-</table>
-<p><br></p>
-</div>
-<div class="section level4">
-<h4 id="other-visualisations">
-<strong>Other Visualisations</strong><a class="anchor" aria-label="anchor" href="#other-visualisations"></a>
-</h4>
+insightful manner.</p>
 <p>For a broader spectrum of visualisation techniques and detailed
-guidance on effectively using colour in your plots, refer to the <a href="">Visualising Data article</a> and <a href="https://sarahcgall.github.io/scgUtils/articles/creating-colour-palettes.html#colour_display">Mastering
+guidance on effectively using colour in your plots, refer to the <a href="https://sarahcgall.github.io/scgUtils/articles/visualising-data.html">Visualising
+Data article</a> and <a href="https://sarahcgall.github.io/scgUtils/articles/creating-colour-palettes.html#colour_display">Mastering
 Colour Selection article</a>. These resources provide additional
 insights into making the most of the <code>scgUtils</code> package for
 visualising complex survey data. <br></p>
 <hr>
-</div>
 </div>
 <div class="section level3">
 <h3 id="step-7-presenting-the-results">Step 7: Presenting the Results<a class="anchor" aria-label="anchor" href="#step-7-presenting-the-results"></a>
@@ -1109,36 +709,9 @@ presentations. <br><br></p>
 <strong>Tables</strong><a class="anchor" aria-label="anchor" href="#tables"></a>
 </h4>
 <p>Tables are fundamental tools for presenting complex data in a
-structured and easily interpretable format. <br><br></p>
-<p><strong><em>Extending <code><a href="../reference/compile.html">compile()</a></code> for Comprehensive
-Tables</em></strong><br> The <code><a href="../reference/compile.html">compile()</a></code> function in
-<code>scgUtils</code> excels in generating comprehensive crosstab
-tables. It efficiently processes each variable pair within your dataset,
-producing detailed tabular outputs. These tables can be formatted and
-saved as CSV files, making them perfect for inclusion in reports or
-further analysis. The ability to create such extensive tables is
-invaluable for presenting a holistic view of your survey results,
-encompassing various aspects and relationships within your data.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rowVars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">turnoutUKGeneral</span><span class="op">:</span><span class="va">partyIdStrength</span>,</span>
-<span>                                      <span class="va">partyIdSqueeze</span><span class="op">:</span><span class="va">likeGrn</span>,</span>
-<span>                                      <span class="va">pcon</span><span class="op">:</span><span class="va">p_hh_size</span>,</span>
-<span>                                      <span class="va">p_disability</span><span class="op">:</span><span class="va">p_past_vote_2019</span>,</span>
-<span>                                      <span class="va">p_eurefturnout</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">colVars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gender"</span>, <span class="st">"ageGroup"</span>, <span class="st">"p_socgrade"</span>, <span class="st">"partyId"</span>, <span class="st">"p_eurefvote"</span>, <span class="st">"p_edlevel"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/compile.html">compile</a></span><span class="op">(</span><span class="va">df</span>,</span>
-<span>        rowVars <span class="op">=</span> <span class="va">rowVars</span>,</span>
-<span>        colVars <span class="op">=</span> <span class="va">colVars</span>,</span>
-<span>        weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
-<span>        name <span class="op">=</span> <span class="st">"crosstabs"</span> <span class="co"># this will save as "crosstabs.csv"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="img/crosstab_csv.png" width="100%"><br><br><br></p>
-<p><strong><em>Visual Representation of Compiled
-Tables</em></strong><br> To add visual appeal and enhance
-interpretability, future additions to the <code>scgUtils</code> package
-will include the ability to view compiled tables graphically. <br><br></p>
+structured and easily interpretable format. View the <a href="https://sarahcgall.github.io/scgUtils/articles/crosstab.html">Conducting
+Cross-Tabulation Analysis article</a> for more information on how to
+compile tables. <br><br></p>
 </div>
 <div class="section level4">
 <h4 id="powerpoint-integration">
