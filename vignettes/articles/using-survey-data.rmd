@@ -54,7 +54,7 @@ head(df[, 1:6])
 knitr::kable(head(df[, 1:6]))
 ```
 
-*For detailed uploading instructions, refer to the [Uploading & Cleaning Data article]().*
+*For detailed uploading instructions, refer to the [Uploading & Cleaning Data article](https://sarahcgall.github.io/scgUtils/articles/uploading-data.html).*
 <br>
 
 ---
@@ -242,97 +242,9 @@ knitr::kable(grp_freq(df,
 ```
 <br>
 
-***Two-by-Two Tables with `crosstab()`**<br>
-Creating detailed cross-tabulations is seamless with `crosstab()`. This function not only structures your data into insightful two-by-two tables but also allows for the inclusion of additional statistical measures. Customise the output format to fit your analytical needs, whether in wide or long data formats.
-```{r categorical3, eval = FALSE}
-crosstab(df,
-         rowVar = "partyId",
-         colVar = "gender",
-         weight = "wt", # optional
-         format = "df_wide",
-         round_decimals = 2, # optional
-         statistics = TRUE # optional
-) %>%
-  head()
-```
-```{r categorical3_table, echo = FALSE}
-knitr::kable(crosstab(df,
-                      rowVar = "partyId",
-                      colVar = "gender",
-                      weight = "wt",
-                      format = "df_wide",
-                      round_decimals = 2,
-                      statistics = TRUE
-) %>% head())
-```
-```{r categorical4, eval = FALSE}
-crosstab(df,
-         rowVar = "partyId",
-         colVar = "gender",
-         weight = "wt", # optional
-         format = "df_long", # default option
-         round_decimals = 2, # optional
-         totals = FALSE, # optional
-         convert_to = "frequency"
-) %>%
-  head()
-```
-```{r categorical4_table, echo = FALSE}
-knitr::kable(crosstab(df,
-                      rowVar = "partyId",
-                      colVar = "gender",
-                      weight = "wt", # optional
-                      format = "df_long", # default option
-                      round_decimals = 2,
-                      totals = FALSE,
-                      convert_to = "frequency"
-) %>% head())
-```
+***Crosstabs***<br>
+Crosstabulation is a fundamental technique in survey analysis, especially when examining relationships between categorical variables. For an overview of using crosstab functions within the `scgUtils` package, view the [Conducting Cross-Tabulation Analysis article](https://sarahcgall.github.io/scgUtils/articles/crosstab.html).
 <br>
-
-***Efficiently Combine Statistics with `compile()`***<br>
-When dealing with numerous variables, `compile()` is your go-to function. It can create a comprehensive data frame of all relevant statistics like Chi-square, Degrees of Freedom, Cramer's V, and p-value, streamlining the statistical analysis process.
-```{r categorical5, eval = FALSE}
-# the row variables are typically your questions within the survey. For ease, utilise dplyr to select the variables
-rowVars <- names(df %>% dplyr::select(turnoutUKGeneral:partyIdStrength,
-                                      partyIdSqueeze:likeGrn,
-                                      pcon:p_hh_size,
-                                      p_disability:p_past_vote_2019,
-                                      p_eurefturnout))
-
-# the column variables tend to be the demographic variables
-colVars <- c("gender", "ageGroup", "p_socgrade", "partyId", "p_eurefvote", "p_edlevel")
-
-# compile stats and save to data frame called `stats`
-stats <- compile(df,
-                 rowVars = rowVars,
-                 colVars = colVars,
-                 weight = "wt", # optional
-                 save = FALSE, # turn this to FALSE to prevent saving as a .csv
-                 format = "statistics")
-
-# View first 10, sorted by Cramer's V
-head(stats[order(-stats$CramersV),], 10)
-```
-```{r categorical5_table, echo = FALSE}
-rowVars <- names(df %>% dplyr::select(turnoutUKGeneral:partyIdStrength,
-                                      partyIdSqueeze:likeGrn,
-                                      pcon:p_hh_size,
-                                      p_disability:p_past_vote_2019,
-                                      p_eurefturnout))
-
-colVars <- c("gender", "ageGroup", "p_socgrade", "partyId", "p_eurefvote", "p_edlevel")
-
-stats <- compile(df,
-                 rowVars = rowVars,
-                 colVars = colVars,
-                 weight = "wt", # optional
-                 save = FALSE, # turn this to FALSE to prevent saving as a .csv
-                 format = "statistics")
-
-# View first 10, sorted by Cramer's V
-knitr::kable(head(stats[order(-stats$CramersV),], 10))
-```
 <br>
 
 #### **Grid data**
@@ -403,67 +315,8 @@ knitr::kable(grid_vars(df,
 
 ### Step 6: Visualising the Data
 Effective visualisation is key in survey data analysis, offering a way to intuitively understand and communicate complex data patterns. The `scgUtils` package provides specialised functions like `plot_popn()` for demographic analysis and `plot_sankey()` for flow visualisation, helping you to not only understand your data but also to present it in a compelling and insightful manner.
-<br>
-<br>
 
-#### **Crosstabs**
-Crosstabulation is a fundamental technique in survey analysis, especially when examining relationships between categorical variables.
-
-***Visualising Crosstabs with `crosstab()`***<br>
-The `crosstab` function, when used with the `plot = TRUE` option, turns your data into insightful visual crosstabs. This not only aids in understanding the distribution of responses but also includes statistical measures for deeper analysis.
-```{r crosstabInd1, eval = FALSE}
-crosstab(df,
-         rowVar = "p_eurefvote",
-         colVar = "p_edlevel",
-         weight = "wt",
-         plot = TRUE,
-         statistics = TRUE,
-         round_decimals = 2
-) %>%
-  head()
-```
-```{r crosstabInd1_table, dpi=300, out.width = '100%', fig.height = 5, echo = FALSE}
-knitr::kable(crosstab(df,
-                      rowVar = "p_eurefvote",
-                      colVar = "p_edlevel",
-                      weight = "wt",
-                      plot = TRUE,
-                      statistics = TRUE,
-                      round_decimals = 2
-) %>%
-               head())
-```
-<br>
-
-***Adjusting for Readability***<br>
-For plots with numerous variables along the X-axis, `adjustX = TRUE` rotates the labels for better readability, ensuring that even dense data remains accessible and interpretable.
-```{r crosstabInd2, eval = FALSE}
-crosstab(df,
-         rowVar = "polAttention",
-         colVar = "gender",
-         weight = "wt",
-         plot = TRUE,
-         statistics = TRUE,
-         adjustX = TRUE,
-         round_decimals = 2
-) %>%
-  head()
-```
-```{r crosstabInd2_table, dpi=300, out.width = '100%', fig.height = 5, echo = FALSE}
-knitr::kable(crosstab(df,
-                      rowVar = "polAttention",
-                      colVar = "gender",
-                      weight = "wt",
-                      plot = TRUE,
-                      statistics = TRUE,
-                      adjustX = TRUE,
-                      round_decimals = 2
-) %>% head())
-```
-<br>
-
-#### **Other Visualisations**
-For a broader spectrum of visualisation techniques and detailed guidance on effectively using colour in your plots, refer to the [Visualising Data article]() and [Mastering Colour Selection article](https://sarahcgall.github.io/scgUtils/articles/creating-colour-palettes.html#colour_display). These resources provide additional insights into making the most of the `scgUtils` package for visualising complex survey data.
+For a broader spectrum of visualisation techniques and detailed guidance on effectively using colour in your plots, refer to the [Visualising Data article](https://sarahcgall.github.io/scgUtils/articles/visualising-data.html) and [Mastering Colour Selection article](https://sarahcgall.github.io/scgUtils/articles/creating-colour-palettes.html#colour_display). These resources provide additional insights into making the most of the `scgUtils` package for visualising complex survey data.
 <br>
 
 ---
@@ -474,37 +327,7 @@ Presenting the results of your survey analysis in a clear and impactful way is c
 <br>
 
 #### **Tables**
-Tables are fundamental tools for presenting complex data in a structured and easily interpretable format.
-<br>
-<br>
-
-***Extending `compile()` for Comprehensive Tables***<br>
-The `compile()` function in `scgUtils` excels in generating comprehensive crosstab tables. It efficiently processes each variable pair within your dataset, producing detailed tabular outputs. These tables can be formatted and saved as CSV files, making them perfect for inclusion in reports or further analysis. The ability to create such extensive tables is invaluable for presenting a holistic view of your survey results, encompassing various aspects and relationships within your data.
-```{r categorical6, eval = FALSE}
-rowVars <- names(df %>% dplyr::select(turnoutUKGeneral:partyIdStrength,
-                                      partyIdSqueeze:likeGrn,
-                                      pcon:p_hh_size,
-                                      p_disability:p_past_vote_2019,
-                                      p_eurefturnout))
-
-colVars <- c("gender", "ageGroup", "p_socgrade", "partyId", "p_eurefvote", "p_edlevel")
-
-compile(df,
-        rowVars = rowVars,
-        colVars = colVars,
-        weight = "wt", # optional
-        name = "crosstabs" # this will save as "crosstabs.csv"
-)
-```
-```{r crosstab_csv, echo=FALSE, out.width = '100%'}
-knitr::include_graphics("img/crosstab_csv.png")
-```
-<br>
-<br>
-<br>
-
-***Visual Representation of Compiled Tables***<br>
-To add visual appeal and enhance interpretability, future additions to the `scgUtils` package will include the ability to view compiled tables graphically.
+Tables are fundamental tools for presenting complex data in a structured and easily interpretable format. View the [Conducting Cross-Tabulation Analysis article](https://sarahcgall.github.io/scgUtils/articles/crosstab.html) for more information on how to compile tables.
 <br>
 <br>
 

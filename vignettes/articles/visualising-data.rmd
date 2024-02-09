@@ -324,7 +324,7 @@ Visualising Likert scale responses with a 100% stacked bar chart allows for an i
 
 ##### Stacked Bar Chart with One Question and One Group
 To enhance clarity and interpretability, the `plot_likert()` function supports the optional `varLevels` argument to dictate the order of response variables. Colour customisation is achievable through the `colour_pal()` function, aiding in distinguishing between different levels of agreement or sentiment. Additionally, text colour is set based on an internal contrast test to ensure readability of labels.
-```{r likert1, dpi=300, out.width = '100%', fig.height = 5}
+```{r likert1, dpi=300, out.width = '100%', fig.height = 6}
 # Prepare palette with 5 colours from the divergent colour scale Blue to Green
 colours <- colour_pal(pal_name = "divBlueGreen",
                       n = 5, # number of colours required
@@ -348,7 +348,7 @@ plot_likert(survey_df,
             total = TRUE, # set TRUE to add comparison against total population (available when group is present)
             NET = TRUE, # set TRUE to add NET score
             labels = TRUE, # Add % labels
-            threshold = 3, # Set threshold for % that labels will be shown on plot
+            threshold = 5, # Set threshold for % that labels will be shown on plot
             order_by = "NET", # order bars by NET score
             title = "When I speak about this party, I usually say 'we' instead of 'they'", # Add title
             subtitle = "by Party Identification", # Add subtitle

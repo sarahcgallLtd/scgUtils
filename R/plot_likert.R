@@ -17,7 +17,7 @@
 #' @param labels if TRUE, adds % labels to the plot.
 #' @param threshold A numeric value to adjust the threshold for labels to be shown.
 #' @param title The title of the plot.
-#' @param subtitle The subtitle of the plot. When `group` is not NULL, defaults to the name of the group variable unless specified.
+#' @param subtitle The subtitle of the plot.
 #' @param order_by Specifies how to order responses in the plot. Can be NULL or based on 'left', 'right', or 'NET' responses.
 #' @param colours A named vector of colours for plotting variables. Default uses `colour_pal("divRedBlue")`.
 #' @param legend Position of the legend ('top', 'right', 'left', 'bottom', or 'none').
@@ -148,7 +148,7 @@ plot_likert <- function(data,
                       na.translate = FALSE) +
     coord_fixed(clip = "off", ratio = ratio) +
     labs(title = title,
-         subtitle = if (logic == "group_facet") get_question(data, group) else subtitle,
+         subtitle = subtitle,
          y = NULL,
          x = NULL,
          colour = NULL,

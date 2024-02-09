@@ -54,7 +54,7 @@ plot_likert(
 
 \item{title}{The title of the plot.}
 
-\item{subtitle}{The subtitle of the plot. When \code{group} is not NULL, defaults to the name of the group variable unless specified.}
+\item{subtitle}{The subtitle of the plot.}
 
 \item{order_by}{Specifies how to order responses in the plot. Can be NULL or based on 'left', 'right', or 'NET' responses.}
 

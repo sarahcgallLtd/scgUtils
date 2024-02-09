@@ -25,6 +25,7 @@ reference:
   contents:
   - get_data
   - get_file
+  - get_question
   - process_factors
 
 - subtitle: Exploring
@@ -76,5 +77,6 @@ articles:
   navbar: Function Explainers
   contents:
   - articles/uploading-data
+  - articles/crosstabs
   - articles/creating-colour-palettes
   - articles/visualising-data

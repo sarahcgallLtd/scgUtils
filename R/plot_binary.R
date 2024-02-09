@@ -98,6 +98,7 @@ plot_binary <- function(data,
           panel.grid.minor = element_blank(),
           panel.spacing = unit(2, "lines"),
           axis.line.x = element_blank(),
+          axis.ticks.x = element_blank(),
           axis.text.x = element_blank(),
           legend.position = "none")
 
