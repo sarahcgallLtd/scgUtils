@@ -278,11 +278,64 @@ the threshold needed for a majority. <br><br></p>
 </div>
 </div>
 <div class="section level3">
+<h3 id="bar-charts">Bar Charts<a class="anchor" aria-label="anchor" href="#bar-charts"></a>
+</h3>
+<p>The <code><a href="../reference/plot_bars.html">plot_bars()</a></code> function provides a clear and concise
+presentation of categorical data distributions. <br><br></p>
+<div class="section level5">
+<h5 id="basic-bar-charts">Basic Bar Charts<a class="anchor" aria-label="anchor" href="#basic-bar-charts"></a>
+</h5>
+<p>At its core, <code><a href="../reference/plot_bars.html">plot_bars()</a></code> simplifies the process of
+generating bar charts for survey data. It calculates frequencies and
+percentages, adjusting for weights where necessary, and presents this
+information in an easy-to-understand format.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Prepare colours</span></span>
+<span><span class="va">colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/colour_prep.html">colour_prep</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
+<span>                       columns <span class="op">=</span> <span class="st">"generalElectionVote"</span>,</span>
+<span>                       pal_name <span class="op">=</span> <span class="st">"polUK"</span><span class="op">)</span></span>
+<span><span class="va">colours</span><span class="op">$</span><span class="va">`Brexit Party/Reform UK`</span> <span class="op">&lt;-</span> <span class="st">"#00b1da"</span> <span class="co"># failed to match name</span></span>
+<span></span>
+<span><span class="co"># Plot</span></span>
+<span><span class="fu"><a href="../reference/plot_bars.html">plot_bars</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
+<span>          yVar <span class="op">=</span> <span class="st">"generalElectionVote"</span>,</span>
+<span>          colours <span class="op">=</span> <span class="va">colours</span>,</span>
+<span>          title <span class="op">=</span> <span class="st">"Voting Intention"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="visualising-data_files/figure-html/barchart1-1.png" width="100%"><br></p>
+</div>
+<div class="section level5">
+<h5 id="grouped-bar-charts">Grouped Bar Charts<a class="anchor" aria-label="anchor" href="#grouped-bar-charts"></a>
+</h5>
+<p><code><a href="../reference/plot_bars.html">plot_bars()</a></code> can also group data, allowing for
+comparisons across demographic segments or other categorical
+distinctions. This functionality is particularly useful for identifying
+trends or differences in response patterns among various groups.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Prepare colours</span></span>
+<span><span class="va">colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/colour_prep.html">colour_prep</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
+<span>                       columns <span class="op">=</span> <span class="st">"bestOnMII"</span>,</span>
+<span>                       pal_name <span class="op">=</span> <span class="st">"polUK"</span><span class="op">)</span></span>
+<span><span class="va">colours</span><span class="op">$</span><span class="va">`Brexit Party/Reform UK`</span> <span class="op">&lt;-</span> <span class="st">"#00b1da"</span> <span class="co"># failed to match name</span></span>
+<span></span>
+<span><span class="co"># Plot</span></span>
+<span><span class="fu"><a href="../reference/plot_bars.html">plot_bars</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
+<span>          group <span class="op">=</span> <span class="st">"small_mii_cat"</span>,</span>
+<span>          yVar <span class="op">=</span> <span class="st">"bestOnMII"</span>,</span>
+<span>          weight <span class="op">=</span> <span class="st">"wt"</span>,</span>
+<span>          round_decimals <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>          colour <span class="op">=</span> <span class="va">colours</span>,</span>
+<span>          title <span class="op">=</span> <span class="fu"><a href="../reference/get_question.html">get_question</a></span><span class="op">(</span><span class="va">survey_df</span>, <span class="st">"bestOnMII"</span><span class="op">)</span>,</span>
+<span>          subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"by "</span>, <span class="fu"><a href="../reference/get_question.html">get_question</a></span><span class="op">(</span><span class="va">survey_df</span>, <span class="st">"mii"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="visualising-data_files/figure-html/barchart2-1.png" width="100%"><br></p>
+</div>
+</div>
+<div class="section level3">
 <h3 id="population">Population<a class="anchor" aria-label="anchor" href="#population"></a>
 </h3>
 <p>Understanding demographic distribution is vital in survey analysis.
 <code><a href="../reference/plot_popn.html">plot_popn()</a></code> creates visual representations of population
-profiles.</p>
+profiles. <br><br></p>
 <div class="section level5">
 <h5 id="using-plot_popn">Using <code>plot_popn</code><a class="anchor" aria-label="anchor" href="#using-plot_popn"></a>
 </h5>
@@ -292,7 +345,7 @@ pyramid showing distributions across gender and age groups. If a
 variable like average age (<code>meanVar</code>) is specified, the plot
 can also display this information, adding another layer of insight into
 the demographic composition.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_popn.html">plot_popn</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">survey_df</span>,</span>
 <span>          xVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
 <span>          yVar <span class="op">=</span> <span class="st">"ageGroup"</span>,</span>
@@ -310,7 +363,7 @@ the demographic composition.</p>
 This feature overlays the selected group’s data onto the total
 population structure, providing a comparative view that highlights
 differences or similarities within subgroups.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_popn.html">plot_popn</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">survey_df</span>,</span>
 <span>          xVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
 <span>          yVar <span class="op">=</span> <span class="st">"ageGroup"</span>,</span>
@@ -329,7 +382,7 @@ radar chart is primarily to visualise the Big Five personality traits
 (neuroticism, extroversion, openness, agreeableness, and
 conscientiousness) but can be amended for other quantitative data types
 with a scale between 0 and 100.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create single plot using unweighted data</span></span>
 <span><span class="fu"><a href="../reference/plot_bigfive.html">plot_bigfive</a></span><span class="op">(</span><span class="va">bigfive_df</span>,</span>
 <span>             bigfive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Neuroticism"</span>, <span class="st">"Extroversion"</span>, <span class="st">"Openness"</span>, <span class="st">"Agreeableness"</span>, <span class="st">"Conscientiousness"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -338,7 +391,7 @@ with a scale between 0 and 100.</p>
 variables within the group plotted on top of the average. This provides
 an easy comparison between the variable and the rest of the cohort in
 the survey.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create faceted plot using age groups and weighted data</span></span>
 <span><span class="fu"><a href="../reference/plot_bigfive.html">plot_bigfive</a></span><span class="op">(</span><span class="va">bigfive_df</span>,</span>
 <span>             bigfive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Neuroticism"</span>, <span class="st">"Extroversion"</span>, <span class="st">"Openness"</span>, <span class="st">"Agreeableness"</span>, <span class="st">"Conscientiousness"</span><span class="op">)</span>,</span>
@@ -354,7 +407,7 @@ responses (e.g., “Yes” vs “No”). It is particularly effective for
 comparative analysis. This function utilises the
 <code><a href="../reference/grid_vars.html">grid_vars()</a></code> function to help transform the data into the
 correct format.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create list for dummy data</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Q1a <span class="op">=</span> <span class="st">"Art"</span>,</span>
 <span>             Q1b <span class="op">=</span> <span class="st">"Automobiles"</span>,</span>
@@ -379,7 +432,7 @@ correct format.</p>
 variables within the group plotted against the total. This provides an
 easy comparison between the variable and the rest of the cohort in the
 survey.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create faceted plot using Gender and weighted data</span></span>
 <span><span class="fu"><a href="../reference/plot_binary.html">plot_binary</a></span><span class="op">(</span><span class="va">binary_df</span>,</span>
 <span>            vars <span class="op">=</span> <span class="va">vars</span>,</span>
@@ -406,7 +459,7 @@ offers a straightforward method to create these plots. <br><br></p>
 that represents the distribution of different categories. This method is
 especially effective for visually demonstrating the relative sizes of
 groups within a population.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Prepare Data</span></span>
 <span><span class="va">waffle_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  Category <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>,</span>
@@ -428,7 +481,7 @@ groups within a population.</p>
 data, supporting both weighted and unweighted analysis. The function can
 automatically extract and display relevant labels from survey questions,
 enhancing the plot’s interpretability.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Waffle plot with unweighted survey data</span></span>
 <span><span class="fu"><a href="../reference/plot_waffle.html">plot_waffle</a></span><span class="op">(</span><span class="va">survey_df</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">p_socgrade</span> <span class="op">!=</span> <span class="st">"Unknown"</span><span class="op">)</span>, <span class="co"># removing unknowns</span></span>
 <span>            group <span class="op">=</span> <span class="st">"p_socgrade"</span>,</span>
@@ -454,7 +507,7 @@ three distinct visualisation styles:</p>
 <li>Diverging Bars</li>
 <li>Faceted Bars</li>
 </ul>
-<p><br><br></p>
+<p><br></p>
 <div class="section level4">
 <h4 id="stacked-bar-chart">100% Stacked Bar Chart<a class="anchor" aria-label="anchor" href="#stacked-bar-chart"></a>
 </h4>
@@ -472,7 +525,7 @@ variables. Colour customisation is achievable through the
 different levels of agreement or sentiment. Additionally, text colour is
 set based on an internal contrast test to ensure readability of
 labels.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Prepare palette with 5 colours from the divergent colour scale Blue to Green</span></span>
 <span><span class="va">colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/colour_pal.html">colour_pal</a></span><span class="op">(</span>pal_name <span class="op">=</span> <span class="st">"divBlueGreen"</span>,</span>
 <span>                      n <span class="op">=</span> <span class="fl">5</span>, <span class="co"># number of colours required</span></span>
@@ -513,7 +566,7 @@ labels.</p>
 questions simultaneously, with the <code>varLevels</code> list
 controlling the response variable ordering and the inclusion of a Net
 Promoter Score-like metric for additional insight.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Prepare vars argument as list. The strings will be plotted on the y axis.</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>likeSunak <span class="op">=</span> <span class="st">"Sunak"</span>,</span>
 <span>             likeStarmer <span class="op">=</span> <span class="st">"Starmer"</span>,</span>
@@ -528,7 +581,7 @@ Promoter Score-like metric for additional insight.</p>
 <span></span>
 <span><span class="co"># Response level settings</span></span>
 <span><span class="va">varLevels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>left <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Strongly dislike"</span>, <span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span><span class="op">)</span>,</span>
-<span>                  neutral <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"5"</span>,<span class="st">"Don't know"</span><span class="op">)</span>,</span>
+<span>                  neutral <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"5"</span>, <span class="st">"Don't know"</span><span class="op">)</span>,</span>
 <span>                  right <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"8"</span>, <span class="st">"9"</span>, <span class="st">"Strongly like"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Custom colours</span></span>
@@ -556,7 +609,7 @@ Promoter Score-like metric for additional insight.</p>
 <p>Adding a grouping variable allows for the nuanced comparison of
 Likert scale responses across different segments of the survey
 population, further enriching the data’s interpretative value.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot weighted data faceted by EU referendum vote</span></span>
 <span><span class="fu"><a href="../reference/plot_likert.html">plot_likert</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
 <span>            vars <span class="op">=</span> <span class="va">vars</span>,</span>
