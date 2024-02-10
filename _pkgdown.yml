@@ -77,7 +77,7 @@ articles:
   navbar: Function Explainers
   contents:
   - articles/uploading-data
-  - articles/weighting-your-data
+  - articles/weight-your-data
   - articles/crosstabs
   - articles/creating-colour-palettes
   - articles/visualising-data
