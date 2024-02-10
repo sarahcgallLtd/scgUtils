@@ -184,13 +184,6 @@ class(df)
 
 class(df$turnoutUKGeneral)
 #> [1] "character"
-
-head(df[, 1:6])
-```
-```{r website_table, echo = FALSE}
-file_path <- system.file("extdata", "survey.csv", package = "scgUtils")
-df <- get_file(file_path)
-knitr::kable(head(df[, 1:6]))
 ```
 <br>
 
