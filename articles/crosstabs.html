@@ -54,6 +54,7 @@
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Function Explainers</h6>
     <a class="dropdown-item" href="../articles/uploading-data.html">Uploading &amp; Cleaning Data</a>
+    <a class="dropdown-item" href="../articles/weight-your-data.html">Weighting Your Data</a>
     <a class="dropdown-item" href="../articles/crosstabs.html">Conducting Cross-Tabulation Analysis</a>
     <a class="dropdown-item" href="../articles/creating-colour-palettes.html">Mastering Colour Selection</a>
     <a class="dropdown-item" href="../articles/visualising-data.html">Visualising Data</a>
@@ -117,9 +118,10 @@ the nuanced functionalities of <code><a href="../reference/crosstab.html">crosst
 <p><code><a href="../reference/crosstab.html">crosstab()</a></code> transforms survey responses into meaningful
 two-by-two tables, enriched with statistical analyses. Tailor the
 presentation of your data with flexible output formats, catering to wide
-or long data frames for diverse analytical approaches. <br><br><strong><em>Wide Format Cross-Tabulation</em></strong><br> This example
-demonstrates how to generate a wide-format table, incorporating optional
-statistical measures for enhanced insights.</p>
+or long data frames for diverse analytical approaches. <br><br> ####
+<strong>Wide Format Cross-Tabulation</strong> This example demonstrates
+how to generate a wide-format table, incorporating optional statistical
+measures for enhanced insights.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Wide format</span></span>
 <span><span class="fu"><a href="../reference/crosstab.html">crosstab</a></span><span class="op">(</span><span class="va">df</span>,</span>
@@ -179,11 +181,14 @@ statistical measures for enhanced insights.</p>
 </tbody>
 </table>
 <p><br></p>
-<p><strong><em>Visual Insights from Crosstabs</em></strong><br> Leverage
-<code><a href="../reference/crosstab.html">crosstab()</a></code> with <code>plot = TRUE</code> to convert tabular
-data into visual representations. This fusion of data and design aids in
-the intuitive grasp of distribution patterns, supported by statistical
-depth.</p>
+<div class="section level4">
+<h4 id="visual-insights-from-crosstabs">
+<strong>Visual Insights from Crosstabs</strong><a class="anchor" aria-label="anchor" href="#visual-insights-from-crosstabs"></a>
+</h4>
+<p>Leverage <code><a href="../reference/crosstab.html">crosstab()</a></code> with <code>plot = TRUE</code> to
+convert tabular data into visual representations. This fusion of data
+and design aids in the intuitive grasp of distribution patterns,
+supported by statistical depth.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/crosstab.html">crosstab</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>         rowVar <span class="op">=</span> <span class="st">"p_eurefvote"</span>,</span>
@@ -243,8 +248,12 @@ depth.</p>
 </tbody>
 </table>
 <p><br></p>
-<p><strong><em>Enhancing Plot Readability</em></strong><br> Adjust
-X-axis labels with <code>adjustX = TRUE</code> for clearer
+</div>
+<div class="section level4">
+<h4 id="enhancing-plot-readability">
+<strong>Enhancing Plot Readability</strong><a class="anchor" aria-label="anchor" href="#enhancing-plot-readability"></a>
+</h4>
+<p>Adjust X-axis labels with <code>adjustX = TRUE</code> for clearer
 interpretation of densely populated variables, ensuring data
 accessibility.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -308,17 +317,18 @@ accessibility.</p>
 </table>
 <p><br></p>
 </div>
+</div>
 <div class="section level3">
 <h3 id="streamlining-analysis-with-compile">Streamlining Analysis with <code>compile()</code><a class="anchor" aria-label="anchor" href="#streamlining-analysis-with-compile"></a>
 </h3>
 <p>For extensive variable sets, <code><a href="../reference/compile.html">compile()</a></code> emerges as a
 powerful ally. It aggregates crosstabs and statistical summaries into a
 comprehensive data frame, simplifying the exploration of intricate data
-relationships. <br><br><strong><em>Statistical
-Compilation</em></strong><br> Demonstrate the <code><a href="../reference/compile.html">compile()</a></code>
-function’s capability to organise a broad spectrum of statistics,
-including Chi-square, Degrees of Freedom, Cramer’s V, and p-value,
-offering a scaffold for informed decision-making.</p>
+relationships. <br><br> #### <strong>Statistical Compilation</strong>
+Demonstrate the <code><a href="../reference/compile.html">compile()</a></code> function’s capability to organise
+a broad spectrum of statistics, including Chi-square, Degrees of
+Freedom, Cramer’s V, and p-value, offering a scaffold for informed
+decision-making.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># the row variables are typically your questions within the survey. For ease, utilise dplyr to select the variables</span></span>
 <span><span class="va">rowVars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">turnoutUKGeneral</span><span class="op">:</span><span class="va">partyIdStrength</span>,</span>
@@ -467,13 +477,15 @@ offering a scaffold for informed decision-making.</p>
 <p><br><em>NB caution using chi-square and p-values when the sample
 size is &gt;500 or &lt;5. In these circumstances, use Cramer’s V or
 Fisher’s Exact test, respectively.</em> <br><br></p>
-<p><strong><em>Expansive Tables with
-<code><a href="../reference/compile.html">compile()</a></code></em></strong><br> The <code><a href="../reference/compile.html">compile()</a></code>
-function in <code>scgUtils</code> excels in generating comprehensive
-crosstab tables. It efficiently processes each variable pair within your
-dataset, producing detailed tabular outputs. These tables can be
-formatted and saved as CSV files, making them perfect for inclusion in
-reports or further analysis.</p>
+<div class="section level4">
+<h4 id="expansive-tables-with-compile">
+<strong>Expansive Tables with <code>compile()</code></strong><a class="anchor" aria-label="anchor" href="#expansive-tables-with-compile"></a>
+</h4>
+<p>The <code><a href="../reference/compile.html">compile()</a></code> function in <code>scgUtils</code> excels
+in generating comprehensive crosstab tables. It efficiently processes
+each variable pair within your dataset, producing detailed tabular
+outputs. These tables can be formatted and saved as CSV files, making
+them perfect for inclusion in reports or further analysis.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rowVars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">turnoutUKGeneral</span><span class="op">:</span><span class="va">partyIdStrength</span>,</span>
 <span>                                      <span class="va">partyIdSqueeze</span><span class="op">:</span><span class="va">likeGrn</span>,</span>
@@ -489,10 +501,11 @@ reports or further analysis.</p>
 <span>        weight <span class="op">=</span> <span class="st">"wt"</span>, <span class="co"># optional</span></span>
 <span>        name <span class="op">=</span> <span class="st">"crosstabs"</span> <span class="co"># this will save as "crosstabs.csv"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="img/crosstab_csv.png" width="100%"><br><br><br> The
-ability to create such extensive tables is invaluable for presenting a
-holistic view of your survey results, encompassing various aspects and
+<p><img src="img/crosstab_csv.png" width="100%"><br><br> The ability
+to create such extensive tables is invaluable for presenting a holistic
+view of your survey results, encompassing various aspects and
 relationships within your data.</p>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

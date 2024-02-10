@@ -54,6 +54,7 @@
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Function Explainers</h6>
     <a class="dropdown-item" href="../articles/uploading-data.html">Uploading &amp; Cleaning Data</a>
+    <a class="dropdown-item" href="../articles/weight-your-data.html">Weighting Your Data</a>
     <a class="dropdown-item" href="../articles/crosstabs.html">Conducting Cross-Tabulation Analysis</a>
     <a class="dropdown-item" href="../articles/creating-colour-palettes.html">Mastering Colour Selection</a>
     <a class="dropdown-item" href="../articles/visualising-data.html">Visualising Data</a>
@@ -568,77 +569,7 @@ download them manually.</p>
 <span><span class="co">#&gt; [1] "tbl_df"     "tbl"        "data.frame"</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">turnoutUKGeneral</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "character"</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<colgroup>
-<col width="2%">
-<col width="8%">
-<col width="25%">
-<col width="25%">
-<col width="13%">
-<col width="25%">
-</colgroup>
-<thead><tr class="header">
-<th align="right">id</th>
-<th align="right">wt</th>
-<th align="left">turnoutUKGeneral</th>
-<th align="left">generalElectionVote</th>
-<th align="left">partyIdStrength</th>
-<th align="left">partyId</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="right">7</td>
-<td align="right">0.3755288</td>
-<td align="left">Very likely that I would vote</td>
-<td align="left">Scottish National Party (SNP)</td>
-<td align="left">Fairly strong</td>
-<td align="left">Scottish National Party (SNP)</td>
-</tr>
-<tr class="even">
-<td align="right">14</td>
-<td align="right">0.5528756</td>
-<td align="left">Very likely that I would vote</td>
-<td align="left">Conservative</td>
-<td align="left">Not very strong</td>
-<td align="left">Labour</td>
-</tr>
-<tr class="odd">
-<td align="right">15</td>
-<td align="right">0.7122303</td>
-<td align="left">Very likely that I would vote</td>
-<td align="left">Brexit Party/Reform UK</td>
-<td align="left">Fairly strong</td>
-<td align="left">Brexit Party/Reform UK</td>
-</tr>
-<tr class="even">
-<td align="right">18</td>
-<td align="right">0.4396403</td>
-<td align="left">Fairly likely</td>
-<td align="left">Scottish National Party (SNP)</td>
-<td align="left">Not very strong</td>
-<td align="left">No - none</td>
-</tr>
-<tr class="odd">
-<td align="right">19</td>
-<td align="right">0.3613798</td>
-<td align="left">Very likely that I would vote</td>
-<td align="left">Labour</td>
-<td align="left">Very strong</td>
-<td align="left">Labour</td>
-</tr>
-<tr class="even">
-<td align="right">24</td>
-<td align="right">1.6864884</td>
-<td align="left">Very likely that I would vote</td>
-<td align="left">Green Party</td>
-<td align="left">NA</td>
-<td align="left">No - none</td>
-</tr>
-</tbody>
-</table>
+<span><span class="co">#&gt; [1] "character"</span></span></code></pre></div>
 <p><br></p>
 <hr>
 </div>

@@ -31,6 +31,9 @@
     <loc>https://sarahcgall.github.io/scgUtils/articles/visualising-data.html</loc>
   </url>
   <url>
+    <loc>https://sarahcgall.github.io/scgUtils/articles/weight-your-data.html</loc>
+  </url>
+  <url>
     <loc>https://sarahcgall.github.io/scgUtils/authors.html</loc>
   </url>
   <url>
@@ -101,6 +104,9 @@
   </url>
   <url>
     <loc>https://sarahcgall.github.io/scgUtils/reference/survey.html</loc>
+  </url>
+  <url>
+    <loc>https://sarahcgall.github.io/scgUtils/reference/survey_wt.html</loc>
   </url>
   <url>
     <loc>https://sarahcgall.github.io/scgUtils/reference/theme_scg.html</loc>
