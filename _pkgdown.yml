@@ -43,6 +43,7 @@ reference:
   desc: >
     Functions to visualise data
   contents:
+  - plot_bars
   - plot_bigfive
   - plot_binary
   - plot_likert

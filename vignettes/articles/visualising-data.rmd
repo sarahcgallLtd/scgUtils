@@ -152,8 +152,55 @@ This plot offers an intuitive way to analyse election results, party strengths, 
 <br>
 <br>
 
+### Bar Charts
+The `plot_bars()` function provides a clear and concise presentation of categorical data distributions.
+<br>
+<br>
+
+##### Basic Bar Charts
+At its core, `plot_bars()` simplifies the process of generating bar charts for survey data. It calculates frequencies and percentages, adjusting for weights where necessary, and presents this information in an easy-to-understand format.
+
+```{r barchart1, dpi=300, out.width = '100%', fig.height = 4}
+# Prepare colours
+colours <- colour_prep(survey_df,
+                       columns = "generalElectionVote",
+                       pal_name = "polUK")
+colours$`Brexit Party/Reform UK` <- "#00b1da" # failed to match name
+
+# Plot
+plot_bars(survey_df,
+          yVar = "generalElectionVote",
+          colours = colours,
+          title = "Voting Intention")
+```
+<br>
+
+##### Grouped Bar Charts
+`plot_bars()` can also group data, allowing for comparisons across demographic segments or other categorical distinctions. This functionality is particularly useful for identifying trends or differences in response patterns among various groups.
+```{r barchart2, dpi=300, out.width = '100%', fig.height = 8}
+# Prepare colours
+colours <- colour_prep(survey_df,
+                       columns = "bestOnMII",
+                       pal_name = "polUK")
+colours$`Brexit Party/Reform UK` <- "#00b1da" # failed to match name
+
+# Plot
+plot_bars(survey_df,
+          group = "small_mii_cat",
+          yVar = "bestOnMII",
+          weight = "wt",
+          round_decimals = 0,
+          colour = colours,
+          title = get_question(survey_df, "bestOnMII"),
+          subtitle = paste0("by ", get_question(survey_df, "mii"))
+)
+```
+<br>
+
 ### Population
 Understanding demographic distribution is vital in survey analysis. `plot_popn()` creates visual representations of population profiles.
+<br>
+<br>
 
 ##### Using `plot_popn`
 The `plot_popn()` function is designed to visualise the population structure of your survey respondents. It creates a population pyramid showing distributions across gender and age groups. If a variable like average age (`meanVar`) is specified, the plot can also display this information, adding another layer of insight into the demographic composition.
@@ -315,7 +362,6 @@ Likert scales are a staple in survey research, providing detailed insights into 
 * Faceted Bars
 
 <br>
-<br>
 
 #### 100% Stacked Bar Chart
 Visualising Likert scale responses with a 100% stacked bar chart allows for an intuitive comparison of agreement levels across different questions or groups.
@@ -376,7 +422,7 @@ vars <- list(likeSunak = "Sunak",
 
 # Response level settings
 varLevels <- list(left = c("Strongly dislike", "1", "2", "3", "4"),
-                  neutral = c("5","Don't know"),
+                  neutral = c("5", "Don't know"),
                   right = c("6", "7", "8", "9", "Strongly like"))
 
 # Custom colours
