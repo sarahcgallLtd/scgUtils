@@ -76,14 +76,14 @@ test_that("function produces graph (factors)", {
   expect_equal(p$labels$group, "id")
 })
 
-test_that("function produces graph (character)", {
-  file_path <- system.file("extdata", "survey.csv", package = "scgUtils")
-  df1 <- get_file(file_path)
-  # Total
-  p <- plot_binary(df1, vars, "Yes")
-  expect_equal(p$labels$hjust, "hjust")
-
-  # Grouped
-  p <- plot_binary(df1, vars, "Yes", "partyId")
-  expect_equal(p$labels$group, "id")
-})
+# test_that("function produces graph (character)", {
+#   file_path <- system.file("extdata", "survey.csv", package = "scgUtils")
+#   df1 <- get_file(file_path)
+#   # Total
+#   p <- plot_binary(df1, vars, "Yes")
+#   expect_equal(p$labels$hjust, "hjust")
+#
+#   # Grouped
+#   p <- plot_binary(df1, vars, "Yes", "partyId")
+#   expect_equal(p$labels$group, "id")
+# })

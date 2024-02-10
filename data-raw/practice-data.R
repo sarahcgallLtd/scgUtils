@@ -24,3 +24,13 @@ utils::write.table(survey,
                    col.names = TRUE,
                    fileEncoding = "UTF-8",
                    sep = ',')
+
+# WEIGHTING PRACTICE SET
+# read SPSS file and save it in a data frame called "df"
+survey <- haven::read_sav("data-raw/other/BES2019_W25_v25.0.sav")
+
+# Limit size to n=5000 and number of variables
+survey_wt <- survey[c("wt","age","ageGroup","gender","p_past_vote_2019","p_turnout_2019")]
+
+# save to .rds
+usethis::use_data(survey_wt, overwrite = TRUE)

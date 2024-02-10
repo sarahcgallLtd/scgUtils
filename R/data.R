@@ -80,3 +80,24 @@
 #' @source This dataset was sourced from the British Electoral Study website (Wave 25).
 #' The raw data are available from \url{https://www.britishelectionstudy.com/data-object/wave-25-of-the-2014-2023-british-election-study-internet-panel/}.
 "survey"
+
+#' Wave 25 of the 2014-2023 British Election Study Internet Panel
+#'
+#' The `survey_wt` dataset is from the British Electoral Study. It is purely as a way to practice
+#' using the weighting functions within this and other packages.
+#'
+#' A full description of themethodology and questionnaire can be found here:
+#' \url{https://www.britishelectionstudy.com/wp-content/uploads/2023/11/Bes_wave25Documentation.pdf}
+#'
+#' @format A data frame with 30,407 rows and 6 variables:
+#' \describe{
+#'   \item{wt}{weight variable}
+#'   \item{age}{Age}
+#'   \item{ageGroup}{Age group}
+#'   \item{gender}{Gender}
+#'   \item{p_past_vote_2019}{2019 GE vote choice}
+#'   \item{p_turnout_2019}{2019 GE turnout}
+#' }
+#' @source This dataset was sourced from the British Electoral Study website (Wave 25).
+#' The raw data are available from \url{https://www.britishelectionstudy.com/data-object/wave-25-of-the-2014-2023-british-election-study-internet-panel/}.
+"survey_wt"

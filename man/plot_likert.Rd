@@ -14,7 +14,7 @@ plot_likert(
   neutrals = c("no_change", "right", "exclude"),
   total = FALSE,
   NET = FALSE,
-  labels = FALSE,
+  addLabels = FALSE,
   threshold = 0,
   title = NULL,
   subtitle = NULL,
@@ -48,7 +48,7 @@ plot_likert(
 
 \item{NET}{If TRUE, calculates and includes a Net Rating Score (difference between positive and negative responses).}
 
-\item{labels}{if TRUE, adds \% labels to the plot.}
+\item{addLabels}{if TRUE, adds \% labels to the plot.}
 
 \item{threshold}{A numeric value to adjust the threshold for labels to be shown.}
 

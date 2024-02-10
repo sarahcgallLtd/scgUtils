@@ -347,7 +347,7 @@ plot_likert(survey_df,
             varLevels = varLevels,
             total = TRUE, # set TRUE to add comparison against total population (available when group is present)
             NET = TRUE, # set TRUE to add NET score
-            labels = TRUE, # Add % labels
+            addLabels = TRUE, # Add % labels
             threshold = 5, # Set threshold for % that labels will be shown on plot
             order_by = "NET", # order bars by NET score
             title = "When I speak about this party, I usually say 'we' instead of 'they'", # Add title

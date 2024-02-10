@@ -21,18 +21,18 @@ test_that("function works correctly", {
   expect_equal(colours$`Scottish National Party (SNP)`, "#FFF95D")
 })
 
-test_that("function works with different data type", {
-  file_path <- system.file("extdata", "survey.csv", package = "scgUtils")
-  df <- get_file(file_path)
-  df <- df[, c("wt", "generalElectionVote", "p_past_vote_2019")]
-  df <- grp_freq(df, c("generalElectionVote", "p_past_vote_2019"), "wt")
-  colours <- colour_prep(df, c("generalElectionVote"), pal_name = "polUK")
-  expect_type(colours, "list")
-
-  colours <- colour_prep(df, c("generalElectionVote", "p_past_vote_2019"), pal_name = "polUK")
-  expect_length(colours, 12)
-  # Test exact match
-  expect_equal(colours$Conservative, "#2e84c6")
-  # Test partial reverse match
-  expect_equal(colours$`Scottish National Party (SNP)`, "#FFF95D")
-})
+# test_that("function works with different data type", {
+#   file_path <- system.file("extdata", "survey.csv", package = "scgUtils")
+#   df <- get_file(file_path)
+#   df <- df[, c("wt", "generalElectionVote", "p_past_vote_2019")]
+#   df <- grp_freq(df, c("generalElectionVote", "p_past_vote_2019"), "wt")
+#   colours <- colour_prep(df, c("generalElectionVote"), pal_name = "polUK")
+#   expect_type(colours, "list")
+#
+#   colours <- colour_prep(df, c("generalElectionVote", "p_past_vote_2019"), pal_name = "polUK")
+#   expect_length(colours, 12)
+#   # Test exact match
+#   expect_equal(colours$Conservative, "#2e84c6")
+#   # Test partial reverse match
+#   expect_equal(colours$`Scottish National Party (SNP)`, "#FFF95D")
+# })

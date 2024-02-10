@@ -36,7 +36,7 @@ df <- get_data("survey") %>%
 `crosstab()` transforms survey responses into meaningful two-by-two tables, enriched with statistical analyses. Tailor the presentation of your data with flexible output formats, catering to wide or long data frames for diverse analytical approaches.
 <br>
 <br>
-***Wide Format Cross-Tabulation***<br>
+#### **Wide Format Cross-Tabulation**
 This example demonstrates how to generate a wide-format table, incorporating optional statistical measures for enhanced insights.
 ```{r crosstab1, eval = FALSE}
 # Wide format
@@ -62,7 +62,7 @@ knitr::kable(crosstab(df,
 ```
 <br>
 
-***Visual Insights from Crosstabs***<br>
+#### **Visual Insights from Crosstabs**
 Leverage `crosstab()` with `plot = TRUE` to convert tabular data into visual representations. This fusion of data and design aids in the intuitive grasp of distribution patterns, supported by statistical depth.
 ```{r crosstab2, eval = FALSE}
 crosstab(df,
@@ -88,7 +88,7 @@ knitr::kable(crosstab(df,
 ```
 <br>
 
-***Enhancing Plot Readability***<br>
+#### **Enhancing Plot Readability**
 Adjust X-axis labels with `adjustX = TRUE` for clearer interpretation of densely populated variables, ensuring data accessibility.
 ```{r crosstab3, eval = FALSE}
 crosstab(df,
@@ -119,7 +119,7 @@ knitr::kable(crosstab(df,
 For extensive variable sets, `compile()` emerges as a powerful ally. It aggregates crosstabs and statistical summaries into a comprehensive data frame, simplifying the exploration of intricate data relationships.
 <br>
 <br>
-***Statistical Compilation***<br>
+#### **Statistical Compilation**
 Demonstrate the `compile()` function's capability to organise a broad spectrum of statistics, including Chi-square, Degrees of Freedom, Cramer’s V, and p-value, offering a scaffold for informed decision-making.
 ```{r categorical4, eval = FALSE}
 # the row variables are typically your questions within the survey. For ease, utilise dplyr to select the variables
@@ -167,7 +167,7 @@ knitr::kable(head(stats[order(-stats$CramersV),], 10))
 <br>
 <br>
 
-***Expansive Tables with `compile()`***<br>
+#### **Expansive Tables with `compile()`**
 The `compile()` function in `scgUtils` excels in generating comprehensive crosstab tables. It efficiently processes each variable pair within your dataset, producing detailed tabular outputs. These tables can be formatted and saved as CSV files, making them perfect for inclusion in reports or further analysis.
 ```{r crosstab5, eval = FALSE}
 rowVars <- names(df %>% dplyr::select(turnoutUKGeneral:partyIdStrength,
@@ -188,7 +188,6 @@ compile(df,
 ```{r crosstab_csv, echo=FALSE, out.width = '100%'}
 knitr::include_graphics("img/crosstab_csv.png")
 ```
-<br>
 <br>
 <br>
 The ability to create such extensive tables is invaluable for presenting a holistic view of your survey results, encompassing various aspects and relationships within your data.

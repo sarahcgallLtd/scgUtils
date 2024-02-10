@@ -14,7 +14,7 @@
 #' @param neutrals Handling of neutral responses in the plot, can be 'no_change', 'right', or 'exclude'.
 #' @param total If TRUE and `group` is specified, includes an option for the total population alongside group-specific plots.
 #' @param NET If TRUE, calculates and includes a Net Rating Score (difference between positive and negative responses).
-#' @param labels if TRUE, adds % labels to the plot.
+#' @param addLabels if TRUE, adds % labels to the plot.
 #' @param threshold A numeric value to adjust the threshold for labels to be shown.
 #' @param title The title of the plot.
 #' @param subtitle The subtitle of the plot.
@@ -51,7 +51,7 @@ plot_likert <- function(data,
                         neutrals = c("no_change", "right", "exclude"), # position of neutrals (if no "no_change", neutrals must be provided
                         total = FALSE, # if group is provided, the option for the total population will be included if TRUE
                         NET = FALSE, # provide the net rating score (netPos - netNeg)
-                        labels = FALSE, # add labels
+                        addLabels = FALSE, # add labels
                         threshold = 0, # threshold
                         title = NULL, # add title
                         subtitle = NULL, # add subtitle
@@ -137,7 +137,7 @@ plot_likert <- function(data,
 
   # Get plot type
   p <- switch(type,
-              stacked = create_stacked_likert(prepared_data, group, labels, threshold,
+              stacked = create_stacked_likert(prepared_data, group, addLabels, threshold,
                                               width, ncol, geom_size, logic),
               divergent = create_divergent_likert(prepared_data),
               facetted = create_facetted_likert(prepared_data))
@@ -175,8 +175,8 @@ plot_likert <- function(data,
       theme(axis.line.x = element_blank())
   }
 
-  # Remove x-axis if labels = TRUE
-  if (labels) {
+  # Remove x-axis if addLabels = TRUE
+  if (addLabels) {
     p <- p +
       guides(colour = "none") +
       scale_colour_manual(values = contrast_test(colours)) +
@@ -427,7 +427,7 @@ add_order_column <- function(data,
 #' @noRd
 create_stacked_likert <- function(data,
                                   group,
-                                  labels,
+                                  addLabels,
                                   threshold,
                                   width,
                                   ncol,
@@ -455,7 +455,7 @@ create_stacked_likert <- function(data,
     scale_x_continuous(expand = c(0, 0),
                        labels = percent_label())
 
-  if (labels) {
+  if (addLabels) {
     stacked_plot <- stacked_plot +
       geom_text(aes(colour = Response),
                 position = position_stack(vjust = .5, reverse = TRUE),
@@ -463,7 +463,7 @@ create_stacked_likert <- function(data,
   }
 
   stacked_plot <- add_net_column(data, width, stacked_plot,
-                                 group, geom_size, logic, labels)
+                                 group, geom_size, logic, addLabels)
 
   if (logic == "group_facet") {
     stacked_plot <- stacked_plot +
@@ -524,7 +524,7 @@ add_net_column <- function(data,
                            group,
                            geom_size,
                            logic,
-                           labels
+                           addLabels
 ) {
   if ("NET" %in% data$Id) {
     # font size
@@ -570,7 +570,7 @@ add_net_column <- function(data,
                 nudge_y = if (!is.null(group)) 0.5 else 0,
                 hjust = 0.5)
 
-    if (labels == FALSE) {
+    if (addLabels == FALSE) {
       plot <- plot +
         # Manually set axis
         annotate("segment",

@@ -407,7 +407,7 @@ convert_neg <- function(data, xVar, value, column) {
 contrast_test <- function(colour_list) {
   contrasts <- sapply(colour_list, function(x) {
     brightness <- (sum(grDevices::col2rgb(x) * c(299, 587, 114)) / 1000)
-    ifelse(brightness < 123, "white", colour_pal("Black80"))
+    ifelse(brightness < 186, "white", colour_pal("Black80"))
   })
   names(contrasts) <- names(colour_list)
   return(contrasts)

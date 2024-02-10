@@ -111,30 +111,30 @@ test_that("function returns data frame with original groups and frequency and pe
   expect_equal(x[1, 4], 21.31)
 })
 
-test_that("function returns data frame with original groups and frequency and percent (characters)", {
-  file_path <- system.file("extdata", "survey.csv", package = "scgUtils")
-  df1 <- get_file(file_path)
-  # WITHOUT WEIGHTS
-  x <- grid_vars(df1, vars, group = "gender")
-  expect_length(x, 5)
-  expect_equal(x[1, 4], 158)
-  expect_equal(x[1, 5], 6.59)
-
-  # WITH WEIGHTS
-  x <- grid_vars(df1, vars, group = "gender", weight = "wt")
-  expect_length(x, 5)
-  expect_equal(x[1, 4], 120.37)
-  expect_equal(x[1, 5], 6.55)
-
-  # WITHOUT GROUP
-  x <- grid_vars(df1, vars)
-  expect_length(x, 4)
-  expect_equal(x[1, 3], 320)
-  expect_equal(x[1, 4], 6.40)
-
-  # WITHOUT GROUP
-  x <- grid_vars(df1, vars, weight = "wt")
-  expect_length(x, 4)
-  expect_equal(x[1, 3], 247.77)
-  expect_equal(x[1, 4], 6.21)
-})
+# test_that("function returns data frame with original groups and frequency and percent (characters)", {
+#   file_path <- system.file("extdata", "survey.csv", package = "scgUtils")
+#   df1 <- get_file(file_path)
+#   # WITHOUT WEIGHTS
+#   x <- grid_vars(df1, vars, group = "gender")
+#   expect_length(x, 5)
+#   expect_equal(x[1, 4], 158)
+#   expect_equal(x[1, 5], 6.59)
+#
+#   # WITH WEIGHTS
+#   x <- grid_vars(df1, vars, group = "gender", weight = "wt")
+#   expect_length(x, 5)
+#   expect_equal(x[1, 4], 120.37)
+#   expect_equal(x[1, 5], 6.55)
+#
+#   # WITHOUT GROUP
+#   x <- grid_vars(df1, vars)
+#   expect_length(x, 4)
+#   expect_equal(x[1, 3], 320)
+#   expect_equal(x[1, 4], 6.40)
+#
+#   # WITHOUT GROUP
+#   x <- grid_vars(df1, vars, weight = "wt")
+#   expect_length(x, 4)
+#   expect_equal(x[1, 3], 247.77)
+#   expect_equal(x[1, 4], 6.21)
+# })

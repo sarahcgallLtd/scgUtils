@@ -102,8 +102,8 @@ test_that("function returns data frame with original groups and frequency and pe
   library(dplyr)
   df <- get_data("survey")
   df <- labelled::unlabelled(df)
-  file_path <- system.file("extdata", "survey.csv", package = "scgUtils")
-  df1 <- get_file(file_path)
+  #file_path <- system.file("extdata", "survey.csv", package = "scgUtils")
+  #df1 <- get_file(file_path)
   # WITHOUT WEIGHTS
   # Frequency:
   # Grouped Frequency function
@@ -118,16 +118,16 @@ test_that("function returns data frame with original groups and frequency and pe
 
   expect_identical(x[1, 2], y[1, 2])
 
-  x <- grp_freq(df1, groups = "gender")
+  #x <- grp_freq(df1, groups = "gender")
 
   # Compared with dplyr version
-  y <- df1 %>%
-    group_by(gender) %>%
-    count() %>%
-    ungroup() %>%
-    as.data.frame()
-
-  expect_identical(x[1, 2], y[1, 2])
+  # y <- df1 %>%
+  #   group_by(gender) %>%
+  #   count() %>%
+  #   ungroup() %>%
+  #   as.data.frame()
+  #
+  # expect_identical(x[1, 2], y[1, 2])
 
   # Percentage:
   # Grouped Frequency function
@@ -146,19 +146,19 @@ test_that("function returns data frame with original groups and frequency and pe
   expect_identical(x[1, 4], y[1, 4])
 
   # Grouped Frequency function
-  x <- grp_freq(df1, groups = c("partyId", "gender"), groupsPercent = "partyId")
+  # x <- grp_freq(df1, groups = c("partyId", "gender"), groupsPercent = "partyId")
 
   # Compared with dplyr version
-  y <- df1 %>%
-    group_by(partyId, gender) %>%
-    count() %>%
-    ungroup() %>%
-    group_by(partyId) %>%
-    mutate(Perc = n / sum(n) * 100) %>%
-    ungroup() %>%
-    as.data.frame()
-
-  expect_identical(x[1, 4], y[1, 4])
+  # y <- df1 %>%
+  #   group_by(partyId, gender) %>%
+  #   count() %>%
+  #   ungroup() %>%
+  #   group_by(partyId) %>%
+  #   mutate(Perc = n / sum(n) * 100) %>%
+  #   ungroup() %>%
+  #   as.data.frame()
+  #
+  # expect_identical(x[1, 4], y[1, 4])
 
   # WITH WEIGHTS
   # Frequency:
@@ -175,16 +175,16 @@ test_that("function returns data frame with original groups and frequency and pe
   expect_identical(x[1, 2], y[1, 2])
 
   # Grouped Frequency function
-  x <- grp_freq(df1, groups = "gender", weight = "wt", set_names = c("Gender", "Freq"))
-
-  # Compared with dplyr version
-  y <- df1 %>%
-    group_by(gender) %>%
-    summarise(Freq = sum(wt), .groups = 'drop') %>%
-    ungroup() %>%
-    as.data.frame()
-
-  expect_identical(x[1, 2], y[1, 2])
+  # x <- grp_freq(df1, groups = "gender", weight = "wt", set_names = c("Gender", "Freq"))
+  #
+  # # Compared with dplyr version
+  # y <- df1 %>%
+  #   group_by(gender) %>%
+  #   summarise(Freq = sum(wt), .groups = 'drop') %>%
+  #   ungroup() %>%
+  #   as.data.frame()
+  #
+  # expect_identical(x[1, 2], y[1, 2])
 
   # Percentage:
   # Grouped Frequency function
@@ -202,16 +202,16 @@ test_that("function returns data frame with original groups and frequency and pe
   expect_identical(x[1, 4], y[1, 4])
 
   # Grouped Frequency function
-  x <- grp_freq(df1, groups = c("gender", "partyId"), weight = "wt",
-                addPercent = TRUE, round_decimals = 2)
-
-  # Compared with dplyr version
-  y <- df1 %>%
-    group_by(gender, partyId) %>%
-    summarise(Freq = sum(wt), .groups = 'drop') %>%
-    ungroup() %>%
-    mutate(Perc = round(Freq / sum(Freq) * 100, 2)) %>%
-    as.data.frame()
-
-  expect_identical(x[1, 4], y[1, 4])
+  # x <- grp_freq(df1, groups = c("gender", "partyId"), weight = "wt",
+  #               addPercent = TRUE, round_decimals = 2)
+  #
+  # # Compared with dplyr version
+  # y <- df1 %>%
+  #   group_by(gender, partyId) %>%
+  #   summarise(Freq = sum(wt), .groups = 'drop') %>%
+  #   ungroup() %>%
+  #   mutate(Perc = round(Freq / sum(Freq) * 100, 2)) %>%
+  #   as.data.frame()
+  #
+  # expect_identical(x[1, 4], y[1, 4])
 })

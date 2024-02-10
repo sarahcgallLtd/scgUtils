@@ -108,7 +108,7 @@ test_that("function return correct plot for stacked bar chart", {
 
   # weighted, list vars, group = NULL, NET = FALSE
   p <- plot_likert(df, vars, weight = "wt", varLevels = varLevels_list,
-                   legend = "top", labels = TRUE, threshold = 3)
+                   legend = "top", addLabels = TRUE, threshold = 3)
 
   # unweighted, list vars, group = "gender", NET = TRUE
   p <- plot_likert(df, vars, group = "gender", varLevels = varLevels_list,

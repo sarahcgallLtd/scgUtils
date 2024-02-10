@@ -78,13 +78,13 @@ sjPlot::view_df(df[, 1:10],  # NB first 10 variables shown only in this example
 ````
 ---
 
-### Step 3: Weighting the Data
-Survey data analysis sometimes necessitates weighting to address issues like sample design or response biases. Future developments in `scgUtils` will introduce user-friendly functions for applying weights, ensuring your analysis reflects the intended population accurately.
+### Step 3: Processing the Data
+Survey data often requires specific processing steps to ensure it is analysis-ready. This may involve creating new variables, recoding factors, handling missing values, and more.
 
 ---
 
-### Step 4: Processing the Data
-Survey data often requires specific processing steps to ensure it is analysis-ready. This may involve creating new variables, recoding factors, handling missing values, and more. Future developments of the `scgUtils` package will aim to simplify these tasks, providing tools that streamline data preparation and enhance its quality for subsequent analysis.
+### Step 4: Weighting the Data
+Survey data analysis sometimes necessitates weighting to address issues like sample design or response biases. To understand and implement weighting, view the [Weighting Your Data article]().
 
 ---
 
@@ -243,7 +243,7 @@ knitr::kable(grp_freq(df,
 <br>
 
 ***Crosstabs***<br>
-Crosstabulation is a fundamental technique in survey analysis, especially when examining relationships between categorical variables. For an overview of using crosstab functions within the `scgUtils` package, view the [Conducting Cross-Tabulation Analysis article](https://sarahcgall.github.io/scgUtils/articles/crosstab.html).
+Crosstabulation is a fundamental technique in survey analysis, especially when examining relationships between categorical variables. For an overview of using crosstab functions within the `scgUtils` package, view the [Conducting Cross-Tabulation Analysis article](https://sarahcgall.github.io/scgUtils/articles/crosstabs.html).
 <br>
 <br>
 
@@ -327,7 +327,7 @@ Presenting the results of your survey analysis in a clear and impactful way is c
 <br>
 
 #### **Tables**
-Tables are fundamental tools for presenting complex data in a structured and easily interpretable format. View the [Conducting Cross-Tabulation Analysis article](https://sarahcgall.github.io/scgUtils/articles/crosstab.html) for more information on how to compile tables.
+Tables are fundamental tools for presenting complex data in a structured and easily interpretable format. View the [Conducting Cross-Tabulation Analysis article](https://sarahcgall.github.io/scgUtils/articles/crosstabs.html) for more information on how to compile tables.
 <br>
 <br>
 
