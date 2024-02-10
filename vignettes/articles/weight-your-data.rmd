@@ -468,7 +468,7 @@ plot_popn(survey_df,
           title = "Weighted Population Structure"
 )
 ```
-```{r cell-based7_table, echo = FALSE}
+```{r raked6_table, echo = FALSE}
 knitr::kable(age_gender, caption = "Actual/Target Population Structure", col.names = c("Age Group", "Male", "Female"))
 ```
 
