@@ -204,7 +204,7 @@ survey_df <- mutate(survey_df,
 <br>
 
 We can then view the population structure of the `gender` and `ageGourp` variables within the dataset for a comparison with the actual/target population.
-```{r cell-based2}
+```{r cell-based2, dpi=300, out.width = '100%', fig.height = 4}
 # View the population structure by age groups
 plot_popn(survey_df,
           xVar = "gender",
@@ -292,7 +292,7 @@ survey_df$wt_cell <- stats::weights(cell_weighted)
 <br>
 
 As you can see from the population structure, the weighting has corrected the over- and under-representation of the older and younger age groups. The population structure of the survey data now reflects that of the total population (as per the census).
-```{r cell-based7}
+```{r cell-based7, dpi=300, out.width = '100%', fig.height = 4}
 plot_popn(survey_df,
           xVar = "gender",
           yVar = "ageGroup",
@@ -370,7 +370,7 @@ design <- survey::svydesign(ids = ~1, # formula for no clusters
 <br>
 
 View the 2019 vote (`vote2019`) for a comparison with the target vote.
-```{r raking3}
+```{r raking3, dpi=300, out.width = '100%', fig.height = 4}
 colours <- colour_prep(survey_df,
                        columns = "vote2019",
                        pal_name = "polUK")
@@ -428,7 +428,7 @@ survey_df$wt_raked <- stats::weights(rake_weighted)
 <br>
 
 View both the population structure by age groups and 2019 vote by party with the weighted data.
-```{r raking5}
+```{r raking5, dpi=300, out.width = '100%', fig.height = 4}
 grp_freq(survey_df,
          groups = "vote2019",
          weight = "wt_raked", # weighted result
@@ -459,7 +459,7 @@ grp_freq(survey_df,
 ```{r raking5_table, echo = FALSE}
 knitr::kable(vote_results, caption = "Target Results", col.names = c("Party", ""))
 ```
-```{r raked6}
+```{r raked6, dpi=300, out.width = '100%', fig.height = 4}
 plot_popn(survey_df,
           xVar = "gender",
           yVar = "ageGroup",
