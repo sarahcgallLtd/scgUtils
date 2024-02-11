@@ -117,9 +117,7 @@ under-representation of certain groups. The solution? Survey
 weighting.</p>
 <p>This article explores the essence of survey weighting, its types, and
 dives into the practical application of these techniques in R, ensuring
-your survey results truly mirror the population you’re studying.
-<br></p>
-<p><br></p>
+your survey results truly mirror the population you’re studying. <br><br></p>
 <div class="section level3">
 <h3 id="understanding-survey-weighting">Understanding Survey Weighting<a class="anchor" aria-label="anchor" href="#understanding-survey-weighting"></a>
 </h3>
@@ -166,9 +164,8 @@ males. <br><br></p>
 </h5>
 <p>Using <code>ggplot2</code>, we visualise this discrepancy by plotting
 the gender distribution within two circles representing the sample and
-actual populations, respectively. While this visualisation clearly
-depicts the imbalance, our goal is to mathematically adjust this skew.
-<br><br><img src="weight-your-data_files/figure-html/basic1-1.png" width="100%"><br><br></p>
+target populations, respectively. While this visualisation depicts the
+imbalance, our goal is to mathematically adjust this skew. <br><br><img src="weight-your-data_files/figure-html/basic1-1.png" width="100%"><br><br></p>
 </div>
 <div class="section level5">
 <h5 id="calculating-and-applying-weights">
@@ -209,33 +206,28 @@ W_{\text{Male}} = \frac{49\%}{45\%} \approx 1.09
 population, correcting the initial imbalance. <br><br></p>
 </div>
 </div>
-<div class="section level3">
-<h3 id="implementing-weighting-in-r">Implementing Weighting in R<a class="anchor" aria-label="anchor" href="#implementing-weighting-in-r"></a>
+<div class="section level3 tabset">
+<h3 class="tabset" id="implementing-weighting-in-r">Implementing Weighting in R<a class="anchor" aria-label="anchor" href="#implementing-weighting-in-r"></a>
 </h3>
 <p>Two common weighting techniques are cell-based weighting and rake
 weighting. Cell-based weighting applies a detailed post-stratification
 by adjusting weights at intersections of multiple characteristics. Rake
 weighting, under calibration weights, iteratively aligns sample weights
-across various variables to match population margins.</p>
-<p>The choice between cell-based and rake weighting hinges on data
-specifics and survey analysis requirements. Cell-based weighting is
-preferable for detailed control when comprehensive population data is
-available. Rake weighting suits broader alignment across multiple
-characteristics without delving into their intersections. <br><br></p>
-<div class="section level4">
-<h4 id="cell-based">
-<strong>Cell-Based</strong><a class="anchor" aria-label="anchor" href="#cell-based"></a>
-</h4>
+across various variables to match population margins. <br><br></p>
+
+
+<ul class="nav nav-tabs" id="implementing-weighting-in-r" role="tablist">
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#cell-based" id="cell-based-tab" type="button" role="tab" aria-controls="cell-based" aria-selected="true" class="active nav-link"><strong>Cell-Based</strong></button></li>
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#raking" id="raking-tab" type="button" role="tab" aria-controls="raking" aria-selected="false" class="nav-link"><strong>Raking</strong></button></li>
+</ul>
+<div class="tab-content">
+<div class="active  tab-pane" id="cell-based" role="tabpanel" aria-labelledby="cell-based-tab">
+
 <p>Cell-based weighting fine-tunes survey weights to align the sample
 distribution with known population margins across multiple dimensions or
 characteristics. This method enables granular adjustments by considering
 intersections of categories (e.g., specific age groups within each
-gender).</p>
-<p>Caution is necessary for cells with few or no respondents (e.g., no
-respondents in the Male 18-24 interlocked category), as this can cause
-weight instability. Such scenarios underscore the importance of
-thoughtful survey design and potentially setting quotas for response
-collection. <br><br></p>
+gender). <br><br></p>
 <p><strong>Implementing Cell-Based Weighting in R:</strong></p>
 <p><strong><em>1. Clean and View Variables</em></strong><br> First, we
 re-factor the <code>ageGroup</code> variable so that the subgroups of
@@ -261,7 +253,7 @@ the census data.</p>
 <p><br></p>
 <p>We can then view the population structure of the <code>gender</code>
 and <code>ageGourp</code> variables within the dataset for a comparison
-with the actual/target population.</p>
+with the target population.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># View the population structure by age groups</span></span>
 <span><span class="fu"><a href="../reference/plot_popn.html">plot_popn</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
@@ -272,7 +264,7 @@ with the actual/target population.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="weight-your-data_files/figure-html/cell-based2-1.png" width="100%"></p>
 <table class="table">
-<caption>Actual/Target Population Structure</caption>
+<caption>Target Population Structure:</caption>
 <thead><tr class="header">
 <th align="left">Age Group</th>
 <th align="left">Male</th>
@@ -362,62 +354,6 @@ levels of each subgroup must match those in the survey data.</p>
 <span>                       levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">survey_df</span><span class="op">$</span><span class="va">ageByGender</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  Freq <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">ageByGender</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="left">ageByGender</th>
-<th align="right">Freq</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">Female 18-24</td>
-<td align="right">1602</td>
-</tr>
-<tr class="even">
-<td align="left">Male 18-24</td>
-<td align="right">1626</td>
-</tr>
-<tr class="odd">
-<td align="left">Female 25-34</td>
-<td align="right">2645</td>
-</tr>
-<tr class="even">
-<td align="left">Male 25-34</td>
-<td align="right">2505</td>
-</tr>
-<tr class="odd">
-<td align="left">Female 35-44</td>
-<td align="right">2566</td>
-</tr>
-<tr class="even">
-<td align="left">Male 35-44</td>
-<td align="right">2438</td>
-</tr>
-<tr class="odd">
-<td align="left">Female 45-54</td>
-<td align="right">2611</td>
-</tr>
-<tr class="even">
-<td align="left">Male 45-54</td>
-<td align="right">2529</td>
-</tr>
-<tr class="odd">
-<td align="left">Female 55-64</td>
-<td align="right">2450</td>
-</tr>
-<tr class="even">
-<td align="left">Male 55-64</td>
-<td align="right">2365</td>
-</tr>
-<tr class="odd">
-<td align="left">Female 65 +</td>
-<td align="right">3843</td>
-</tr>
-<tr class="even">
-<td align="left">Male 65 +</td>
-<td align="right">3220</td>
-</tr>
-</tbody>
-</table>
 <p><br></p>
 <p>Finally, define the survey object using the <a href="https://r-survey.r-forge.r-project.org/survey/html/svydesign.html" class="external-link"><code>svydesign()</code></a>
 function from the <code>survey</code> package. This will store all of
@@ -437,81 +373,21 @@ function and then add the results to your survey data frame.</p>
 <span></span>
 <span><span class="co"># Extract weights from the post-stratified design</span></span>
 <span><span class="va">survey_df</span><span class="op">$</span><span class="va">wt_cell</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/weights.html" class="external-link">weights</a></span><span class="op">(</span><span class="va">cell_weighted</span><span class="op">)</span></span></code></pre></div>
-<p><br></p>
-<p>As you can see from the population structure, the weighting has
-corrected the over- and under-representation of the older and younger
-age groups. The population structure of the survey data now reflects
-that of the total population (as per the census).</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_popn.html">plot_popn</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
-<span>          xVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
-<span>          yVar <span class="op">=</span> <span class="st">"ageGroup"</span>,</span>
-<span>          weight <span class="op">=</span> <span class="st">"wt_cell"</span>, <span class="co"># weighted result</span></span>
-<span>          addLabels <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>          title <span class="op">=</span> <span class="st">"Weighted Population Structure"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="weight-your-data_files/figure-html/cell-based7-1.png" width="100%"></p>
-<table class="table">
-<caption>Actual/Target Population Structure</caption>
-<thead><tr class="header">
-<th align="left">Age Group</th>
-<th align="left">Male</th>
-<th align="left">Female</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">65 +</td>
-<td align="left">10.6%</td>
-<td align="left">12.6%</td>
-</tr>
-<tr class="even">
-<td align="left">55-64</td>
-<td align="left">7.8%</td>
-<td align="left">8.1%</td>
-</tr>
-<tr class="odd">
-<td align="left">45-54</td>
-<td align="left">8.3%</td>
-<td align="left">8.6%</td>
-</tr>
-<tr class="even">
-<td align="left">35-44</td>
-<td align="left">8.0%</td>
-<td align="left">8.4%</td>
-</tr>
-<tr class="odd">
-<td align="left">25-34</td>
-<td align="left">8.2%</td>
-<td align="left">8.7%</td>
-</tr>
-<tr class="even">
-<td align="left">18-24</td>
-<td align="left">5.4%</td>
-<td align="left">5.3%</td>
-</tr>
-</tbody>
-</table>
 <p><br><br></p>
 </div>
-<div class="section level4">
-<h4 id="raking">
-<strong>Raking</strong><a class="anchor" aria-label="anchor" href="#raking"></a>
-</h4>
+<div class="tab-pane" id="raking" role="tabpanel" aria-labelledby="raking-tab">
+
 <p>Raking, also known as the Random Iterative Method (RIM) or iterative
 proportional fitting (IPF), refines the weight adjustment process by
 simultaneously aligning sample weights across multiple variables (e.g.,
 age, gender, geographic region) to match known population margins. This
 method iteratively adjusts weights to ensure representativeness across
-all considered dimensions.</p>
-<p>Raking, like cell-based weighting, may face challenges with small or
-empty cells, potentially leading to unstable weights. It also involves
-balancing adjustments across multiple variables, which can be complex if
-sample sizes are small or variables are interrelated. <br><br></p>
+all considered dimensions. <br><br></p>
 <p><strong>Implementing Rake Weighting in R:</strong></p>
 <p><strong><em>1. Clean and View Variables</em></strong><br> This time,
 we will re-factor the <code>p_past_vote_2019</code> variable so that the
 subgroups align with the 2019 General Election results.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Ensure each subgroup aligns with 2019 election data/results</span></span>
 <span><span class="va">survey_df</span> <span class="op">&lt;-</span> <span class="fu">mutate</span><span class="op">(</span><span class="va">survey_df</span>,</span>
 <span>                    vote2019 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span>
@@ -531,6 +407,62 @@ subgroups align with the 2019 General Election results.</p>
 <span>                      <span class="op">)</span></span>
 <span>                    <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
+<p><br></p>
+<p>View the 2019 vote (<code>vote2019</code>) for a comparison with the
+target vote.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/colour_prep.html">colour_prep</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
+<span>                       columns <span class="op">=</span> <span class="st">"vote2019"</span>,</span>
+<span>                       pal_name <span class="op">=</span> <span class="st">"polUK"</span><span class="op">)</span></span>
+<span><span class="va">colours</span><span class="op">$</span><span class="va">National</span> <span class="op">&lt;-</span> <span class="st">"#b6e559"</span> <span class="co"># add new colours for merged SNP + PC category</span></span>
+<span></span>
+<span><span class="co"># View the population structure by age groups</span></span>
+<span><span class="fu"><a href="../reference/plot_bars.html">plot_bars</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
+<span>          yVar <span class="op">=</span> <span class="st">"vote2019"</span>,</span>
+<span>          title <span class="op">=</span> <span class="st">"Unweighted 2019 Vote"</span>,</span>
+<span>          colours <span class="op">=</span> <span class="va">colours</span><span class="op">)</span></span></code></pre></div>
+<p><img src="weight-your-data_files/figure-html/raking3-1.png" width="100%"></p>
+<table class="table">
+<caption>Target Results:</caption>
+<thead><tr class="header">
+<th align="left">Party</th>
+<th align="left"></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Conservative</td>
+<td align="left">27.1%</td>
+</tr>
+<tr class="even">
+<td align="left">Labour</td>
+<td align="left">20.0%</td>
+</tr>
+<tr class="odd">
+<td align="left">Lib Dems</td>
+<td align="left">7.2%</td>
+</tr>
+<tr class="even">
+<td align="left">National</td>
+<td align="left">2.7%</td>
+</tr>
+<tr class="odd">
+<td align="left">Green</td>
+<td align="left">1.6%</td>
+</tr>
+<tr class="even">
+<td align="left">Brexit</td>
+<td align="left">1.3%</td>
+</tr>
+<tr class="odd">
+<td align="left">Other</td>
+<td align="left">2.1%</td>
+</tr>
+<tr class="even">
+<td align="left">Did not vote</td>
+<td align="left">38.0%</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
 <p><strong><em>2. Prepare Survey Objects</em></strong><br> Following the
 same approach as the cell-based weighting preparation, create a data
@@ -561,65 +493,10 @@ Then, define the survey design object.</p>
 <span>                            data <span class="op">=</span> <span class="va">survey_df</span>, <span class="co"># data frame containing variables</span></span>
 <span>                            weights <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="co"># optional</span></span></code></pre></div>
 <p><br></p>
-<p>View the 2019 vote (<code>vote2019</code>) for a comparison with the
-target vote.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/colour_prep.html">colour_prep</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
-<span>                       columns <span class="op">=</span> <span class="st">"vote2019"</span>,</span>
-<span>                       pal_name <span class="op">=</span> <span class="st">"polUK"</span><span class="op">)</span></span>
-<span><span class="va">colours</span><span class="op">$</span><span class="va">National</span> <span class="op">&lt;-</span> <span class="st">"#b6e559"</span> <span class="co"># add new colours for merged SNP + PC category</span></span>
-<span></span>
-<span><span class="co"># View the population structure by age groups</span></span>
-<span><span class="fu"><a href="../reference/plot_bars.html">plot_bars</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
-<span>          yVar <span class="op">=</span> <span class="st">"vote2019"</span>,</span>
-<span>          title <span class="op">=</span> <span class="st">"Unweighted 2019 Vote"</span>,</span>
-<span>          colours <span class="op">=</span> <span class="va">colours</span><span class="op">)</span></span></code></pre></div>
-<p><img src="weight-your-data_files/figure-html/raking3-1.png" width="100%"></p>
-<table class="table">
-<caption>Target Results</caption>
-<thead><tr class="header">
-<th align="left">Party</th>
-<th align="left"></th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">Conservative</td>
-<td align="left">27.1%</td>
-</tr>
-<tr class="even">
-<td align="left">Labour</td>
-<td align="left">20.0%</td>
-</tr>
-<tr class="odd">
-<td align="left">Lib Dems</td>
-<td align="left">7.2%</td>
-</tr>
-<tr class="even">
-<td align="left">National</td>
-<td align="left">2.7%</td>
-</tr>
-<tr class="odd">
-<td align="left">Green</td>
-<td align="left">1.6%</td>
-</tr>
-<tr class="even">
-<td align="left">Brexit</td>
-<td align="left">1.3%</td>
-</tr>
-<tr class="odd">
-<td align="left">Other</td>
-<td align="left">2.1%</td>
-</tr>
-<tr class="even">
-<td align="left">Did not vote</td>
-<td align="left">38.0%</td>
-</tr>
-</tbody>
-</table>
 <p><strong><em>3. Weight Data</em></strong><br> Finally, use the <a href="https://r-survey.r-forge.r-project.org/survey/html/rake.html" class="external-link"><code>rake()</code></a>
 function from the <code>survey</code> package to perform raking and add
 the results to the survey.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rake_weighted</span> <span class="op">&lt;-</span> <span class="fu">survey</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survey/man/rake.html" class="external-link">rake</a></span><span class="op">(</span><span class="va">design</span>,</span>
 <span>                              sample.margins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">~</span><span class="va">ageByGender</span>,</span>
 <span>                                                    <span class="op">~</span><span class="va">vote2019</span><span class="op">)</span>,</span>
@@ -629,68 +506,31 @@ the results to the survey.</p>
 <span></span>
 <span><span class="co"># Extract weights from the post-stratified design</span></span>
 <span><span class="va">survey_df</span><span class="op">$</span><span class="va">wt_raked</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/weights.html" class="external-link">weights</a></span><span class="op">(</span><span class="va">rake_weighted</span><span class="op">)</span></span></code></pre></div>
-<p><br></p>
-<p>View both the population structure by age groups and 2019 vote by
-party with the weighted data.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_bars.html">plot_bars</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
-<span>          yVar <span class="op">=</span> <span class="st">"vote2019"</span>,</span>
-<span>          weight <span class="op">=</span> <span class="st">"wt_raked"</span>, <span class="co"># weighted result</span></span>
-<span>          title <span class="op">=</span> <span class="st">"Weighted 2019 Vote"</span>,</span>
-<span>          colours <span class="op">=</span> <span class="va">colours</span><span class="op">)</span></span></code></pre></div>
-<p><img src="weight-your-data_files/figure-html/raking5-1.png" width="100%"></p>
-<table class="table">
-<caption>Target Results</caption>
-<thead><tr class="header">
-<th align="left">Party</th>
-<th align="left"></th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">Conservative</td>
-<td align="left">27.1%</td>
-</tr>
-<tr class="even">
-<td align="left">Labour</td>
-<td align="left">20.0%</td>
-</tr>
-<tr class="odd">
-<td align="left">Lib Dems</td>
-<td align="left">7.2%</td>
-</tr>
-<tr class="even">
-<td align="left">National</td>
-<td align="left">2.7%</td>
-</tr>
-<tr class="odd">
-<td align="left">Green</td>
-<td align="left">1.6%</td>
-</tr>
-<tr class="even">
-<td align="left">Brexit</td>
-<td align="left">1.3%</td>
-</tr>
-<tr class="odd">
-<td align="left">Other</td>
-<td align="left">2.1%</td>
-</tr>
-<tr class="even">
-<td align="left">Did not vote</td>
-<td align="left">38.0%</td>
-</tr>
-</tbody>
-</table>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+</div>
+</div>
+</div>
+<div class="section level3 unnumbered">
+<h3 class="unnumbered" id="section"></h3>
+<hr>
+<div class="section level4">
+<h4 id="comparing-weighting-results">
+<strong>Comparing Weighting Results</strong><a class="anchor" aria-label="anchor" href="#comparing-weighting-results"></a>
+</h4>
+<p>After applying weights, it’s beneficial to compare the weighted
+sample distributions against the target population metrics. This
+comparison can validate the effectiveness of your weighting approach,
+ensuring your survey results are as representative as possible:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_popn.html">plot_popn</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
 <span>          xVar <span class="op">=</span> <span class="st">"gender"</span>,</span>
 <span>          yVar <span class="op">=</span> <span class="st">"ageGroup"</span>,</span>
-<span>          weight <span class="op">=</span> <span class="st">"wt_raked"</span>, <span class="co"># weighted result</span></span>
+<span>          weight <span class="op">=</span> <span class="st">"wt_cell"</span>, <span class="co"># weighted result</span></span>
 <span>          addLabels <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>          title <span class="op">=</span> <span class="st">"Weighted Population Structure"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="weight-your-data_files/figure-html/raked6-1.png" width="100%"></p>
+<p><img src="weight-your-data_files/figure-html/cell-based7-1.png" width="100%"></p>
 <table class="table">
-<caption>Target Population Structure</caption>
+<caption>Target Population Structure:</caption>
 <thead><tr class="header">
 <th align="left">Age Group</th>
 <th align="left">Male</th>
@@ -729,11 +569,85 @@ party with the weighted data.</p>
 </tr>
 </tbody>
 </table>
+<p><br></p>
+<p>As you can see from the population structure, both of the raked and
+cell-based weightings have corrected the over- and under-representation
+of the older and younger age groups. The population structure of the
+survey data now reflects that of the total population (as per the
+census).</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_bars.html">plot_bars</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
+<span>          yVar <span class="op">=</span> <span class="st">"vote2019"</span>,</span>
+<span>          weight <span class="op">=</span> <span class="st">"wt_raked"</span>, <span class="co"># weighted result</span></span>
+<span>          title <span class="op">=</span> <span class="st">"Weighted 2019 Vote"</span>,</span>
+<span>          colours <span class="op">=</span> <span class="va">colours</span><span class="op">)</span></span></code></pre></div>
+<p><img src="weight-your-data_files/figure-html/raking5-1.png" width="100%"></p>
+<table class="table">
+<caption>Target Results:</caption>
+<thead><tr class="header">
+<th align="left">Party</th>
+<th align="left"></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Conservative</td>
+<td align="left">27.1%</td>
+</tr>
+<tr class="even">
+<td align="left">Labour</td>
+<td align="left">20.0%</td>
+</tr>
+<tr class="odd">
+<td align="left">Lib Dems</td>
+<td align="left">7.2%</td>
+</tr>
+<tr class="even">
+<td align="left">National</td>
+<td align="left">2.7%</td>
+</tr>
+<tr class="odd">
+<td align="left">Green</td>
+<td align="left">1.6%</td>
+</tr>
+<tr class="even">
+<td align="left">Brexit</td>
+<td align="left">1.3%</td>
+</tr>
+<tr class="odd">
+<td align="left">Other</td>
+<td align="left">2.1%</td>
+</tr>
+<tr class="even">
+<td align="left">Did not vote</td>
+<td align="left">38.0%</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p>The weighting has also corrected the over- and under-representation
+of the 2019 general election vote; in particular, the turnout.</p>
+<p><br><br></p>
 </div>
 <div class="section level4">
-<h4 id="comparing-weighting-results">
-<strong>Comparing Weighting Results</strong><a class="anchor" aria-label="anchor" href="#comparing-weighting-results"></a>
+<h4 id="other-considerations-and-limitations">
+<strong>Other Considerations and Limitations</strong><a class="anchor" aria-label="anchor" href="#other-considerations-and-limitations"></a>
 </h4>
+<p>The choice between cell-based and rake weighting hinges on data
+specifics and survey analysis requirements. Cell-based weighting is
+preferable for detailed control when comprehensive population data is
+available. Rake weighting suits broader alignment across multiple
+characteristics without delving into their intersections.</p>
+<p>Caution is necessary for subgroups with few or no respondents (e.g.,
+no respondents in the Male 18-24 interlocked category), as this can
+cause weight instability. Additionally, balancing adjustments across
+multiple variables, can be complex if sample sizes are small or
+variables are interrelated. Such scenarios underscore the importance of
+thoughtful survey design and potentially setting quotas for response
+collection.</p>
+<p>By carefully selecting and applying the appropriate weighting method,
+you can enhance the accuracy and reliability of your survey findings,
+making them truly reflective of the broader population you aim to
+understand.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

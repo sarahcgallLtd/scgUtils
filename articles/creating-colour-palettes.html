@@ -107,14 +107,14 @@
 </style>
 <p><br> This article provides guidance on using the
 <code><a href="../reference/colour_display.html">colour_display()</a></code>, <code><a href="../reference/colour_pal.html">colour_pal()</a></code>, and
-<code><a href="../reference/colour_prep.html">colour_prep()</a></code> functions from an R package to create and
-visualise colour palettes effectively. <br></p>
+<code><a href="../reference/colour_prep.html">colour_prep()</a></code> functions from the <code>scgUtils</code>
+package to create and visualise colour palettes effectively. <br></p>
 <p>Colour plays a crucial role in data visualisation. It not only makes
 plots more aesthetically pleasing but also aids in communicating data
 patterns and insights more effectively. The functions
 <code><a href="../reference/colour_display.html">colour_display()</a></code>, <code><a href="../reference/colour_pal.html">colour_pal()</a></code>, and
-<code><a href="../reference/colour_prep.html">colour_prep()</a></code> are designed to help users select and apply
-colour palettes with ease. <br><br></p>
+<code><a href="../reference/colour_prep.html">colour_prep()</a></code> are designed to help users select and easily
+apply colour palettes that are colourblind-friendly. <br><br></p>
 <div class="section level3">
 <h3 id="viewing-available-colours-with-colour_display">Viewing Available Colours with <code>colour_display()</code><a class="anchor" aria-label="anchor" href="#viewing-available-colours-with-colour_display"></a>
 </h3>
@@ -122,23 +122,89 @@ colour palettes with ease. <br><br></p>
 from a specified palette. It integrates with <code><a href="../reference/colour_pal.html">colour_pal()</a></code>
 to fetch colour data and uses an internal helper function,
 <code>contrast_test()</code>, to ensure text readability on coloured
-bars.</p>
+bars. The purpose of the <code><a href="../reference/colour_display.html">colour_display()</a></code> function is for
+you to review the colours before applying them to your data
+visualisations (which use the same arguments as
+<code><a href="../reference/colour_pal.html">colour_pal()</a></code>). <br><br></p>
+<div class="section level4">
+<h4 id="categorical-colours-available">
+<strong>Categorical Colours Available:</strong><a class="anchor" aria-label="anchor" href="#categorical-colours-available"></a>
+</h4>
+<p>Categorical colours and palettes either have a name associated with
+them of a “cat” prefix.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Example: Visualise the 'polUK' palette</span></span>
-<span><span class="fu"><a href="../reference/colour_display.html">colour_display</a></span><span class="op">(</span><span class="st">"polUK"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># All individual colours</span></span>
+<span><span class="fu"><a href="../reference/colour_display.html">colour_display</a></span><span class="op">(</span><span class="st">"All"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="creating-colour-palettes_files/figure-html/colour_display-1.png" width="700"></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Example: Visualise an individual colour</span></span>
+<code class="sourceCode R"><span><span class="co"># Individual colour</span></span>
 <span><span class="fu"><a href="../reference/colour_display.html">colour_display</a></span><span class="op">(</span><span class="st">"Jaffa"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="creating-colour-palettes_files/figure-html/colour_display-2.png" width="700"></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Example: Visualise all individual colours</span></span>
-<span><span class="fu"><a href="../reference/colour_display.html">colour_display</a></span><span class="op">(</span><span class="st">"All"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Simplified version of the categorical palette</span></span>
+<span><span class="fu"><a href="../reference/colour_display.html">colour_display</a></span><span class="op">(</span><span class="st">"catSimplified"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="creating-colour-palettes_files/figure-html/colour_display-3.png" width="700"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Example: View a sequential colour palette with a continuous scale</span></span>
+<code class="sourceCode R"><span><span class="co"># Extended version of the categorical palette</span></span>
+<span><span class="fu"><a href="../reference/colour_display.html">colour_display</a></span><span class="op">(</span><span class="st">"catExtended"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="creating-colour-palettes_files/figure-html/colour_display-4.png" width="700"></p>
+</div>
+<div class="section level4">
+<h4 id="political-palettes-available">
+<strong>Political Palettes Available:</strong><a class="anchor" aria-label="anchor" href="#political-palettes-available"></a>
+</h4>
+<p>Political palettes have the prefix “pol” followed by the relevant
+country.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># UK</span></span>
+<span><span class="fu"><a href="../reference/colour_display.html">colour_display</a></span><span class="op">(</span><span class="st">"polUK"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="creating-colour-palettes_files/figure-html/colour_display_political-1.png" width="700"></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Australia</span></span>
+<span><span class="fu"><a href="../reference/colour_display.html">colour_display</a></span><span class="op">(</span><span class="st">"polAus"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="creating-colour-palettes_files/figure-html/colour_display_political-2.png" width="700"></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># NZ</span></span>
+<span><span class="fu"><a href="../reference/colour_display.html">colour_display</a></span><span class="op">(</span><span class="st">"polNZ"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="creating-colour-palettes_files/figure-html/colour_display_political-3.png" width="700"></p>
+</div>
+<div class="section level4">
+<h4 id="sequential-palettes-available">
+<strong>Sequential Palettes Available:</strong><a class="anchor" aria-label="anchor" href="#sequential-palettes-available"></a>
+</h4>
+<p>Sequential palettes contain the prefix “seq” followed by a colour.
+These can be used in discrete or continuous scales.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Green sequential continuous scale with 7 colours</span></span>
 <span><span class="fu"><a href="../reference/colour_display.html">colour_display</a></span><span class="op">(</span><span class="st">"seqGreen"</span>, <span class="fl">7</span>, type <span class="op">=</span> <span class="st">"continuous"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-colour-palettes_files/figure-html/colour_display-4.png" width="700"><br><br></p>
+<p><img src="creating-colour-palettes_files/figure-html/colour_display_sequential-1.png" width="700"></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Blue sequential discrete scale with all 7 colours</span></span>
+<span><span class="fu"><a href="../reference/colour_display.html">colour_display</a></span><span class="op">(</span><span class="st">"seqBlue"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="creating-colour-palettes_files/figure-html/colour_display_sequential-2.png" width="700"></p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Red sequential discrete scale with all 7 colours</span></span>
+<span><span class="fu"><a href="../reference/colour_display.html">colour_display</a></span><span class="op">(</span><span class="st">"seqRed"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="creating-colour-palettes_files/figure-html/colour_display_sequential-3.png" width="700"></p>
+</div>
+<div class="section level4">
+<h4 id="divergent-palettes-available">
+<strong>Divergent Palettes Available:</strong><a class="anchor" aria-label="anchor" href="#divergent-palettes-available"></a>
+</h4>
+<p>Divergent palettes contain the prefix “div” followed by two colours.
+These are best used in likert scales. The colours can have names
+assigned to them to match data in plots.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Blue-Green diverging colour palette with 5 levels with assigned values</span></span>
+<span><span class="fu"><a href="../reference/colour_display.html">colour_display</a></span><span class="op">(</span>pal_name <span class="op">=</span> <span class="st">"divBlueGreen"</span>,</span>
+<span>               n <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>               assign <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Very Likely"</span>,<span class="st">"Likely"</span>,<span class="st">"Neutral"</span>,<span class="st">"Unlikely"</span>,<span class="st">"Very Unlikely"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="creating-colour-palettes_files/figure-html/colour_display_divergent-1.png" width="700"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Red-Blue divergent palette showing all 14 colours (i.e., n = 14)</span></span>
+<span><span class="fu"><a href="../reference/colour_display.html">colour_display</a></span><span class="op">(</span><span class="st">"divRedBlue"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="creating-colour-palettes_files/figure-html/colour_display_divergent-2.png" width="700"><br><br></p>
+</div>
 </div>
 <div class="section level3">
 <h3 id="retrieving-colours-with-colour_pal">Retrieving Colours with <code>colour_pal()</code><a class="anchor" aria-label="anchor" href="#retrieving-colours-with-colour_pal"></a>
@@ -146,8 +212,9 @@ bars.</p>
 <p>The <code><a href="../reference/colour_pal.html">colour_pal()</a></code> function generates colour palettes for
 graphs. It supports sequential, diverging, categorical, and political
 palettes, allowing users to retrieve individual colours or ranges of
-colours based on the specified palette.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+colours based on the specified palette. View the previous sections for
+all colours and palettes available.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Example: Return full categorical extended palette</span></span>
 <span><span class="fu"><a href="../reference/colour_pal.html">colour_pal</a></span><span class="op">(</span><span class="st">"catExtended"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "#478c5b" "#374e8e" "#df7c18" "#ac004f" "#4fbbae" "#ce4631" "#006d64"</span></span>
@@ -182,8 +249,8 @@ colours based on the specified palette.</p>
 <p><code><a href="../reference/colour_prep.html">colour_prep()</a></code> prepares a colour palette for visualising
 data by assigning colours to unique values across specified columns in a
 data frame. It is particularly useful for creating consistent colour
-mappings in visualisations.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+mappings in visualisations with political parties.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Example data frame</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  Category1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Scottish National Party (SNP)"</span>, <span class="st">"Labour"</span>, <span class="st">"Conservative"</span>, <span class="st">"Other"</span><span class="op">)</span>,</span>
