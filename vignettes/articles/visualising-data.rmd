@@ -35,6 +35,8 @@ survey_df <- get_data("survey") %>%
   labelled::unlabelled() %>%
   process_factors()
 ```
+## {.tabset}
+
 ### Sankey
 Flow visualisation helps in understanding how different categories of respondents transition between various stages or choices. The `plot_sankey()` function is instrumental in depicting the flow of data, especially useful in understanding voting patterns or changes in preferences over time.
 <br>
@@ -126,7 +128,7 @@ plot_parliament(de_parliament,
 
 ##### Adding a Percentage Bar
 For a more detailed analysis, `plot_parliament()` can also include a percentage bar that shows the popular vote won by each party. This feature provides additional context to the seat distribution, reflecting how party popularity translates into parliamentary seats.
-```{r parliament2, dpi=300, out.width = '90%', fig.height = 5}
+```{r parliament2, dpi=300, out.width = '100%', fig.height = 5}
 # Prepare Data
 uk_parliament <- data.frame(
   Party = c("Labour", "SNP", "Other", "Liberal Democrat", "Conservative"),
@@ -150,51 +152,6 @@ plot_parliament(uk_parliament,
 <br>
 This plot offers an intuitive way to analyse election results, party strengths, and their representation in the parliament. The inclusion of a majority line further enhances the plot by delineating the threshold needed for a majority.
 <br>
-<br>
-
-### Bar Charts
-The `plot_bars()` function provides a clear and concise presentation of categorical data distributions.
-<br>
-<br>
-
-##### Basic Bar Charts
-At its core, `plot_bars()` simplifies the process of generating bar charts for survey data. It calculates frequencies and percentages, adjusting for weights where necessary, and presents this information in an easy-to-understand format.
-
-```{r barchart1, dpi=300, out.width = '100%', fig.height = 4}
-# Prepare colours
-colours <- colour_prep(survey_df,
-                       columns = "generalElectionVote",
-                       pal_name = "polUK")
-colours$`Brexit Party/Reform UK` <- "#00b1da" # failed to match name
-
-# Plot
-plot_bars(survey_df,
-          yVar = "generalElectionVote",
-          colours = colours,
-          title = "Voting Intention")
-```
-<br>
-
-##### Grouped Bar Charts
-`plot_bars()` can also group data, allowing for comparisons across demographic segments or other categorical distinctions. This functionality is particularly useful for identifying trends or differences in response patterns among various groups.
-```{r barchart2, dpi=300, out.width = '100%', fig.height = 8}
-# Prepare colours
-colours <- colour_prep(survey_df,
-                       columns = "bestOnMII",
-                       pal_name = "polUK")
-colours$`Brexit Party/Reform UK` <- "#00b1da" # failed to match name
-
-# Plot
-plot_bars(survey_df,
-          group = "small_mii_cat",
-          yVar = "bestOnMII",
-          weight = "wt",
-          round_decimals = 0,
-          colour = colours,
-          title = get_question(survey_df, "bestOnMII"),
-          subtitle = paste0("by ", get_question(survey_df, "mii"))
-)
-```
 <br>
 
 ### Population

@@ -21,36 +21,73 @@ knitr::opts_chunk$set(
 )
 ```
 <br>
-This article provides guidance on using the `colour_display()`, `colour_pal()`, and `colour_prep()` functions from an R package to create and visualise colour palettes effectively.
+This article provides guidance on using the `colour_display()`, `colour_pal()`, and `colour_prep()` functions from the `scgUtils` package to create and visualise colour palettes effectively.
 <br>
 
 ```{r setup, include = FALSE}
 library(scgUtils)
 ```
 
-Colour plays a crucial role in data visualisation. It not only makes plots more aesthetically pleasing but also aids in communicating data patterns and insights more effectively. The functions `colour_display()`, `colour_pal()`, and `colour_prep()` are designed to help users select and apply colour palettes with ease.
+Colour plays a crucial role in data visualisation. It not only makes plots more aesthetically pleasing but also aids in communicating data patterns and insights more effectively. The functions `colour_display()`, `colour_pal()`, and `colour_prep()` are designed to help users select and easily apply colour palettes that are colourblind-friendly.
 <br>
 <br>
 
 ### Viewing Available Colours with `colour_display()`
 
-The `colour_display()` function visualises colour options from a specified palette. It integrates with `colour_pal()` to fetch colour data and uses an internal helper function, `contrast_test()`, to ensure text readability on coloured bars.
+The `colour_display()` function visualises colour options from a specified palette. It integrates with `colour_pal()` to fetch colour data and uses an internal helper function, `contrast_test()`, to ensure text readability on coloured bars. The purpose of the `colour_display()` function is for you to review the colours before applying them to your data visualisations (which use the same arguments as `colour_pal()`).
+<br>
+<br>
 
+#### **Categorical Colours Available:**
+Categorical colours and palettes either have a name associated with them of a "cat" prefix.
 ```{r colour_display, warning=FALSE}
-# Example: Visualise the 'polUK' palette
-colour_display("polUK")
-# Example: Visualise an individual colour
-colour_display("Jaffa")
-# Example: Visualise all individual colours
+# All individual colours
 colour_display("All")
-# Example: View a sequential colour palette with a continuous scale
+# Individual colour
+colour_display("Jaffa")
+# Simplified version of the categorical palette
+colour_display("catSimplified")
+# Extended version of the categorical palette
+colour_display("catExtended")
+```
+
+#### **Political Palettes Available:**
+Political palettes have the prefix "pol" followed by the relevant country.
+```{r colour_display_political, warning=FALSE}
+# UK
+colour_display("polUK")
+# Australia
+colour_display("polAus")
+# NZ
+colour_display("polNZ")
+```
+
+#### **Sequential Palettes Available:**
+Sequential palettes contain the prefix "seq" followed by a colour. These can be used in discrete or continuous scales.
+```{r colour_display_sequential, warning=FALSE}
+# Green sequential continuous scale with 7 colours
 colour_display("seqGreen", 7, type = "continuous")
+# Blue sequential discrete scale with all 7 colours
+colour_display("seqBlue")
+# Red sequential discrete scale with all 7 colours
+colour_display("seqRed")
+```
+
+#### **Divergent Palettes Available:**
+Divergent palettes contain the prefix "div" followed by two colours. These are best used in likert scales. The colours can have names assigned to them to match data in plots.
+```{r colour_display_divergent, warning=FALSE}
+# Blue-Green diverging colour palette with 5 levels with assigned values
+colour_display(pal_name = "divBlueGreen",
+               n = 5,
+               assign = c("Very Likely","Likely","Neutral","Unlikely","Very Unlikely"))
+# Red-Blue divergent palette showing all 14 colours (i.e., n = 14)
+colour_display("divRedBlue")
 ```
 <br>
 <br>
 
 ### Retrieving Colours with `colour_pal()`
-The `colour_pal()` function generates colour palettes for graphs. It supports sequential, diverging, categorical, and political palettes, allowing users to retrieve individual colours or ranges of colours based on the specified palette.
+The `colour_pal()` function generates colour palettes for graphs. It supports sequential, diverging, categorical, and political palettes, allowing users to retrieve individual colours or ranges of colours based on the specified palette. View the previous sections for all colours and palettes available.
 
 ```{r colour_pal}
 # Example: Return full categorical extended palette
@@ -66,7 +103,7 @@ colour_pal("divBlueGreen", 5, c("Very Likely", "Likely", "Neutral", "Unlikely", 
 <br>
 
 ### Preparing Palettes with `colour_prep()`
-`colour_prep()` prepares a colour palette for visualising data by assigning colours to unique values across specified columns in a data frame. It is particularly useful for creating consistent colour mappings in visualisations.
+`colour_prep()` prepares a colour palette for visualising data by assigning colours to unique values across specified columns in a data frame. It is particularly useful for creating consistent colour mappings in visualisations with political parties.
 
 ```{r colour_prep}
 # Example data frame

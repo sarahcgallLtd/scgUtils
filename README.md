@@ -15,7 +15,7 @@ guidelines with custom colour schemes and themes.
 
 - **Survey Data Processing**: Simplify the manipulation of survey datasets with functions like [`get_data()`](https://sarahcgall.github.io/scgUtils/reference/get_data.html) and [`process_factors()`](https://sarahcgall.github.io/scgUtils/reference/process_factors.html).
 - **Data Exploration Tools**: Dive into your data using functions such as [`crosstab()`](https://sarahcgall.github.io/scgUtils/reference/crosstab.html) and [`grp_freq()`](https://sarahcgall.github.io/scgUtils/reference/grp_freq.html) for detailed analyses.
-- **Custom Visualizations**: Bring your data to life with various plotting functions, from [`plot_bigfive()`](https://sarahcgall.github.io/scgUtils/reference/plot_bigfive.html) for personality traits to [`plot_sankey()`](https://sarahcgall.github.io/scgUtils/reference/plot_sankey.html) for flow data representation.
+- **Custom Visualisations**: Bring your data to life with various plotting functions, from [`plot_parliament()`](https://sarahcgall.github.io/scgUtils/reference/plot_parliament.html) for election outcomes to [`plot_sankey()`](https://sarahcgall.github.io/scgUtils/reference/plot_sankey.html) for flow data representation.
 - **Styling and Brand Consistency**: Maintain brand integrity with [`colour_pal()`](https://sarahcgall.github.io/scgUtils/reference/colour_pal.html) and [`theme_scg()`](https://sarahcgall.github.io/scgUtils/reference/theme_scg.html), ensuring consistent and appealing data presentations.
 
 ### Installation

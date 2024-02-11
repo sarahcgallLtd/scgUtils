@@ -1,6 +1,8 @@
 ---
 title: "Weighting Your Data"
-output: html_document
+output:
+    html_document
+
 ---
 ```{=html}
 <style>
@@ -30,13 +32,12 @@ In the realm of survey analysis, accurately reflecting the broader population wi
 
 This article explores the essence of survey weighting, its types, and dives into the practical application of these techniques in R, ensuring your survey results truly mirror the population you're studying.
 <br>
-
+<br>
 ```{r setup, include = FALSE}
 library(scgUtils)
 library(ggplot2)
 library(dplyr)
 ```
-<br>
 
 ### Understanding Survey Weighting
 Survey weighting is a statistical technique applied to survey data to adjust for discrepancies between the sample and the target population. This adjustment is critical in instances where certain segments of the population are overrepresented or underrepresented, potentially skewing the survey results.<br>
@@ -59,14 +60,14 @@ To illustrate the fundamental concept of weighting, consider a scenario where th
 <br>
 
 ##### **Visualising Sample vs. Actual Populations**
-Using `ggplot2`, we visualise this discrepancy by plotting the gender distribution within two circles representing the sample and actual populations, respectively. While this visualisation clearly depicts the imbalance, our goal is to mathematically adjust this skew.
+Using `ggplot2`, we visualise this discrepancy by plotting the gender distribution within two circles representing the sample and target populations, respectively. While this visualisation depicts the imbalance, our goal is to mathematically adjust this skew.
 <br>
 <br>
 ```{r basic1, echo = FALSE, dpi=300, out.width = '100%', fig.height = 3}
 # Generate data
 set.seed(123) # For reproducibility
-sample_size <- 100
-actual_size <- 100
+sample_size <- 200
+actual_size <- 200
 
 sample_data <- data.frame(
   gender = factor(c(rep("Female", sample_size * 0.55), rep("Male", sample_size * 0.45))),
@@ -165,17 +166,13 @@ The weighted sample proportions now align with the target population, correcting
 <br>
 <br>
 
-### Implementing Weighting in R
+### Implementing Weighting in R {.tabset}
 Two common weighting techniques are cell-based weighting and rake weighting. Cell-based weighting applies a detailed post-stratification by adjusting weights at intersections of multiple characteristics. Rake weighting, under calibration weights, iteratively aligns sample weights across various variables to match population margins.
-
-The choice between cell-based and rake weighting hinges on data specifics and survey analysis requirements. Cell-based weighting is preferable for detailed control when comprehensive population data is available. Rake weighting suits broader alignment across multiple characteristics without delving into their intersections.
 <br>
 <br>
 
 #### **Cell-Based**
 Cell-based weighting fine-tunes survey weights to align the sample distribution with known population margins across multiple dimensions or characteristics. This method enables granular adjustments by considering intersections of categories (e.g., specific age groups within each gender).
-
-Caution is necessary for cells with few or no respondents (e.g., no respondents in the Male 18-24 interlocked category), as this can cause weight instability. Such scenarios underscore the importance of thoughtful survey design and potentially setting quotas for response collection.
 <br>
 <br>
 
@@ -203,8 +200,8 @@ survey_df <- mutate(survey_df,
 ```
 <br>
 
-We can then view the population structure of the `gender` and `ageGourp` variables within the dataset for a comparison with the actual/target population.
-```{r cell-based2, dpi=300, out.width = '100%', fig.height = 4}
+We can then view the population structure of the `gender` and `ageGourp` variables within the dataset for a comparison with the target population.
+```{r cell-based2, class.source = 'fold-hide', dpi=300, out.width = '100%', fig.height = 4}
 # View the population structure by age groups
 plot_popn(survey_df,
           xVar = "gender",
@@ -219,7 +216,7 @@ age_gender <- data.frame("Age Group" = c("65 +", "55-64", "45-54", "35-44", "25-
                          "Female" = c("12.6%", "8.1%", "8.6%", "8.4%", "8.7%", "5.3%")
 )
 
-knitr::kable(age_gender, caption = "Actual/Target Population Structure", col.names = c("Age Group", "Male", "Female"))
+knitr::kable(age_gender, caption = "Target Population Structure:", col.names = c("Age Group", "Male", "Female"))
 ```
 <br>
 Based on [2021 England and Wales](https://www.ons.gov.uk/datasets/create/filter-outputs/4bd97769-8b13-4e7c-8c95-0cc36e653283#get-data) and [2011 Scotland](https://www.scotlandscensus.gov.uk/webapi/jsf/login.xhtml?invalidSession=true&reason=Session+not+established.) census data, you can see that there is an over-representation of the 65+ age group and under-representation of the younger age groups for both genders which could be resolved with cell-based weighting.
@@ -266,9 +263,6 @@ ageByGender <- data.frame(
   Freq = as.integer(ageByGender)
 )
 ```
-```{r cell-based4_table, echo = FALSE}
-knitr::kable(ageByGender)
-```
 <br>
 
 Finally, define the survey object using the [`svydesign()`](https://r-survey.r-forge.r-project.org/survey/html/svydesign.html) function from the `survey` package. This will store all of the unweighted variables and be used for weighting.
@@ -290,27 +284,10 @@ cell_weighted <- survey::postStratify(design = design,
 survey_df$wt_cell <- stats::weights(cell_weighted)
 ```
 <br>
-
-As you can see from the population structure, the weighting has corrected the over- and under-representation of the older and younger age groups. The population structure of the survey data now reflects that of the total population (as per the census).
-```{r cell-based7, dpi=300, out.width = '100%', fig.height = 4}
-plot_popn(survey_df,
-          xVar = "gender",
-          yVar = "ageGroup",
-          weight = "wt_cell", # weighted result
-          addLabels = TRUE,
-          title = "Weighted Population Structure"
-)
-```
-```{r cell-based7_table, echo = FALSE}
-knitr::kable(age_gender, caption = "Actual/Target Population Structure", col.names = c("Age Group", "Male", "Female"))
-```
-<br>
 <br>
 
 #### **Raking**
 Raking, also known as the Random Iterative Method (RIM) or iterative proportional fitting (IPF), refines the weight adjustment process by simultaneously aligning sample weights across multiple variables (e.g., age, gender, geographic region) to match known population margins. This method iteratively adjusts weights to ensure representativeness across all considered dimensions.
-
-Raking, like cell-based weighting, may face challenges with small or empty cells, potentially leading to unstable weights. It also involves balancing adjustments across multiple variables, which can be complex if sample sizes are small or variables are interrelated.
 <br>
 <br>
 
@@ -342,6 +319,28 @@ survey_df <- mutate(survey_df,
 ```
 <br>
 
+View the 2019 vote (`vote2019`) for a comparison with the target vote.
+```{r raking3, class.source = 'fold-hide', dpi=300, out.width = '100%', fig.height = 4}
+colours <- colour_prep(survey_df,
+                       columns = "vote2019",
+                       pal_name = "polUK")
+colours$National <- "#b6e559" # add new colours for merged SNP + PC category
+
+# View the population structure by age groups
+plot_bars(survey_df,
+          yVar = "vote2019",
+          title = "Unweighted 2019 Vote",
+          colours = colours)
+```
+```{r raking3_table, echo = FALSE}
+vote_results <- data.frame("Party" = c("Conservative", "Labour", "Lib Dems", "National", "Green", "Brexit", "Other", "Did not vote"),
+                           "%" = c("27.1%", "20.0%", "7.2%", "2.7%", "1.6%", "1.3%", "2.1%", "38.0%")
+)
+
+knitr::kable(vote_results, caption = "Target Results:", col.names = c("Party", ""))
+```
+<br>
+
 ***2. Prepare Survey Objects***<br>
 Following the same approach as the cell-based weighting preparation, create a data frame containing the target population sourced from the election data. Again, this data frame should include a column called `vote2019` and a column for frequencies (`Freq`). Then, define the survey design object.
 ```{r raking2}
@@ -369,27 +368,6 @@ design <- survey::svydesign(ids = ~1, # formula for no clusters
 ```
 <br>
 
-View the 2019 vote (`vote2019`) for a comparison with the target vote.
-```{r raking3, dpi=300, out.width = '100%', fig.height = 4}
-colours <- colour_prep(survey_df,
-                       columns = "vote2019",
-                       pal_name = "polUK")
-colours$National <- "#b6e559" # add new colours for merged SNP + PC category
-
-# View the population structure by age groups
-plot_bars(survey_df,
-          yVar = "vote2019",
-          title = "Unweighted 2019 Vote",
-          colours = colours)
-```
-```{r raking3_table, echo = FALSE}
-vote_results <- data.frame("Party" = c("Conservative", "Labour", "Lib Dems", "National", "Green", "Brexit", "Other", "Did not vote"),
-                           "%" = c("27.1%", "20.0%", "7.2%", "2.7%", "1.6%", "1.3%", "2.1%", "38.0%")
-)
-
-knitr::kable(vote_results, caption = "Target Results", col.names = c("Party", ""))
-```
-
 ***3. Weight Data***<br>
 Finally, use the [`rake()`](https://r-survey.r-forge.r-project.org/survey/html/rake.html) function from the `survey` package to perform raking and add the results to the survey.
 
@@ -404,10 +382,31 @@ rake_weighted <- survey::rake(design,
 # Extract weights from the post-stratified design
 survey_df$wt_raked <- stats::weights(rake_weighted)
 ```
+
+### {-}
+
+---
+
+#### **Comparing Weighting Results**
+After applying weights, it's beneficial to compare the weighted sample distributions against the target population metrics. This comparison can validate the effectiveness of your weighting approach, ensuring your survey results are as representative as possible:
+
+```{r cell-based7, class.source = 'fold-hide', dpi=300, out.width = '100%', fig.height = 4}
+plot_popn(survey_df,
+          xVar = "gender",
+          yVar = "ageGroup",
+          weight = "wt_cell", # weighted result
+          addLabels = TRUE,
+          title = "Weighted Population Structure"
+)
+```
+```{r cell-based7_table, echo = FALSE}
+knitr::kable(age_gender, caption = "Target Population Structure:", col.names = c("Age Group", "Male", "Female"))
+```
 <br>
 
-View both the population structure by age groups and 2019 vote by party with the weighted data.
-```{r raking5, dpi=300, out.width = '100%', fig.height = 4}
+As you can see from the population structure, both of the raked and cell-based weightings have corrected the over- and under-representation of the older and younger age groups. The population structure of the survey data now reflects that of the total population (as per the census).
+
+```{r raking5, class.source = 'fold-hide', dpi=300, out.width = '100%', fig.height = 4}
 plot_bars(survey_df,
           yVar = "vote2019",
           weight = "wt_raked", # weighted result
@@ -415,19 +414,18 @@ plot_bars(survey_df,
           colours = colours)
 ```
 ```{r raking5_table, echo = FALSE}
-knitr::kable(vote_results, caption = "Target Results", col.names = c("Party", ""))
+knitr::kable(vote_results, caption = "Target Results:", col.names = c("Party", ""))
 ```
-```{r raked6, dpi=300, out.width = '100%', fig.height = 4}
-plot_popn(survey_df,
-          xVar = "gender",
-          yVar = "ageGroup",
-          weight = "wt_raked", # weighted result
-          addLabels = TRUE,
-          title = "Weighted Population Structure"
-)
-```
-```{r raked6_table, echo = FALSE}
-knitr::kable(age_gender, caption = "Target Population Structure", col.names = c("Age Group", "Male", "Female"))
-```
+<br>
 
-#### **Comparing Weighting Results**
+The weighting has also corrected the over- and under-representation of the 2019 general election vote; in particular, the turnout.
+
+<br>
+<br>
+
+#### **Other Considerations and Limitations**
+The choice between cell-based and rake weighting hinges on data specifics and survey analysis requirements. Cell-based weighting is preferable for detailed control when comprehensive population data is available. Rake weighting suits broader alignment across multiple characteristics without delving into their intersections.
+
+Caution is necessary for subgroups with few or no respondents (e.g., no respondents in the Male 18-24 interlocked category), as this can cause weight instability. Additionally, balancing adjustments across multiple variables, can be complex if sample sizes are small or variables are interrelated. Such scenarios underscore the importance of thoughtful survey design and potentially setting quotas for response collection.
+
+By carefully selecting and applying the appropriate weighting method, you can enhance the accuracy and reliability of your survey findings, making them truly reflective of the broader population you aim to understand.
