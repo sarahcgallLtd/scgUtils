@@ -91,6 +91,7 @@ plot_likert <- function(data,
   total <- arglist$total
   NET <- arglist$NET
   order_by <- arglist$order_by
+  group <- arglist$group
 
   # Reorder resonse variables and check varLevels
   if (!is.null(varLevels)) {
@@ -134,13 +135,18 @@ plot_likert <- function(data,
   # PLOT
   # Font size
   geom_size <- base_size + 1
+  if (type == "facetted") {
+    ratio <- ratio * 2
+  }
 
   # Get plot type
   p <- switch(type,
               stacked = create_stacked_likert(prepared_data, group, addLabels, threshold,
                                               width, ncol, geom_size, logic),
-              divergent = create_divergent_likert(prepared_data),
-              facetted = create_facetted_likert(prepared_data))
+              divergent = create_divergent_likert(prepared_data, group, addLabels, threshold,
+                                                  width, ncol, geom_size, logic),
+              facetted = create_facetted_likert(prepared_data, group, addLabels, threshold,
+                                                width, geom_size, logic))
 
   # Format base plot
   p <- p +
@@ -251,7 +257,19 @@ check_likert_arguments <- function(vars,
     order_by <- NULL
   }
 
-  return(list(total = total, neutrals = neutrals, NET = NET, order_by = order_by))
+  # Check if type is facetted, group is supplied, and vars >1
+  if (type == "facetted" && !is.null(group) && length(vars) > 1) {
+    warning("`group` will be ignored because `type` is 'facetted'. Setting `group` to NULL")
+    group <- NULL
+  }
+
+  # Check if type is facetted, and NET = TRUE
+  if (type == "facetted" && isTRUE(NET)) {
+    warning("`NET` will be ignored because `type` is 'facetted'. Setting `NET` to FALSE")
+    NET <- FALSE
+  }
+
+  return(list(total = total, neutrals = neutrals, NET = NET, order_by = order_by, group = group))
 }
 
 #' Reorders Response Variables Based on Specified Levels
@@ -412,18 +430,64 @@ add_order_column <- function(data,
   return(data)
 }
 
-#' Generates a Stacked Likert Plot
+#' Create Base Likert Plot
 #'
-#' Creates a stacked Likert plot from the provided data, organizing responses into stacked bars. This function can also facet the plot based on a grouping variable and adjust the plot aesthetics according to specified parameters.
+#' @description
+#' `create_base_likert_plot` constructs the foundational elements of a Likert plot,
+#' including ordered responses and applied aesthetics for further customization into
+#' stacked, divergent, or facetted Likert plots.
 #'
-#' @param data Processed data suitable for plotting.
-#' @param group (Optional) The grouping variable used for facetting the plot.
-#' @param width Width of the bars in the plot.
-#' @param ncol The number of columns to use when facetting the plot based on the group variable. This parameter is only relevant if `logic` is set to "group_facet".
-#' @param geom_size Size parameter for geometric objects in the plot, influencing the appearance of bars and text.
-#' @param logic A character string indicating how the plot should be adjusted based on the group variable. Possible values include "group_y" for adjusting y aesthetics based on the group and "group_facet" for creating a facetted plot.
+#' @param data A processed data frame appropriate for Likert plotting.
+#' @param group An optional variable used to group data, influencing the y-axis and facet structure.
+#' @param threshold A numeric value determining the minimum percentage for label visibility on the plot.
+#' @param width The width of bars in the plot.
+#' @param logic A character string indicating the plotting logic: 'standard', 'group_facet', or 'group_y',
+#' affecting the plot's structure and labeling.
 #'
-#' @return A ggplot object representing the stacked Likert plot with optional facetting and aesthetic adjustments.
+#' @return A `ggplot2` object representing the base of a Likert plot, ready for further customization.
+#'
+#' @noRd
+create_base_likert_plot <- function(data,
+                                    group,
+                                    threshold,
+                                    width,
+                                    logic
+) {
+  # Subset data
+  plot_data <- if ("Id" %in% names(data)) data[data$Id != "NET",] else data
+
+  # Determine the variable to use based on 'logic'
+  y_var <- if (logic == "group_y") plot_data[[group]] else plot_data$Question
+
+  # Check if 'Perc_order' column exists in the data
+  y_aes <- if ("Perc_order" %in% names(plot_data)) stats::reorder(y_var, plot_data$Perc_order) else y_var
+
+  # Create base bar chart
+  base_plot <- ggplot(plot_data,
+                         aes(x = Perc,
+                             y = y_aes,
+                             fill = Response,
+                             label = ifelse(Perc > threshold, sprintf("%.0f%%", Perc), ""))
+  ) +
+    geom_bar(stat = "identity", width = width,
+             position = position_stack(reverse = TRUE)) +
+    scale_x_continuous(expand = c(0, 0),
+                       labels = percent_label())
+
+  return(base_plot)
+}
+
+#' Create Stacked Likert Plot
+#'
+#' Enhances the base Likert plot to produce a stacked visualization, aligning
+#' responses proportionally within the same axis space for direct comparison across categories.
+#'
+#' @inheritParams create_base_likert_plot
+#'
+#' Additional parameters and customization options can be added as needed.
+#'
+#' @return A `ggplot2` object representing a stacked Likert plot.
+#'
 #' @noRd
 create_stacked_likert <- function(data,
                                   group,
@@ -433,6 +497,52 @@ create_stacked_likert <- function(data,
                                   ncol,
                                   geom_size,
                                   logic
+) {
+  # Create 100% stacked bar chart
+  stacked_plot <- create_base_likert_plot(data, group, threshold, width, logic)
+
+  # Add labels
+  if (addLabels) {
+    stacked_plot <- stacked_plot +
+      geom_text(aes(colour = Response),
+                position = position_stack(vjust = .5, reverse = TRUE),
+                size = convert_sizing(geom_size))
+  }
+
+  # Add NET column
+  stacked_plot <- add_net_column(data, width, stacked_plot,
+                                 group, geom_size, logic, addLabels)
+
+  # Add facet group
+  if (logic == "group_facet") {
+    stacked_plot <- stacked_plot +
+      facet_wrap(~.data[[group]], ncol = ncol)
+  }
+
+  return(stacked_plot)
+}
+
+#' Create Divergent Likert Plot
+#'
+#' Transforms the base Likert plot into a divergent representation, emphasizing
+#' the polarity of responses by positioning them divergently from a central axis.
+#'
+#' @inheritParams create_base_likert_plot
+#'
+#' Additional parameters and customization options can be added as needed.
+#'
+#' @return A `ggplot2` object representing a divergent Likert plot.
+#'
+#' @noRd
+create_divergent_likert <- function(data,
+                                    group,
+                                    addLabels,
+                                    threshold,
+                                    width,
+                                    ncol,
+                                    geom_size,
+                                    logic
+
 ) {
   # Subset data
   plot_data <- if ("Id" %in% names(data)) data[data$Id != "NET",] else data
@@ -454,53 +564,46 @@ create_stacked_likert <- function(data,
              position = position_stack(reverse = TRUE)) +
     scale_x_continuous(expand = c(0, 0),
                        labels = percent_label())
+}
 
+#' Create Facetted Likert Plot
+#'
+#' Adapts the base Likert plot for a facetted layout, allowing for the comparison
+#' of response distributions across multiple categories or groups within the dataset.
+#'
+#' @inheritParams create_base_likert_plot
+#'
+#' Additional parameters and customization options can be added as needed.
+#'
+#' @return A `ggplot2` object representing a facetted Likert plot.
+#'
+#' @noRd
+create_facetted_likert <- function(data,
+                                   group,
+                                   addLabels,
+                                   threshold,
+                                   width,
+                                   geom_size,
+                                   logic
+
+) {
+  # Determine ncol
+  ncol <- length(unique(data$Response))
+
+  # Create facetted bar chart
+  facetted_plot <- create_base_likert_plot(data, group, threshold, width, logic) +
+    facet_wrap(.~Response, ncol = ncol)
+
+  # Add labels
   if (addLabels) {
-    stacked_plot <- stacked_plot +
-      geom_text(aes(colour = Response),
-                position = position_stack(vjust = .5, reverse = TRUE),
+    facetted_plot <- facetted_plot +
+      geom_text(aes(x = ifelse(round(Perc) >= 10, Perc + ncol, Perc + ncol-(ncol/4))),
+                colour = colour_pal("Black80"),
+                position = position_stack(vjust = 1, reverse = TRUE),
                 size = convert_sizing(geom_size))
   }
 
-  stacked_plot <- add_net_column(data, width, stacked_plot,
-                                 group, geom_size, logic, addLabels)
-
-  if (logic == "group_facet") {
-    stacked_plot <- stacked_plot +
-      facet_wrap(~.data[[group]], ncol = ncol)
-  }
-
-  return(stacked_plot)
-}
-
-#' Generates a Divergent Likert Plot
-#'
-#' Creates a divergent Likert plot from the provided data, emphasizing the
-#' divergence from a central neutral point.
-#'
-#' @param data Processed data suitable for plotting.
-#'
-#' @return A ggplot object representing the divergent Likert plot.
-#' @noRd
-create_divergent_likert <- function(data
-
-) {
-
-}
-
-#' Generates a Facetted Likert Plot
-#'
-#' Creates a facetted Likert plot from the provided data, allowing for comparison
-#' across multiple groups or categories.
-#'
-#' @param data Processed data suitable for plotting.
-#'
-#' @return A ggplot object representing the facetted Likert plot.
-#' @noRd
-create_facetted_likert <- function(data
-
-) {
-
+  return(facetted_plot)
 }
 
 #' Adds NET Column to Likert Plot

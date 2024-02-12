@@ -320,12 +320,14 @@ Likert scales are a staple in survey research, providing detailed insights into 
 
 <br>
 
-#### 100% Stacked Bar Chart
+#### {.tabset}
+
+##### 100% Stacked
 Visualising Likert scale responses with a 100% stacked bar chart allows for an intuitive comparison of agreement levels across different questions or groups.
 <br>
 <br>
 
-##### Stacked Bar Chart with One Question and One Group
+***Stacked Bar Chart with One Question and One Group***<br>
 To enhance clarity and interpretability, the `plot_likert()` function supports the optional `varLevels` argument to dictate the order of response variables. Colour customisation is achievable through the `colour_pal()` function, aiding in distinguishing between different levels of agreement or sentiment. Additionally, text colour is set based on an internal contrast test to ensure readability of labels.
 ```{r likert1, dpi=300, out.width = '100%', fig.height = 6}
 # Prepare palette with 5 colours from the divergent colour scale Blue to Green
@@ -353,7 +355,7 @@ plot_likert(survey_df,
             addLabels = TRUE, # Add % labels
             threshold = 5, # Set threshold for % that labels will be shown on plot
             order_by = "NET", # order bars by NET score
-            title = "When I speak about this party, I usually say 'we' instead of 'they'", # Add title
+            title = get_question(survey_df, "pidWeThey"), # Add title
             subtitle = "by Party Identification", # Add subtitle
             colours = colours, # Add colours
             legend = "bottom" # Move legend to bottom
@@ -362,7 +364,7 @@ plot_likert(survey_df,
 ```
 <br>
 
-##### Basic Chart with Multiple Questions
+***Basic Chart with Multiple Questions***<br>
 This approach allows for a comprehensive overview of several questions simultaneously, with the `varLevels` list controlling the response variable ordering and the inclusion of a Net Promoter Score-like metric for additional insight.
 ```{r likert2, dpi=300, out.width = '100%', fig.height = 5}
 # Prepare vars argument as list. The strings will be plotted on the y axis.
@@ -402,7 +404,7 @@ plot_likert(survey_df,
 ```
 <br>
 
-##### Grouped Likert Chart
+***Grouped Likert Chart***<br>
 Adding a grouping variable allows for the nuanced comparison of Likert scale responses across different segments of the survey population, further enriching the data's interpretative value.
 ```{r likert3, dpi=300, out.width = '100%', fig.height = 7}
 # Plot weighted data faceted by EU referendum vote
@@ -423,6 +425,82 @@ plot_likert(survey_df,
   ggplot2::geom_vline(xintercept = 50, colour = "white")
 ```
 <br>
+
+##### Divergent
+
+
+##### Facetted
+***Facetted with `group` on Y-Axis***
+```{r facet1, dpi=300, out.width = '100%', fig.height = 6}
+# Prepare palette with 5 colours from the divergent colour scale Blue to Green
+colours <- colour_pal(pal_name = "divBlueGreen",
+                      n = 5, # number of colours required
+                      assign = c("Strongly disagree", "Disagree",
+                                 "Don't know",
+                                 "Agree", "Strongly agree")
+)
+
+# Prepare varLevels as named list with 'left', 'neutral', and 'right' elements.
+# (NB these must match all columns contained within vars
+varLevels <- list(left = c("Strongly disagree", "Disagree"),
+                  neutral = c("Don't know"),
+                  right = c("Agree", "Strongly agree"))
+
+# Likert plot with custom settings (weighted data and group on the y-axis)
+plot_likert(survey_df,
+            vars = "pidWeThey",
+            group = "partyId",
+            weight = "wt",
+            varLevels = varLevels,
+            type = "facetted", # Change type of plot
+            order_by = "right", # order bars by left side
+            title = get_question(survey_df, "pidWeThey"), # Add title
+            subtitle = "by Party Identification", # Add subtitle
+            colours = colours, # Add colours
+            legend = "none" # Turn off legend
+
+)
+```
+
+***Facetted with `vars` on Y-Axis***
+```{r facet2, dpi=300, out.width = '100%', fig.height = 5}
+# Prepare vars argument as list. The strings will be plotted on the y axis.
+vars <- list(likeSunak = "Sunak",
+             likeStarmer = "Starmer",
+             likeCon = "Conservative",
+             likeLab = "Labour",
+             likeLD = "Lib Dems",
+             likeSNP = "SNP",
+             likePC = "Plaid",
+             likeBrexitParty = "Reform",
+             likeGrn = "Greens"
+)
+
+# Response level settings
+varLevels <- list(left = c("Strongly dislike", "1", "2", "3", "4"),
+                  neutral = c("5", "Don't know"),
+                  right = c("6", "7", "8", "9", "Strongly like"))
+
+# Custom colours
+colours <- colour_pal("divRedBlue", 11, c("Strongly dislike", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Strongly like"))
+colours$`Don't know` <- "grey90" # Make "Don't know" grey
+
+# Plotting multiple questions (vars are along the y-axis)
+plot_likert(survey_df,
+            vars = vars,
+            varLevels = varLevels,
+            weight = "wt",
+            type = "facetted",
+            colours = colours,
+            addLabels = TRUE,
+            ratio = 10,
+            order_by = "left", # ordering by the mean of Strongly dislike etc (left side)
+            title = "Un*favourability of Political Parties and Leaders",
+            legend = "none"
+)
+```
+
+#### {-}
 
 ### Other Plots
 Future updates to `scgUtils` will introduce other plots such as:

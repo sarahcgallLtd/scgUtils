@@ -93,6 +93,11 @@ test_that("correct errors are thrown", {
                "Invalid value for `order_by`. Choose from 'left', 'right', 'NET', or NULL.")
   expect_warning(plot_likert(df, vars, varLevels_list, order_by = "NET"),
                  "`order_by` set to 'NET' will be ignored because `NET` is FALSE. Setting `order_by` to NULL.")
+
+  expect_warning(plot_likert(df, vars = vars, group = "gender", type = "facetted", varLevels = varLevels_list),
+                 "`group` will be ignored because `type` is 'facetted'. Setting `group` to NULL")
+  expect_warning(plot_likert(df, vars = vars, type = "facetted", varLevels = varLevels_list, NET = TRUE),
+                 "`NET` will be ignored because `type` is 'facetted'. Setting `NET` to FALSE")
 })
 
 # ==============================================================#
@@ -156,4 +161,34 @@ test_that("function return correct plot for stacked bar chart", {
                                     right = c("Agree", "Strongly agree")),
                    NET = TRUE, order_by = "right", legend = "bottom")
 
+})
+
+# ==============================================================#
+# Facetted bar charts
+test_that("function return correct plot for facetted bar chart", {
+  p <- plot_likert(df, vars = vars, weight = "wt", type = "facetted",
+                   varLevels = varLevels_list,
+                   ratio = 6, colours = colours,
+                   addLabels = TRUE,
+                   order_by = "left", legend = "none")
+
+  expect_equal(p$guides$fill$nrow, NULL)
+
+  p <- plot_likert(df, vars = "pidWeThey", weight = "wt", type = "facetted",
+                   varLevels = list(left = c("Strongly disagree", "Disagree"),
+                                    neutral = "Don't know",
+                                    right = c("Agree", "Strongly agree")),
+                   addLabels = TRUE,
+                   order_by = "left", legend = "none")
+
+  expect_equal(p$coordinates$clip, "off")
+
+  p <- plot_likert(df, vars = "pidWeThey", group = "gender", weight = "wt", type = "facetted",
+                   varLevels = list(left = c("Strongly disagree", "Disagree"),
+                                    neutral = "Don't know",
+                                    right = c("Agree", "Strongly agree")),
+                   addLabels = TRUE, total = TRUE,
+                   order_by = "left", legend = "none")
+
+  expect_equal(p$coordinates$ratio, 12)
 })

@@ -406,7 +406,7 @@ knitr::kable(age_gender, caption = "Target Population Structure:", col.names = c
 
 As you can see from the population structure, both of the raked and cell-based weightings have corrected the over- and under-representation of the older and younger age groups. The population structure of the survey data now reflects that of the total population (as per the census).
 
-```{r raking5, class.source = 'fold-hide', dpi=300, out.width = '100%', fig.height = 4}
+```{r raking5, class.source = 'fold-hide', dpi=300, out.width = '100%', fig.height = 5}
 plot_bars(survey_df,
           yVar = "vote2019",
           weight = "wt_raked", # weighted result
