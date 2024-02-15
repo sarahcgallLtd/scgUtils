@@ -445,7 +445,7 @@ plot_likert(survey_df,
 <br>
 
 ***Divergent with neutrals on the right and `group` on Y-Axis***
-```{r divergent1, dpi=300, out.width = '100%', fig.height = 3}
+```{r divergent2, dpi=300, out.width = '100%', fig.height = 3}
 varLevels <- list(left = c("Strongly disagree", "Disagree"),
                              neutral = "Don't know",
                              right = c("Agree", "Strongly agree"))
