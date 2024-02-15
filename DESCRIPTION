@@ -13,6 +13,7 @@ BugReports: https://github.com/sarahcgall/scgUtils/issues
 Imports:
     dplyr,
     stats,
+    scales,
     tidyr,
     janitor,
     magrittr,

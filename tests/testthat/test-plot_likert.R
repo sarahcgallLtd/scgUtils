@@ -86,8 +86,8 @@ test_that("correct errors are thrown", {
                  "`neutrals` will be set to 'no_change' as it is only applicable for the 'divergent' type of plot.")
   expect_warning(plot_likert(df, vars, varLevels_list, type = "stacked", neutrals = "exclude"),
                  "`neutrals` will be set to 'no_change' as it is only applicable for the 'divergent' type of plot.")
-  # expect_warning(plot_likert(df, vars, varLevels_list, type = "divergent", neutrals = "right", NET = TRUE),
-  #                "`NET` will be set to FALSE because `neutrals` is set to 'right'. The function does not permit both.")
+  expect_warning(plot_likert(df, vars, varLevels_list, type = "divergent", neutrals = "right", NET = TRUE),
+                 "`NET` will be set to FALSE because `neutrals` is set to 'right'. The function does not permit both.")
 
   expect_error(plot_likert(df, vars, varLevels_list, order_by = "invalid_entry"),
                "Invalid value for `order_by`. Choose from 'left', 'right', 'NET', or NULL.")
@@ -168,8 +168,8 @@ test_that("function return correct plot for stacked bar chart", {
 test_that("function return correct plot for facetted bar chart", {
   p <- plot_likert(df, vars = vars, weight = "wt", type = "facetted",
                    varLevels = varLevels_list,
-                   ratio = 6, colours = colours,
-                   addLabels = TRUE,
+                   ratio = 10, colours = colours,
+                   addLabels = FALSE,
                    order_by = "left", legend = "none")
 
   expect_equal(p$guides$fill$nrow, NULL)
@@ -191,4 +191,40 @@ test_that("function return correct plot for facetted bar chart", {
                    order_by = "left", legend = "none")
 
   expect_equal(p$coordinates$ratio, 12)
+})
+
+# ==============================================================#
+# Divergent bar charts
+test_that("function return correct plot for divergent bar chart", {
+  # test with multiple neutrals
+  varLevels_list <- list(left = c("Strongly dislike", "1", "2", "3", "4"),
+                       neutral = c("5", "Don't know"),
+                       right = c("6", "7", "8", "9", "Strongly like"))
+
+  # logic = "standard"
+  p <- plot_likert(df, vars = vars, weight = "wt", type = "divergent",
+            varLevels = varLevels_list, NET = TRUE, addLabels = FALSE,
+            colours = colours, neutrals = "no_change", threshold = 3,
+            order_by = "left")
+
+  expect_equal(p$guides$fill$nrow, 1)
+
+  # logic = "group_y"
+  p <- plot_likert(df, vars = "pidWeThey", group = "gender", weight = "wt", type = "divergent",
+            varLevels = list(left = c("Strongly disagree", "Disagree"),
+                             neutral = "Don't know",
+                             right = c("Agree", "Strongly agree")),
+            addLabels = TRUE, NET = TRUE, total = TRUE,
+            neutrals = "no_change",
+            order_by = "left", legend = "bottom")
+
+  expect_equal(p$coordinates$clip, "off")
+
+  # logic = "group_facet"
+  p <- plot_likert(df, vars = vars, group = "gender", weight = "wt", type = "divergent",
+            varLevels = varLevels_list, NET = TRUE, addLabels = FALSE,
+            colours = colours, neutrals = "no_change", threshold = 3,
+            order_by = "left")
+
+  expect_equal(p$coordinates$ratio, 6)
 })

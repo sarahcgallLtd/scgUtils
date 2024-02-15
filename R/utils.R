@@ -355,11 +355,11 @@ coord_radar <- function(theta = "x", start = 0, direction = 1) {
 #' negative to distinguish them in a plot.
 #'
 #' @param data A data frame containing the data to be modified.
-#' @param xVar The name of the column in `data` used to check the condition.
-#' @param value The value in the `xVar` column that determines which rows are
-#'   affected. Rows with this value in `xVar` will have their `column` values
+#' @param idCol The name of the column in `data` used to check the condition.
+#' @param idVal The value in the `idCol` column that determines which rows are
+#'   affected. Rows with this value in `idCol` will have their `column` values
 #'   converted to negative.
-#' @param column The name of the column in `data` whose values will be
+#' @param percCol The name of the column in `data` whose values will be
 #'   multiplied by -1 if the condition is met.
 #'
 #' @details
@@ -371,11 +371,56 @@ coord_radar <- function(theta = "x", start = 0, direction = 1) {
 #' @return Returns the modified data frame with selected values in `column`
 #'   converted to negative based on the condition in `xVar`.
 #'
-#' @note This function is used by `plot_popn`.
+#' @note This function is used by `plot_popn` and `plot_likert`.
 #'
 #' @noRd
-convert_neg <- function(data, xVar, value, column) {
-  data[data[xVar] == value, column] <- data[data[xVar] == value, column] * -1
+convert_neg <- function(data,
+                        idCol,
+                        idVal,
+                        idNeu = NULL,
+                        percCol
+) {
+  # Convert 'left' values to negative
+  data[data[idCol] == idVal, percCol] <- data[data[idCol] == idVal, percCol] * -1
+
+  # Convert half of neutrals if not idNeu is not NULL
+  if (!is.null(idNeu)) {
+    # Get indices of neutral responses
+    neutral_indices <- which(data[[idCol]] == idNeu)
+
+    # Divide 'percCol' by 2 for neutral responses
+    data[neutral_indices, percCol] <- data[neutral_indices, percCol] / 2
+
+    # Duplicate neutral responses
+    neutral_dupes <- data[neutral_indices,]
+
+    # Make 'Perc' negative for duplicates
+    neutral_dupes[[percCol]] <- -neutral_dupes[[percCol]]
+
+    # Bind duplicates back to original data
+    data <- rbind(data, neutral_dupes)
+  }
+
+  return(data)
+}
+
+
+reverse_negatives <- function(data, factor_col, value_col) {
+  # Split the data into two subsets
+  negatives <- data[data[[value_col]] < 0, ]
+  positives <- data[data[[value_col]] >= 0, ]
+
+  # Drop unused levels for both subsets
+  negatives[[factor_col]] <- factor(negatives[[factor_col]])
+  positives[[factor_col]] <- factor(positives[[factor_col]])
+
+   # Reverse the factor levels for the negative subset
+  negatives[[factor_col]] <- factor(negatives[[factor_col]], levels = rev(levels(negatives[[factor_col]])))
+
+  # Merge the two subsets back together
+  data <- rbind(negatives, positives)
+
+  # Return the reordered data
   return(data)
 }
 
@@ -472,7 +517,7 @@ convert_colours <- function(colours) {
 #'
 #' @noRd
 convert_sizing <- function(base_size) {
-  geom_font_size = base_size / (14/5)
+  geom_font_size = base_size / (14 / 5)
   return(geom_font_size)
 }
 

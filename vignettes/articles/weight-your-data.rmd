@@ -320,7 +320,7 @@ survey_df <- mutate(survey_df,
 <br>
 
 View the 2019 vote (`vote2019`) for a comparison with the target vote.
-```{r raking3, class.source = 'fold-hide', dpi=300, out.width = '100%', fig.height = 4}
+```{r raking3, class.source = 'fold-hide', dpi=300, out.width = '100%', fig.height = 5}
 colours <- colour_prep(survey_df,
                        columns = "vote2019",
                        pal_name = "polUK")

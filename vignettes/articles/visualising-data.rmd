@@ -35,14 +35,13 @@ survey_df <- get_data("survey") %>%
   labelled::unlabelled() %>%
   process_factors()
 ```
-## {.tabset}
-
 ### Sankey
 Flow visualisation helps in understanding how different categories of respondents transition between various stages or choices. The `plot_sankey()` function is instrumental in depicting the flow of data, especially useful in understanding voting patterns or changes in preferences over time.
 <br>
 <br>
 
 ##### Preparing Data with `grp_freq()`
+
 Before visualising, prepare your data using `grp_freq()`, which aggregates frequencies necessary for the Sankey diagram.
 ```{r flow1, eval = FALSE}
 # Subset the required columns from the dataset
@@ -427,11 +426,47 @@ plot_likert(survey_df,
 <br>
 
 ##### Divergent
+***Divergent with NET and `vars` on Y-Axis***
+```{r divergent1, dpi=300, out.width = '100%', fig.height = 3}
+varLevels <- list(left = c("Strongly dislike", "1", "2", "3", "4"),
+                       neutral = c("5", "Don't know"),
+                       right = c("6", "7", "8", "9", "Strongly like"))
 
+plot_likert(survey_df,
+            vars = vars,
+            weight = "wt",
+            type = "divergent",
+            varLevels = varLevels,
+            NET = TRUE, # add NET column
+            colours = colours,
+            order_by = "NET" # order by the NET values
+)
+```
+<br>
+
+***Divergent with neutrals on the right and `group` on Y-Axis***
+```{r divergent1, dpi=300, out.width = '100%', fig.height = 3}
+varLevels <- list(left = c("Strongly disagree", "Disagree"),
+                             neutral = "Don't know",
+                             right = c("Agree", "Strongly agree"))
+
+plot_likert(survey_df,
+            vars = "pidWeThey",
+            group = "gender",
+            weight = "wt",
+            type = "divergent",
+            varLevels = varLevels,
+            addLabels = TRUE, # turn labels on
+            total = TRUE, # add totals
+            neutrals = "right", # Place neutrals on right instead
+            order_by = "left", # order by the negative/lhs values hand side
+            legend = "bottom"
+)
+```
 
 ##### Facetted
 ***Facetted with `group` on Y-Axis***
-```{r facet1, dpi=300, out.width = '100%', fig.height = 6}
+```{r facet1, dpi=300, out.width = '100%', fig.height = 3}
 # Prepare palette with 5 colours from the divergent colour scale Blue to Green
 colours <- colour_pal(pal_name = "divBlueGreen",
                       n = 5, # number of colours required
@@ -457,13 +492,13 @@ plot_likert(survey_df,
             title = get_question(survey_df, "pidWeThey"), # Add title
             subtitle = "by Party Identification", # Add subtitle
             colours = colours, # Add colours
+            ratio = 10,
             legend = "none" # Turn off legend
-
 )
 ```
 
 ***Facetted with `vars` on Y-Axis***
-```{r facet2, dpi=300, out.width = '100%', fig.height = 5}
+```{r facet2, dpi=300, out.width = '100%', fig.height = 3}
 # Prepare vars argument as list. The strings will be plotted on the y axis.
 vars <- list(likeSunak = "Sunak",
              likeStarmer = "Starmer",

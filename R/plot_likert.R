@@ -144,13 +144,15 @@ plot_likert <- function(data,
               stacked = create_stacked_likert(prepared_data, group, addLabels, threshold,
                                               width, ncol, geom_size, logic),
               divergent = create_divergent_likert(prepared_data, group, addLabels, threshold,
-                                                  width, ncol, geom_size, logic),
+                                                  width, ncol, geom_size, logic, neutrals,
+                                                  varLevels),
               facetted = create_facetted_likert(prepared_data, group, addLabels, threshold,
                                                 width, geom_size, logic))
 
   # Format base plot
   p <- p +
     scale_fill_manual(values = colours,
+                      breaks = unname(unlist(varLevels)),
                       na.translate = FALSE) +
     coord_fixed(clip = "off", ratio = ratio) +
     labs(title = title,
@@ -163,9 +165,9 @@ plot_likert <- function(data,
     theme_scg(base_size, base_font) +
     theme(legend.position = legend,
           legend.direction = if (legend %in% c("top", "bottom")) "horizontal",
-          panel.grid.major = element_blank(),
+          panel.grid.major.y = element_blank(),
           panel.grid.minor = element_blank(),
-          axis.line.y = element_blank(),
+          axis.line = element_blank(),
           axis.ticks.y = element_blank()
     )
 
@@ -175,17 +177,18 @@ plot_likert <- function(data,
       guides(fill = guide_legend(nrow = nrow))
   }
 
-  # Remove axis if NET column is included
-  if (NET) {
+  # Remove grid for divergent and facetted with labels
+  if (type == "divergent" || (type == "facetted" && addLabels == TRUE)) {
     p <- p +
-      theme(axis.line.x = element_blank())
+      theme(panel.grid.major.x = element_blank())
   }
 
   # Remove x-axis if addLabels = TRUE
   if (addLabels) {
     p <- p +
       guides(colour = "none") +
-      scale_colour_manual(values = contrast_test(colours)) +
+      scale_colour_manual(values = contrast_test(colours),
+                          breaks = unname(unlist(varLevels))) +
       theme(axis.line.x = element_blank(),
             axis.ticks.x = element_blank(),
             axis.text.x = element_blank()
@@ -258,7 +261,9 @@ check_likert_arguments <- function(vars,
   }
 
   # Check if type is facetted, group is supplied, and vars >1
-  if (type == "facetted" && !is.null(group) && length(vars) > 1) {
+  if (type == "facetted" &&
+    !is.null(group) &&
+    length(vars) > 1) {
     warning("`group` will be ignored because `type` is 'facetted'. Setting `group` to NULL")
     group <- NULL
   }
@@ -451,7 +456,9 @@ create_base_likert_plot <- function(data,
                                     group,
                                     threshold,
                                     width,
-                                    logic
+                                    logic,
+                                    equal = FALSE,
+                                    neutrals
 ) {
   # Subset data
   plot_data <- if ("Id" %in% names(data)) data[data$Id != "NET",] else data
@@ -464,17 +471,49 @@ create_base_likert_plot <- function(data,
 
   # Create base bar chart
   base_plot <- ggplot(plot_data,
-                         aes(x = Perc,
-                             y = y_aes,
-                             fill = Response,
-                             label = ifelse(Perc > threshold, sprintf("%.0f%%", Perc), ""))
+                      aes(x = Perc,
+                          y = y_aes,
+                          fill = Response)
   ) +
     geom_bar(stat = "identity", width = width,
-             position = position_stack(reverse = TRUE)) +
-    scale_x_continuous(expand = c(0, 0),
-                       labels = percent_label())
+             position = position_stack(reverse = TRUE))
 
-  return(base_plot)
+  if (equal) {
+    # Aggregate and get upper limit
+    formula <- stats::as.formula(paste0("Perc ~ ",
+                                        if (logic == "group_y") group
+                                          else if (logic == "group_facet") paste0("Question + ", group)
+                                            else "Question"))
+
+    upperLim <- stats::aggregate(formula, data = plot_data[plot_data$Perc >= 0,], sum)
+    upperLim <- max(upperLim$Perc) + 10 # (+ expand amount)
+
+    lowerLim <- stats::aggregate(formula, data = plot_data[plot_data$Perc < 0,], sum)
+    lowerLim <- min(lowerLim$Perc) - 10 # (+ expand amount)
+
+    expand <- if ("NET" %in% data$Id || neutrals == "right") 10 else 0
+
+    base_plot <- base_plot +
+      geom_vline(xintercept = 0, linewidth = 0.25, colour = colour_pal("French Grey")) +
+      geom_bar(stat = "identity", width = width,
+               position = position_stack(reverse = TRUE)) +
+      scale_x_continuous(expand = c(0, 0),
+                         breaks = scales::extended_breaks()(n = 5, c(lowerLim + 10, upperLim - 10)), # replicate breaks, excluding expand
+                         limits = c(lowerLim, upperLim + expand),
+                         labels = percent_label(absolute = TRUE))
+
+    return(list(plot = base_plot, upperLim = upperLim,
+                lowerLim = lowerLim, y = y_aes))
+
+  } else {
+    base_plot <- base_plot +
+      geom_bar(stat = "identity", width = width,
+               position = position_stack(reverse = TRUE)) +
+      scale_x_continuous(expand = c(0, 0),
+                         labels = percent_label(absolute = TRUE))
+
+    return(base_plot)
+  }
 }
 
 #' Create Stacked Likert Plot
@@ -504,14 +543,18 @@ create_stacked_likert <- function(data,
   # Add labels
   if (addLabels) {
     stacked_plot <- stacked_plot +
-      geom_text(aes(colour = Response),
+      geom_text(aes(colour = Response,
+                    label = ifelse(abs(Perc) > threshold,
+                                   sprintf("%.0f%%", abs(Perc)),
+                                   "")),
                 position = position_stack(vjust = .5, reverse = TRUE),
                 size = convert_sizing(geom_size))
   }
 
   # Add NET column
   stacked_plot <- add_net_column(data, width, stacked_plot,
-                                 group, geom_size, logic, addLabels)
+                                 group, geom_size, logic, addLabels,
+                                 upperLim = 100, lowerLim = 0, neutrals = "no_change")
 
   # Add facet group
   if (logic == "group_facet") {
@@ -541,29 +584,84 @@ create_divergent_likert <- function(data,
                                     width,
                                     ncol,
                                     geom_size,
-                                    logic
-
+                                    logic,
+                                    neutrals,
+                                    varLevels
 ) {
-  # Subset data
-  plot_data <- if ("Id" %in% names(data)) data[data$Id != "NET",] else data
+  # Check neutrals logic and subset if neutrals = "right" or "exclude"
+  plot_data <- if (neutrals != "no_change") data[data$Id != "neutral",] else data
 
-  # Determine the variable to use based on 'logic'
-  y_var <- if (logic == "group_y") plot_data[[group]] else plot_data$Question
+  # Convert Negative
+  plot_data <- convert_neg(plot_data,
+                           idCol = "Id",
+                           idVal = "left",
+                           idNeu = if (neutrals == "no_change") "neutral" else NULL,
+                           percCol = "Perc")
 
-  # Check if 'Perc_order' column exists in the data
-  y_aes <- if ("Perc_order" %in% names(plot_data)) stats::reorder(y_var, plot_data$Perc_order) else y_var
+  # Amend order of factors
+  plot_data <- reverse_negatives(plot_data, "Response", "Perc")
 
-  # Create 100% stacked bar chart
-  stacked_plot <- ggplot(plot_data,
-                         aes(x = Perc,
-                             y = y_aes,
-                             fill = Response,
-                             label = ifelse(Perc > threshold, sprintf("%.0f%%", Perc), ""))
-  ) +
-    geom_bar(stat = "identity", width = width,
-             position = position_stack(reverse = TRUE)) +
-    scale_x_continuous(expand = c(0, 0),
-                       labels = percent_label())
+  # Add labels
+  if (addLabels) {
+    # Create label column
+    plot_data$Label <- abs(plot_data$Perc)
+
+    if (neutrals == "no_change") {
+      midVar <- unname(unlist(varLevels[names(varLevels) == "neutral"])[length(varLevels$neutral)])
+
+      # Create df for Neutrals
+      neutral_df <- plot_data[!is.na(plot_data$Response) & plot_data$Response == midVar,]
+      neutral_df$Perc <- 0
+      neutral_df$Label <- neutral_df$Label * 2
+      neutral_df <- unique(neutral_df)
+
+      plot_data$Label[plot_data$Response == midVar] <- -1 # dummy -ve label will ignore <0
+
+    }
+
+    # Subset data
+    attributes <- create_base_likert_plot(plot_data, group, threshold, width, logic,
+                                          equal = TRUE, neutrals)
+    divergent_plot <- attributes$plot +
+      geom_text(aes(colour = Response,
+                    label = ifelse(Label > threshold,
+                                   sprintf("%.0f%%", Label),
+                                   "")),
+                position = position_stack(vjust = .5, reverse = TRUE),
+                size = convert_sizing(geom_size))
+
+    if (neutrals == "no_change") {
+      divergent_plot <- divergent_plot +
+        geom_text(data = neutral_df,
+                  aes(x = Perc,
+                      y = if (logic == "group_y") neutral_df[[group]] else neutral_df$Question,
+                      colour = Response,
+                      label = sprintf("%.0f%%", Label)),
+                  position = position_stack(vjust = .5, reverse = TRUE),
+                  size = convert_sizing(geom_size))
+    }
+
+  } else {
+    # Create plot
+    attributes <- create_base_likert_plot(plot_data, group, threshold, width, logic,
+                                          equal = TRUE, neutrals)
+    divergent_plot <- attributes$plot
+  }
+
+  # Add NET column
+  divergent_plot <- add_net_column(data, width, divergent_plot,
+                                   group, geom_size, logic, addLabels,
+                                   upperLim = attributes$upperLim,
+                                   lowerLim = attributes$lowerLim,
+                                   neutrals, type = "divergent")
+
+  # Add facet group
+  if (logic == "group_facet") {
+    divergent_plot <- divergent_plot +
+      facet_wrap(~.data[[group]], ncol = ncol)
+  }
+
+  return(divergent_plot)
 }
 
 #' Create Facetted Likert Plot
@@ -585,19 +683,21 @@ create_facetted_likert <- function(data,
                                    width,
                                    geom_size,
                                    logic
-
 ) {
   # Determine ncol
   ncol <- length(unique(data$Response))
 
   # Create facetted bar chart
   facetted_plot <- create_base_likert_plot(data, group, threshold, width, logic) +
-    facet_wrap(.~Response, ncol = ncol)
+    facet_wrap(. ~ Response, ncol = ncol)
 
   # Add labels
   if (addLabels) {
     facetted_plot <- facetted_plot +
-      geom_text(aes(x = ifelse(round(Perc) >= 10, Perc + ncol, Perc + ncol-(ncol/4))),
+      geom_text(aes(x = ifelse(round(Perc) >= 10, Perc + ncol, Perc + ncol - (ncol / 4)),
+                    label = ifelse(abs(Perc) > threshold,
+                                   sprintf("%.0f%%", abs(Perc)),
+                                   "")),
                 colour = colour_pal("Black80"),
                 position = position_stack(vjust = 1, reverse = TRUE),
                 size = convert_sizing(geom_size))
@@ -627,17 +727,35 @@ add_net_column <- function(data,
                            group,
                            geom_size,
                            logic,
-                           addLabels
+                           addLabels,
+                           upperLim,
+                           lowerLim,
+                           neutrals = NULL,
+                           type = NULL
 ) {
-  if ("NET" %in% data$Id) {
+  if ("NET" %in% data$Id || neutrals == "right") {
     # font size
     size <- if (logic == "group_facet") convert_sizing(geom_size - 2.5) else convert_sizing(geom_size)
 
     # Subset NET data
-    net_data <- data[data$Id == "NET",]
+    if ("NET" %in% data$Id) {
+      net_data <- data[data$Id == "NET",]
+      net_data$Label <- ifelse(net_data$Perc >= 0,
+                               paste0("+", round(net_data$Perc)),
+                               as.character(round(net_data$Perc)))
+      heading <- "NET"
+    } else {
+      net_data <- data[data$Id == "neutral",]
+      net_data$Response <- "Neutrals"
+      net_data <- stats::aggregate(stats::as.formula(paste0("Perc ~ Response + ",
+                                                     if (logic == "group_y") group else "Question")),
+                            data = net_data, sum)
+      net_data$Label <- sprintf("%.0f%%", net_data$Perc)
+      heading <- "Neurtal"
+    }
 
     # Determine the variable to use based on 'logic'
-    y_aes <- if (logic == "group_y")net_data[[group]] else net_data$Question
+    y_aes <- if (logic == "group_y") net_data[[group]] else net_data$Question
     height <- if (logic == "group_y") width / 2 - 0.1 else width
     # TODO unsure why y = group vs y = Question affects the height
 
@@ -647,43 +765,29 @@ add_net_column <- function(data,
     # Add column using tiles and text
     plot <- plot +
       geom_tile(data = net_data,
-                aes(x = 105,
+                aes(x = upperLim + 5,
                     y = y_aes,
                     width = 5,
                     height = width),
                 fill = colour_pal("Regent Grey"),
                 alpha = 0.3) +
       geom_text(data = net_data,
-                aes(x = 105,
+                aes(x = upperLim + 5,
                     y = y_aes,
-                    label = ifelse(net_data$Perc >= 0,
-                                   paste0("+", round(net_data$Perc)),
-                                   as.character(round(net_data$Perc)))),
+                    label = Label),
                 colour = colour_pal("Black80"),
                 size = size,
                 hjust = 0.5) +
 
       # Add the "NET" label with a consistent nudge upwards
-      geom_text(aes(x = 105,
+      geom_text(aes(x = upperLim + 5,
                     y = net_label_y_pos,
-                    label = "NET"),
+                    label = heading),
                 inherit.aes = FALSE, # Prevent inheriting aesthetics
                 colour = colour_pal("Regent Grey"),
                 size = size,
                 nudge_y = if (!is.null(group)) 0.5 else 0,
                 hjust = 0.5)
-
-    if (addLabels == FALSE) {
-      plot <- plot +
-        # Manually set axis
-        annotate("segment",
-                 x = 0,
-                 xend = 100,
-                 y = 0.4,
-                 yend = 0.4,
-                 colour = colour_pal("French Grey"),
-                 linewidth = 0.25)
-    }
 
   }
   return(plot)

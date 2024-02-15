@@ -77,7 +77,7 @@ test_that("data frame values converted to negative", {
   tmp <- data.frame(gender = c("Male", "Female"),
                     Perc = c(1.1, 2.2))
 
-  x <- convert_neg(tmp, "gender", "Male", "Perc")
+  x <- convert_neg(tmp, "gender", "Male", percCol="Perc")
   expect_equal(x[1, 2], -1.1) # Male
   expect_equal(x[2, 2], 2.2) # Female
 })

@@ -192,11 +192,11 @@ get_legend_labels <- function(data,
   # If colours is not a named vector, name it using the partyCol values
   if (is.null(names(colours))) {
     # Sort the data by partyCol to match the order of colours if it is an unnamed vector
-    data <- data[order(data[[partyCol]]), ]
+    data <- data[order(data[[partyCol]]),]
     names(colours) <- data[[partyCol]]
   } else {
     # Ensure the data is ordered according to the named colours vector
-    data <- data[match(names(colours), data[[partyCol]]), ]
+    data <- data[match(names(colours), data[[partyCol]]),]
   }
 
   # Check if the partyCol is a factor and its levels match the colours
@@ -274,11 +274,11 @@ create_parliament_plot <- function(plot_df,
     labs(title = title,
          subtitle = subtitle) +
     theme_void() +
-    coord_fixed(ratio = 1) +
+    coord_fixed(ratio = 1, clip = "off") +
     theme(
       plot.margin = margin(0.5, 0.5,
-                         0.5, 0.5,
-                         "cm"),
+                           0.5, 0.5,
+                           "cm"),
       plot.title = element_text(face = "bold",
                                 colour = colour_pal("Black96"),
                                 size = 12,
@@ -358,13 +358,23 @@ add_percentage_plot <- function(plot,
     geom_text(data = data,
               aes(x = cumulative_percent,
                   y = gap + (height / 1.8),
-                  label = sprintf("%.1f%%", Percentage)),
+                  label = sprintf("%.1f", Percentage)),
               vjust = -0.5,
               colour = text.col,
               size = convert_sizing(10)) +
 
     scale_fill_manual(values = colours) +
-    guides(fill = "none")
+    guides(fill = "none") +
+
+    # Add % sign
+    annotate("text",
+             x = -rMax,
+             y = gap,
+             hjust = 2,
+             label = "%",
+             fontface = "bold",
+             colour = text.col,
+             size = convert_sizing(10+1))
 
   return(p)
 }

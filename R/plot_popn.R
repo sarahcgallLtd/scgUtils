@@ -292,9 +292,9 @@ create_popn_plot <- function(prepared_data,
   colour <- attributes$colour
 
   # Prepare data: Make left side data negative
-  total <- convert_neg(prepared_data$total, xVar, attributes$leftLevel, "Perc")
+  total <- convert_neg(prepared_data$total, xVar, attributes$leftLevel, percCol = "Perc")
   if (!is.null(group)) {
-    grouped <- convert_neg(prepared_data$grouped, xVar, attributes$leftLevel, "Perc")
+    grouped <- convert_neg(prepared_data$grouped, xVar, attributes$leftLevel, percCol = "Perc")
   }
 
   # ==============================================================#
