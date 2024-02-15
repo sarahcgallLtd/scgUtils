@@ -109,29 +109,9 @@
 capabilities of the <code>scgUtils</code> package, offering tools for
 diverse data presentations ranging from personality profiles to
 demographic and flow analyses. <br></p>
-<div class="section level2 tabset">
-<h2 class="tabset" id="section"></h2>
-
-
-
-
-
-
-
-
-<ul class="nav nav-tabs" id="section" role="tablist">
-<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#sankey" id="sankey-tab" type="button" role="tab" aria-controls="sankey" aria-selected="true" class="active nav-link">Sankey</button></li>
-<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#parliament" id="parliament-tab" type="button" role="tab" aria-controls="parliament" aria-selected="false" class="nav-link">Parliament</button></li>
-<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#population" id="population-tab" type="button" role="tab" aria-controls="population" aria-selected="false" class="nav-link">Population</button></li>
-<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#personality" id="personality-tab" type="button" role="tab" aria-controls="personality" aria-selected="false" class="nav-link">Personality</button></li>
-<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#binary" id="binary-tab" type="button" role="tab" aria-controls="binary" aria-selected="false" class="nav-link">Binary</button></li>
-<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#waffle" id="waffle-tab" type="button" role="tab" aria-controls="waffle" aria-selected="false" class="nav-link">Waffle</button></li>
-<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#likert-scales" id="likert-scales-tab" type="button" role="tab" aria-controls="likert-scales" aria-selected="false" class="nav-link">Likert Scales</button></li>
-<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#other-plots" id="other-plots-tab" type="button" role="tab" aria-controls="other-plots" aria-selected="false" class="nav-link">Other Plots</button></li>
-</ul>
-<div class="tab-content">
-<div class="active  tab-pane" id="sankey" role="tabpanel" aria-labelledby="sankey-tab">
-
+<div class="section level3">
+<h3 id="sankey">Sankey<a class="anchor" aria-label="anchor" href="#sankey"></a>
+</h3>
 <p>Flow visualisation helps in understanding how different categories of
 respondents transition between various stages or choices. The
 <code><a href="../reference/plot_sankey.html">plot_sankey()</a></code> function is instrumental in depicting the
@@ -234,8 +214,9 @@ flows.</p>
 <p><br></p>
 </div>
 </div>
-<div class="tab-pane" id="parliament" role="tabpanel" aria-labelledby="parliament-tab">
-
+<div class="section level3">
+<h3 id="parliament">Parliament<a class="anchor" aria-label="anchor" href="#parliament"></a>
+</h3>
 <p>Understanding the distribution of parliamentary seats among political
 parties is crucial for grasping the political landscape. The
 <code><a href="../reference/plot_parliament.html">plot_parliament()</a></code> function in <code>scgUtils</code> is
@@ -296,8 +277,9 @@ inclusion of a majority line further enhances the plot by delineating
 the threshold needed for a majority. <br><br></p>
 </div>
 </div>
-<div class="tab-pane" id="population" role="tabpanel" aria-labelledby="population-tab">
-
+<div class="section level3">
+<h3 id="population">Population<a class="anchor" aria-label="anchor" href="#population"></a>
+</h3>
 <p>Understanding demographic distribution is vital in survey analysis.
 <code><a href="../reference/plot_popn.html">plot_popn()</a></code> creates visual representations of population
 profiles. <br><br></p>
@@ -338,8 +320,9 @@ differences or similarities within subgroups.</p>
 <p><img src="visualising-data_files/figure-html/popn_plot2-1.png" width="100%"><br></p>
 </div>
 </div>
-<div class="tab-pane" id="personality" role="tabpanel" aria-labelledby="personality-tab">
-
+<div class="section level3">
+<h3 id="personality">Personality<a class="anchor" aria-label="anchor" href="#personality"></a>
+</h3>
 <p>The <code><a href="../reference/plot_bigfive.html">plot_bigfive()</a></code> function returns a <a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">ggplot2</a>
 chart to help visualise the personality profile of the survey data. This
 radar chart is primarily to visualise the Big Five personality traits
@@ -363,8 +346,9 @@ the survey.</p>
 <span>             weight <span class="op">=</span> <span class="st">"Weight"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualising-data_files/figure-html/plot_bigfive2-1.png" width="100%"><br></p>
 </div>
-<div class="tab-pane" id="binary" role="tabpanel" aria-labelledby="binary-tab">
-
+<div class="section level3">
+<h3 id="binary">Binary<a class="anchor" aria-label="anchor" href="#binary"></a>
+</h3>
 <p>The <code><a href="../reference/plot_binary.html">plot_binary()</a></code> function visualises binary survey
 responses (e.g., “Yes” vs “No”). It is particularly effective for
 comparative analysis. This function utilises the
@@ -407,8 +391,9 @@ survey.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualising-data_files/figure-html/plot_binary2-1.png" width="100%"><br></p>
 </div>
-<div class="tab-pane" id="waffle" role="tabpanel" aria-labelledby="waffle-tab">
-
+<div class="section level3">
+<h3 id="waffle">Waffle<a class="anchor" aria-label="anchor" href="#waffle"></a>
+</h3>
 <p>Waffle plots provide a unique and compelling way to visualise
 categorical data, making them ideal for representing proportions or
 percentages in datasets, including survey responses. The
@@ -455,8 +440,9 @@ order. This flexibility is invaluable for aligning the visual aesthetic
 with specific data narratives or brand guidelines. <br><br></p>
 </div>
 </div>
-<div class="tab-pane" id="likert-scales" role="tabpanel" aria-labelledby="likert-scales-tab">
-
+<div class="section level3">
+<h3 id="likert-scales">Likert Scales<a class="anchor" aria-label="anchor" href="#likert-scales"></a>
+</h3>
 <p>Likert scales are a staple in survey research, providing detailed
 insights into respondents’ attitudes and opinions. The
 <code><a href="../reference/plot_likert.html">plot_likert()</a></code> function within the <code>scgUtils</code>
@@ -470,10 +456,18 @@ three distinct visualisation styles:</p>
 </ul>
 <p><br></p>
 <div class="section level4 tabset">
-<h4 class="tabset" id="section-1"></h4>
-<div class="section level5">
-<h5 id="stacked">100% Stacked<a class="anchor" aria-label="anchor" href="#stacked"></a>
-</h5>
+<h4 class="tabset" id="section"></h4>
+
+
+
+<ul class="nav nav-tabs" id="section" role="tablist">
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#stacked" id="stacked-tab" type="button" role="tab" aria-controls="stacked" aria-selected="true" class="active nav-link">100% Stacked</button></li>
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#divergent" id="divergent-tab" type="button" role="tab" aria-controls="divergent" aria-selected="false" class="nav-link">Divergent</button></li>
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#facetted" id="facetted-tab" type="button" role="tab" aria-controls="facetted" aria-selected="false" class="nav-link">Facetted</button></li>
+</ul>
+<div class="tab-content">
+<div class="active  tab-pane" id="stacked" role="tabpanel" aria-labelledby="stacked-tab">
+
 <p>Visualising Likert scale responses with a 100% stacked bar chart
 allows for an intuitive comparison of agreement levels across different
 questions or groups. <br><br></p>
@@ -583,16 +577,51 @@ the data’s interpretative value.</p>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">50</span>, colour <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualising-data_files/figure-html/likert3-1.png" width="100%"><br></p>
 </div>
-<div class="section level5">
-<h5 id="divergent">Divergent<a class="anchor" aria-label="anchor" href="#divergent"></a>
-</h5>
-</div>
-<div class="section level5">
-<h5 id="facetted">Facetted<a class="anchor" aria-label="anchor" href="#facetted"></a>
-</h5>
-<p><strong><em>Facetted with <code>group</code> on
+<div class="tab-pane" id="divergent" role="tabpanel" aria-labelledby="divergent-tab">
+
+<p><strong><em>Divergent with NET and <code>vars</code> on
 Y-Axis</em></strong></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">varLevels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>left <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Strongly dislike"</span>, <span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span><span class="op">)</span>,</span>
+<span>                       neutral <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"5"</span>, <span class="st">"Don't know"</span><span class="op">)</span>,</span>
+<span>                       right <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"8"</span>, <span class="st">"9"</span>, <span class="st">"Strongly like"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_likert.html">plot_likert</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
+<span>            vars <span class="op">=</span> <span class="va">vars</span>,</span>
+<span>            weight <span class="op">=</span> <span class="st">"wt"</span>,</span>
+<span>            type <span class="op">=</span> <span class="st">"divergent"</span>,</span>
+<span>            varLevels <span class="op">=</span> <span class="va">varLevels</span>,</span>
+<span>            NET <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># add NET column</span></span>
+<span>            colours <span class="op">=</span> <span class="va">colours</span>,</span>
+<span>            order_by <span class="op">=</span> <span class="st">"NET"</span> <span class="co"># order by the NET values</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="visualising-data_files/figure-html/divergent1-1.png" width="100%"><br></p>
+<p><strong><em>Divergent with neutrals on the right and
+<code>group</code> on Y-Axis</em></strong></p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">varLevels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>left <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Strongly disagree"</span>, <span class="st">"Disagree"</span><span class="op">)</span>,</span>
+<span>                             neutral <span class="op">=</span> <span class="st">"Don't know"</span>,</span>
+<span>                             right <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agree"</span>, <span class="st">"Strongly agree"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_likert.html">plot_likert</a></span><span class="op">(</span><span class="va">survey_df</span>,</span>
+<span>            vars <span class="op">=</span> <span class="st">"pidWeThey"</span>,</span>
+<span>            group <span class="op">=</span> <span class="st">"gender"</span>,</span>
+<span>            weight <span class="op">=</span> <span class="st">"wt"</span>,</span>
+<span>            type <span class="op">=</span> <span class="st">"divergent"</span>,</span>
+<span>            varLevels <span class="op">=</span> <span class="va">varLevels</span>,</span>
+<span>            addLabels <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># turn labels on</span></span>
+<span>            total <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># add totals</span></span>
+<span>            neutrals <span class="op">=</span> <span class="st">"right"</span>, <span class="co"># Place neutrals on right instead</span></span>
+<span>            order_by <span class="op">=</span> <span class="st">"left"</span>, <span class="co"># order by the negative/lhs values hand side</span></span>
+<span>            legend <span class="op">=</span> <span class="st">"bottom"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="visualising-data_files/figure-html/divergent2-1.png" width="100%"></p>
+</div>
+<div class="tab-pane" id="facetted" role="tabpanel" aria-labelledby="facetted-tab">
+
+<p><strong><em>Facetted with <code>group</code> on
+Y-Axis</em></strong></p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Prepare palette with 5 colours from the divergent colour scale Blue to Green</span></span>
 <span><span class="va">colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/colour_pal.html">colour_pal</a></span><span class="op">(</span>pal_name <span class="op">=</span> <span class="st">"divBlueGreen"</span>,</span>
 <span>                      n <span class="op">=</span> <span class="fl">5</span>, <span class="co"># number of colours required</span></span>
@@ -618,13 +647,13 @@ Y-Axis</em></strong></p>
 <span>            title <span class="op">=</span> <span class="fu"><a href="../reference/get_question.html">get_question</a></span><span class="op">(</span><span class="va">survey_df</span>, <span class="st">"pidWeThey"</span><span class="op">)</span>, <span class="co"># Add title</span></span>
 <span>            subtitle <span class="op">=</span> <span class="st">"by Party Identification"</span>, <span class="co"># Add subtitle</span></span>
 <span>            colours <span class="op">=</span> <span class="va">colours</span>, <span class="co"># Add colours</span></span>
+<span>            ratio <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>            legend <span class="op">=</span> <span class="st">"none"</span> <span class="co"># Turn off legend</span></span>
-<span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualising-data_files/figure-html/facet1-1.png" width="100%"></p>
 <p><strong><em>Facetted with <code>vars</code> on
 Y-Axis</em></strong></p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Prepare vars argument as list. The strings will be plotted on the y axis.</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>likeSunak <span class="op">=</span> <span class="st">"Sunak"</span>,</span>
 <span>             likeStarmer <span class="op">=</span> <span class="st">"Starmer"</span>,</span>
@@ -662,12 +691,14 @@ Y-Axis</em></strong></p>
 <p><img src="visualising-data_files/figure-html/facet2-1.png" width="100%"></p>
 </div>
 </div>
+</div>
 <div class="section level4 unnumbered">
-<h4 class="unnumbered" id="section-2"></h4>
+<h4 class="unnumbered" id="section-1"></h4>
 </div>
 </div>
-<div class="tab-pane" id="other-plots" role="tabpanel" aria-labelledby="other-plots-tab">
-
+<div class="section level3">
+<h3 id="other-plots">Other Plots<a class="anchor" aria-label="anchor" href="#other-plots"></a>
+</h3>
 <p>Future updates to <code>scgUtils</code> will introduce other plots
 such as:</p>
 <ul>
@@ -687,8 +718,6 @@ numeric multivariate data.</li>
 <code>plot_mekko()</code>to represent categorical data with multiple
 subcategories.</li>
 </ul>
-</div>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
