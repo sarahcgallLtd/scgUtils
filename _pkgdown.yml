@@ -1,4 +1,4 @@
-url: https://sarahcgall.github.io/scgUtils/
+url: https://docs.sarahcgall.co.uk/scgUtils/
 
 template:
   package: tidytemplate
@@ -9,7 +9,7 @@ development:
 
 authors:
   Sarah Gall:
-    href: https://sarahcgall.co.uk/
+    href: https://www.sarahcgall.co.uk/
 
 reference:
 - title: Data
