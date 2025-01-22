@@ -1,15 +1,14 @@
-pandoc: 2.19.2
-pkgdown: 2.0.7
+pandoc: 3.1.11
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  creating-colour-palettes: creating-colour-palettes.html
-  crosstabs: crosstabs.html
-  uploading-data: uploading-data.html
-  using-survey-data: using-survey-data.html
-  visualising-data: visualising-data.html
-  weight-your-data: weight-your-data.html
-last_built: 2024-02-15T21:05Z
+  articles/creating-colour-palettes: creating-colour-palettes.html
+  articles/crosstabs: crosstabs.html
+  articles/uploading-data: uploading-data.html
+  articles/using-survey-data: using-survey-data.html
+  articles/visualising-data: visualising-data.html
+  articles/weight-your-data: weight-your-data.html
+last_built: 2025-01-22T09:06Z
 urls:
-  reference: https://sarahcgall.github.io/scgUtils/reference
-  article: https://sarahcgall.github.io/scgUtils/articles
-
+  reference: https://docs.sarahcgall.co.uk/scgUtils/reference
+  article: https://docs.sarahcgall.co.uk/scgUtils/articles
