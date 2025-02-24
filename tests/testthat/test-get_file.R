@@ -61,7 +61,7 @@ test_that("return a csv file from web", {
   # Skip test if running in production
   skip_if(Sys.getenv("TEST_ENV") == "CI",
           "Skipping this test in CI environment due to download required")
-  csv_df <- get_file("https://raw.githubusercontent.com/sarahcgall/scgUtils/master/inst/extdata/survey.csv", "web")
+  csv_df <- get_file("https://raw.githubusercontent.com/sarahcgallLtd/scgUtils/master/inst/extdata/survey.csv", "web")
   expect_length(csv_df, 65)
   expect_equal(class(csv_df$turnoutUKGeneral), "character")
 })
