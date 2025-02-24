@@ -32,6 +32,6 @@ test_that("function returns correct plot", {
 
   expect_equal(plot$coordinates$ratio, 1)
   expect_equal(plot$labels$title, "2019 UK General Election")
-  expect_equal(plot$guides$fill, "none")
+  expect_equal(plot$guides$guides$fill, "none")
 
 })

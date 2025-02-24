@@ -107,7 +107,7 @@ test_that("function return correct plot for stacked bar chart", {
   p <- plot_likert(df, vars, weight = "wt", varLevels = varLevels_list,
                    NET = TRUE, order_by = "left", legend = "bottom")
 
-  expect_equal(p$guides$fill$nrow, 1)
+  expect_equal(p$guides$guides$fill$params$nrow, 1)
   expect_equal(p$coordinates$clip, "off")
   expect_equal(p$coordinates$ratio, 6)
 
@@ -207,7 +207,7 @@ test_that("function return correct plot for divergent bar chart", {
             colours = colours, neutrals = "no_change", threshold = 3,
             order_by = "left")
 
-  expect_equal(p$guides$fill$nrow, 1)
+  expect_equal(p$guides$guides$fill$params$nrow, 1)
 
   # logic = "group_y"
   p <- plot_likert(df, vars = "pidWeThey", group = "gender", weight = "wt", type = "divergent",
