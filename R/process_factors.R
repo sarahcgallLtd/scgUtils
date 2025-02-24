@@ -67,7 +67,12 @@ process_factors <- function(data
 get_factor_labels <- function(data) {
   # Extract "label" attributes for factor columns
   factor_labels <- vapply(data, function(column) {
-    if (is.factor(column)) attr(column, "label") else ""
+    if (is.factor(column)) {
+      label <- attr(column, "label")
+      if (!is.null(label)) label else ""
+    } else {
+      ""
+    }
   }, FUN.VALUE = character(1))
 
   # Filter out the empty strings and return
