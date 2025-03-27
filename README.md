@@ -1,9 +1,9 @@
-scgUtils <a href="https://sarahcgall.github.io/scgUtils/"><img src="man/figures/logo.png" align="right" height="138" alt="" /></a>
+scgUtils <a href="https://sarahcgallLtd.github.io/scgUtils/"><img src="man/figures/logo.png" align="right" height="138" alt="" /></a>
 ================
 <!-- badges: start -->
 [![Release](https://img.shields.io/badge/Release-development%20version%200&#46;0&#46;1-1c75bc)](https://github.com/sarahcgallLtd/scgUtils)
 [![R-CMD-check](https://github.com/sarahcgallLtd/scgUtils/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sarahcgallLtd/scgUtils/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/sarahcgall/scgUtils/graph/badge.svg?token=SG99DJ56I4)](https://codecov.io/gh/sarahcgall/scgUtils)
+[![codecov](https://codecov.io/gh/sarahcgallLtd/scgUtils/graph/badge.svg?token=SG99DJ56I4)](https://codecov.io/gh/sarahcgallLtd/scgUtils)
 <!-- badges: end -->
 
 ## Overview
