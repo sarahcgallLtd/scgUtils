@@ -146,24 +146,21 @@ preprocess_file_type <- function(file_path,
   # ==============================================================#
   # .csv
   if (file_type == "csv") {
-    # Detect the delimiter
-    delim <- detect_delimiter(file_path)
+    data <- vroom::vroom(
+      file_path,
+      delim = NULL,                                                 # Automatically detect the delimiter
+      skip = row_no,                                                # Skip the specified number of rows
+      col_types = vroom::cols(.default = vroom::col_character()),   # Read all columns as character
+      show_col_types = FALSE                                        # Suppress column type messages
+    )
 
-    # Read csv file based on the detected delimiter
-    if (delim == "\t") {
-      data <- readr::read_tsv(file_path,
-                              skip = row_no,
-                              show_col_types = FALSE)
-    } else if (delim == ",") {
-      data <- readr::read_csv(file_path,
-                              skip = row_no,
-                              show_col_types = FALSE)
-    } else {
-      data <- readr::read_delim(file_path,
-                                delim = delim,
-                                skip = row_no,
-                                show_col_types = FALSE)
+    # Optionally check for parsing issues
+    prob <- vroom::problems(data)
+    if (nrow(prob) > 0) {
+      message("There were parsing issues, see problems(data)")
+      print(prob)
     }
+
     # Remove special characters
     data <- dplyr::mutate(data,
                           dplyr::across(
@@ -196,16 +193,4 @@ preprocess_file_type <- function(file_path,
   }
   # ==============================================================#
   return(data)
-}
-
-# Function to detect delimiter
-detect_delimiter <- function(file_path) {
-  line <- readLines(file_path, n = 1)
-  if (grepl("\t", line)) {
-    return("\t")
-  } else if (grepl(";", line)) {
-    return(";")
-  } else {
-    return(",")
-  }
 }
