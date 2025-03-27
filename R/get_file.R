@@ -155,8 +155,10 @@ preprocess_file_type <- function(file_path,
       show_col_types = FALSE                                        # Suppress column type messages
     )
 
-    # Automatically detect and convert column types
-    data <- readr::type_convert(data)
+    # Automatically detect and convert column types (silently)
+    invisible(utils::capture.output({
+      data <- suppressMessages(readr::type_convert(data))
+    }, type = "output"))
 
     # Remove special characters
     data <- dplyr::mutate(data,
