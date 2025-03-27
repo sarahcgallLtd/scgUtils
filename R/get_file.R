@@ -99,7 +99,7 @@ authenticate_source <- function(file_path,
     # ==============================================================#
     # GOOGLE DRIVE:
     # TODO: authentication unsupported by Google for "less secure apps". Need to work out solution.
-  # } else if (source == "googledrive") {
+    # } else if (source == "googledrive") {
     # # Authenticate with Google
     # googledrive::drive_auth()
     # # Get file
@@ -111,7 +111,9 @@ authenticate_source <- function(file_path,
   } else if (source == "web") {
     temp_file <- tempfile()
     # Download file
-    utils::download.file(file_path, destfile = temp_file, mode = "wb")
+    suppressWarnings(suppressMessages(
+      utils::download.file(file_path, destfile = temp_file, mode = "wb", quiet = TRUE)
+    ))
     file_path <- temp_file
     # ==============================================================#
   }
