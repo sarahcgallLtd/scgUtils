@@ -146,10 +146,24 @@ preprocess_file_type <- function(file_path,
   # ==============================================================#
   # .csv
   if (file_type == "csv") {
-    # Read csv
-    data <- readr::read_csv(file_path,
-                            skip = row_no,
-                            show_col_types = FALSE)
+    # Detect the delimiter
+    delim <- detect_delimiter(file_path)
+
+    # Read csv file based on the detected delimiter
+    if (delim == "\t") {
+      data <- readr::read_tsv(file_path,
+                              skip = row_no,
+                              show_col_types = FALSE)
+    } else if (delim == ",") {
+      data <- readr::read_csv(file_path,
+                              skip = row_no,
+                              show_col_types = FALSE)
+    } else {
+      data <- readr::read_delim(file_path,
+                                delim = delim,
+                                skip = row_no,
+                                show_col_types = FALSE)
+    }
     # Remove special characters
     data <- dplyr::mutate(data,
                           dplyr::across(
@@ -182,4 +196,16 @@ preprocess_file_type <- function(file_path,
   }
   # ==============================================================#
   return(data)
+}
+
+# Function to detect delimiter
+detect_delimiter <- function(file_path) {
+  line <- readLines(file_path, n = 1)
+  if (grepl("\t", line)) {
+    return("\t")
+  } else if (grepl(";", line)) {
+    return(";")
+  } else {
+    return(",")
+  }
 }
