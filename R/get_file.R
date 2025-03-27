@@ -146,6 +146,7 @@ preprocess_file_type <- function(file_path,
   # ==============================================================#
   # .csv
   if (file_type == "csv") {
+    # Read csv file
     data <- vroom::vroom(
       file_path,
       delim = NULL,                                                 # Automatically detect the delimiter
@@ -154,12 +155,8 @@ preprocess_file_type <- function(file_path,
       show_col_types = FALSE                                        # Suppress column type messages
     )
 
-    # Optionally check for parsing issues
-    prob <- vroom::problems(data)
-    if (nrow(prob) > 0) {
-      message("There were parsing issues, see problems(data)")
-      print(prob)
-    }
+    # Automatically detect and convert column types
+    data <- readr::type_convert(data)
 
     # Remove special characters
     data <- dplyr::mutate(data,
