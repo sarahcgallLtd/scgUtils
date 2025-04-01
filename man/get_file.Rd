@@ -8,7 +8,8 @@ get_file(
   file_path,
   source = c("local", "onedrive", "web"),
   row_no = 0,
-  sheet_no = 1
+  sheet_no = 1,
+  file_name = NULL
 )
 }
 \arguments{
@@ -23,17 +24,24 @@ for CSV and Excel files (default is 0).}
 \item{sheet_no}{The sheet number to read from Excel files (XLSX or XLS), where
 1 is the first sheet (default is 1, which will read the first sheet). Ignored
 for non-Excel files.}
+
+\item{file_name}{Optional; for ZIP files, the name of a specific file within the archive
+to process. If \code{NULL}, all supported files in the ZIP are processed (default is \code{NULL}).}
 }
 \value{
 A data frame containing the contents of the file after preprocessing.
+For ZIP files, it returns a combined data frame from all processed files, with an
+additional column \code{'file_name'} indicating the source file within the archive.
 }
 \description{
 \code{get_file} retrieves and preprocesses a file from different sources, including
 local storage, OneDrive, and the web. It supports multiple file formats such as
-CSV, Excel (XLSX and XLS), and SPSS (SAV), and applies preprocessing based on the file type.
+CSV, Excel (XLSX and XLS), SPSS (SAV), and ZIP archives containing these file types.
+The function applies preprocessing based on the file type and, for ZIP files, processes
+and combines data from supported files within the archive.
 }
 \details{
-The function determines the file type from its extension (e.g., 'csv', 'xls', 'xlsx', 'sav'),
+The function determines the file type from its extension (e.g., 'csv', 'xls', 'xlsx', 'sav', 'zip'),
 retrieves the file from the specified source using \code{authenticate_source}, and preprocesses
 it with \code{preprocess_file_type}. Supported file types are handled as follows:
 \itemize{
@@ -44,6 +52,9 @@ Special characters are removed from text columns.
 number of rows, and processes columns similarly to CSV files.
 \item \strong{SAV (SPSS)}: Reads the file, attempting default encoding first and falling back to
 'latin1' if needed. It removes labels and processes factors for cleaner output.
+\item \strong{ZIP}: Extracts supported files (CSV, XLS, XLSX, SAV) from the archive into a unique
+temporary directory, processes them, and combines the data into a single data frame with
+an additional \code{'file_name'} column. If \code{file_name} is specified, only that file is processed.
 }
 
 If the file type is not supported, an error is thrown.
@@ -64,6 +75,12 @@ If the file type is not supported, an error is thrown.
 
   # Retrieve a file from the web, skipping the first row
   data <- get_file("https://example.com/data.csv", source = "web")
+
+  # Retrieve and process all supported files from a local ZIP archive
+  data <- get_file("path/to/local/archive.zip")
+
+  # Retrieve and process a specific file from a ZIP archive
+  data <- get_file("path/to/local/archive.zip", file_name = "specific_file.csv")
 }
 
 }
