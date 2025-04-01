@@ -17,6 +17,8 @@
 #'   for non-Excel files.
 #' @param file_name Optional; for ZIP files, the name of a specific file within the archive
 #'   to process. If `NULL`, all supported files in the ZIP are processed (default is `NULL`).
+#' @param add_name Optional; for ZIP files. If `TRUE`, the file name of the unzipped file will be added in
+#'   a column called "file_name" within the processed data frame (default is `FALSE`).
 #'
 #' @return A data frame containing the contents of the file after preprocessing.
 #'   For ZIP files, it returns a combined data frame from all processed files, with an
@@ -72,7 +74,8 @@ get_file <- function(file_path,
                                 "web"),
                      row_no = 0,
                      sheet_no = 1,
-                     file_name = NULL
+                     file_name = NULL,
+                     add_name = FALSE
 ) {
   # Determine file type
   file_type <- tolower(tools::file_ext(file_path))
@@ -85,7 +88,7 @@ get_file <- function(file_path,
 
   # Handle zip files
   if (file_type == "zip") {
-    data <- unzip_files(file_path, row_no, sheet_no, file_name)
+    data <- unzip_files(file_path, row_no, sheet_no, file_name, add_name)
 
   } else {
     # Preprocess file based on type
@@ -171,6 +174,7 @@ authenticate_source <- function(file_path,
 #' @param sheet_no The sheet number to read from Excel files.
 #' @param file_name Optional; the name of a specific file within the zip to process.
 #'        If `NULL`, all files are processed.
+#' @param add_name Optional; adds the name of the file in a column within the data frame.
 #'
 #' @return A data frame containing the combined data from all processed files, with an
 #'         additional column `'file_name'` indicating the source file.
@@ -194,7 +198,13 @@ authenticate_source <- function(file_path,
 #' functions, as well as a custom `preprocess_file_type()` function to handle file reading.
 #'
 #' @noRd
-unzip_files <- function(file_path, row_no, sheet_no, file_name) {
+unzip_files <- function(
+  file_path,
+  row_no,
+  sheet_no,
+  file_name,
+  add_name
+) {
   # Create a unique temporary directory for extraction
   temp_dir <- file.path(tempdir(), basename(tempfile(pattern = "unzip_")))
   dir.create(temp_dir)
@@ -224,8 +234,10 @@ unzip_files <- function(file_path, row_no, sheet_no, file_name) {
       # Read the file into a data frame
       data <- preprocess_file_type(file, file_type_inner, row_no, sheet_no)
 
-      # Add file_name column
-      data$file_name <- basename(file)
+      # Add file_name column if TRUE
+      if (add_name) {
+        data$file_name <- basename(file)
+      }
 
       # Combine with existing data
       combined_data <- dplyr::bind_rows(combined_data, data)

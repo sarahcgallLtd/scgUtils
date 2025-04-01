@@ -9,7 +9,8 @@ get_file(
   source = c("local", "onedrive", "web"),
   row_no = 0,
   sheet_no = 1,
-  file_name = NULL
+  file_name = NULL,
+  add_name = FALSE
 )
 }
 \arguments{
@@ -27,6 +28,9 @@ for non-Excel files.}
 
 \item{file_name}{Optional; for ZIP files, the name of a specific file within the archive
 to process. If \code{NULL}, all supported files in the ZIP are processed (default is \code{NULL}).}
+
+\item{add_name}{Optional; for ZIP files. If \code{TRUE}, the file name of the unzipped file will be added in
+a column called "file_name" within the processed data frame (default is \code{FALSE}).}
 }
 \value{
 A data frame containing the contents of the file after preprocessing.
