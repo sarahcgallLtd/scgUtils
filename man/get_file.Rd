@@ -8,7 +8,7 @@ get_file(
   file_path,
   source = c("local", "onedrive", "web"),
   row_no = 0,
-  sheet_no = 0
+  sheet_no = 1
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ get_file(
 for CSV and Excel files (default is 0).}
 
 \item{sheet_no}{The sheet number to read from Excel files (XLSX or XLS), where
-1 is the first sheet (default is 0, which will read the first sheet). Ignored
+1 is the first sheet (default is 1, which will read the first sheet). Ignored
 for non-Excel files.}
 }
 \value{

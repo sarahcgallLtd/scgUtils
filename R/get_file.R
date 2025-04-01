@@ -11,7 +11,7 @@
 #' @param row_no The number of rows to skip at the beginning of the file, applicable
 #'   for CSV and Excel files (default is 0).
 #' @param sheet_no The sheet number to read from Excel files (XLSX or XLS), where
-#'   1 is the first sheet (default is 0, which will read the first sheet). Ignored
+#'   1 is the first sheet (default is 1, which will read the first sheet). Ignored
 #'   for non-Excel files.
 #'
 #' @return A data frame containing the contents of the file after preprocessing.
