@@ -56,7 +56,7 @@ get_file <- function(file_path,
                                 #"googledrive",
                                 "web"),
                      row_no = 0,
-                     sheet_no = 0
+                     sheet_no = 1
 ) {
   # Determine file type
   file_type <- tolower(tools::file_ext(file_path))
