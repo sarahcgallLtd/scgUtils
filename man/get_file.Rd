@@ -4,7 +4,12 @@
 \alias{get_file}
 \title{Retrieve and Process File from Various Sources}
 \usage{
-get_file(file_path, source = c("local", "onedrive", "web"), row_no = 0)
+get_file(
+  file_path,
+  source = c("local", "onedrive", "web"),
+  row_no = 0,
+  sheet_no = 0
+)
 }
 \arguments{
 \item{file_path}{The path, ID, or URL of the file to be retrieved.}
@@ -13,26 +18,43 @@ get_file(file_path, source = c("local", "onedrive", "web"), row_no = 0)
 (default is 'local').}
 
 \item{row_no}{The number of rows to skip at the beginning of the file, applicable
-for CSV files (default is 0).}
+for CSV and Excel files (default is 0).}
+
+\item{sheet_no}{The sheet number to read from Excel files (XLSX or XLS), where
+1 is the first sheet (default is 0, which will read the first sheet). Ignored
+for non-Excel files.}
 }
 \value{
-A data frame containing the contents of the file.
+A data frame containing the contents of the file after preprocessing.
 }
 \description{
-\code{get_file} handles the retrieval and initial processing of a file from different
-sources, including local storage, OneDrive, and directly from the web.
-It also preprocesses the file based on its type.
+\code{get_file} retrieves and preprocesses a file from different sources, including
+local storage, OneDrive, and the web. It supports multiple file formats such as
+CSV, Excel (XLSX and XLS), and SPSS (SAV), and applies preprocessing based on the file type.
 }
 \details{
-The function first identifies the file type based on its extension, then retrieves
-the file from the specified source using \code{authenticate_source}. After retrieval,
-the file is preprocessed according to its type using \code{preprocess_file_type},
-which handles different formats like CSV and SAV.
+The function determines the file type from its extension (e.g., 'csv', 'xls', 'xlsx', 'sav'),
+retrieves the file from the specified source using \code{authenticate_source}, and preprocesses
+it with \code{preprocess_file_type}. Supported file types are handled as follows:
+\itemize{
+\item \strong{CSV}: Reads the file with automatic delimiter detection, skips the specified number
+of rows, and converts all columns to character initially before auto-detecting types.
+Special characters are removed from text columns.
+\item \strong{Excel (XLSX and XLS)}: Reads the specified sheet (via \code{sheet_no}), skips the specified
+number of rows, and processes columns similarly to CSV files.
+\item \strong{SAV (SPSS)}: Reads the file, attempting default encoding first and falling back to
+'latin1' if needed. It removes labels and processes factors for cleaner output.
+}
+
+If the file type is not supported, an error is thrown.
 }
 \examples{
 \dontrun{
   # Retrieve a local CSV file
   data <- get_file("path/to/local/file.csv")
+
+  # Retrieve a local Excel file, reading the second sheet
+  data <- get_file("path/to/local/file.xlsx", sheet_no = 2)
 
   # Retrieve a file from OneDrive
   data <- get_file("file-id", source = "onedrive")
@@ -40,7 +62,7 @@ which handles different formats like CSV and SAV.
   # Retrieve and preprocess a Google Drive file, skipping the first row
   data <- get_file("file-id", source = "googledrive", row_no = 1)
 
-  # Retrieve a file directly from a web URL
+  # Retrieve a file from the web, skipping the first row
   data <- get_file("https://example.com/data.csv", source = "web")
 }
 

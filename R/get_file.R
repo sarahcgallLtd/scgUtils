@@ -1,28 +1,43 @@
 #' Retrieve and Process File from Various Sources
 #'
 #' @description
-#' `get_file` handles the retrieval and initial processing of a file from different
-#' sources, including local storage, OneDrive, and directly from the web.
-#' It also preprocesses the file based on its type.
+#' `get_file` retrieves and preprocesses a file from different sources, including
+#' local storage, OneDrive, and the web. It supports multiple file formats such as
+#' CSV, Excel (XLSX and XLS), and SPSS (SAV), and applies preprocessing based on the file type.
 #'
 #' @param file_path The path, ID, or URL of the file to be retrieved.
 #' @param source The source of the file: 'local', 'onedrive', or 'web'
 #'   (default is 'local').
 #' @param row_no The number of rows to skip at the beginning of the file, applicable
-#'   for CSV files (default is 0).
+#'   for CSV and Excel files (default is 0).
+#' @param sheet_no The sheet number to read from Excel files (XLSX or XLS), where
+#'   1 is the first sheet (default is 0, which will read the first sheet). Ignored
+#'   for non-Excel files.
 #'
-#' @return A data frame containing the contents of the file.
+#' @return A data frame containing the contents of the file after preprocessing.
 #'
 #' @details
-#' The function first identifies the file type based on its extension, then retrieves
-#' the file from the specified source using `authenticate_source`. After retrieval,
-#' the file is preprocessed according to its type using `preprocess_file_type`,
-#' which handles different formats like CSV and SAV.
+#' The function determines the file type from its extension (e.g., 'csv', 'xls', 'xlsx', 'sav'),
+#' retrieves the file from the specified source using `authenticate_source`, and preprocesses
+#' it with `preprocess_file_type`. Supported file types are handled as follows:
+#'
+#' - **CSV**: Reads the file with automatic delimiter detection, skips the specified number
+#'   of rows, and converts all columns to character initially before auto-detecting types.
+#'   Special characters are removed from text columns.
+#' - **Excel (XLSX and XLS)**: Reads the specified sheet (via `sheet_no`), skips the specified
+#'   number of rows, and processes columns similarly to CSV files.
+#' - **SAV (SPSS)**: Reads the file, attempting default encoding first and falling back to
+#'   'latin1' if needed. It removes labels and processes factors for cleaner output.
+#'
+#' If the file type is not supported, an error is thrown.
 #'
 #' @examples
 #' \dontrun{
 #'   # Retrieve a local CSV file
 #'   data <- get_file("path/to/local/file.csv")
+#'
+#'   # Retrieve a local Excel file, reading the second sheet
+#'   data <- get_file("path/to/local/file.xlsx", sheet_no = 2)
 #'
 #'   # Retrieve a file from OneDrive
 #'   data <- get_file("file-id", source = "onedrive")
@@ -30,7 +45,7 @@
 #'   # Retrieve and preprocess a Google Drive file, skipping the first row
 #'   data <- get_file("file-id", source = "googledrive", row_no = 1)
 #'
-#'   # Retrieve a file directly from a web URL
+#'   # Retrieve a file from the web, skipping the first row
 #'   data <- get_file("https://example.com/data.csv", source = "web")
 #' }
 #'
@@ -40,7 +55,8 @@ get_file <- function(file_path,
                                 "onedrive",
                                 #"googledrive",
                                 "web"),
-                     row_no = 0
+                     row_no = 0,
+                     sheet_no = 0
 ) {
   # Determine file type
   file_type <- tolower(tools::file_ext(file_path))
@@ -52,7 +68,7 @@ get_file <- function(file_path,
   file_path <- authenticate_source(file_path, source)
 
   # Preprocess file based on type
-  data <- preprocess_file_type(file_path, file_type, row_no)
+  data <- preprocess_file_type(file_path, file_type, row_no, sheet_no)
 
   return(data)
 }
@@ -91,7 +107,7 @@ authenticate_source <- function(file_path,
     # Get file
     file <- od$get_item(file_path)
     # Create a tempfile for the download
-    local_file_path <- tempfile(fileext = tools::file_ext(file_path))
+    local_file_path <- tempfile(fileext = paste0(".", tools::file_ext(file_path)))
     # Download the file to the temporary path
     file$download(local_file_path, overwrite = TRUE)
     # Set file_path to the local temporary path
@@ -109,7 +125,7 @@ authenticate_source <- function(file_path,
     # ==============================================================#
     # WEBSITE:
   } else if (source == "web") {
-    temp_file <- tempfile()
+    temp_file <- tempfile(fileext = paste0(".", tools::file_ext(file_path)))
     # Download file
     suppressWarnings(suppressMessages(
       utils::download.file(file_path, destfile = temp_file, mode = "wb", quiet = TRUE)
@@ -128,6 +144,7 @@ authenticate_source <- function(file_path,
 #' @param file_path The path to the file.
 #' @param file_type The type of the file: 'csv' or 'sav'.
 #' @param row_no The number of rows to skip for CSV files.
+#' @param sheet_no The sheet number for Excel files.
 #'
 #' @return A data frame with the contents of the processed file, with appropriate preprocessing
 #'   applied based on the file type.
@@ -141,19 +158,29 @@ authenticate_source <- function(file_path,
 #' @noRd
 preprocess_file_type <- function(file_path,
                                  file_type,
-                                 row_no
+                                 row_no,
+                                 sheet_no
 ) {
   # ==============================================================#
-  # .csv
-  if (file_type == "csv") {
-    # Read csv file
-    data <- vroom::vroom(
-      file_path,
-      delim = NULL,                                                 # Automatically detect the delimiter
-      skip = row_no,                                                # Skip the specified number of rows
-      col_types = vroom::cols(.default = vroom::col_character()),   # Read all columns as character
-      show_col_types = FALSE                                        # Suppress column type messages
-    )
+  # .csv, .xls, and .xlsx files (Excel files)
+  if (file_type %in% c("csv", "xls", "xlsx")) {
+    if (file_type == "csv") {
+      # Read csv file
+      data <- vroom::vroom(
+        file_path,
+        delim = NULL,                                                 # Automatically detect the delimiter
+        skip = row_no,                                                # Skip the specified number of rows
+        col_types = vroom::cols(.default = vroom::col_character()),   # Read all columns as character
+        show_col_types = FALSE                                        # Suppress column type messages
+      )
+    } else {
+      # Read Excel file, skipping row_no rows, all columns as text
+      data <- readxl::read_excel(file_path,
+                                 sheet = sheet_no,
+                                 skip = row_no,
+                                 col_types = "text"
+      )
+    }
 
     # Automatically detect and convert column types (silently)
     invisible(utils::capture.output({
@@ -186,6 +213,7 @@ preprocess_file_type <- function(file_path,
     data <- labelled::unlabelled(data)
     # Remove unused factor levels
     data <- process_factors(data)
+
     # ==============================================================#
   } else {
     stop("Unsupported file type")

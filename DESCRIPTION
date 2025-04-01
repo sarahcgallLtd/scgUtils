@@ -26,7 +26,8 @@ Imports:
     labelled,
     Microsoft365R,
     readr,
-    vroom
+    vroom,
+    readxl
 Encoding: UTF-8
 Language: en-GB
 Roxygen: list(markdown = TRUE)
