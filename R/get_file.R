@@ -293,13 +293,34 @@ preprocess_file_type <- function(file_path,
         col_types = vroom::cols(.default = vroom::col_character()),   # Read all columns as character
         show_col_types = FALSE                                        # Suppress column type messages
       )
-    } else {
+      } else {
       # Read Excel file, skipping row_no rows, all columns as text
       data <- readxl::read_excel(file_path,
                                  sheet = sheet_no,
                                  skip = row_no,
                                  col_types = "text"
       )
+    }
+
+    # Clean columns prior to column conversion:
+    # Step 1: Preprocess the data
+      for (col in names(data)) {
+        data[[col]] <- trimws(data[[col]])                             # Trim whitespace
+        # remove non-numeric placeholders
+        data[[col]] <- ifelse(data[[col]] %in% c("","N/A","-","NaN","null"), NA, data[[col]])
+        cleaned_col <- gsub(",", "", data[[col]])                      # remove commas
+        numeric_attempt <- suppressWarnings(as.numeric(cleaned_col))   # numeric check
+        if (!any(is.na(numeric_attempt) & !is.na(cleaned_col))) {
+          data[[col]] <- cleaned_col
+        }
+      }
+
+    # Step 2: Smart type conversion
+    for (col in names(data)) {
+      numeric_col <- suppressWarnings(as.numeric(data[[col]]))
+      if (!any(is.na(numeric_col) & !is.na(data[[col]]))) {
+        data[[col]] <- numeric_col
+      }
     }
 
     # Automatically detect and convert column types (silently)
