@@ -23,7 +23,7 @@ guidelines with custom colour schemes and themes.
 Install the development version of `scgUtils` directly from GitHub:
 
 ``` r
-devtools::install_github("sarahcgall/scgUtils")
+devtools::install_github("sarahcgallLtd/scgUtils")
 ```
 
 ## Usage
