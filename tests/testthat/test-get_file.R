@@ -14,7 +14,7 @@
 # })
 
 test_that("return error message for non existent file on a local source", {
-  expect_error(get_file("invalid_file_path"), "File does not exist: invalid_file_path")
+  expect_error(get_file("invalid_file_path"), "Unsupported file type or file does not exist. check `file_path` and try again.")
 })
 
 # test_that("return error message for unsupported file source", {

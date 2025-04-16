@@ -77,11 +77,39 @@ get_file <- function(file_path,
                      file_name = NULL,
                      add_name = FALSE
 ) {
-  # Determine file type
-  file_type <- tolower(tools::file_ext(file_path))
-
   # Get source
   source <- match.arg(source)
+
+  # Define supported file extensions
+  supported_exts <- c("zip", "csv", "xls", "xlsx", "sav")
+
+  # Try to get file extension using tools::file_ext
+  file_type <- tolower(tools::file_ext(file_path))
+  print(file_type)
+
+  # Fallback for web sources if no extension is found
+  if (source == "web" & (file_type == "" || !file_type %in% supported_exts)) {
+    # Convert URL to lowercase for case-insensitive matching
+    url_lower <- tolower(file_path)
+
+    # Find the first supported extension in the URL
+    for (ext in supported_exts) {
+      if (grepl(paste0("\\.", ext, "(?![a-zA-Z0-9])"), url_lower, perl = TRUE)) {
+        file_type <- ext
+        break
+      }
+    }
+
+    # If still no extension found, error out
+    if (file_type == "" || !file_type %in% supported_exts) {
+      stop("Could not determine file type from URL: ", file_path)
+    }
+  }
+
+  # Validate file type for all sources
+  if (!file_type %in% supported_exts) {
+    stop("Unsupported file type or file does not exist. check `file_path` and try again.")
+  }
 
   # Authenticate based on source
   file_path <- authenticate_source(file_path, source)
@@ -97,6 +125,21 @@ get_file <- function(file_path,
 
   return(data)
 }
+
+
+
+get_file_type_from_url <- function(url) {
+    pattern <- "openagent&([^&]+)"
+    match <- regexpr(pattern, url)
+    if (match > 0) {
+      file_name <- regmatches(url, match)[1]
+      file_name <- sub("openagent&", "", file_name)
+      return(tolower(tools::file_ext(file_name)))
+    }
+    return(tolower(tools::file_ext(url)))
+  }
+
+
 
 #' Authenticate and Retrieve File from Various Sources
 #'
@@ -293,7 +336,7 @@ preprocess_file_type <- function(file_path,
         col_types = vroom::cols(.default = vroom::col_character()),   # Read all columns as character
         show_col_types = FALSE                                        # Suppress column type messages
       )
-      } else {
+    } else {
       # Read Excel file, skipping row_no rows, all columns as text
       data <- readxl::read_excel(file_path,
                                  sheet = sheet_no,
@@ -303,21 +346,19 @@ preprocess_file_type <- function(file_path,
     }
 
     # Clean columns prior to column conversion:
-    # Step 1: Preprocess the data
-      for (col in names(data)) {
-        data[[col]] <- trimws(data[[col]])                             # Trim whitespace
-        # remove non-numeric placeholders
-        data[[col]] <- ifelse(data[[col]] %in% c("","N/A","-","NaN","null"), NA, data[[col]])
-        cleaned_col <- gsub(",", "", data[[col]])                      # remove commas
-        numeric_attempt <- suppressWarnings(as.numeric(cleaned_col))   # numeric check
-        if (!any(is.na(numeric_attempt) & !is.na(cleaned_col))) {
-          data[[col]] <- cleaned_col
-        }
-      }
-
-    # Step 2: Smart type conversion
     for (col in names(data)) {
+      # Trim all whitespace
+      data[[col]] <- trimws(data[[col]])
+      # Remove quotes
+      data[[col]] <- gsub("^\"|\"$", "", data[[col]])
+      # Remove commas
+      data[[col]] <- gsub(",", "", data[[col]])
+      # Replace empty or invalid entries with NA
+      data[[col]] <- ifelse(data[[col]] %in% c("", "N/A", "-", "NaN", "null"), NA, data[[col]])
+
+      # Attempt to convert to numeric
       numeric_col <- suppressWarnings(as.numeric(data[[col]]))
+      # If no new NAs are introduced, assign the numeric vector
       if (!any(is.na(numeric_col) & !is.na(data[[col]]))) {
         data[[col]] <- numeric_col
       }
