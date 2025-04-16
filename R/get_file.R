@@ -85,7 +85,6 @@ get_file <- function(file_path,
 
   # Try to get file extension using tools::file_ext
   file_type <- tolower(tools::file_ext(file_path))
-  print(file_type)
 
   # Fallback for web sources if no extension is found
   if (source == "web" & (file_type == "" || !file_type %in% supported_exts)) {
