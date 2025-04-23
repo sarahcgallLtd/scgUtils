@@ -19,6 +19,8 @@
 #'   to process. If `NULL`, all supported files in the ZIP are processed (default is `NULL`).
 #' @param add_name Optional; for ZIP files. If `TRUE`, the file name of the unzipped file will be added in
 #'   a column called "file_name" within the processed data frame (default is `FALSE`).
+#' @param file_type Optional; an override option for extensions. This is particularly useful for url's with
+#'   no extension found within the url (default is `NULL`).
 #'
 #' @return A data frame containing the contents of the file after preprocessing.
 #'   For ZIP files, it returns a combined data frame from all processed files, with an
@@ -62,6 +64,9 @@
 #'   # Retrieve and process all supported files from a local ZIP archive
 #'   data <- get_file("path/to/local/archive.zip")
 #'
+#'   # Retrieve a file from the web with no extension in the url
+#'   data <- get_file("https://example.com/data", source = "web", file_type = "zip")
+#'
 #'   # Retrieve and process a specific file from a ZIP archive
 #'   data <- get_file("path/to/local/archive.zip", file_name = "specific_file.csv")
 #' }
@@ -75,7 +80,8 @@ get_file <- function(file_path,
                      row_no = 0,
                      sheet_no = 1,
                      file_name = NULL,
-                     add_name = FALSE
+                     add_name = FALSE,
+                     file_type = NULL
 ) {
   # Get source
   source <- match.arg(source)
@@ -83,31 +89,33 @@ get_file <- function(file_path,
   # Define supported file extensions
   supported_exts <- c("zip", "csv", "xls", "xlsx", "sav")
 
-  # Try to get file extension using tools::file_ext
-  file_type <- tolower(tools::file_ext(file_path))
+  if (is.null(file_type )) {
+    # Try to get file extension using tools::file_ext
+    file_type <- tolower(tools::file_ext(file_path))
 
-  # Fallback for web sources if no extension is found
-  if (source == "web" & (file_type == "" || !file_type %in% supported_exts)) {
-    # Convert URL to lowercase for case-insensitive matching
-    url_lower <- tolower(file_path)
+    # Fallback for web sources if no extension is found
+    if (source == "web" & (file_type == "" || !file_type %in% supported_exts)) {
+      # Convert URL to lowercase for case-insensitive matching
+      url_lower <- tolower(file_path)
 
-    # Find the first supported extension in the URL
-    for (ext in supported_exts) {
-      if (grepl(paste0("\\.", ext, "(?![a-zA-Z0-9])"), url_lower, perl = TRUE)) {
-        file_type <- ext
-        break
+      # Find the first supported extension in the URL
+      for (ext in supported_exts) {
+        if (grepl(paste0("\\.", ext, "(?![a-zA-Z0-9])"), url_lower, perl = TRUE)) {
+          file_type <- ext
+          break
+        }
+      }
+
+      # If still no extension found, error out
+      if (file_type == "" || !file_type %in% supported_exts) {
+        stop("Could not determine file type from URL: ", file_path)
       }
     }
 
-    # If still no extension found, error out
-    if (file_type == "" || !file_type %in% supported_exts) {
-      stop("Could not determine file type from URL: ", file_path)
+    # Validate file type for all sources
+    if (!file_type %in% supported_exts) {
+      stop("Unsupported file type or file does not exist. check `file_path` and try again.")
     }
-  }
-
-  # Validate file type for all sources
-  if (!file_type %in% supported_exts) {
-    stop("Unsupported file type or file does not exist. check `file_path` and try again.")
   }
 
   # Authenticate based on source
@@ -126,18 +134,16 @@ get_file <- function(file_path,
 }
 
 
-
 get_file_type_from_url <- function(url) {
-    pattern <- "openagent&([^&]+)"
-    match <- regexpr(pattern, url)
-    if (match > 0) {
-      file_name <- regmatches(url, match)[1]
-      file_name <- sub("openagent&", "", file_name)
-      return(tolower(tools::file_ext(file_name)))
-    }
-    return(tolower(tools::file_ext(url)))
+  pattern <- "openagent&([^&]+)"
+  match <- regexpr(pattern, url)
+  if (match > 0) {
+    file_name <- regmatches(url, match)[1]
+    file_name <- sub("openagent&", "", file_name)
+    return(tolower(tools::file_ext(file_name)))
   }
-
+  return(tolower(tools::file_ext(url)))
+}
 
 
 #' Authenticate and Retrieve File from Various Sources

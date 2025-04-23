@@ -10,7 +10,8 @@ get_file(
   row_no = 0,
   sheet_no = 1,
   file_name = NULL,
-  add_name = FALSE
+  add_name = FALSE,
+  file_type = NULL
 )
 }
 \arguments{
@@ -31,6 +32,9 @@ to process. If \code{NULL}, all supported files in the ZIP are processed (defaul
 
 \item{add_name}{Optional; for ZIP files. If \code{TRUE}, the file name of the unzipped file will be added in
 a column called "file_name" within the processed data frame (default is \code{FALSE}).}
+
+\item{file_type}{Optional; an override option for extensions. This is particularly useful for url's with
+no extension found within the url (default is \code{NULL}).}
 }
 \value{
 A data frame containing the contents of the file after preprocessing.
@@ -82,6 +86,9 @@ If the file type is not supported, an error is thrown.
 
   # Retrieve and process all supported files from a local ZIP archive
   data <- get_file("path/to/local/archive.zip")
+
+  # Retrieve a file from the web with no extension in the url
+  data <- get_file("https://example.com/data", source = "web", file_type = "zip")
 
   # Retrieve and process a specific file from a ZIP archive
   data <- get_file("path/to/local/archive.zip", file_name = "specific_file.csv")
