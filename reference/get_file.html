@@ -67,7 +67,8 @@ and combines data from supported files within the archive.</p>
 <span>  row_no <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  sheet_no <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  file_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  add_name <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  add_name <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  file_type <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -103,6 +104,11 @@ to process. If <code>NULL</code>, all supported files in the ZIP are processed (
 <dt id="arg-add-name">add_name<a class="anchor" aria-label="anchor" href="#arg-add-name"></a></dt>
 <dd><p>Optional; for ZIP files. If <code>TRUE</code>, the file name of the unzipped file will be added in
 a column called "file_name" within the processed data frame (default is <code>FALSE</code>).</p></dd>
+
+
+<dt id="arg-file-type">file_type<a class="anchor" aria-label="anchor" href="#arg-file-type"></a></dt>
+<dd><p>Optional; an override option for extensions. This is particularly useful for url's with
+no extension found within the url (default is <code>NULL</code>).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -148,6 +154,9 @@ an additional <code>'file_name'</code> column. If <code>file_name</code> is spec
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># Retrieve and process all supported files from a local ZIP archive</span></span></span>
 <span class="r-in"><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">get_file</span><span class="op">(</span><span class="st">"path/to/local/archive.zip"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Retrieve a file from the web with no extension in the url</span></span></span>
+<span class="r-in"><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">get_file</span><span class="op">(</span><span class="st">"https://example.com/data"</span>, source <span class="op">=</span> <span class="st">"web"</span>, file_type <span class="op">=</span> <span class="st">"zip"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># Retrieve and process a specific file from a ZIP archive</span></span></span>
 <span class="r-in"><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">get_file</span><span class="op">(</span><span class="st">"path/to/local/archive.zip"</span>, file_name <span class="op">=</span> <span class="st">"specific_file.csv"</span><span class="op">)</span></span></span>
