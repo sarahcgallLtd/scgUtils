@@ -89,7 +89,7 @@ get_file <- function(file_path,
   # Define supported file extensions
   supported_exts <- c("zip", "csv", "xls", "xlsx", "sav")
 
-  if (is.null(file_type )) {
+  if (is.null(file_type)) {
     # Try to get file extension using tools::file_ext
     file_type <- tolower(tools::file_ext(file_path))
 
@@ -199,11 +199,19 @@ authenticate_source <- function(file_path,
     # WEBSITE:
   } else if (source == "web") {
     temp_file <- tempfile(fileext = paste0(".", tools::file_ext(file_path)))
-    # Download file
-    suppressWarnings(suppressMessages(
-      utils::download.file(file_path, destfile = temp_file, mode = "wb", quiet = TRUE)
-    ))
-    file_path <- temp_file
+    options(timeout = 300)
+    # Download file with user agent header to mimic browser
+    tryCatch({
+        utils::download.file(file_path,
+                             destfile = temp_file,
+                             method = "libcurl",
+                             headers = c("User-Agent" = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"),
+                             mode = "wb",
+                             quiet = TRUE)
+      file_path <- temp_file
+    }, error = function(e) {
+      stop("Failed to download file from web: ", e$message)
+    })
     # ==============================================================#
   }
   return(file_path)
